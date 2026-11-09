@@ -12,12 +12,7 @@
             theme: {
                 extend: {
                     colors: {
-                        brand: {
-                            50: '#f0f9ff',
-                            500: '#06b6d4',
-                            600: '#0891b2',
-                            700: '#0e7490',
-                        }
+                        brand: { 50: '#f0f9ff', 500: '#06b6d4', 600: '#0891b2', 700: '#0e7490' }
                     }
                 }
             }
@@ -49,21 +44,21 @@
 
     <!-- Toast Notification -->
     <div id="toast" class="fixed top-5 left-1/2 -translate-x-1/2 z-50 transform -translate-y-20 opacity-0 transition-all duration-300 bg-slate-900 text-white dark:bg-white dark:text-slate-900 px-6 py-3 rounded-full shadow-2xl flex items-center gap-3 text-sm font-semibold pointer-events-none">
-        <i id="toast-icon" class="fa-solid fa-circle-check text-emerald-400 dark:text-emerald-600"></i>
+        <i id="toast-icon" class="fa-solid fa-circle-check text-emerald-400"></i>
         <span id="toast-msg">تمت العملية بنجاح</span>
     </div>
 
     <!-- Header Actions -->
     <header class="max-w-xl mx-auto w-full p-4 flex justify-between items-center relative z-10">
-        <button id="admin-btn" onclick="openAdmin()" class="px-3 py-1.5 rounded-xl bg-white/80 dark:bg-slate-800/80 shadow-sm border border-slate-200 dark:border-slate-700 hover:scale-105 transition-all text-xs font-bold flex items-center gap-2">
+        <button onclick="openAdmin()" class="px-3 py-1.5 rounded-xl bg-white/80 dark:bg-slate-800/80 shadow-sm border border-slate-200 dark:border-slate-700 hover:scale-105 transition-all text-xs font-bold flex items-center gap-2 cursor-pointer">
             <i class="fa-solid fa-lock text-slate-500 dark:text-slate-400"></i>
             <span>لوحة التحكم</span>
         </button>
         <div class="flex items-center gap-2">
-            <button onclick="shareLink()" class="w-10 h-10 rounded-xl bg-white/80 dark:bg-slate-800/80 shadow-sm border border-slate-200 dark:border-slate-700 flex items-center justify-center hover:scale-105 transition-all">
+            <button onclick="shareLink()" class="w-10 h-10 rounded-xl bg-white/80 dark:bg-slate-800/80 shadow-sm border border-slate-200 dark:border-slate-700 flex items-center justify-center hover:scale-105 transition-all cursor-pointer">
                 <i class="fa-solid fa-share-nodes"></i>
             </button>
-            <button onclick="toggleTheme()" class="w-10 h-10 rounded-xl bg-white/80 dark:bg-slate-800/80 shadow-sm border border-slate-200 dark:border-slate-700 flex items-center justify-center hover:scale-105 transition-all">
+            <button onclick="toggleTheme()" class="w-10 h-10 rounded-xl bg-white/80 dark:bg-slate-800/80 shadow-sm border border-slate-200 dark:border-slate-700 flex items-center justify-center hover:scale-105 transition-all cursor-pointer">
                 <i id="theme-icon" class="fa-solid fa-moon"></i>
             </button>
         </div>
@@ -75,7 +70,7 @@
         <div class="text-center w-full mb-6">
             <div class="relative w-28 h-28 mx-auto mb-4">
                 <img id="profile-img" src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&q=80&w=300" alt="صورة الشخصية" class="w-full h-full rounded-full object-cover shadow-xl border-4 border-white dark:border-slate-800">
-                <span class="absolute bottom-1 right-1 w-5 h-5 bg-emerald-500 border-2 border-white dark:border-slate-800 rounded-full" title="متاح للعمل"></span>
+                <span class="absolute bottom-1 right-1 w-5 h-5 bg-emerald-500 border-2 border-white dark:border-slate-800 rounded-full"></span>
             </div>
             <h1 id="profile-name" class="text-2xl font-extrabold tracking-wide mb-1">محمود</h1>
             <p id="profile-bio" class="text-xs text-slate-500 dark:text-slate-400 max-w-sm mx-auto leading-relaxed mb-4">مصمم جرافيك ومهمندس تصميم واجهات ثلاثي الأبعاد وخبير فصل ألوان وتقنيات الطباعة</p>
@@ -99,7 +94,7 @@
     <!-- Contact Modal -->
     <div id="contact-modal" class="fixed inset-0 z-50 modal-backdrop hidden flex items-center justify-center p-4">
         <div class="bg-white dark:bg-slate-900 w-full max-w-md rounded-2xl p-6 shadow-2xl relative border border-slate-100 dark:border-slate-800">
-            <button onclick="closeModal('contact-modal')" class="absolute top-4 left-4 w-8 h-8 rounded-full bg-slate-100 dark:bg-slate-800 flex items-center justify-center text-slate-500">
+            <button onclick="closeModal('contact-modal')" class="absolute top-4 left-4 w-8 h-8 rounded-full bg-slate-100 dark:bg-slate-800 flex items-center justify-center text-slate-500 cursor-pointer">
                 <i class="fa-solid fa-xmark"></i>
             </button>
             <h3 class="text-lg font-bold mb-4 flex items-center gap-2">
@@ -113,165 +108,4 @@
                 </div>
                 <div>
                     <label class="block text-xs font-semibold mb-1">البريد الإلكتروني / رقم الهاتف</label>
-                    <input type="text" required class="w-full px-3 py-2 rounded-xl bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-sm focus:outline-none focus:ring-2 focus:ring-cyan-500">
-                </div>
-                <div>
-                    <label class="block text-xs font-semibold mb-1">الرسالة</label>
-                    <textarea rows="3" required class="w-full px-3 py-2 rounded-xl bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-sm focus:outline-none focus:ring-2 focus:ring-cyan-500"></textarea>
-                </div>
-                <button type="submit" class="w-full py-2.5 rounded-xl bg-cyan-600 hover:bg-cyan-700 text-white font-bold text-sm shadow-lg transition-all">إرسال الرسالة</button>
-            </form>
-        </div>
-    </div>
-
-    <!-- Login Modal -->
-    <div id="login-modal" class="fixed inset-0 z-50 modal-backdrop hidden flex items-center justify-center p-4">
-        <div class="bg-white dark:bg-slate-900 w-full max-w-sm rounded-2xl p-6 shadow-2xl relative border border-slate-100 dark:border-slate-800">
-            <button onclick="closeModal('login-modal')" class="absolute top-4 left-4 w-8 h-8 rounded-full bg-slate-100 dark:bg-slate-800 flex items-center justify-center text-slate-500">
-                <i class="fa-solid fa-xmark"></i>
-            </button>
-            <div class="text-center mb-6">
-                <div class="w-12 h-12 rounded-2xl bg-cyan-100 dark:bg-cyan-950 text-cyan-600 dark:text-cyan-400 flex items-center justify-center mx-auto mb-2 text-xl">
-                    <i class="fa-solid fa-user-shield"></i>
-                </div>
-                <h3 class="text-lg font-bold">تسجيل دخول المسؤول</h3>
-                <p class="text-xs text-slate-500">قم بإدخال بياناتك للوصول للوحة التحكم</p>
-            </div>
-            <form onsubmit="handleLogin(event)" class="space-y-4">
-                <div>
-                    <label class="block text-xs font-semibold mb-1">البريد الإلكتروني</label>
-                    <input id="login-email" type="email" required placeholder="mahmoud@example.com" class="w-full px-3 py-2 rounded-xl bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-sm focus:outline-none focus:ring-2 focus:ring-cyan-500">
-                </div>
-                <div>
-                    <label class="block text-xs font-semibold mb-1">كلمة المرور</label>
-                    <input id="login-pass" type="password" required placeholder="123456" class="w-full px-3 py-2 rounded-xl bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-sm focus:outline-none focus:ring-2 focus:ring-cyan-500">
-                </div>
-                <button type="submit" class="w-full py-2.5 rounded-xl bg-slate-900 dark:bg-white text-white dark:text-slate-900 font-bold text-sm shadow-lg transition-all">دخول</button>
-            </form>
-        </div>
-    </div>
-
-    <!-- Admin Panel Modal -->
-    <div id="admin-modal" class="fixed inset-0 z-50 modal-backdrop hidden flex items-center justify-center p-4">
-        <div class="bg-white dark:bg-slate-900 w-full max-w-2xl rounded-2xl shadow-2xl relative border border-slate-100 dark:border-slate-800 max-h-[90vh] flex flex-col">
-            <!-- Admin Header -->
-            <div class="p-4 border-b border-slate-200 dark:border-slate-800 flex justify-between items-center">
-                <div class="flex items-center gap-2">
-                    <i class="fa-solid fa-sliders text-cyan-500"></i>
-                    <h3 class="font-bold">لوحة إدارة الموقع</h3>
-                </div>
-                <div class="flex items-center gap-2">
-                    <button onclick="logoutAdmin()" class="text-xs px-2.5 py-1 rounded-lg bg-rose-50 text-rose-600 dark:bg-rose-950/50 dark:text-rose-400 font-semibold">خروج</button>
-                    <button onclick="closeModal('admin-modal')" class="w-8 h-8 rounded-full bg-slate-100 dark:bg-slate-800 flex items-center justify-center text-slate-500">
-                        <i class="fa-solid fa-xmark"></i>
-                    </button>
-                </div>
-            </div>
-
-            <!-- Tabs Navigation -->
-            <div class="flex border-b border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-950/50 px-4 gap-2 overflow-x-auto">
-                <button onclick="switchTab('profile')" id="tab-btn-profile" class="py-3 px-4 text-xs font-bold border-b-2 border-cyan-500 text-cyan-600 dark:text-cyan-400">الملف الشخصي</button>
-                <button onclick="switchTab('specs')" id="tab-btn-specs" class="py-3 px-4 text-xs font-bold border-b-2 border-transparent text-slate-500">الاختصاصات</button>
-                <button onclick="switchTab('social')" id="tab-btn-social" class="py-3 px-4 text-xs font-bold border-b-2 border-transparent text-slate-500">التواصل الاجتماعي</button>
-                <button onclick="switchTab('cards')" id="tab-btn-cards" class="py-3 px-4 text-xs font-bold border-b-2 border-transparent text-slate-500">البطاقات الرئيسية</button>
-            </div>
-
-            <!-- Tabs Content Area -->
-            <div class="p-6 overflow-y-auto flex-1 space-y-6">
-                <!-- Tab: Profile -->
-                <div id="tab-profile" class="space-y-4">
-                    <h4 class="text-sm font-bold border-b pb-2 dark:border-slate-800">بيانات الملف الشخصي</h4>
-                    <div class="space-y-3">
-                        <div>
-                            <label class="block text-xs font-semibold mb-1">الصورة الشخصية (رفع ملف أو رابط URL)</label>
-                            <div class="flex gap-2 items-center">
-                                <input type="file" id="profile-file-input" accept="image/*" onchange="handleImageUpload(event)" class="text-xs text-slate-500 file:mr-2 file:py-1.5 file:px-3 file:rounded-xl file:border-0 file:text-xs file:font-semibold file:bg-cyan-50 file:text-cyan-700 dark:file:bg-slate-800 dark:file:text-slate-300">
-                            </div>
-                            <input type="text" id="admin-profile-img" placeholder="أو أدخل رابط URL للصورة" class="w-full mt-2 px-3 py-2 rounded-xl bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-sm">
-                        </div>
-                        <div>
-                            <label class="block text-xs font-semibold mb-1">الاسم</label>
-                            <input type="text" id="admin-profile-name" class="w-full px-3 py-2 rounded-xl bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-sm">
-                        </div>
-                        <div>
-                            <label class="block text-xs font-semibold mb-1">النبذة التعريفية (Bio)</label>
-                            <textarea id="admin-profile-bio" rows="3" class="w-full px-3 py-2 rounded-xl bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-sm"></textarea>
-                        </div>
-                        <button onclick="saveProfileChanges()" class="px-4 py-2 bg-cyan-600 text-white rounded-xl text-xs font-bold hover:bg-cyan-700 transition-all">حفظ التعديلات</button>
-                    </div>
-                </div>
-
-                <!-- Tab: Specialties -->
-                <div id="tab-specs" class="space-y-4 hidden">
-                    <h4 class="text-sm font-bold border-b pb-2 dark:border-slate-800">إدارة الاختصاصات والوسوم</h4>
-                    <div class="flex gap-2">
-                        <input type="text" id="new-spec-input" placeholder="اسم الاختصاص (مثال: تصميم 3D)" class="flex-1 px-3 py-2 rounded-xl bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-sm">
-                        <button onclick="addSpecialty()" class="px-4 py-2 bg-cyan-600 text-white rounded-xl text-xs font-bold hover:bg-cyan-700">إضافة</button>
-                    </div>
-                    <div id="admin-specs-list" class="space-y-2"></div>
-                </div>
-
-                <!-- Tab: Social -->
-                <div id="tab-social" class="space-y-4 hidden">
-                    <h4 class="text-sm font-bold border-b pb-2 dark:border-slate-800">إدارة أيقونات التواصل الاجتماعي</h4>
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
-                        <div>
-                            <label class="block text-xs font-semibold mb-1">المنصة</label>
-                            <select id="social-platform-select" class="w-full px-3 py-2 rounded-xl bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-sm">
-                                <option value="facebook|fa-brands fa-facebook|فيسبوك">فيسبوك</option>
-                                <option value="instagram|fa-brands fa-instagram|انستغرام">انستغرام</option>
-                                <option value="telegram|fa-brands fa-telegram|تلغرام">تلغرام</option>
-                                <option value="whatsapp|fa-brands fa-whatsapp|واتساب">واتساب</option>
-                                <option value="linkedin|fa-brands fa-linkedin|لينكد إن">لينكد إن</option>
-                                <option value="youtube|fa-brands fa-youtube|يوتيوب">يوتيوب</option>
-                                <option value="x-twitter|fa-brands fa-x-twitter|إكس (تويتر)">إكس (تويتر)</option>
-                                <option value="github|fa-brands fa-github|جيت هاب">جيت هاب</option>
-                                <option value="tiktok|fa-brands fa-tiktok|تيك توك">تيك توك</option>
-                            </select>
-                        </div>
-                        <div>
-                            <label class="block text-xs font-semibold mb-1">رابط الحساب (URL)</label>
-                            <input type="text" id="social-url-input" placeholder="https://..." class="w-full px-3 py-2 rounded-xl bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-sm">
-                        </div>
-                    </div>
-                    <button onclick="addSocialIcon()" class="w-full py-2 bg-cyan-600 text-white rounded-xl text-xs font-bold hover:bg-cyan-700">إضافة الأيقونة</button>
-                    <div id="admin-social-list" class="space-y-2 mt-4"></div>
-                </div>
-
-                <!-- Tab: Cards -->
-                <div id="tab-cards" class="space-y-4 hidden">
-                    <h4 class="text-sm font-bold border-b pb-2 dark:border-slate-800">إدارة البطاقات والروابط الرئيسية</h4>
-                    <div class="space-y-3 bg-slate-50 dark:bg-slate-800/50 p-4 rounded-xl border border-slate-200 dark:border-slate-700">
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
-                            <div>
-                                <label class="block text-xs font-semibold mb-1">عنوان البطاقة</label>
-                                <input type="text" id="card-title-input" placeholder="معرض أعمالي" class="w-full px-3 py-2 rounded-xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-sm">
-                            </div>
-                            <div>
-                                <label class="block text-xs font-semibold mb-1">الوصف الفرعي</label>
-                                <input type="text" id="card-desc-input" placeholder="تصفح أحدث مشاريع التصميم" class="w-full px-3 py-2 rounded-xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-sm">
-                            </div>
-                        </div>
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
-                            <div>
-                                <label class="block text-xs font-semibold mb-1">الرابط (اتركه فارغاً للتواصل المباشر)</label>
-                                <input type="text" id="card-url-input" placeholder="https://..." class="w-full px-3 py-2 rounded-xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-sm">
-                            </div>
-                            <div>
-                                <label class="block text-xs font-semibold mb-1">الأيقونة (التصميم والهندسة)</label>
-                                <select id="card-icon-select" class="w-full px-3 py-2 rounded-xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-sm">
-                                    <option value="fa-solid fa-palette">🎨 أدوات التصميم (Palette)</option>
-                                    <option value="fa-solid fa-cubes">🧊 مجسمات ثلاثية الأبعاد (3D)</option>
-                                    <option value="fa-solid fa-pen-nib">✒️ رسم متجهي (Pen Tool)</option>
-                                    <option value="fa-solid fa-print">𝌚 طباعة وفصل ألوان (Print)</option>
-                                    <option value="fa-solid fa-building">🏗️ تصميم معماري وأليكوبوند</option>
-                                    <option value="fa-solid fa-compass-drafting">📐 هندسة ومخططات (Drafting)</option>
-                                    <option value="fa-solid fa-laptop-code">💻 مدونة وتقنية</option>
-                                    <option value="fa-solid fa-envelope">✉️ تواصل مباشر</option>
-                                    <option value="fa-solid fa-briefcase">💼 حقيبة أعمال</option>
-                                </select>
-                            </div>
-                        </div>
-                        <div class="flex items-center gap-4">
-                            <label class="flex items-center gap-2 text-xs font-semibold">
-                                <input type="checkbox" id="card-featured-check" cla
+                    <input type="text" required class="w-full px-3 py-2 rounded-xl bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-sm focus:outline-none
