@@ -73,7 +73,7 @@
                 <span class="absolute bottom-1 right-1 w-5 h-5 bg-emerald-500 border-2 border-white dark:border-slate-800 rounded-full"></span>
             </div>
             <h1 id="profile-name" class="text-2xl font-extrabold tracking-wide mb-1">محمود</h1>
-            <p id="profile-bio" class="text-xs text-slate-500 dark:text-slate-400 max-w-sm mx-auto leading-relaxed mb-4">مصمم جرافيك ومهمندس تصميم واجهات ثلاثي الأبعاد وخبير فصل ألوان وتقنيات الطباعة</p>
+            <p id="profile-bio" class="text-xs text-slate-500 dark:text-slate-400 max-w-sm mx-auto leading-relaxed mb-4">مصمم جرافيك ومهندس تصميم واجهات ثلاثي الأبعاد وخبير فصل ألوان وتقنيات الطباعة</p>
             
             <!-- Specialties Badges -->
             <div id="specialties-list" class="flex flex-wrap justify-center gap-2 mb-6"></div>
@@ -108,4 +108,183 @@
                 </div>
                 <div>
                     <label class="block text-xs font-semibold mb-1">البريد الإلكتروني / رقم الهاتف</label>
-                    <input type="text" required class="w-full px-3 py-2 rounded-xl bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-sm focus:outline-none
+                    <input type="text" required class="w-full px-3 py-2 rounded-xl bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-sm focus:outline-none focus:ring-2 focus:ring-cyan-500">
+                </div>
+                <div>
+                    <label class="block text-xs font-semibold mb-1">الرسالة</label>
+                    <textarea rows="3" required class="w-full px-3 py-2 rounded-xl bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-sm focus:outline-none focus:ring-2 focus:ring-cyan-500"></textarea>
+                </div>
+                <button type="submit" class="w-full py-2.5 rounded-xl bg-cyan-600 hover:bg-cyan-700 text-white font-bold text-sm shadow-lg transition-all cursor-pointer">إرسال الرسالة</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Login Modal -->
+    <div id="login-modal" class="fixed inset-0 z-50 modal-backdrop hidden flex items-center justify-center p-4">
+        <div class="bg-white dark:bg-slate-900 w-full max-w-sm rounded-2xl p-6 shadow-2xl relative border border-slate-100 dark:border-slate-800">
+            <button onclick="closeModal('login-modal')" class="absolute top-4 left-4 w-8 h-8 rounded-full bg-slate-100 dark:bg-slate-800 flex items-center justify-center text-slate-500 cursor-pointer">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+            <div class="text-center mb-6">
+                <div class="w-12 h-12 rounded-2xl bg-cyan-100 dark:bg-cyan-950 text-cyan-600 dark:text-cyan-400 flex items-center justify-center mx-auto mb-2 text-xl">
+                    <i class="fa-solid fa-user-shield"></i>
+                </div>
+                <h3 class="text-lg font-bold">تسجيل دخول المسؤول</h3>
+                <p class="text-xs text-slate-500">قم بإدخال بياناتك للوصول للوحة التحكم</p>
+            </div>
+            <form onsubmit="handleLogin(event)" class="space-y-4">
+                <div>
+                    <label class="block text-xs font-semibold mb-1">البريد الإلكتروني</label>
+                    <input id="login-email" type="email" required placeholder="mahmoud@example.com" class="w-full px-3 py-2 rounded-xl bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-sm focus:outline-none focus:ring-2 focus:ring-cyan-500">
+                </div>
+                <div>
+                    <label class="block text-xs font-semibold mb-1">كلمة المرور</label>
+                    <input id="login-pass" type="password" required placeholder="123456" class="w-full px-3 py-2 rounded-xl bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-sm focus:outline-none focus:ring-2 focus:ring-cyan-500">
+                </div>
+                <button type="submit" class="w-full py-2.5 rounded-xl bg-slate-900 dark:bg-white text-white dark:text-slate-900 font-bold text-sm shadow-lg transition-all cursor-pointer">دخول</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Admin Panel Modal -->
+    <div id="admin-modal" class="fixed inset-0 z-50 modal-backdrop hidden flex items-center justify-center p-4">
+        <div class="bg-white dark:bg-slate-900 w-full max-w-2xl rounded-2xl shadow-2xl relative border border-slate-100 dark:border-slate-800 max-h-[90vh] flex flex-col">
+            <div class="p-4 border-b border-slate-200 dark:border-slate-800 flex justify-between items-center">
+                <div class="flex items-center gap-2">
+                    <i class="fa-solid fa-sliders text-cyan-500"></i>
+                    <h3 class="font-bold">لوحة إدارة الموقع</h3>
+                </div>
+                <div class="flex items-center gap-2">
+                    <button onclick="logoutAdmin()" class="text-xs px-2.5 py-1 rounded-lg bg-rose-50 text-rose-600 font-semibold cursor-pointer">خروج</button>
+                    <button onclick="closeModal('admin-modal')" class="w-8 h-8 rounded-full bg-slate-100 dark:bg-slate-800 flex items-center justify-center text-slate-500 cursor-pointer">
+                        <i class="fa-solid fa-xmark"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Tabs Navigation -->
+            <div class="flex border-b border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-950/50 px-4 gap-2 overflow-x-auto">
+                <button onclick="switchTab('profile')" id="tab-btn-profile" class="py-3 px-4 text-xs font-bold border-b-2 border-cyan-500 text-cyan-600 dark:text-cyan-400 cursor-pointer">الملف الشخصي</button>
+                <button onclick="switchTab('specs')" id="tab-btn-specs" class="py-3 px-4 text-xs font-bold border-b-2 border-transparent text-slate-500 cursor-pointer">الاختصاصات</button>
+                <button onclick="switchTab('social')" id="tab-btn-social" class="py-3 px-4 text-xs font-bold border-b-2 border-transparent text-slate-500 cursor-pointer">التواصل</button>
+                <button onclick="switchTab('cards')" id="tab-btn-cards" class="py-3 px-4 text-xs font-bold border-b-2 border-transparent text-slate-500 cursor-pointer">البطاقات</button>
+            </div>
+
+            <div class="p-6 overflow-y-auto flex-1 space-y-6">
+                <!-- Tab: Profile -->
+                <div id="tab-profile" class="space-y-4">
+                    <h4 class="text-sm font-bold border-b pb-2 dark:border-slate-800">بيانات الملف الشخصي</h4>
+                    <div class="space-y-3">
+                        <div>
+                            <label class="block text-xs font-semibold mb-1">رابط الصورة الشخصية (URL)</label>
+                            <input type="text" id="admin-profile-img" class="w-full px-3 py-2 rounded-xl bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-sm">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-semibold mb-1">الاسم</label>
+                            <input type="text" id="admin-profile-name" class="w-full px-3 py-2 rounded-xl bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-sm">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-semibold mb-1">النبذة التعريفية</label>
+                            <textarea id="admin-profile-bio" rows="3" class="w-full px-3 py-2 rounded-xl bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-sm"></textarea>
+                        </div>
+                        <button onclick="saveProfileChanges()" class="px-4 py-2 bg-cyan-600 text-white rounded-xl text-xs font-bold hover:bg-cyan-700 cursor-pointer">حفظ التعديلات</button>
+                    </div>
+                </div>
+
+                <!-- Tab: Specialties -->
+                <div id="tab-specs" class="space-y-4 hidden">
+                    <h4 class="text-sm font-bold border-b pb-2 dark:border-slate-800">إدارة الاختصاصات</h4>
+                    <div class="flex gap-2">
+                        <input type="text" id="new-spec-input" placeholder="اختصاص جديد..." class="flex-1 px-3 py-2 rounded-xl bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-sm">
+                        <button onclick="addSpecialty()" class="px-4 py-2 bg-cyan-600 text-white rounded-xl text-xs font-bold cursor-pointer">إضافة</button>
+                    </div>
+                    <div id="admin-specs-list" class="space-y-2"></div>
+                </div>
+
+                <!-- Tab: Social -->
+                <div id="tab-social" class="space-y-4 hidden">
+                    <h4 class="text-sm font-bold border-b pb-2 dark:border-slate-800">أيقونات التواصل</h4>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+                        <select id="social-platform-select" class="w-full px-3 py-2 rounded-xl bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-sm">
+                            <option value="facebook|fa-brands fa-facebook|فيسبوك">فيسبوك</option>
+                            <option value="instagram|fa-brands fa-instagram|انستغرام">انستغرام</option>
+                            <option value="telegram|fa-brands fa-telegram|تلغرام">تلغرام</option>
+                            <option value="whatsapp|fa-brands fa-whatsapp|واتساب">واتساب</option>
+                        </select>
+                        <input type="text" id="social-url-input" placeholder="https://..." class="w-full px-3 py-2 rounded-xl bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-sm">
+                    </div>
+                    <button onclick="addSocialIcon()" class="w-full py-2 bg-cyan-600 text-white rounded-xl text-xs font-bold cursor-pointer">إضافة</button>
+                    <div id="admin-social-list" class="space-y-2 mt-4"></div>
+                </div>
+
+                <!-- Tab: Cards -->
+                <div id="tab-cards" class="space-y-4 hidden">
+                    <h4 class="text-sm font-bold border-b pb-2 dark:border-slate-800">البطاقات الرئيسية</h4>
+                    <div class="space-y-3 bg-slate-50 dark:bg-slate-800/50 p-4 rounded-xl border border-slate-200 dark:border-slate-700">
+                        <input type="text" id="card-title-input" placeholder="عنوان البطاقة" class="w-full px-3 py-2 rounded-xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-sm">
+                        <input type="text" id="card-desc-input" placeholder="الوصف الفرعي" class="w-full px-3 py-2 rounded-xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-sm">
+                        <input type="text" id="card-url-input" placeholder="الرابط (اتركه فارغاً للتواصل المباشر)" class="w-full px-3 py-2 rounded-xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-sm">
+                        <select id="card-icon-select" class="w-full px-3 py-2 rounded-xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-sm">
+                            <option value="fa-solid fa-palette">🎨 أدوات التصميم</option>
+                            <option value="fa-solid fa-cubes">🧊 مجسمات ثلاثية الأبعاد</option>
+                            <option value="fa-solid fa-print">𝌚 طباعة وفصل ألوان</option>
+                            <option value="fa-solid fa-envelope">✉️ تواصل مباشر</option>
+                        </select>
+                        <button onclick="addMainCard()" class="w-full py-2 bg-cyan-600 text-white rounded-xl text-xs font-bold cursor-pointer">إضافة البطاقة</button>
+                    </div>
+                    <div id="admin-cards-list" class="space-y-2"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Script -->
+    <script>
+        const defaultState = {
+            profile: {
+                name: "محمود",
+                bio: "مصمم جرافيك ومهندس تصميم واجهات ثلاثي الأبعاد وخبير فصل ألوان وتقنيات الطباعة",
+                img: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&q=80&w=300"
+            },
+            specialties: ["تصميم جرافيك", "تكسية أليكوبوند 3D", "فصل ألوان وطباعة", "AutoCAD & 3ds Max"],
+            socials: [
+                { id: "1", name: "فيسبوك", icon: "fa-brands fa-facebook", url: "https://facebook.com" },
+                { id: "2", name: "انستغرام", icon: "fa-brands fa-instagram", url: "https://instagram.com" },
+                { id: "3", name: "تلغرام", icon: "fa-brands fa-telegram", url: "https://t.me" },
+                { id: "4", name: "واتساب", icon: "fa-brands fa-whatsapp", url: "https://wa.me" }
+            ],
+            cards: [
+                { id: "c1", title: "معرض أعمالي في التصميم", desc: "تصفح مشاريع الجرافيك والواجهات والـ 3D", url: "https://example.com/portfolio", icon: "fa-solid fa-palette", featured: true },
+                { id: "c2", title: "المدونة التقنية", desc: "مقالات حول فصل الألوان والطباعة والهندسة", url: "https://example.com/blog", icon: "fa-solid fa-laptop-code", featured: false },
+                { id: "c3", title: "تواصل معي مباشرة", desc: "للاستشارات وطلبات التصميم الخاصة", url: "", icon: "fa-solid fa-envelope", featured: false }
+            ],
+            isAdmin: false
+        };
+
+        let appData = defaultState;
+        try {
+            const saved = localStorage.getItem('mahmoud_linktree_v2');
+            if (saved) appData = JSON.parse(saved);
+        } catch(e) {}
+
+        function saveData() {
+            localStorage.setItem('mahmoud_linktree_v2', JSON.stringify(appData));
+            renderUI();
+        }
+
+        function renderUI() {
+            document.getElementById('profile-name').textContent = appData.profile.name;
+            document.getElementById('profile-bio').textContent = appData.profile.bio;
+            document.getElementById('profile-img').src = appData.profile.img;
+
+            document.getElementById('specialties-list').innerHTML = appData.specialties.map(s => 
+                `<span class="px-3 py-1 rounded-full text-xs font-semibold bg-cyan-50 dark:bg-cyan-950/60 text-cyan-700 dark:text-cyan-300 border border-cyan-200/50 dark:border-cyan-800/50">${s}</span>`
+            ).join('');
+
+            document.getElementById('social-icons-list').innerHTML = appData.socials.map(s => 
+                `<a href="${s.url}" target="_blank" title="${s.name}" class="w-10 h-10 rounded-xl bg-white dark:bg-slate-800 shadow-sm border border-slate-200 dark:border-slate-700 flex items-center justify-center text-slate-700 dark:text-slate-200 hover:scale-110 hover:text-cyan-600 transition-all">
+                    <i class="${s.icon} text-lg"></i>
+                </a>`
+            ).join('');
+
+            document.getElementById('cards
