@@ -14,15 +14,17 @@
 </head>
 <body class="bg-slate-950 text-slate-100 min-h-screen flex flex-col justify-between p-4">
 
+    <!-- Header -->
     <header class="max-w-xl mx-auto w-full flex justify-between items-center mb-6">
-        <button onclick="openAdmin()" class="px-4 py-2 rounded-xl bg-cyan-600 text-white text-xs font-bold shadow-lg cursor-pointer">
-            <i class="fa-solid fa-sliders"></i> لوحة التحكم
+        <button onclick="openAdmin()" class="px-4 py-2 rounded-xl bg-cyan-600 text-white text-xs font-bold shadow-lg cursor-pointer flex items-center gap-2">
+            <i class="fa-solid fa-sliders"></i> لوحة التحكم الشاملة
         </button>
         <button onclick="toggleTheme()" class="w-10 h-10 rounded-xl bg-slate-900 border border-slate-800 flex items-center justify-center cursor-pointer">
             <i id="theme-icon" class="fa-solid fa-moon"></i>
         </button>
     </header>
 
+    <!-- Main Profile -->
     <main class="max-w-xl mx-auto w-full flex-1 flex flex-col items-center text-center">
         <div class="w-28 h-28 rounded-full overflow-hidden border-4 border-cyan-500 shadow-xl mb-4">
             <img id="profile-img" src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&q=80&w=300" class="w-full h-full object-cover">
@@ -37,12 +39,21 @@
 
     <!-- Admin Modal -->
     <div id="admin-modal" class="fixed inset-0 bg-black/80 hidden z-50 flex items-center justify-center p-4">
-        <div class="bg-slate-900 border border-slate-800 w-full max-w-md rounded-2xl p-6 max-h-[90vh] overflow-y-auto text-right text-xs">
+        <div class="bg-slate-900 border border-slate-800 w-full max-w-lg rounded-2xl p-6 max-h-[90vh] overflow-y-auto text-right text-xs">
             <div class="flex justify-between items-center mb-4 border-b border-slate-800 pb-2">
-                <h3 class="font-bold text-cyan-400 text-sm">لوحة التحكم السريعة</h3>
+                <h3 class="font-bold text-cyan-400 text-sm">لوحة إدارة الموقع</h3>
                 <button onclick="closeAdmin()" class="text-slate-400 text-base cursor-pointer"><i class="fa-solid fa-xmark"></i></button>
             </div>
-            <div class="space-y-4">
+
+            <!-- Tabs -->
+            <div class="flex gap-2 mb-4 border-b border-slate-800 pb-2 overflow-x-auto">
+                <button onclick="switchTab('profile')" id="tab-profile-btn" class="px-3 py-1.5 rounded-lg bg-cyan-600 font-bold text-white cursor-pointer">الملف الشخصي</button>
+                <button onclick="switchTab('specs')" id="tab-specs-btn" class="px-3 py-1.5 rounded-lg bg-slate-800 text-slate-300 font-bold cursor-pointer">الاختصاصات</button>
+                <button onclick="switchTab('cards')" id="tab-cards-btn" class="px-3 py-1.5 rounded-lg bg-slate-800 text-slate-300 font-bold cursor-pointer">البطاقات</button>
+            </div>
+
+            <!-- Tab 1: Profile -->
+            <div id="tab-profile" class="space-y-4">
                 <div>
                     <label class="block mb-1 font-semibold">الاسم:</label>
                     <input type="text" id="input-name" class="w-full p-2.5 rounded-xl bg-slate-800 border border-slate-700 text-white">
@@ -55,7 +66,34 @@
                     <label class="block mb-1 font-semibold">رابط الصورة الشخصية:</label>
                     <input type="text" id="input-img" class="w-full p-2.5 rounded-xl bg-slate-800 border border-slate-700 text-white">
                 </div>
-                <button onclick="saveData()" class="w-full py-3 bg-cyan-600 hover:bg-cyan-700 text-white font-bold rounded-xl shadow-lg cursor-pointer">حفظ وتحديث الموقع</button>
+                <button onclick="saveProfile()" class="w-full py-2.5 bg-cyan-600 text-white font-bold rounded-xl cursor-pointer">حفظ الملف الشخصي</button>
+            </div>
+
+            <!-- Tab 2: Specs -->
+            <div id="tab-specs" class="space-y-4 hidden">
+                <div class="flex gap-2">
+                    <input type="text" id="new-spec" placeholder="اختصاص جديد..." class="flex-1 p-2.5 rounded-xl bg-slate-800 border border-slate-700 text-white">
+                    <button onclick="addSpec()" class="px-4 py-2 bg-cyan-600 text-white font-bold rounded-xl cursor-pointer">إضافة</button>
+                </div>
+                <div id="admin-specs-list" class="space-y-2"></div>
+            </div>
+
+            <!-- Tab 3: Cards -->
+            <div id="tab-cards" class="space-y-4 hidden">
+                <div class="p-3 bg-slate-800/50 rounded-xl border border-slate-800 space-y-2">
+                    <input type="text" id="card-title" placeholder="عنوان البطاقة" class="w-full p-2 rounded-lg bg-slate-800 border border-slate-700 text-white">
+                    <input type="text" id="card-desc" placeholder="الوصف الفرعي" class="w-full p-2 rounded-lg bg-slate-800 border border-slate-700 text-white">
+                    <input type="text" id="card-url" placeholder="الرابط (اتركه فارغاً للتواصل)" class="w-full p-2 rounded-lg bg-slate-800 border border-slate-700 text-white">
+                    <select id="card-icon" class="w-full p-2 rounded-lg bg-slate-800 border border-slate-700 text-white">
+                        <option value="fa-solid fa-palette">🎨 أدوات التصميم</option>
+                        <option value="fa-solid fa-cubes">🧊 مجسمات ثلاثية الأبعاد</option>
+                        <option value="fa-solid fa-print">𝌚 فصل ألوان وطباعة</option>
+                        <option value="fa-solid fa-envelope">✉️ تواصل مباشر</option>
+                    </select>
+                    <label class="flex items-center gap-2"><input type="checkbox" id="card-featured"> <span>تمييز البطاقة (لون بارز)</span></label>
+                    <button onclick="addCard()" class="w-full py-2 bg-cyan-600 text-white font-bold rounded-lg cursor-pointer">إضافة البطاقة</button>
+                </div>
+                <div id="admin-cards-list" class="space-y-2"></div>
             </div>
         </div>
     </div>
@@ -82,9 +120,14 @@
 
         let siteData = defaultConfig;
         try {
-            const saved = localStorage.getItem('mahmoud_site_v5');
+            const saved = localStorage.getItem('mahmoud_site_v6');
             if(saved) siteData = JSON.parse(saved);
         } catch(e) {}
+
+        function saveData() {
+            localStorage.setItem('mahmoud_site_v6', JSON.stringify(siteData));
+            renderSite();
+        }
 
         function renderSite() {
             document.getElementById('profile-name').textContent = siteData.name;
@@ -116,6 +159,7 @@
             document.getElementById('input-name').value = siteData.name;
             document.getElementById('input-bio').value = siteData.bio;
             document.getElementById('input-img').value = siteData.img;
+            renderAdminLists();
             document.getElementById('admin-modal').classList.remove('hidden');
         }
 
@@ -123,14 +167,58 @@
             document.getElementById('admin-modal').classList.add('hidden');
         }
 
-        function saveData() {
+        function switchTab(tab) {
+            ['profile', 'specs', 'cards'].forEach(t => {
+                document.getElementById(`tab-${t}`).classList.add('hidden');
+                document.getElementById(`tab-${t}-btn`).className = "px-3 py-1.5 rounded-lg bg-slate-800 text-slate-300 font-bold cursor-pointer";
+            });
+            document.getElementById(`tab-${tab}`).classList.remove('hidden');
+            document.getElementById(`tab-${tab}-btn`).className = "px-3 py-1.5 rounded-lg bg-cyan-600 text-white font-bold cursor-pointer";
+        }
+
+        function renderAdminLists() {
+            document.getElementById('admin-specs-list').innerHTML = siteData.specs.map((s, i) => `
+                <div class="flex justify-between items-center bg-slate-800 p-2 rounded-xl">
+                    <span>${s}</span>
+                    <button onclick="siteData.specs.splice(${i},1); saveData(); renderAdminLists();" class="text-rose-400 cursor-pointer"><i class="fa-solid fa-trash"></i></button>
+                </div>
+            `).join('');
+
+            document.getElementById('admin-cards-list').innerHTML = siteData.cards.map((c, i) => `
+                <div class="flex justify-between items-center bg-slate-800 p-2 rounded-xl">
+                    <span class="font-bold">${c.title}</span>
+                    <button onclick="siteData.cards.splice(${i},1); saveData(); renderAdminLists();" class="text-rose-400 cursor-pointer"><i class="fa-solid fa-trash"></i></button>
+                </div>
+            `).join('');
+        }
+
+        function saveProfile() {
             siteData.name = document.getElementById('input-name').value;
             siteData.bio = document.getElementById('input-bio').value;
             siteData.img = document.getElementById('input-img').value;
-            localStorage.setItem('mahmoud_site_v5', JSON.stringify(siteData));
-            closeAdmin();
-            renderSite();
-            alert("تم التحديث والحفظ بنجاح!");
+            saveData();
+            alert("تم حفظ الملف الشخصي بنجاح!");
+        }
+
+        function addSpec() {
+            const val = document.getElementById('new-spec').value.trim();
+            if(val) { siteData.specs.push(val); document.getElementById('new-spec').value = ''; saveData(); renderAdminLists(); }
+        }
+
+        function addCard() {
+            const title = document.getElementById('card-title').value.trim();
+            const desc = document.getElementById('card-desc').value.trim();
+            const url = document.getElementById('card-url').value.trim();
+            const icon = document.getElementById('card-icon').value;
+            const featured = document.getElementById('card-featured').checked;
+            if(title) {
+                siteData.cards.push({title, desc, url, icon, featured});
+                document.getElementById('card-title').value = '';
+                document.getElementById('card-desc').value = '';
+                document.getElementById('card-url').value = '';
+                document.getElementById('card-featured').checked = false;
+                saveData(); renderAdminLists();
+            }
         }
 
         function toggleTheme() {
