@@ -59,7 +59,6 @@
         <div class="flex items-center gap-2">
             <i class="fa-solid fa-users text-goldaccent"></i>
             <select id="userSelect" onchange="switchUser(this.value)" class="bg-darkbg text-sm text-gray-200 border border-gray-700 rounded-lg px-2 py-1 outline-none focus:border-goldaccent">
-                <!-- Dynamic User Options -->
             </select>
         </div>
         <button onclick="openAdminModal()" class="text-xs bg-goldaccent/10 hover:bg-goldaccent/20 text-goldaccent border border-goldaccent/30 px-3 py-1.5 rounded-lg flex items-center gap-1.5 transition">
@@ -81,32 +80,29 @@
             </div>
             
             <h1 id="displayName" class="text-2xl font-bold text-white flex items-center justify-center gap-2">
-                <span>جاري التحميل...</span>
+                <span>محمود للتصميم والبناء</span>
                 <i class="fa-solid fa-circle-check text-goldaccent text-lg"></i>
             </h1>
-            <p id="displayBio" class="text-xs text-gray-400 mt-1 px-4 line-clamp-2">...</p>
+            <p id="displayBio" class="text-xs text-gray-400 mt-1 px-4 line-clamp-2">خدمات التصميم الإعلاني، حلول الطباعة، وتكسية واجهات الألوكوبوند</p>
             
             <!-- Dynamic Contact Buttons -->
             <div id="contactButtons" class="flex justify-center gap-3 mt-4">
-                <!-- Contact Links populated dynamically -->
             </div>
         </div>
 
         <!-- Filter Tabs -->
         <div id="categoryTabs" class="w-full flex gap-2 overflow-x-auto pb-2 mb-4 text-xs custom-scrollbar">
-            <!-- Dynamic Tabs populated dynamically -->
         </div>
 
         <!-- Links Container -->
         <div id="linksContainer" class="w-full flex flex-col gap-3 mb-8">
-            <!-- Dynamic Links populated dynamically -->
         </div>
 
     </main>
 
     <!-- Footer -->
     <footer class="w-full max-w-md text-center py-4 border-t border-gray-800 text-xs text-gray-500">
-        <p>© <span id="year"></span> جميع الحقوق محفوظة - شجرة الروابط</p>
+        <p>© <span id="year">2026</span> جميع الحقوق محفوظة - شجرة الروابط</p>
     </footer>
 
     <!-- PIN Authentication Modal -->
@@ -138,7 +134,6 @@
 
             <div class="overflow-y-auto custom-scrollbar flex-grow pr-1 space-y-6">
 
-                <!-- Super Admin Section (Visible for Super Admin Only) -->
                 <div id="superAdminSection" class="hidden bg-darkbg p-4 rounded-xl border border-goldaccent/30">
                     <h4 class="text-xs font-bold text-goldaccent uppercase tracking-wider mb-3 flex items-center gap-1.5">
                         <i class="fa-solid fa-crown"></i> إدارة كافة المستخدمين (Super Admin)
@@ -157,7 +152,6 @@
                     </div>
                 </div>
 
-                <!-- Profile Info Section -->
                 <div class="bg-darkbg p-4 rounded-xl border border-gray-800">
                     <h4 class="text-xs font-bold text-gray-400 uppercase tracking-wider mb-3">بيانات الملف الشخصي</h4>
                     <div class="space-y-3">
@@ -177,7 +171,6 @@
                     </div>
                 </div>
 
-                <!-- Contact Info Section -->
                 <div class="bg-darkbg p-4 rounded-xl border border-gray-800">
                     <h4 class="text-xs font-bold text-gray-400 uppercase tracking-wider mb-3">معلومات التواصل السريع</h4>
                     <div class="space-y-3">
@@ -196,7 +189,6 @@
                     </div>
                 </div>
 
-                <!-- Dynamic Categories Section -->
                 <div class="bg-darkbg p-4 rounded-xl border border-gray-800">
                     <h4 class="text-xs font-bold text-gray-400 uppercase tracking-wider mb-3">إدارة الفئات (Categories)</h4>
                     <div class="flex gap-2 mb-3">
@@ -206,7 +198,6 @@
                     <div id="adminCategoriesList" class="flex flex-wrap gap-2"></div>
                 </div>
 
-                <!-- Add/Edit Link Section -->
                 <div class="bg-darkbg p-4 rounded-xl border border-gray-800">
                     <h4 id="linkFormTitle" class="text-xs font-bold text-gray-400 uppercase tracking-wider mb-3">إضافة رابط جديد</h4>
                     <input type="hidden" id="editingLinkId">
@@ -215,9 +206,8 @@
                         <input type="url" id="linkUrl" placeholder="الرابط الأصلي (https://...)" class="w-full bg-cardbg border border-gray-700 rounded-lg px-3 py-2 text-xs text-white outline-none focus:border-goldaccent">
                         <div class="flex gap-2">
                             <select id="linkCategory" class="flex-1 bg-cardbg border border-gray-700 rounded-lg px-3 py-2 text-xs text-white outline-none focus:border-goldaccent">
-                                <!-- Dynamic options -->
                             </select>
-                            <input type="text" id="linkIcon" placeholder="أيقونة FontAwesome (مثال: fa-globe)" class="flex-1 bg-cardbg border border-gray-700 rounded-lg px-3 py-2 text-xs text-white outline-none focus:border-goldaccent">
+                            <input type="text" id="linkIcon" placeholder="أيقونة (مثال: fa-globe)" class="flex-1 bg-cardbg border border-gray-700 rounded-lg px-3 py-2 text-xs text-white outline-none focus:border-goldaccent">
                         </div>
                         <div class="flex gap-2">
                             <button onclick="saveLink()" class="flex-1 bg-goldaccent hover:bg-yellow-500 text-black font-bold py-2 rounded-lg text-xs transition">حفظ الرابط</button>
@@ -226,15 +216,13 @@
                     </div>
                 </div>
 
-                <!-- Links List Section -->
                 <div class="bg-darkbg p-4 rounded-xl border border-gray-800">
                     <h4 class="text-xs font-bold text-gray-400 uppercase tracking-wider mb-3">الروابط الحالية</h4>
                     <div id="adminLinksList" class="space-y-2"></div>
                 </div>
 
-                <!-- Change PIN Section -->
                 <div class="bg-darkbg p-4 rounded-xl border border-gray-800">
-                    <h4 class="text-xs font-bold text-gray-400 uppercase tracking-wider mb-3">تغيير הـ PIN الخاص بك</h4>
+                    <h4 class="text-xs font-bold text-gray-400 uppercase tracking-wider mb-3">تغيير الـ PIN الخاص بك</h4>
                     <div class="flex gap-2">
                         <input type="password" id="newPinInput" maxlength="6" placeholder="رمز PIN جديد" class="flex-1 bg-cardbg border border-gray-700 rounded-lg px-3 py-2 text-xs text-white outline-none focus:border-goldaccent">
                         <button onclick="changePin()" class="bg-goldaccent/20 hover:bg-goldaccent/30 text-goldaccent border border-goldaccent/40 font-bold px-3 py-2 rounded-lg text-xs transition">تحديث الرمز</button>
@@ -250,14 +238,14 @@
         </div>
     </div>
 
-    <!-- Application JavaScript Engine -->
+    <!-- Application Engine -->
     <script>
         const SUPER_ADMIN_PIN = "9999";
         let isSuperAdmin = false;
 
         const defaultUsers = {
             "mahmoud": {
-                name: "محمود",
+                name: "mahmoud",
                 displayName: "محمود للتصميم والبناء",
                 bio: "خدمات التصميم الإعلاني، حلول الطباعة، وتكسية واجهات الألوكوبوند",
                 pin: "1234",
@@ -286,7 +274,7 @@
             try {
                 localStorage.setItem(key, JSON.stringify(data));
             } catch (e) {
-                console.warn("Storage quota exceeded or restricted:", e);
+                console.warn("Storage restricted:", e);
             }
         }
 
@@ -306,21 +294,26 @@
 
         function getCurrentUser() {
             if (!appData[currentUsername]) {
-                currentUsername = Object.keys(appData)[0];
+                currentUsername = Object.keys(appData)[0] || "mahmoud";
             }
-            return appData[currentUsername];
+            return appData[currentUsername] || defaultUsers["mahmoud"];
         }
 
         function initApp() {
-            document.getElementById('year').textContent = new Date().getFullYear();
-            renderUserSelector();
-            renderProfile();
-            renderCategories();
-            renderLinks();
+            try {
+                document.getElementById('year').textContent = new Date().getFullYear();
+                renderUserSelector();
+                renderProfile();
+                renderCategories();
+                renderLinks();
+            } catch (err) {
+                console.error("Init Error:", err);
+            }
         }
 
         function renderUserSelector() {
             const select = document.getElementById('userSelect');
+            if (!select) return;
             select.innerHTML = '';
             Object.keys(appData).forEach(usr => {
                 const opt = document.createElement('option');
@@ -341,21 +334,28 @@
 
         function renderProfile() {
             const user = getCurrentUser();
-            document.getElementById('displayName').querySelector('span').textContent = user.displayName;
-            document.getElementById('displayBio').textContent = user.bio;
+            const nameEl = document.getElementById('displayName');
+            if (nameEl) nameEl.querySelector('span').textContent = user.displayName;
+            
+            const bioEl = document.getElementById('displayBio');
+            if (bioEl) bioEl.textContent = user.bio;
 
             const img = document.getElementById('profileImage');
             const icon = document.getElementById('defaultAvatarIcon');
-            if (user.image) {
-                img.src = user.image;
-                img.classList.remove('hidden');
-                icon.classList.add('hidden');
-            } else {
-                img.classList.add('hidden');
-                icon.classList.remove('hidden');
+            if (img && icon) {
+                if (user.image) {
+                    img.src = user.image;
+                    img.classList.remove('hidden');
+                    icon.classList.add('hidden');
+                } else {
+                    img.classList.add('hidden');
+                    icon.classList.remove('hidden');
+                }
             }
 
             const cContainer = document.getElementById('contactButtons');
+            if (!cContainer) return;
             cContainer.innerHTML = '';
             
-            if (user.contacts.showWhatsapp &&
+            if (user.contacts.showWhatsapp && user.contacts.whatsapp) {
+                cContainer.innerHTML += `<a href="https://wa.me/${user.contacts.whatsapp.replace(/[^0-9]/g, '')}" target="_blank" class="w-9 h-9 rounde
