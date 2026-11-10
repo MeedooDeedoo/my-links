@@ -83,7 +83,6 @@
                 <i class="fa-solid fa-lock text-sm"></i>
                 لوحة الإدارة
             </button>
-            <!-- يمكنك إضافة عناصر جديدة هنا بسهولة مستقبلاً -->
             <a href="https://wa.me/" target="_blank" class="w-full bg-gray-100 dark:bg-darkbg hover:bg-gray-200 dark:hover:bg-gray-800 border border-gray-200 dark:border-gray-700 text-gray-700 dark:text-gray-300 p-3 rounded-xl flex items-center gap-3 font-bold transition">
                 <i class="fa-brands fa-whatsapp text-emerald-400 text-sm"></i>
                 تواصل معنا عبر واتساب
@@ -129,6 +128,42 @@
     <footer class="w-full max-w-md text-center py-4 border-t border-gray-200 dark:border-gray-800 text-xs text-gray-400 dark:text-gray-500 relative z-10 transition-colors duration-300">
         <p>© <span id="year">2026</span> جميع الحقوق محفوظة - شجرة الروابط</p>
     </footer>
+
+    <!-- Share Options Modal -->
+    <div id="shareModal" class="fixed inset-0 bg-black/85 backdrop-blur-md hidden flex items-end sm:items-center justify-center z-[110] p-0 sm:p-4 transition-opacity">
+        <div class="bg-lightcard dark:bg-cardbg border-t sm:border border-gray-200 dark:border-gray-800 w-full max-w-md rounded-t-3xl sm:rounded-2xl p-6 shadow-2xl transition-colors duration-300">
+            <div class="flex justify-between items-center border-b border-gray-200 dark:border-gray-800 pb-3 mb-4">
+                <h3 class="text-base font-bold dark:text-white flex items-center gap-2">
+                    <i class="fa-solid fa-share-nodes text-goldaccent"></i> مشاركة الصفحة عبر
+                </h3>
+                <button type="button" onclick="window.closeShareModal()" class="text-gray-400 hover:text-gray-700 dark:hover:text-white text-lg"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            
+            <div class="grid grid-cols-4 gap-3 mb-5 text-center text-xs">
+                <a id="shareWhatsapp" href="#" target="_blank" class="flex flex-col items-center gap-1.5 p-3 rounded-2xl bg-emerald-500/10 border border-emerald-500/20 text-emerald-500 hover:bg-emerald-500/20 transition">
+                    <i class="fa-brands fa-whatsapp text-2xl"></i>
+                    <span>واتساب</span>
+                </a>
+                <a id="shareTelegram" href="#" target="_blank" class="flex flex-col items-center gap-1.5 p-3 rounded-2xl bg-sky-500/10 border border-sky-500/20 text-sky-400 hover:bg-sky-500/20 transition">
+                    <i class="fa-brands fa-telegram text-2xl"></i>
+                    <span>تيليجرام</span>
+                </a>
+                <a id="shareFacebook" href="#" target="_blank" class="flex flex-col items-center gap-1.5 p-3 rounded-2xl bg-blue-500/10 border border-blue-500/20 text-blue-500 hover:bg-blue-500/20 transition">
+                    <i class="fa-brands fa-facebook text-2xl"></i>
+                    <span>فيسبوك</span>
+                </a>
+                <a id="shareTwitter" href="#" target="_blank" class="flex flex-col items-center gap-1.5 p-3 rounded-2xl bg-zinc-500/10 border border-zinc-500/20 dark:text-white text-zinc-800 hover:bg-zinc-500/20 transition">
+                    <i class="fa-brands fa-x-twitter text-2xl"></i>
+                    <span>إكس</span>
+                </a>
+            </div>
+
+            <div class="flex gap-2 bg-lightbg dark:bg-darkbg p-2 rounded-xl border border-gray-200 dark:border-gray-700 items-center">
+                <input type="text" id="shareUrlInput" readonly class="w-full bg-transparent text-[11px] text-gray-500 dark:text-gray-400 outline-none px-2" />
+                <button type="button" onclick="window.copyProfileLink()" class="bg-goldaccent text-black font-bold px-4 py-2 rounded-lg text-xs whitespace-nowrap">نسخ الرابط</button>
+            </div>
+        </div>
+    </div>
 
     <!-- PIN Authentication Modal -->
     <div id="pinModal" class="fixed inset-0 bg-black/85 backdrop-blur-md hidden flex items-center justify-center z-[100] p-4">
@@ -385,8 +420,40 @@
             if (appData.contacts.showEmail && appData.contacts.email) {
                 cContainer.innerHTML += `<a href="mailto:${appData.contacts.email}" class="w-9 h-9 rounded-full bg-goldaccent/10 border border-goldaccent/30 text-goldaccent flex items-center justify-center"><i class="fa-solid fa-envelope"></i></a>`;
             }
-            cContainer.innerHTML += `<button type="button" onclick="window.copyProfileLink()" class="w-9 h-9 rounded-full bg-gray-200 dark:bg-gray-800 border border-gray-300 dark:border-gray-700 text-gray-700 dark:text-gray-300 flex items-center justify-center"><i class="fa-solid fa-share-nodes"></i></button>`;
+            // Share Button
+            cContainer.innerHTML += `<button type="button" onclick="window.openShareModal()" class="w-9 h-9 rounded-full bg-gray-200 dark:bg-gray-800 border border-gray-300 dark:border-gray-700 text-gray-700 dark:text-gray-300 flex items-center justify-center transition active:scale-95" title="مشاركة الصفحة"><i class="fa-solid fa-share-nodes"></i></button>`;
         }
+
+        window.openShareModal = function() {
+            const currentUrl = window.location.href;
+            const text = encodeURIComponent(`شاهد منصة الروابط الخاصة بـ ${appData.displayName}: ${currentUrl}`);
+            
+            document.getElementById('shareWhatsapp.href') // dummy selector check
+            document.getElementById('shareWhatsapp').href = `https://api.whatsapp.com/send?text=${text}`;
+            document.getElementById('shareTelegram').href = `https://t.me/share/url?url=${encodeURIComponent(currentUrl)}&text=${encodeURIComponent(appData.displayName)}`;
+            document.getElementById('shareFacebook').href = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(currentUrl)}`;
+            document.getElementById('shareTwitter').href = `https://twitter.com/intent/tweet?url=${encodeURIComponent(currentUrl)}&text=${encodeURIComponent(appData.displayName)}`;
+            document.getElementById('shareUrlInput').value = currentUrl;
+
+            document.getElementById('shareModal').classList.remove('hidden');
+        };
+
+        window.closeShareModal = function() {
+            document.getElementById('shareModal').classList.add('hidden');
+        };
+
+        window.copyProfileLink = function() {
+            const url = window.location.href;
+            navigator.clipboard.writeText(url).then(() => {
+                alert('تم نسخ رابط الصفحة إلى الحافظة بنجاح!');
+                window.closeShareModal();
+            }).catch(() => {
+                const input = document.getElementById('shareUrlInput');
+                input.select();
+                document.execCommand('copy');
+                alert('تم نسخ الرابط!');
+            });
+        };
 
         function renderCategories() {
             const container = document.getElementById('categoryTabs');
@@ -656,11 +723,6 @@
             initApp();
             window.closeAdminModal();
             alert('تم حفظ التغييرات بنجاح!');
-        };
-
-        window.copyProfileLink = function() {
-            navigator.clipboard.writeText(window.location.href);
-            alert('تم نسخ رابط الصفحة إلى الحافظة!');
         };
 
         document.addEventListener('DOMContentLoaded', initApp);
