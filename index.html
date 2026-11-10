@@ -347,6 +347,7 @@
                         <div>
                             <label class="block text-gray-500 dark:text-gray-400 mb-1">رفع صورة شخصية:</label>
                             <input type="file" id="imageFileInput" accept="image/*" onchange="window.handleImageUpload(event)" class="w-full text-gray-500 dark:text-gray-400 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-xs file:font-semibold file:bg-goldaccent/20 file:text-goldaccent cursor-pointer mb-2">
+                            <input type="url" id="editAvatarUrl" placeholder="أو أدخل رابط الصورة الشخصية مباشرة" class="w-full bg-lightcard dark:bg-cardbg border border-gray-300 dark:border-gray-700 rounded-lg p-2 dark:text-white outline-none mb-2">
                             <button type="button" onclick="window.removeProfileImage()" class="text-red-500 dark:text-red-400 block mt-1">إزالة الصورة الحالية</button>
                         </div>
                     </div>
@@ -1116,6 +1117,7 @@
             document.getElementById('editDisplayName').value = appData.displayName;
             document.getElementById('editBio').value = appData.bio;
             tempImageBase64 = appData.image || "";
+            document.getElementById('editAvatarUrl').value = appData.image || "";
             document.getElementById('showWhatsapp').checked = appData.contacts.showWhatsapp;
             document.getElementById('editWhatsapp').value = appData.contacts.whatsapp;
             document.getElementById('showPhone').checked = appData.contacts.showPhone;
@@ -1321,11 +1323,20 @@
             const file = e.target.files[0];
             if (file) {
                 const reader = new FileReader();
-                reader.onload = (ev) => { tempImageBase64 = ev.target.result; alert('تم تحميل الصورة'); };
+                reader.onload = (ev) => {
+                    tempImageBase64 = ev.target.result;
+                    document.getElementById('editAvatarUrl').value = tempImageBase64;
+                    alert('تم تحميل وتجهيز الصورة بنجاح!');
+                };
                 reader.readAsDataURL(file);
             }
         };
-        window.removeProfileImage = function() { tempImageBase64 = ''; alert('تمت إزالة الصورة'); };
+        window.removeProfileImage = function() {
+            tempImageBase64 = '';
+            document.getElementById('editAvatarUrl').value = '';
+            appData.image = '';
+            alert('تمت إزالة الصورة');
+        };
 
         window.addCategory = function() {
             const val = document.getElementById('newCategoryInput').value.trim();
@@ -1457,7 +1468,13 @@
         window.saveAllChanges = function() {
             appData.displayName = document.getElementById('editDisplayName').value.trim() || appData.displayName;
             appData.bio = document.getElementById('editBio').value.trim();
-            if (tempImageBase64 !== "") appData.image = tempImageBase64;
+            
+            const avatarUrlInputVal = document.getElementById('editAvatarUrl').value.trim();
+            if (tempImageBase64 !== "") {
+                appData.image = tempImageBase64;
+            } else if (avatarUrlInputVal !== "") {
+                appData.image = avatarUrlInputVal;
+            }
 
             appData.contacts.showWhatsapp = document.getElementById('showWhatsapp').checked;
             appData.contacts.whatsapp = document.getElementById('editWhatsapp').value.trim();
