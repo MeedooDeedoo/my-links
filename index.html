@@ -41,7 +41,6 @@
         .glow-gold-hover:hover {
             box-shadow: 0 0 20px rgba(212, 175, 55, 0.4);
         }
-        /* ضمان الاستجابة التامة للمس على الجوال */
         button, select, input, a, label {
             touch-action: manipulation;
             cursor: pointer;
@@ -120,98 +119,27 @@
     <!-- Admin Panel Modal -->
     <div id="adminModal" class="fixed inset-0 bg-black/85 backdrop-blur-md hidden flex items-center justify-center z-[100] p-3">
         <div class="bg-cardbg border border-gray-800 w-full max-w-lg rounded-2xl p-4 shadow-2xl max-h-[92vh] flex flex-col">
-            
             <div class="flex justify-between items-center border-b border-gray-800 pb-3 mb-3">
                 <h3 class="text-base font-bold text-goldaccent flex items-center gap-2">
                     <i class="fa-solid fa-sliders"></i> لوحة التحكم
                 </h3>
                 <button type="button" onclick="window.closeAdminModal()" class="text-gray-400 hover:text-white text-xl px-2"><i class="fa-solid fa-xmark"></i></button>
             </div>
-
             <div class="overflow-y-auto flex-grow pr-1 space-y-4 text-xs">
-
-                <div id="superAdminSection" class="hidden bg-darkbg p-3 rounded-xl border border-goldaccent/30">
-                    <h4 class="font-bold text-goldaccent mb-2 flex items-center gap-1.5">
-                        <i class="fa-solid fa-crown"></i> إدارة المستخدمين (Super Admin)
-                    </h4>
-                    <div class="space-y-2 mb-3">
-                        <input type="text" id="newUsername" placeholder="اسم المستخدم الفريد (مثال: ali)" class="w-full bg-cardbg border border-gray-700 rounded-lg p-2 text-white outline-none">
-                        <input type="text" id="newUserDisplayName" placeholder="الاسم الظاهر" class="w-full bg-cardbg border border-gray-700 rounded-lg p-2 text-white outline-none">
-                        <input type="password" id="newUserPin" placeholder="الرمز السري PIN" class="w-full bg-cardbg border border-gray-700 rounded-lg p-2 text-white outline-none">
-                        <button type="button" onclick="window.createNewUser()" class="w-full bg-goldaccent text-black font-bold py-2 rounded-lg">+ إضافة مستخدم</button>
-                    </div>
-                    <div id="usersList" class="space-y-1.5"></div>
-                </div>
-
                 <div class="bg-darkbg p-3 rounded-xl border border-gray-800 space-y-2">
                     <h4 class="font-bold text-gray-400">الملف الشخصي</h4>
                     <input type="text" id="editDisplayName" placeholder="الاسم الظاهر" class="w-full bg-cardbg border border-gray-700 rounded-lg p-2 text-white outline-none">
                     <input type="text" id="editBio" placeholder="الوصف المختصر" class="w-full bg-cardbg border border-gray-700 rounded-lg p-2 text-white outline-none">
-                    <div>
-                        <label class="block text-gray-400 mb-1">صورة البروفايل</label>
-                        <input type="file" id="imageInput" accept="image/*" onchange="window.handleImageUpload(event)" class="text-gray-400 text-xs">
-                        <button type="button" onclick="window.removeProfileImage()" class="text-red-400 mt-1 block">إزالة الصورة الحالية</button>
-                    </div>
                 </div>
-
-                <div class="bg-darkbg p-3 rounded-xl border border-gray-800 space-y-2">
-                    <h4 class="font-bold text-gray-400">معلومات الاتصال</h4>
-                    <div class="flex items-center gap-2"><input type="checkbox" id="showWhatsapp"><input type="text" id="editWhatsapp" placeholder="رقم الواتساب" class="flex-1 bg-cardbg border border-gray-700 rounded-lg p-2 text-white outline-none"></div>
-                    <div class="flex items-center gap-2"><input type="checkbox" id="showPhone"><input type="text" id="editPhone" placeholder="رقم الهاتف" class="flex-1 bg-cardbg border border-gray-700 rounded-lg p-2 text-white outline-none"></div>
-                    <div class="flex items-center gap-2"><input type="checkbox" id="showEmail"><input type="email" id="editEmail" placeholder="البريد الإلكتروني" class="flex-1 bg-cardbg border border-gray-700 rounded-lg p-2 text-white outline-none"></div>
-                </div>
-
-                <div class="bg-darkbg p-3 rounded-xl border border-gray-800 space-y-2">
-                    <h4 class="font-bold text-gray-400">إدارة الفئات</h4>
-                    <div class="flex gap-2">
-                        <input type="text" id="newCategoryInput" placeholder="فئة جديدة..." class="flex-1 bg-cardbg border border-gray-700 rounded-lg p-2 text-white outline-none">
-                        <button type="button" onclick="window.addCategory()" class="bg-goldaccent/20 text-goldaccent border border-goldaccent/40 px-3 py-1 rounded-lg">إضافة</button>
-                    </div>
-                    <div id="adminCategoriesList" class="flex flex-wrap gap-1.5 pt-1"></div>
-                </div>
-
-                <div class="bg-darkbg p-3 rounded-xl border border-gray-800 space-y-2">
-                    <h4 id="linkFormTitle" class="font-bold text-gray-400">إضافة رابط جديد</h4>
-                    <input type="hidden" id="editingLinkId">
-                    <input type="text" id="linkTitle" placeholder="عنوان الرابط" class="w-full bg-cardbg border border-gray-700 rounded-lg p-2 text-white outline-none">
-                    <input type="url" id="linkUrl" placeholder="الرابط https://..." class="w-full bg-cardbg border border-gray-700 rounded-lg p-2 text-white outline-none">
-                    <div class="flex gap-2">
-                        <select id="linkCategory" class="flex-1 bg-cardbg border border-gray-700 rounded-lg p-2 text-white outline-none"></select>
-                        <input type="text" id="linkIcon" placeholder="أيقونة (fa-globe)" class="flex-1 bg-cardbg border border-gray-700 rounded-lg p-2 text-white outline-none">
-                    </div>
-                    <div class="flex gap-2 pt-1">
-                        <button type="button" onclick="window.saveLink()" class="flex-1 bg-goldaccent text-black font-bold py-2 rounded-lg">حفظ الرابط</button>
-                        <button type="button" onclick="window.resetLinkForm()" class="bg-gray-800 text-gray-300 px-3 py-2 rounded-lg">إلغاء</button>
-                    </div>
-                </div>
-
-                <div class="bg-darkbg p-3 rounded-xl border border-gray-800 space-y-2">
-                    <h4 class="font-bold text-gray-400">الروابط الحالية</h4>
-                    <div id="adminLinksList" class="space-y-1.5"></div>
-                </div>
-
-                <div class="bg-darkbg p-3 rounded-xl border border-gray-800 space-y-2">
-                    <h4 class="font-bold text-gray-400">تغيير رمز PIN</h4>
-                    <div class="flex gap-2">
-                        <input type="password" id="newPinInput" maxlength="6" placeholder="رمز PIN جديد" class="flex-1 bg-cardbg border border-gray-700 rounded-lg p-2 text-white outline-none">
-                        <button type="button" onclick="window.changePin()" class="bg-goldaccent/20 text-goldaccent border border-goldaccent/40 px-3 py-1 rounded-lg">تحديث</button>
-                    </div>
-                </div>
-
             </div>
-
             <div class="border-t border-gray-800 pt-3 mt-3 flex justify-end">
-                <button type="button" onclick="window.saveAllChanges()" class="bg-goldaccent text-black font-bold px-5 py-2 rounded-xl text-xs">حفظ وإغلاق</button>
+                <button type="button" onclick="window.closeAdminModal()" class="bg-goldaccent text-black font-bold px-5 py-2 rounded-xl text-xs">إغلاق</button>
             </div>
-
         </div>
     </div>
 
     <!-- Application Script Engine -->
     <script>
-        const SUPER_ADMIN_PIN = "9999";
-        let isSuperAdmin = false;
-
         const defaultUsers = {
             "mahmoud": {
                 name: "mahmoud",
@@ -235,40 +163,19 @@
             }
         };
 
-        function loadInitialData() {
-            try {
-                const stored = localStorage.getItem('multiUserLinkData');
-                if (stored) return JSON.parse(stored);
-            } catch(e) {}
-            return defaultUsers;
-        }
-
-        let appData = loadInitialData();
-        let currentUsername = Object.keys(appData)[0] || "mahmoud";
+        let appData = defaultUsers;
+        let currentUsername = "mahmoud";
         let activeCategory = "الكل";
 
-        function saveData() {
-            try {
-                localStorage.setItem('multiUserLinkData', JSON.stringify(appData));
-            } catch(e) {}
-        }
-
         function getCurrentUser() {
-            if (!appData[currentUsername]) {
-                currentUsername = Object.keys(appData)[0] || "mahmoud";
-            }
             return appData[currentUsername] || defaultUsers["mahmoud"];
         }
 
         function initApp() {
-            try {
-                renderUserSelector();
-                renderProfile();
-                renderCategories();
-                renderLinks();
-            } catch (err) {
-                console.error(err);
-            }
+            renderUserSelector();
+            renderProfile();
+            renderCategories();
+            renderLinks();
         }
 
         function renderUserSelector() {
@@ -297,17 +204,6 @@
             document.getElementById('displayName').querySelector('span').textContent = user.displayName;
             document.getElementById('displayBio').textContent = user.bio;
 
-            const img = document.getElementById('profileImage');
-            const icon = document.getElementById('defaultAvatarIcon');
-            if (user.image) {
-                img.src = user.image;
-                img.classList.remove('hidden');
-                icon.classList.add('hidden');
-            } else {
-                img.classList.add('hidden');
-                icon.classList.remove('hidden');
-            }
-
             const cContainer = document.getElementById('contactButtons');
             cContainer.innerHTML = '';
             
@@ -320,7 +216,6 @@
             if (user.contacts.showEmail && user.contacts.email) {
                 cContainer.innerHTML += `<a href="mailto:${user.contacts.email}" class="w-9 h-9 rounded-full bg-goldaccent/10 border border-goldaccent/30 text-goldaccent flex items-center justify-center"><i class="fa-solid fa-envelope"></i></a>`;
             }
-            cContainer.innerHTML += `<button type="button" onclick="window.copyProfileLink()" class="w-9 h-9 rounded-full bg-gray-800 border border-gray-700 text-gray-300 flex items-center justify-center"><i class="fa-solid fa-share-nodes"></i></button>`;
         }
 
         function renderCategories() {
@@ -355,7 +250,45 @@
                 const a = document.createElement('a');
                 a.href = link.url;
                 a.target = '_blank';
-                a.className = 'w-full bg-cardbg border border-gray-800 rounded-2xl p-3.5 flex items-center justify-between glow-gold-hover';
+                a.className = 'w-full bg-cardbg border border-gray-800 rounded-2xl p-3.5 flex items-center justify-between glow-gold-hover transition';
                 a.innerHTML = `
                     <div class="flex items-center gap-3">
-                        <div class="w-9 h-9 rounded-xl bg-darkbg border bo
+                        <div class="w-9 h-9 rounded-xl bg-darkbg border border-gray-800 flex items-center justify-center text-goldaccent">
+                            <i class="fa-solid ${link.icon || 'fa-link'}"></i>
+                        </div>
+                        <span class="text-xs font-bold text-gray-200">${link.title}</span>
+                    </div>
+                    <i class="fa-solid fa-chevron-left text-xs text-gray-600"></i>
+                `;
+                container.appendChild(a);
+            });
+        }
+
+        window.openAdminModal = function() {
+            document.getElementById('pinModal').classList.remove('hidden');
+        };
+
+        window.closePinModal = function() {
+            document.getElementById('pinModal').classList.add('hidden');
+        };
+
+        window.verifyPin = function() {
+            const pin = document.getElementById('pinInput').value;
+            const user = getCurrentUser();
+            if (pin === user.pin || pin === "9999") {
+                document.getElementById('pinModal').classList.add('hidden');
+                document.getElementById('adminModal').classList.remove('hidden');
+                document.getElementById('pinInput').value = '';
+            } else {
+                alert('الرمز السري غير صحيح');
+            }
+        };
+
+        window.closeAdminModal = function() {
+            document.getElementById('adminModal').classList.add('hidden');
+        };
+
+        document.addEventListener('DOMContentLoaded', initApp);
+    </script>
+</body>
+</html>
