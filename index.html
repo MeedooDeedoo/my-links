@@ -375,6 +375,34 @@
                     </div>
                 </div>
 
+                <!-- Accordion 3.5: Admin Sidebar Menu Management (إدارة القائمة الجانبية) -->
+                <div class="bg-lightbg dark:bg-darkbg rounded-xl border border-gray-300 dark:border-gray-800 overflow-hidden transition-colors">
+                    <button type="button" onclick="window.toggleAccordion('accSidebarAdmin')" class="w-full p-3 flex justify-between items-center font-bold text-gray-800 dark:text-gray-200">
+                        <span class="flex items-center gap-2"><i class="fa-solid fa-compass text-goldaccent"></i> إدارة القائمة الجانبية (الصفحة الرئيسية)</span>
+                        <i id="icon-accSidebarAdmin" class="fa-solid fa-chevron-down transition-transform"></i>
+                    </button>
+                    <div id="accSidebarAdmin" class="hidden p-3 pt-0 space-y-3 border-t border-gray-200 dark:border-gray-800 mt-1">
+                        <div class="space-y-2 mt-2">
+                            <h4 id="sidebarFormTitle" class="font-bold text-goldaccent">إضافة عنصر جديد للقائمة الجانبية</h4>
+                            <input type="hidden" id="editingSidebarId">
+                            <input type="text" id="sidebarTitle" placeholder="عنوان العنصر (مثل: لوحة الإدارة الرئيسية)" class="w-full bg-lightcard dark:bg-cardbg border border-gray-300 dark:border-gray-700 rounded-lg p-2 text-gray-900 dark:text-white outline-none">
+                            <input type="text" id="sidebarUrl" placeholder="الرابط # أو https://..." class="w-full bg-lightcard dark:bg-cardbg border border-gray-300 dark:border-gray-700 rounded-lg p-2 text-gray-900 dark:text-white outline-none">
+                            <div class="flex gap-2">
+                                <input type="text" id="sidebarIcon" placeholder="أيقونة (مثل fa-solid fa-lock)" class="flex-1 bg-lightcard dark:bg-cardbg border border-gray-300 dark:border-gray-700 rounded-lg p-2 text-gray-900 dark:text-white outline-none">
+                                <input type="text" id="sidebarAction" placeholder="إجراء مخصص (اختياري مثل openPin)" class="flex-1 bg-lightcard dark:bg-cardbg border border-gray-300 dark:border-gray-700 rounded-lg p-2 text-gray-900 dark:text-white outline-none">
+                            </div>
+                            <div class="flex gap-2 pt-1">
+                                <button type="button" onclick="window.saveSidebarItem()" class="flex-1 bg-goldaccent text-black font-bold py-2 rounded-lg">حفظ العنصر</button>
+                                <button type="button" onclick="window.resetSidebarForm()" class="bg-gray-200 dark:bg-gray-800 text-gray-800 dark:text-gray-200 px-3 py-2 rounded-lg font-bold">إلغاء</button>
+                            </div>
+                        </div>
+                        <div class="space-y-1.5 pt-2 border-t border-gray-300 dark:border-gray-700">
+                            <h4 class="font-bold text-gray-600 dark:text-gray-400">عناصر القائمة الجانبية الحالية (مع الترتيب صعوداً ونزولاً ⬆️⬇️)</h4>
+                            <div id="adminSidebarList" class="space-y-1.5"></div>
+                        </div>
+                    </div>
+                </div>
+
                 <!-- Accordion 4: Gallery Admin -->
                 <div class="bg-lightbg dark:bg-darkbg rounded-xl border border-gray-300 dark:border-gray-800 overflow-hidden transition-colors">
                     <button type="button" onclick="window.toggleAccordion('accGalleryAdmin')" class="w-full p-3 flex justify-between items-center font-bold text-gray-800 dark:text-gray-200">
@@ -610,6 +638,9 @@
                 }
 
                 appData = rootData.users[currentUsername] || rootData.users['mahmoud'];
+                if (!appData.sidebarLinks) {
+                    appData.sidebarLinks = defaultUserData.sidebarLinks;
+                }
             } else {
                 rootData.users['mahmoud'] = defaultUserData;
                 appData = defaultUserData;
@@ -1128,10 +1159,90 @@
             renderAdminFeedbackList();
             renderAdminPendingRequests();
             renderAdminUsersList();
+            renderAdminSidebarList();
             renderAdminGalleryList();
             renderAdminCategories();
             renderAdminCategorySelect();
             renderAdminLinksList();
+        }
+
+        // Admin Actions for Sidebar Menu Management
+        window.saveSidebarItem = function() {
+            const id = document.getElementById('editingSidebarId').value;
+            const title = document.getElementById('sidebarTitle').value.trim();
+            const url = document.getElementById('sidebarUrl').value.trim() || '#';
+            const icon = document.getElementById('sidebarIcon').value.trim() || 'fa-solid fa-link';
+            const action = document.getElementById('sidebarAction').value.trim();
+
+            if (!title) { alert('أدخل عنوان عنصر القائمة الجانبية'); return; }
+            if (!appData.sidebarLinks) appData.sidebarLinks = [];
+
+            if (id) {
+                const item = appData.sidebarLinks.find(s => s.id === id);
+                if (item) { item.title = title; item.url = url; item.icon = icon; item.action = action; }
+            } else {
+                appData.sidebarLinks.push({ id: 'sb_' + Date.now(), title, url, icon, action });
+            }
+            window.resetSidebarForm();
+            renderAdminSidebarList();
+            renderSidebarMenu();
+        };
+
+        window.resetSidebarForm = function() {
+            document.getElementById('editingSidebarId').value = '';
+            document.getElementById('sidebarTitle').value = '';
+            document.getElementById('sidebarUrl').value = '';
+            document.getElementById('sidebarIcon').value = '';
+            document.getElementById('sidebarAction').value = '';
+            document.getElementById('sidebarFormTitle').textContent = 'إضافة عنصر جديد للقائمة الجانبية';
+        };
+
+        window.editSidebarItem = function(id) {
+            const item = (appData.sidebarLinks || []).find(s => s.id === id);
+            if (!item) return;
+            document.getElementById('editingSidebarId').value = item.id;
+            document.getElementById('sidebarTitle').value = item.title;
+            document.getElementById('sidebarUrl').value = item.url || '';
+            document.getElementById('sidebarIcon').value = item.icon || '';
+            document.getElementById('sidebarAction').value = item.action || '';
+            document.getElementById('sidebarFormTitle').textContent = 'تعديل عنصر القائمة الجانبية';
+        };
+
+        window.deleteSidebarItem = function(id) {
+            appData.sidebarLinks = (appData.sidebarLinks || []).filter(s => s.id !== id);
+            renderAdminSidebarList();
+            renderSidebarMenu();
+        };
+
+        window.moveSidebarItem = function(index, direction) {
+            const list = appData.sidebarLinks || [];
+            const newIndex = index + direction;
+            if (newIndex < 0 || newIndex >= list.length) return;
+            const temp = list[index];
+            list[index] = list[newIndex];
+            list[newIndex] = temp;
+            renderAdminSidebarList();
+            renderSidebarMenu();
+        };
+
+        function renderAdminSidebarList() {
+            const container = document.getElementById('adminSidebarList');
+            if(!container) return; container.innerHTML = '';
+            (appData.sidebarLinks || []).forEach((s, index) => {
+                container.innerHTML += `
+                    <div class="bg-white dark:bg-cardbg border border-gray-300 dark:border-gray-700 rounded-xl p-2.5 flex items-center justify-between shadow-sm">
+                        <div class="flex items-center gap-2">
+                            <i class="${s.icon} text-goldaccent"></i>
+                            <div><div class="font-extrabold text-gray-900 dark:text-white">${s.title}</div><div class="text-[10px] font-semibold text-gray-500">${s.action ? 'إجراء: ' + s.action : s.url}</div></div>
+                        </div>
+                        <div class="flex items-center gap-1">
+                            <button type="button" onclick="window.moveSidebarItem(${index}, -1)" class="bg-gray-200 dark:bg-gray-700 text-goldaccent px-2 py-0.5 rounded text-[10px] font-bold" title="نحو الأعلى">⬆️</button>
+                            <button type="button" onclick="window.moveSidebarItem(${index}, 1)" class="bg-gray-200 dark:bg-gray-700 text-goldaccent px-2 py-0.5 rounded text-[10px] font-bold" title="نحو الأسفل">⬇️</button>
+                            <button type="button" onclick="window.editSidebarItem('${s.id}')" class="bg-blue-500/20 text-blue-600 dark:text-blue-400 px-2 py-0.5 rounded text-[10px] font-bold">تعديل</button>
+                            <button type="button" onclick="window.deleteSidebarItem('${s.id}')" class="bg-red-500/20 text-red-600 dark:text-red-400 px-2 py-0.5 rounded text-[10px] font-bold">حذف</button>
+                        </div>
+                    </div>`;
+            });
         }
 
         // Admin Actions for Feedback / Messages
