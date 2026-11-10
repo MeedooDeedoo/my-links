@@ -187,7 +187,7 @@
             
             <div class="flex justify-between items-center border-b border-gray-200 dark:border-gray-800 pb-3 mb-3">
                 <h3 class="text-base font-bold text-goldaccent flex items-center gap-2">
-                    <i class="fa-solid fa-sliders"></i> لوحة التحكم الاحترافية
+                    <i class="fa-solid fa-sliders"></i> لوحة التحكم الاحترافية (متصلة بـ Firebase)
                 </h3>
                 <button type="button" onclick="window.closeAdminModal()" class="text-gray-400 hover:text-gray-700 dark:hover:text-white text-xl px-2"><i class="fa-solid fa-xmark"></i></button>
             </div>
@@ -294,14 +294,32 @@
 
             <div class="border-t border-gray-200 dark:border-gray-800 pt-3 mt-3 flex justify-between items-center transition-colors">
                 <button type="button" onclick="window.exportDataJson()" class="bg-gray-200 dark:bg-gray-800 text-gray-700 dark:text-gray-300 px-3 py-2 rounded-xl text-xs">تصدير النسخة الاحتياطية</button>
-                <button type="button" onclick="window.saveAllChanges()" class="bg-goldaccent text-black font-bold px-5 py-2 rounded-xl text-xs">حفظ التغييرات</button>
+                <button type="button" onclick="window.saveAllChanges()" class="bg-goldaccent text-black font-bold px-5 py-2 rounded-xl text-xs">حفظ ونشر التغييرات للسحاب</button>
             </div>
 
         </div>
     </div>
 
-    <!-- Script Engine -->
-    <script>
+    <!-- Script Engine with Firebase Modular SDK -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/13.2.0/firebase-app.js";
+        import { getDatabase, ref, set, onValue } from "https://www.gstatic.com/firebasejs/13.2.0/firebase-database.js";
+
+        // Your Firebase configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyDDgTZjnufv21Hn_sb0YicHZg17n91lrfA",
+            authDomain: "link-tree-74a19.firebaseapp.com",
+            projectId: "link-tree-74a19",
+            storageBucket: "link-tree-74a19.firebasestorage.app",
+            messagingSenderId: "1068568257989",
+            appId: "1:1068568257989:web:c96d736c19f9af0c1f57ac",
+            measurementId: "G-M5C32KCP93"
+        };
+
+        // Initialize Firebase
+        const app = initializeApp(firebaseConfig);
+        const db = getDatabase(app);
+
         const defaultData = {
             displayName: "محمود للتصميم والبناء",
             bio: "خدمات التصميم الإعلاني، حلول الطباعة، وتكسية واجهات الألوكوبوند",
@@ -322,22 +340,32 @@
             ]
         };
 
-        function loadData() {
-            try {
-                const stored = localStorage.getItem('proLinkTreeData');
-                if (stored) return JSON.parse(stored);
-            } catch(e) {}
-            return defaultData;
-        }
-
-        let appData = loadData();
+        let appData = defaultData;
         let activeCategory = "الكل";
         let tempImageBase64 = "";
 
-        function saveData() {
-            try {
-                localStorage.setItem('proLinkTreeData', JSON.stringify(appData));
-            } catch(e) {}
+        // Load data from Firebase Realtime Database
+        const dataRef = ref(db, 'linktreeData');
+        onValue(dataRef, (snapshot) => {
+            const data = snapshot.val();
+            if (data) {
+                appData = data;
+            } else {
+                set(dataRef, defaultData);
+                appData = defaultData;
+            }
+            initApp();
+        }, (error) => {
+            console.error("Firebase load error", error);
+            initApp();
+        });
+
+        function saveDataToFirebase() {
+            set(dataRef, appData).then(() => {
+                alert('تم حفظ التغييرات على سحابة Firebase بنجاح وأصبحت مرئية لجميع الزوار!');
+            }).catch((error) => {
+                alert('حدث خطأ أثناء الحفظ بالسحابة: ' + error.message);
+            });
         }
 
         function initApp() {
@@ -364,7 +392,6 @@
             document.getElementById('themeIcon').className = isDark ? 'fa-solid fa-moon' : 'fa-solid fa-sun';
         };
 
-        // Sidebar Drawer Control
         window.toggleSidebar = function() {
             const menu = document.getElementById('sidebarMenu');
             const overlay = document.getElementById('sidebarOverlay');
@@ -379,7 +406,6 @@
             }
         };
 
-        // Accordion Toggle Engine
         window.toggleAccordion = function(id) {
             const el = document.getElementById(id);
             const icon = document.getElementById('icon-' + id);
@@ -420,7 +446,6 @@
             if (appData.contacts.showEmail && appData.contacts.email) {
                 cContainer.innerHTML += `<a href="mailto:${appData.contacts.email}" class="w-9 h-9 rounded-full bg-goldaccent/10 border border-goldaccent/30 text-goldaccent flex items-center justify-center"><i class="fa-solid fa-envelope"></i></a>`;
             }
-            // Share Button
             cContainer.innerHTML += `<button type="button" onclick="window.openShareModal()" class="w-9 h-9 rounded-full bg-gray-200 dark:bg-gray-800 border border-gray-300 dark:border-gray-700 text-gray-700 dark:text-gray-300 flex items-center justify-center transition active:scale-95" title="مشاركة الصفحة"><i class="fa-solid fa-share-nodes"></i></button>`;
         }
 
@@ -428,7 +453,6 @@
             const currentUrl = window.location.href;
             const text = encodeURIComponent(`شاهد منصة الروابط الخاصة بـ ${appData.displayName}: ${currentUrl}`);
             
-            document.getElementById('shareWhatsapp.href') // dummy selector check
             document.getElementById('shareWhatsapp').href = `https://api.whatsapp.com/send?text=${text}`;
             document.getElementById('shareTelegram').href = `https://t.me/share/url?url=${encodeURIComponent(currentUrl)}&text=${encodeURIComponent(appData.displayName)}`;
             document.getElementById('shareFacebook').href = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(currentUrl)}`;
@@ -447,11 +471,6 @@
             navigator.clipboard.writeText(url).then(() => {
                 alert('تم نسخ رابط الصفحة إلى الحافظة بنجاح!');
                 window.closeShareModal();
-            }).catch(() => {
-                const input = document.getElementById('shareUrlInput');
-                input.select();
-                document.execCommand('copy');
-                alert('تم نسخ الرابط!');
             });
         };
 
@@ -544,14 +563,14 @@
         window.handleImageUpload = function(event) {
             const file = event.target.files[0];
             if (file) {
-                if(file.size > 2 * 1024 * 1024) {
-                    alert('حجم الصورة كبير جداً، يرجى اختيار صورة أقل من 2 ميغابايت.');
+                if(file.size > 800 * 1024) {
+                    alert('حجم الصورة كبير جداً، يرجى اختيار صورة أقل من 800 كيلوبايت لتناسب قاعدة البيانات المجانية.');
                     return;
                 }
                 const reader = new FileReader();
                 reader.onload = function(e) {
                     tempImageBase64 = e.target.result;
-                    alert('تم تحميل الصورة بنجاح! انقر على "حفظ التغييرات" لتثبيتها.');
+                    alert('تم تحميل الصورة بنجاح! انقر على "حفظ ونشر التغييرات للسحاب" لتحديثها للجميع.');
                 };
                 reader.readAsDataURL(file);
             }
@@ -560,7 +579,7 @@
         window.removeProfileImage = function() {
             tempImageBase64 = '';
             document.getElementById('imageFileInput').value = '';
-            alert('تمت إزالة الصورة. انقر على "حفظ التغييرات" لتأكيد الحذف.');
+            alert('تمت إزالة الصورة. انقر على "حفظ ونشر التغييرات للسحاب" للتأكيد.');
         };
 
         function renderAdminCategories() {
@@ -616,6 +635,8 @@
                 return;
             }
 
+            if (!appData.links) appData.links = [];
+
             if (id) {
                 const link = appData.links.find(l => l.id === id);
                 if (link) {
@@ -662,7 +683,7 @@
         function renderAdminLinksList() {
             const container = document.getElementById('adminLinksList');
             container.innerHTML = '';
-            if (appData.links.length === 0) {
+            if (!appData.links || appData.links.length === 0) {
                 container.innerHTML = '<div class="text-gray-400 text-center py-2">لا توجد روابط مضافة بعد.</div>';
                 return;
             }
@@ -691,7 +712,7 @@
             if (newPin.length >= 4) {
                 appData.pin = newPin;
                 document.getElementById('newPinInput').value = '';
-                alert('تم تحديث رمز PIN بنجاح');
+                alert('تم تحديث رمز PIN بنجاح. تذكر الضغط على حفظ في الأسفل.');
             } else {
                 alert('الرمز يجب ألا يقل عن 4 أرقام');
             }
@@ -719,13 +740,9 @@
             appData.contacts.showEmail = document.getElementById('showEmail').checked;
             appData.contacts.email = document.getElementById('editEmail').value.trim();
 
-            saveData();
-            initApp();
+            saveDataToFirebase();
             window.closeAdminModal();
-            alert('تم حفظ التغييرات بنجاح!');
         };
-
-        document.addEventListener('DOMContentLoaded', initApp);
     </script>
 </body>
 </html>
