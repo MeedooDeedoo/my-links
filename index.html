@@ -52,10 +52,10 @@
     <div class="w-full max-w-md flex justify-between items-center mb-6 bg-cardbg p-3 rounded-2xl border border-gray-800 shadow-lg relative z-20">
         <div class="flex items-center gap-2">
             <i class="fa-solid fa-users text-goldaccent"></i>
-            <select id="userSelect" onchange="switchUser(this.value)" class="bg-darkbg text-xs text-gray-200 border border-gray-700 rounded-lg px-2 py-1.5 outline-none focus:border-goldaccent">
+            <select id="userSelect" onchange="window.switchUser(this.value)" class="bg-darkbg text-xs text-gray-200 border border-gray-700 rounded-lg px-2 py-1.5 outline-none focus:border-goldaccent">
             </select>
         </div>
-        <button onclick="openAdminModal()" class="text-xs bg-goldaccent/20 active:bg-goldaccent text-goldaccent active:text-black border border-goldaccent/40 px-3 py-2 rounded-xl flex items-center gap-1.5 font-bold transition">
+        <button onclick="window.openAdminModal()" class="text-xs bg-goldaccent/20 active:bg-goldaccent text-goldaccent active:text-black border border-goldaccent/40 px-3 py-2 rounded-xl flex items-center gap-1.5 font-bold transition">
             <i class="fa-solid fa-lock"></i>
             لوحة الإدارة
         </button>
@@ -109,8 +109,8 @@
             <p class="text-xs text-gray-400 mb-4">أدخل الرمز السري للوصول للوحة التحكم</p>
             <input type="password" id="pinInput" maxlength="6" class="w-full bg-darkbg border border-gray-700 text-center text-xl tracking-widest text-goldaccent rounded-xl py-2 mb-4 outline-none focus:border-goldaccent">
             <div class="flex gap-2">
-                <button onclick="verifyPin()" class="flex-1 bg-goldaccent active:bg-yellow-600 text-black font-bold py-2.5 rounded-xl text-sm">دخول</button>
-                <button onclick="closePinModal()" class="flex-1 bg-gray-800 active:bg-gray-700 text-gray-300 font-bold py-2.5 rounded-xl text-sm">إلغاء</button>
+                <button onclick="window.verifyPin()" class="flex-1 bg-goldaccent active:bg-yellow-600 text-black font-bold py-2.5 rounded-xl text-sm">دخول</button>
+                <button onclick="window.closePinModal()" class="flex-1 bg-gray-800 active:bg-gray-700 text-gray-300 font-bold py-2.5 rounded-xl text-sm">إلغاء</button>
             </div>
         </div>
     </div>
@@ -123,7 +123,7 @@
                 <h3 class="text-base font-bold text-goldaccent flex items-center gap-2">
                     <i class="fa-solid fa-sliders"></i> لوحة التحكم
                 </h3>
-                <button onclick="closeAdminModal()" class="text-gray-400 hover:text-white text-xl px-2"><i class="fa-solid fa-xmark"></i></button>
+                <button onclick="window.closeAdminModal()" class="text-gray-400 hover:text-white text-xl px-2"><i class="fa-solid fa-xmark"></i></button>
             </div>
 
             <div class="overflow-y-auto flex-grow pr-1 space-y-4 text-xs">
@@ -136,7 +136,7 @@
                         <input type="text" id="newUsername" placeholder="اسم المستخدم الفريد (مثال: ali)" class="w-full bg-cardbg border border-gray-700 rounded-lg p-2 text-white outline-none">
                         <input type="text" id="newUserDisplayName" placeholder="الاسم الظاهر" class="w-full bg-cardbg border border-gray-700 rounded-lg p-2 text-white outline-none">
                         <input type="password" id="newUserPin" placeholder="الرمز السري PIN" class="w-full bg-cardbg border border-gray-700 rounded-lg p-2 text-white outline-none">
-                        <button onclick="createNewUser()" class="w-full bg-goldaccent text-black font-bold py-2 rounded-lg">+ إضافة مستخدم</button>
+                        <button onclick="window.createNewUser()" class="w-full bg-goldaccent text-black font-bold py-2 rounded-lg">+ إضافة مستخدم</button>
                     </div>
                     <div id="usersList" class="space-y-1.5"></div>
                 </div>
@@ -147,8 +147,8 @@
                     <input type="text" id="editBio" placeholder="الوصف المختصر" class="w-full bg-cardbg border border-gray-700 rounded-lg p-2 text-white outline-none">
                     <div>
                         <label class="block text-gray-400 mb-1">صورة البروفايل</label>
-                        <input type="file" id="imageInput" accept="image/*" onchange="handleImageUpload(event)" class="text-gray-400 text-xs">
-                        <button onclick="removeProfileImage()" class="text-red-400 mt-1 block">إزالة الصورة الحالية</button>
+                        <input type="file" id="imageInput" accept="image/*" onchange="window.handleImageUpload(event)" class="text-gray-400 text-xs">
+                        <button onclick="window.removeProfileImage()" class="text-red-400 mt-1 block">إزالة الصورة الحالية</button>
                     </div>
                 </div>
 
@@ -163,7 +163,7 @@
                     <h4 class="font-bold text-gray-400">إدارة الفئات</h4>
                     <div class="flex gap-2">
                         <input type="text" id="newCategoryInput" placeholder="فئة جديدة..." class="flex-1 bg-cardbg border border-gray-700 rounded-lg p-2 text-white outline-none">
-                        <button onclick="addCategory()" class="bg-goldaccent/20 text-goldaccent border border-goldaccent/40 px-3 py-1 rounded-lg">إضافة</button>
+                        <button onclick="window.addCategory()" class="bg-goldaccent/20 text-goldaccent border border-goldaccent/40 px-3 py-1 rounded-lg">إضافة</button>
                     </div>
                     <div id="adminCategoriesList" class="flex flex-wrap gap-1.5 pt-1"></div>
                 </div>
@@ -178,8 +178,8 @@
                         <input type="text" id="linkIcon" placeholder="أيقونة (fa-globe)" class="flex-1 bg-cardbg border border-gray-700 rounded-lg p-2 text-white outline-none">
                     </div>
                     <div class="flex gap-2 pt-1">
-                        <button onclick="saveLink()" class="flex-1 bg-goldaccent text-black font-bold py-2 rounded-lg">حفظ الرابط</button>
-                        <button onclick="resetLinkForm()" class="bg-gray-800 text-gray-300 px-3 py-2 rounded-lg">إلغاء</button>
+                        <button onclick="window.saveLink()" class="flex-1 bg-goldaccent text-black font-bold py-2 rounded-lg">حفظ الرابط</button>
+                        <button onclick="window.resetLinkForm()" class="bg-gray-800 text-gray-300 px-3 py-2 rounded-lg">إلغاء</button>
                     </div>
                 </div>
 
@@ -192,14 +192,14 @@
                     <h4 class="font-bold text-gray-400">تغيير رمز PIN</h4>
                     <div class="flex gap-2">
                         <input type="password" id="newPinInput" maxlength="6" placeholder="رمز PIN جديد" class="flex-1 bg-cardbg border border-gray-700 rounded-lg p-2 text-white outline-none">
-                        <button onclick="changePin()" class="bg-goldaccent/20 text-goldaccent border border-goldaccent/40 px-3 py-1 rounded-lg">تحديث</button>
+                        <button onclick="window.changePin()" class="bg-goldaccent/20 text-goldaccent border border-goldaccent/40 px-3 py-1 rounded-lg">تحديث</button>
                     </div>
                 </div>
 
             </div>
 
             <div class="border-t border-gray-800 pt-3 mt-3 flex justify-end">
-                <button onclick="saveAllChanges()" class="bg-goldaccent text-black font-bold px-5 py-2 rounded-xl text-xs">حفظ وإغلاق</button>
+                <button onclick="window.saveAllChanges()" class="bg-goldaccent text-black font-bold px-5 py-2 rounded-xl text-xs">حفظ وإغلاق</button>
             </div>
 
         </div>
@@ -233,10 +233,6 @@
             }
         };
 
-        let appData = loadInitialData();
-        let currentUsername = Object.keys(appData)[0] || "mahmoud";
-        let activeCategory = "الكل";
-
         function loadInitialData() {
             try {
                 const stored = localStorage.getItem('multiUserLinkData');
@@ -244,6 +240,10 @@
             } catch(e) {}
             return defaultUsers;
         }
+
+        let appData = loadInitialData();
+        let currentUsername = Object.keys(appData)[0] || "mahmoud";
+        let activeCategory = "الكل";
 
         function saveData() {
             try {
@@ -318,7 +318,7 @@
             if (user.contacts.showEmail && user.contacts.email) {
                 cContainer.innerHTML += `<a href="mailto:${user.contacts.email}" class="w-9 h-9 rounded-full bg-goldaccent/10 border border-goldaccent/30 text-goldaccent flex items-center justify-center"><i class="fa-solid fa-envelope"></i></a>`;
             }
-            cContainer.innerHTML += `<button onclick="copyProfileLink()" class="w-9 h-9 rounded-full bg-gray-800 border border-gray-700 text-gray-300 flex items-center justify-center"><i class="fa-solid fa-share-nodes"></i></button>`;
+            cContainer.innerHTML += `<button onclick="window.copyProfileLink()" class="w-9 h-9 rounded-full bg-gray-800 border border-gray-700 text-gray-300 flex items-center justify-center"><i class="fa-solid fa-share-nodes"></i></button>`;
         }
 
         function renderCategories() {
@@ -359,5 +359,4 @@
                             <i class="fa-solid ${link.icon || 'fa-link'}"></i>
                         </div>
                         <div class="text-right">
-                            <div class="text-xs font-bold text-white">${link.title}</div>
-                            <div class="text-[10px] text-gray-500">${link.category}
+                            <div class="text-xs font-bold text-white">${lin
