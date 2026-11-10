@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>منصة شجرة الروابط</title>
+    <title>منصة شجرة الروابط الاحترافية</title>
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- FontAwesome Icons -->
@@ -49,14 +49,13 @@
 </head>
 <body class="min-h-screen flex flex-col items-center justify-between p-4 pb-12">
 
-    <!-- Top Navigation Bar / User Switcher -->
+    <!-- Top Bar -->
     <div class="w-full max-w-md flex justify-between items-center mb-6 bg-cardbg p-3 rounded-2xl border border-gray-800 shadow-lg relative z-50">
         <div class="flex items-center gap-2">
-            <i class="fa-solid fa-users text-goldaccent"></i>
-            <select id="userSelect" onchange="window.switchUser(this.value)" class="bg-darkbg text-xs text-gray-200 border border-gray-700 rounded-lg px-2 py-2 outline-none focus:border-goldaccent">
-            </select>
+            <i class="fa-solid fa-user-shield text-goldaccent"></i>
+            <span id="topBarName" class="text-xs font-bold text-gray-200">لوحة المستخدم</span>
         </div>
-        <button type="button" onclick="window.openAdminModal()" class="text-xs bg-goldaccent/20 active:bg-goldaccent text-goldaccent active:text-black border border-goldaccent/40 px-3.5 py-2 rounded-xl flex items-center gap-1.5 font-bold transition">
+        <button type="button" onclick="window.openPinModal()" class="text-xs bg-goldaccent/20 active:bg-goldaccent text-goldaccent active:text-black border border-goldaccent/40 px-3.5 py-2 rounded-xl flex items-center gap-1.5 font-bold transition">
             <i class="fa-solid fa-lock"></i>
             لوحة الإدارة
         </button>
@@ -80,18 +79,15 @@
             </h1>
             <p id="displayBio" class="text-xs text-gray-400 mt-1 px-4">خدمات التصميم الإعلاني، حلول الطباعة، وتكسية واجهات الألوكوبوند</p>
             
-            <!-- Dynamic Contact Buttons -->
-            <div id="contactButtons" class="flex justify-center gap-3 mt-4">
-            </div>
+            <!-- Contact Buttons -->
+            <div id="contactButtons" class="flex justify-center gap-3 mt-4"></div>
         </div>
 
         <!-- Filter Tabs -->
-        <div id="categoryTabs" class="w-full flex gap-2 overflow-x-auto pb-2 mb-4 text-xs">
-        </div>
+        <div id="categoryTabs" class="w-full flex gap-2 overflow-x-auto pb-2 mb-4 text-xs"></div>
 
         <!-- Links Container -->
-        <div id="linksContainer" class="w-full flex flex-col gap-3 mb-8">
-        </div>
+        <div id="linksContainer" class="w-full flex flex-col gap-3 mb-8"></div>
 
     </div>
 
@@ -107,7 +103,7 @@
                 <i class="fa-solid fa-shield-halved text-xl"></i>
             </div>
             <h3 class="text-lg font-bold text-white mb-1">تسجيل الدخول للإدارة</h3>
-            <p class="text-xs text-gray-400 mb-4">أدخل الرمز السري للوصول للوحة التحكم</p>
+            <p class="text-xs text-gray-400 mb-4">الرمز الافتراضي: <span class="text-goldaccent font-mono font-bold">1234</span></p>
             <input type="password" id="pinInput" maxlength="6" class="w-full bg-darkbg border border-gray-700 text-center text-xl tracking-widest text-goldaccent rounded-xl py-2 mb-4 outline-none focus:border-goldaccent">
             <div class="flex gap-2">
                 <button type="button" onclick="window.verifyPin()" class="flex-1 bg-goldaccent active:bg-yellow-600 text-black font-bold py-2.5 rounded-xl text-sm">دخول</button>
@@ -119,114 +115,180 @@
     <!-- Admin Panel Modal -->
     <div id="adminModal" class="fixed inset-0 bg-black/85 backdrop-blur-md hidden flex items-center justify-center z-[100] p-3">
         <div class="bg-cardbg border border-gray-800 w-full max-w-lg rounded-2xl p-4 shadow-2xl max-h-[92vh] flex flex-col">
+            
             <div class="flex justify-between items-center border-b border-gray-800 pb-3 mb-3">
                 <h3 class="text-base font-bold text-goldaccent flex items-center gap-2">
-                    <i class="fa-solid fa-sliders"></i> لوحة التحكم
+                    <i class="fa-solid fa-sliders"></i> لوحة التحكم الاحترافية
                 </h3>
                 <button type="button" onclick="window.closeAdminModal()" class="text-gray-400 hover:text-white text-xl px-2"><i class="fa-solid fa-xmark"></i></button>
             </div>
+
             <div class="overflow-y-auto flex-grow pr-1 space-y-4 text-xs">
+
+                <!-- Profile Settings -->
                 <div class="bg-darkbg p-3 rounded-xl border border-gray-800 space-y-2">
                     <h4 class="font-bold text-gray-400">الملف الشخصي</h4>
                     <input type="text" id="editDisplayName" placeholder="الاسم الظاهر" class="w-full bg-cardbg border border-gray-700 rounded-lg p-2 text-white outline-none">
                     <input type="text" id="editBio" placeholder="الوصف المختصر" class="w-full bg-cardbg border border-gray-700 rounded-lg p-2 text-white outline-none">
+                    <div>
+                        <label class="block text-gray-400 mb-1">صورة البروفايل (رابط صورة)</label>
+                        <input type="text" id="editImageUrl" placeholder="رابط مباشر للصورة https://..." class="w-full bg-cardbg border border-gray-700 rounded-lg p-2 text-white outline-none mb-1">
+                        <button type="button" onclick="window.removeProfileImage()" class="text-red-400 block">إزالة الصورة الحالية</button>
+                    </div>
                 </div>
+
+                <!-- Contacts -->
+                <div class="bg-darkbg p-3 rounded-xl border border-gray-800 space-y-2">
+                    <h4 class="font-bold text-gray-400">معلومات الاتصال</h4>
+                    <div class="flex items-center gap-2">
+                        <input type="checkbox" id="showWhatsapp" class="accent-goldaccent">
+                        <input type="text" id="editWhatsapp" placeholder="رقم الواتساب مع الرمز الدولي" class="flex-1 bg-cardbg border border-gray-700 rounded-lg p-2 text-white outline-none">
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <input type="checkbox" id="showPhone" class="accent-goldaccent">
+                        <input type="text" id="editPhone" placeholder="رقم الهاتف" class="flex-1 bg-cardbg border border-gray-700 rounded-lg p-2 text-white outline-none">
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <input type="checkbox" id="showEmail" class="accent-goldaccent">
+                        <input type="email" id="editEmail" placeholder="البريد الإلكتروني" class="flex-1 bg-cardbg border border-gray-700 rounded-lg p-2 text-white outline-none">
+                    </div>
+                </div>
+
+                <!-- Categories -->
+                <div class="bg-darkbg p-3 rounded-xl border border-gray-800 space-y-2">
+                    <h4 class="font-bold text-gray-400">إدارة الفئات</h4>
+                    <div class="flex gap-2">
+                        <input type="text" id="newCategoryInput" placeholder="فئة جديدة..." class="flex-1 bg-cardbg border border-gray-700 rounded-lg p-2 text-white outline-none">
+                        <button type="button" onclick="window.addCategory()" class="bg-goldaccent/20 text-goldaccent border border-goldaccent/40 px-3 py-1 rounded-lg font-bold">إضافة</button>
+                    </div>
+                    <div id="adminCategoriesList" class="flex flex-wrap gap-1.5 pt-1"></div>
+                </div>
+
+                <!-- Add/Edit Link Form -->
+                <div class="bg-darkbg p-3 rounded-xl border border-gray-800 space-y-2">
+                    <h4 id="linkFormTitle" class="font-bold text-goldaccent">إضافة رابط جديد</h4>
+                    <input type="hidden" id="editingLinkId">
+                    <input type="text" id="linkTitle" placeholder="عنوان الرابط (مثال: موقعنا الرسمي)" class="w-full bg-cardbg border border-gray-700 rounded-lg p-2 text-white outline-none">
+                    <input type="url" id="linkUrl" placeholder="الرابط https://..." class="w-full bg-cardbg border border-gray-700 rounded-lg p-2 text-white outline-none">
+                    <div class="flex gap-2">
+                        <select id="linkCategory" class="flex-1 bg-cardbg border border-gray-700 rounded-lg p-2 text-white outline-none"></select>
+                        <input type="text" id="linkIcon" placeholder="أيقونة (fa-globe أو fa-whatsapp)" class="flex-1 bg-cardbg border border-gray-700 rounded-lg p-2 text-white outline-none">
+                    </div>
+                    <div class="flex gap-2 pt-1">
+                        <button type="button" onclick="window.saveLink()" class="flex-1 bg-goldaccent text-black font-bold py-2 rounded-lg">حفظ الرابط</button>
+                        <button type="button" onclick="window.resetLinkForm()" class="bg-gray-800 text-gray-300 px-3 py-2 rounded-lg">إلغاء التعديل</button>
+                    </div>
+                </div>
+
+                <!-- Current Links List -->
+                <div class="bg-darkbg p-3 rounded-xl border border-gray-800 space-y-2">
+                    <h4 class="font-bold text-gray-400">الروابط الحالية</h4>
+                    <div id="adminLinksList" class="space-y-1.5"></div>
+                </div>
+
+                <!-- Change PIN -->
+                <div class="bg-darkbg p-3 rounded-xl border border-gray-800 space-y-2">
+                    <h4 class="font-bold text-gray-400">تغيير رمز PIN السري</h4>
+                    <div class="flex gap-2">
+                        <input type="password" id="newPinInput" maxlength="6" placeholder="رمز PIN جديد" class="flex-1 bg-cardbg border border-gray-700 rounded-lg p-2 text-white outline-none">
+                        <button type="button" onclick="window.changePin()" class="bg-goldaccent/20 text-goldaccent border border-goldaccent/40 px-3 py-1 rounded-lg font-bold">تحديث</button>
+                    </div>
+                </div>
+
             </div>
-            <div class="border-t border-gray-800 pt-3 mt-3 flex justify-end">
-                <button type="button" onclick="window.closeAdminModal()" class="bg-goldaccent text-black font-bold px-5 py-2 rounded-xl text-xs">إغلاق</button>
+
+            <div class="border-t border-gray-800 pt-3 mt-3 flex justify-between items-center">
+                <button type="button" onclick="window.exportDataJson()" class="bg-gray-800 text-gray-300 px-3 py-2 rounded-xl text-xs">تصدير النسخة الاحتياطية</button>
+                <button type="button" onclick="window.saveAllChanges()" class="bg-goldaccent text-black font-bold px-5 py-2 rounded-xl text-xs">حفظ التغييرات</button>
             </div>
+
         </div>
     </div>
 
-    <!-- Application Script Engine -->
+    <!-- Script Engine -->
     <script>
-        const defaultUsers = {
-            "mahmoud": {
-                name: "mahmoud",
-                displayName: "محمود للتصميم والبناء",
-                bio: "خدمات التصميم الإعلاني، حلول الطباعة، وتكسية واجهات الألوكوبوند",
-                pin: "1234",
-                image: "",
-                contacts: {
-                    whatsapp: "+963900000000",
-                    showWhatsapp: true,
-                    phone: "+963900000000",
-                    showPhone: true,
-                    email: "info@example.com",
-                    showEmail: true
-                },
-                categories: ["الكل", "إعلان وتصميم", "بناء وألوكبوند"],
-                links: [
-                    { id: '1', title: 'لمسة فن بلس للخدمات الإعلانية', url: 'https://wa.me/', category: 'إعلان وتصميم', icon: 'fa-paint-brush' },
-                    { id: '2', title: 'طيبانو للتجارة والبناء والألوكوبوند', url: 'https://wa.me/', category: 'بناء وألوكبوند', icon: 'fa-building' }
-                ]
-            }
+        const defaultData = {
+            displayName: "محمود للتصميم والبناء",
+            bio: "خدمات التصميم الإعلاني، حلول الطباعة، وتكسية واجهات الألوكوبوند",
+            pin: "1234",
+            image: "",
+            contacts: {
+                whatsapp: "+963900000000",
+                showWhatsapp: true,
+                phone: "+963900000000",
+                showPhone: true,
+                email: "info@example.com",
+                showEmail: true
+            },
+            categories: ["الكل", "إعلان وتصميم", "بناء وألوكبوند"],
+            links: [
+                { id: '1', title: 'لمسة فن بلس للخدمات الإعلانية', url: 'https://wa.me/', category: 'إعلان وتصميم', icon: 'fa-paint-brush' },
+                { id: '2', title: 'طيبانو للتجارة والبناء والألوكوبوند', url: 'https://wa.me/', category: 'بناء وألوكبوند', icon: 'fa-building' }
+            ]
         };
 
-        let appData = defaultUsers;
-        let currentUsername = "mahmoud";
+        function loadData() {
+            try {
+                const stored = localStorage.getItem('proLinkTreeData');
+                if (stored) return JSON.parse(stored);
+            } catch(e) {}
+            return defaultData;
+        }
+
+        let appData = loadData();
         let activeCategory = "الكل";
 
-        function getCurrentUser() {
-            return appData[currentUsername] || defaultUsers["mahmoud"];
+        function saveData() {
+            try {
+                localStorage.setItem('proLinkTreeData', JSON.stringify(appData));
+            } catch(e) {}
         }
 
         function initApp() {
-            renderUserSelector();
-            renderProfile();
-            renderCategories();
-            renderLinks();
-        }
-
-        function renderUserSelector() {
-            const select = document.getElementById('userSelect');
-            if (!select) return;
-            select.innerHTML = '';
-            Object.keys(appData).forEach(usr => {
-                const opt = document.createElement('option');
-                opt.value = usr;
-                opt.textContent = appData[usr].displayName || usr;
-                if (usr === currentUsername) opt.selected = true;
-                select.appendChild(opt);
-            });
-        }
-
-        function switchUser(usr) {
-            currentUsername = usr;
-            activeCategory = "الكل";
             renderProfile();
             renderCategories();
             renderLinks();
         }
 
         function renderProfile() {
-            const user = getCurrentUser();
-            document.getElementById('displayName').querySelector('span').textContent = user.displayName;
-            document.getElementById('displayBio').textContent = user.bio;
+            document.getElementById('topBarName').textContent = appData.displayName;
+            document.getElementById('displayName').querySelector('span').textContent = appData.displayName;
+            document.getElementById('displayBio').textContent = appData.bio;
+
+            const img = document.getElementById('profileImage');
+            const icon = document.getElementById('defaultAvatarIcon');
+            if (appData.image) {
+                img.src = appData.image;
+                img.classList.remove('hidden');
+                icon.classList.add('hidden');
+            } else {
+                img.classList.add('hidden');
+                icon.classList.remove('hidden');
+            }
 
             const cContainer = document.getElementById('contactButtons');
             cContainer.innerHTML = '';
             
-            if (user.contacts.showWhatsapp && user.contacts.whatsapp) {
-                cContainer.innerHTML += `<a href="https://wa.me/${user.contacts.whatsapp.replace(/[^0-9]/g, '')}" target="_blank" class="w-9 h-9 rounded-full bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 flex items-center justify-center"><i class="fa-brands fa-whatsapp"></i></a>`;
+            if (appData.contacts.showWhatsapp && appData.contacts.whatsapp) {
+                cContainer.innerHTML += `<a href="https://wa.me/${appData.contacts.whatsapp.replace(/[^0-9]/g, '')}" target="_blank" class="w-9 h-9 rounded-full bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 flex items-center justify-center"><i class="fa-brands fa-whatsapp"></i></a>`;
             }
-            if (user.contacts.showPhone && user.contacts.phone) {
-                cContainer.innerHTML += `<a href="tel:${user.contacts.phone}" class="w-9 h-9 rounded-full bg-cyanaccent/10 border border-cyanaccent/30 text-cyanaccent flex items-center justify-center"><i class="fa-solid fa-phone"></i></a>`;
+            if (appData.contacts.showPhone && appData.contacts.phone) {
+                cContainer.innerHTML += `<a href="tel:${appData.contacts.phone}" class="w-9 h-9 rounded-full bg-cyanaccent/10 border border-cyanaccent/30 text-cyanaccent flex items-center justify-center"><i class="fa-solid fa-phone"></i></a>`;
             }
-            if (user.contacts.showEmail && user.contacts.email) {
-                cContainer.innerHTML += `<a href="mailto:${user.contacts.email}" class="w-9 h-9 rounded-full bg-goldaccent/10 border border-goldaccent/30 text-goldaccent flex items-center justify-center"><i class="fa-solid fa-envelope"></i></a>`;
+            if (appData.contacts.showEmail && appData.contacts.email) {
+                cContainer.innerHTML += `<a href="mailto:${appData.contacts.email}" class="w-9 h-9 rounded-full bg-goldaccent/10 border border-goldaccent/30 text-goldaccent flex items-center justify-center"><i class="fa-solid fa-envelope"></i></a>`;
             }
+            cContainer.innerHTML += `<button type="button" onclick="window.copyProfileLink()" class="w-9 h-9 rounded-full bg-gray-800 border border-gray-700 text-gray-300 flex items-center justify-center"><i class="fa-solid fa-share-nodes"></i></button>`;
         }
 
         function renderCategories() {
-            const user = getCurrentUser();
             const container = document.getElementById('categoryTabs');
             container.innerHTML = '';
-            (user.categories || ["الكل"]).forEach(cat => {
+            (appData.categories || ["الكل"]).forEach(cat => {
                 const isActive = cat === activeCategory;
                 const btn = document.createElement('button');
                 btn.type = "button";
-                btn.className = `px-3 py-1.5 rounded-xl whitespace-nowrap border text-xs ${isActive ? 'bg-goldaccent text-black font-bold border-goldaccent' : 'bg-cardbg text-gray-400 border-gray-800'}`;
+                btn.className = `px-3 py-1.5 rounded-xl whitespace-nowrap border text-xs transition ${isActive ? 'bg-goldaccent text-black font-bold border-goldaccent' : 'bg-cardbg text-gray-400 border-gray-800'}`;
                 btn.textContent = cat;
                 btn.onclick = () => { activeCategory = cat; renderCategories(); renderLinks(); };
                 container.appendChild(btn);
@@ -234,11 +296,10 @@
         }
 
         function renderLinks() {
-            const user = getCurrentUser();
             const container = document.getElementById('linksContainer');
             container.innerHTML = '';
 
-            const links = user.links || [];
+            const links = appData.links || [];
             const filtered = activeCategory === "الكل" ? links : links.filter(l => l.category === activeCategory);
 
             if (filtered.length === 0) {
@@ -264,7 +325,7 @@
             });
         }
 
-        window.openAdminModal = function() {
+        window.openPinModal = function() {
             document.getElementById('pinModal').classList.remove('hidden');
         };
 
@@ -274,11 +335,11 @@
 
         window.verifyPin = function() {
             const pin = document.getElementById('pinInput').value;
-            const user = getCurrentUser();
-            if (pin === user.pin || pin === "9999") {
+            if (pin === appData.pin || pin === "9999") {
                 document.getElementById('pinModal').classList.add('hidden');
                 document.getElementById('adminModal').classList.remove('hidden');
                 document.getElementById('pinInput').value = '';
+                populateAdminForm();
             } else {
                 alert('الرمز السري غير صحيح');
             }
@@ -288,7 +349,12 @@
             document.getElementById('adminModal').classList.add('hidden');
         };
 
-        document.addEventListener('DOMContentLoaded', initApp);
-    </script>
-</body>
-</html>
+        function populateAdminForm() {
+            document.getElementById('editDisplayName').value = appData.displayName;
+            document.getElementById('editBio').value = appData.bio;
+            document.getElementById('editImageUrl').value = appData.image || '';
+
+            document.getElementById('showWhatsapp').checked = appData.contacts.showWhatsapp;
+            document.getElementById('editWhatsapp').value = appData.contacts.whatsapp;
+            document.getElementById('showPhone').checked = appData.contacts.showPhone;
+            document.getEle
