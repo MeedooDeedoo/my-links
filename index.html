@@ -357,4 +357,189 @@
             document.getElementById('showWhatsapp').checked = appData.contacts.showWhatsapp;
             document.getElementById('editWhatsapp').value = appData.contacts.whatsapp;
             document.getElementById('showPhone').checked = appData.contacts.showPhone;
-            document.getEle
+            document.getElementById('editPhone').value = appData.contacts.phone;
+            document.getElementById('showEmail').checked = appData.contacts.showEmail;
+            document.getElementById('editEmail').value = appData.contacts.email;
+
+            renderAdminCategories();
+            renderAdminCategorySelect();
+            renderAdminLinksList();
+            window.resetLinkForm();
+        }
+
+        function renderAdminCategories() {
+            const container = document.getElementById('adminCategoriesList');
+            container.innerHTML = '';
+            (appData.categories || []).forEach(cat => {
+                if (cat === "الكل") return;
+                const tag = document.createElement('div');
+                tag.className = 'bg-darkbg border border-gray-700 px-2.5 py-1 rounded-lg flex items-center gap-2 text-gray-300';
+                tag.innerHTML = `<span>${cat}</span><button type="button" onclick="window.deleteCategory('${cat}')" class="text-red-400 hover:text-red-300"><i class="fa-solid fa-xmark"></i></button>`;
+                container.appendChild(tag);
+            });
+        }
+
+        window.addCategory = function() {
+            const input = document.getElementById('newCategoryInput');
+            const val = input.value.trim();
+            if (val && !appData.categories.includes(val)) {
+                appData.categories.push(val);
+                input.value = '';
+                renderAdminCategories();
+                renderAdminCategorySelect();
+            }
+        };
+
+        window.deleteCategory = function(cat) {
+            appData.categories = appData.categories.filter(c => c !== cat);
+            appData.links.forEach(l => { if (l.category === cat) l.category = 'الكل'; });
+            renderAdminCategories();
+            renderAdminCategorySelect();
+        };
+
+        function renderAdminCategorySelect() {
+            const select = document.getElementById('linkCategory');
+            select.innerHTML = '';
+            (appData.categories || ["الكل"]).forEach(cat => {
+                const opt = document.createElement('option');
+                opt.value = cat;
+                opt.textContent = cat;
+                select.appendChild(opt);
+            });
+        }
+
+        window.saveLink = function() {
+            const id = document.getElementById('editingLinkId').value;
+            const title = document.getElementById('linkTitle').value.trim();
+            const url = document.getElementById('linkUrl').value.trim();
+            const category = document.getElementById('linkCategory').value;
+            const icon = document.getElementById('linkIcon').value.trim() || 'fa-link';
+
+            if (!title || !url) {
+                alert('الرجاء إدخال عنوان الرابط والرابط بشكل صحيح.');
+                return;
+            }
+
+            if (id) {
+                const link = appData.links.find(l => l.id === id);
+                if (link) {
+                    link.title = title;
+                    link.url = url;
+                    link.category = category;
+                    link.icon = icon;
+                }
+            } else {
+                appData.links.push({
+                    id: Date.now().toString(),
+                    title, url, category, icon
+                });
+            }
+
+            window.resetLinkForm();
+            renderAdminLinksList();
+        };
+
+        window.resetLinkForm = function() {
+            document.getElementById('editingLinkId').value = '';
+            document.getElementById('linkTitle').value = '';
+            document.getElementById('linkUrl').value = '';
+            document.getElementById('linkIcon').value = '';
+            document.getElementById('linkFormTitle').textContent = 'إضافة رابط جديد';
+        };
+
+        window.editLink = function(id) {
+            const link = appData.links.find(l => l.id === id);
+            if (!link) return;
+            document.getElementById('editingLinkId').value = link.id;
+            document.getElementById('linkTitle').value = link.title;
+            document.getElementById('linkUrl').value = link.url;
+            document.getElementById('linkCategory').value = link.category;
+            document.getElementById('linkIcon').value = link.icon;
+            document.getElementById('linkFormTitle').textContent = 'تعديل الرابط';
+        };
+
+        window.deleteLink = function(id) {
+            appData.links = appData.links.filter(l => l.id !== id);
+            renderAdminLinksList();
+        };
+
+        function renderAdminLinksList() {
+            const container = document.getElementById('adminLinksList');
+            container.innerHTML = '';
+            if (appData.links.length === 0) {
+                container.innerHTML = '<div class="text-gray-500 text-center py-2">لا توجد روابط مضافة بعد.</div>';
+                return;
+            }
+            appData.links.forEach(l => {
+                const item = document.createElement('div');
+                item.className = 'bg-cardbg border border-gray-700 rounded-xl p-2.5 flex items-center justify-between';
+                item.innerHTML = `
+                    <div class="flex items-center gap-2">
+                        <i class="fa-solid ${l.icon} text-goldaccent"></i>
+                        <div>
+                            <div class="font-bold text-white">${l.title}</div>
+                            <div class="text-[10px] text-gray-400">${l.category}</div>
+                        </div>
+                    </div>
+                    <div class="flex gap-1.5">
+                        <button type="button" onclick="window.editLink('${l.id}')" class="bg-blue-500/20 text-blue-400 px-2.5 py-1 rounded-lg">تعديل</button>
+                        <button type="button" onclick="window.deleteLink('${l.id}')" class="bg-red-500/20 text-red-400 px-2.5 py-1 rounded-lg">حذف</button>
+                    </div>
+                `;
+                container.appendChild(item);
+            });
+        }
+
+        window.removeProfileImage = function() {
+            appData.image = '';
+            document.getElementById('editImageUrl').value = '';
+        };
+
+        window.changePin = function() {
+            const newPin = document.getElementById('newPinInput').value.trim();
+            if (newPin.length >= 4) {
+                appData.pin = newPin;
+                document.getElementById('newPinInput').value = '';
+                alert('تم تحديث رمز PIN بنجاح');
+            } else {
+                alert('الرمز يجب ألا يقل عن 4 أرقام');
+            }
+        };
+
+        window.exportDataJson = function() {
+            const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(appData, null, 2));
+            const downloadAnchor = document.createElement('a');
+            downloadAnchor.setAttribute("href", dataStr);
+            downloadAnchor.setAttribute("download", "linktree_backup.json");
+            document.body.appendChild(downloadAnchor);
+            downloadAnchor.click();
+            downloadAnchor.remove();
+        };
+
+        window.saveAllChanges = function() {
+            appData.displayName = document.getElementById('editDisplayName').value.trim() || appData.displayName;
+            appData.bio = document.getElementById('editBio').value.trim();
+            appData.image = document.getElementById('editImageUrl').value.trim();
+
+            appData.contacts.showWhatsapp = document.getElementById('showWhatsapp').checked;
+            appData.contacts.whatsapp = document.getElementById('editWhatsapp').value.trim();
+            appData.contacts.showPhone = document.getElementById('showPhone').checked;
+            appData.contacts.phone = document.getElementById('editPhone').value.trim();
+            appData.contacts.showEmail = document.getElementById('showEmail').checked;
+            appData.contacts.email = document.getElementById('editEmail').value.trim();
+
+            saveData();
+            initApp();
+            window.closeAdminModal();
+            alert('تم حفظ التغييرات بنجاح!');
+        };
+
+        window.copyProfileLink = function() {
+            navigator.clipboard.writeText(window.location.href);
+            alert('تم نسخ رابط الصفحة إلى الحافظة!');
+        };
+
+        document.addEventListener('DOMContentLoaded', initApp);
+    </script>
+</body>
+</html>
