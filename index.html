@@ -98,7 +98,7 @@
             </div>
             
             <h1 id="displayName" class="text-xl font-bold dark:text-white flex items-center justify-center gap-2">
-                <span>محمود دملخي</span>
+                <span>محمود للتصميم والبناء</span>
                 <i class="fa-solid fa-circle-check text-goldaccent text-base"></i>
             </h1>
             <p id="displayBio" class="text-xs text-gray-500 dark:text-gray-400 mt-1 px-4">خدمات التصميم الإعلاني، حلول الطباعة، وتكسية واجهات الألوكوبوند</p>
@@ -110,6 +110,20 @@
         <!-- Filter Tabs -->
         <div id="categoryTabs" class="w-full flex gap-2 overflow-x-auto pb-2 mb-4 text-xs"></div>
 
+        <!-- Gallery Preview Card Button (إضافة زر للمعرض في الواجهة الرئيسية) -->
+        <button type="button" onclick="window.openGalleryModal()" class="w-full mb-4 bg-gradient-to-r from-goldaccent/20 via-yellow-500/10 to-goldaccent/20 border border-goldaccent/40 rounded-2xl p-3.5 flex items-center justify-between glow-gold-hover transition">
+            <div class="flex items-center gap-3">
+                <div class="w-9 h-9 rounded-xl bg-goldaccent/20 text-goldaccent flex items-center justify-center">
+                    <i class="fa-solid fa-images"></i>
+                </div>
+                <div class="text-right">
+                    <span class="text-xs font-bold text-gray-800 dark:text-gray-100 block">معرض الأعمال والمشاريع</span>
+                    <span class="text-[10px] text-gray-500 dark:text-gray-400">استعرض تصاميمنا والأعمال المنفذة</span>
+                </div>
+            </div>
+            <i class="fa-solid fa-chevron-left text-xs text-goldaccent"></i>
+        </button>
+
         <!-- Links Container -->
         <div id="linksContainer" class="w-full flex flex-col gap-3 mb-8"></div>
 
@@ -119,6 +133,29 @@
     <footer class="w-full max-w-md text-center py-4 border-t border-gray-200 dark:border-gray-800 text-xs text-gray-400 dark:text-gray-500 relative z-10 transition-colors duration-300">
         <p>© <span id="year">2026</span> جميع الحقوق محفوظة - شجرة الروابط</p>
     </footer>
+
+    <!-- Gallery Showcase Modal (عرض معرض الأعمال للزوار) -->
+    <div id="galleryModal" class="fixed inset-0 bg-black/85 backdrop-blur-md hidden flex items-center justify-center z-[105] p-3">
+        <div class="bg-lightcard dark:bg-cardbg border border-gray-200 dark:border-gray-800 w-full max-w-lg rounded-2xl p-4 shadow-2xl max-h-[92vh] flex flex-col transition-colors duration-300">
+            <div class="flex justify-between items-center border-b border-gray-200 dark:border-gray-800 pb-3 mb-3">
+                <h3 class="text-base font-bold text-goldaccent flex items-center gap-2">
+                    <i class="fa-solid fa-images"></i> معرض الأعمال والمشاريع
+                </h3>
+                <button type="button" onclick="window.closeGalleryModal()" class="text-gray-400 hover:text-gray-700 dark:hover:text-white text-xl px-2"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            
+            <div id="galleryCategoryFilter" class="flex gap-2 overflow-x-auto pb-2 mb-3 text-xs"></div>
+
+            <div id="galleryGrid" class="overflow-y-auto flex-grow grid grid-cols-2 sm:grid-cols-3 gap-2.5 pr-1"></div>
+        </div>
+    </div>
+
+    <!-- Image View Modal (تكبير الصورة) -->
+    <div id="imageViewModal" class="fixed inset-0 bg-black/95 backdrop-blur-lg hidden flex flex-col items-center justify-center z-[120] p-4" onclick="window.closeImageView()">
+        <img id="enlargedImage" src="" class="max-w-full max-h-[80vh] rounded-2xl border border-gray-800 shadow-2xl object-contain mb-3" />
+        <p id="enlargedTitle" class="text-xs text-goldaccent font-bold text-center"></p>
+        <button type="button" class="mt-4 bg-gray-800 text-gray-300 px-4 py-1.5 rounded-xl text-xs"><i class="fa-solid fa-xmark"></i> إغلاق المعاينة</button>
+    </div>
 
     <!-- Share Options Modal -->
     <div id="shareModal" class="fixed inset-0 bg-black/85 backdrop-blur-md hidden flex items-end sm:items-center justify-center z-[110] p-0 sm:p-4 transition-opacity">
@@ -163,7 +200,7 @@
                 <i class="fa-solid fa-shield-halved text-xl"></i>
             </div>
             <h3 class="text-lg font-bold dark:text-white mb-1">تسجيل الدخول للإدارة</h3>
-            <p class="text-xs text-gray-500 dark:text-gray-400 mb-4">خاص بقسم الإدارة <span class="text-goldaccent font-mono font-bold">☠️</span></p>
+            <p class="text-xs text-gray-500 dark:text-gray-400 mb-4">الرمز الافتراضي: <span class="text-goldaccent font-mono font-bold">1234</span></p>
             <input type="password" id="pinInput" maxlength="6" class="w-full bg-lightbg dark:bg-darkbg border border-gray-300 dark:border-gray-700 text-center text-xl tracking-widest text-goldaccent rounded-xl py-2 mb-4 outline-none focus:border-goldaccent">
             <div class="flex gap-2">
                 <button type="button" onclick="window.verifyPin()" class="flex-1 bg-goldaccent active:bg-yellow-600 text-black font-bold py-2.5 rounded-xl text-sm">دخول</button>
@@ -224,7 +261,36 @@
                     </div>
                 </div>
 
-                <!-- Accordion 3: Sidebar Menu Management (NEW) -->
+                <!-- Accordion 3: Gallery Admin (NEW - إدارة معرض الأعمال) -->
+                <div class="bg-lightbg dark:bg-darkbg rounded-xl border border-gray-200 dark:border-gray-800 overflow-hidden transition-colors">
+                    <button type="button" onclick="window.toggleAccordion('accGalleryAdmin')" class="w-full p-3 flex justify-between items-center font-bold text-gray-700 dark:text-gray-300">
+                        <span class="flex items-center gap-2"><i class="fa-solid fa-images text-goldaccent"></i> إدارة معرض الأعمال والمشاريع</span>
+                        <i id="icon-accGalleryAdmin" class="fa-solid fa-chevron-down transition-transform"></i>
+                    </button>
+                    <div id="accGalleryAdmin" class="hidden p-3 pt-0 space-y-3 border-t border-gray-200 dark:border-gray-800 mt-1">
+                        <div class="bg-goldaccent/10 p-2.5 rounded-xl border border-goldaccent/20 text-[11px] text-goldaccent mb-2">
+                            <i class="fa-solid fa-circle-info"></i> ارفع صورك على موقع <a href="https://imgbb.com" target="_blank" class="underline font-bold">ImgBB.com</a> ثم انسخ <strong>الرابط المباشر للصورة (Direct Link)</strong> وضعها هنا.
+                        </div>
+                        <div class="space-y-2">
+                            <h4 id="galleryFormTitle" class="font-bold text-goldaccent">إضافة صورة جديدة للمعرض</h4>
+                            <input type="hidden" id="editingGalleryId">
+                            <input type="text" id="galleryTitle" placeholder="عنوان العمل (مثال: تكسية واجهة ألوكوبوند)" class="w-full bg-lightcard dark:bg-cardbg border border-gray-300 dark:border-gray-700 rounded-lg p-2 dark:text-white outline-none">
+                            <input type="url" id="galleryImageUrl" placeholder="رابط الصورة المباشر من ImgBB https://i.ibb.co/..." class="w-full bg-lightcard dark:bg-cardbg border border-gray-300 dark:border-gray-700 rounded-lg p-2 dark:text-white outline-none">
+                            <input type="text" id="galleryCategory" placeholder="الفئة (مثال: ألوكوبوند، تصاميم، طباعة)" class="w-full bg-lightcard dark:bg-cardbg border border-gray-300 dark:border-gray-700 rounded-lg p-2 dark:text-white outline-none">
+                            
+                            <div class="flex gap-2 pt-1">
+                                <button type="button" onclick="window.saveGalleryItem()" class="flex-1 bg-goldaccent text-black font-bold py-2 rounded-lg">حفظ في المعرض</button>
+                                <button type="button" onclick="window.resetGalleryForm()" class="bg-gray-200 dark:bg-gray-800 text-gray-700 dark:text-gray-300 px-3 py-2 rounded-lg">إلغاء</button>
+                            </div>
+                        </div>
+                        <div class="space-y-1.5 pt-2 border-t border-gray-300 dark:border-gray-700">
+                            <h4 class="font-bold text-gray-500 dark:text-gray-400">الصور المضافة حالياً</h4>
+                            <div id="adminGalleryList" class="space-y-1.5"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Accordion 4: Sidebar Menu Management -->
                 <div class="bg-lightbg dark:bg-darkbg rounded-xl border border-gray-200 dark:border-gray-800 overflow-hidden transition-colors">
                     <button type="button" onclick="window.toggleAccordion('accSidebar')" class="w-full p-3 flex justify-between items-center font-bold text-gray-700 dark:text-gray-300">
                         <span class="flex items-center gap-2"><i class="fa-solid fa-bars-staggered text-goldaccent"></i> إدارة القائمة الجانبية (Sidebar)</span>
@@ -234,9 +300,9 @@
                         <div class="space-y-2 mt-2">
                             <h4 id="sidebarFormTitle" class="font-bold text-goldaccent">إضافة عنصر للقائمة الجانبية</h4>
                             <input type="hidden" id="editingSidebarId">
-                            <input type="text" id="sidebarTitle" placeholder="عنوان العنصر (مثال: تواصل معنا)" class="w-full bg-lightcard dark:bg-cardbg border border-gray-300 dark:border-gray-700 rounded-lg p-2 dark:text-white outline-none">
-                            <input type="text" id="sidebarUrl" placeholder="الرابط https://... أو اجعله # لفتح وظيفة" class="w-full bg-lightcard dark:bg-cardbg border border-gray-300 dark:border-gray-700 rounded-lg p-2 dark:text-white outline-none">
-                            <input type="text" id="sidebarIcon" placeholder="أيقونة FontAwesome (مثل fa-whatsapp أو fa-phone)" class="w-full bg-lightcard dark:bg-cardbg border border-gray-300 dark:border-gray-700 rounded-lg p-2 dark:text-white outline-none">
+                            <input type="text" id="sidebarTitle" placeholder="عنوان العنصر" class="w-full bg-lightcard dark:bg-cardbg border border-gray-300 dark:border-gray-700 rounded-lg p-2 dark:text-white outline-none">
+                            <input type="text" id="sidebarUrl" placeholder="الرابط أو #" class="w-full bg-lightcard dark:bg-cardbg border border-gray-300 dark:border-gray-700 rounded-lg p-2 dark:text-white outline-none">
+                            <input type="text" id="sidebarIcon" placeholder="أيقونة (مثل fa-brands fa-whatsapp)" class="w-full bg-lightcard dark:bg-cardbg border border-gray-300 dark:border-gray-700 rounded-lg p-2 dark:text-white outline-none">
                             
                             <div class="flex gap-2 pt-1">
                                 <button type="button" onclick="window.saveSidebarItem()" class="flex-1 bg-goldaccent text-black font-bold py-2 rounded-lg">حفظ العنصر</button>
@@ -250,10 +316,10 @@
                     </div>
                 </div>
 
-                <!-- Accordion 4: Categories -->
+                <!-- Accordion 5: Categories -->
                 <div class="bg-lightbg dark:bg-darkbg rounded-xl border border-gray-200 dark:border-gray-800 overflow-hidden transition-colors">
                     <button type="button" onclick="window.toggleAccordion('accCategories')" class="w-full p-3 flex justify-between items-center font-bold text-gray-700 dark:text-gray-300">
-                        <span class="flex items-center gap-2"><i class="fa-solid fa-folder-tree text-goldaccent"></i> إدارة الفئات</span>
+                        <span class="flex items-center gap-2"><i class="fa-solid fa-folder-tree text-goldaccent"></i> إدارة فئات الروابط</span>
                         <i id="icon-accCategories" class="fa-solid fa-chevron-down transition-transform"></i>
                     </button>
                     <div id="accCategories" class="hidden p-3 pt-0 space-y-2 border-t border-gray-200 dark:border-gray-800 mt-1">
@@ -265,7 +331,7 @@
                     </div>
                 </div>
 
-                <!-- Accordion 5: Links Management -->
+                <!-- Accordion 6: Links Management -->
                 <div class="bg-lightbg dark:bg-darkbg rounded-xl border border-gray-200 dark:border-gray-800 overflow-hidden transition-colors">
                     <button type="button" onclick="window.toggleAccordion('accLinks')" class="w-full p-3 flex justify-between items-center font-bold text-gray-700 dark:text-gray-300">
                         <span class="flex items-center gap-2"><i class="fa-solid fa-link text-goldaccent"></i> إدارة الروابط الحالية</span>
@@ -275,11 +341,11 @@
                         <div class="space-y-2 mt-2">
                             <h4 id="linkFormTitle" class="font-bold text-goldaccent">إضافة رابط جديد</h4>
                             <input type="hidden" id="editingLinkId">
-                            <input type="text" id="linkTitle" placeholder="عنوان الرابط (مثال: موقعنا الرسمي)" class="w-full bg-lightcard dark:bg-cardbg border border-gray-300 dark:border-gray-700 rounded-lg p-2 dark:text-white outline-none">
+                            <input type="text" id="linkTitle" placeholder="عنوان الرابط" class="w-full bg-lightcard dark:bg-cardbg border border-gray-300 dark:border-gray-700 rounded-lg p-2 dark:text-white outline-none">
                             <input type="url" id="linkUrl" placeholder="الرابط https://..." class="w-full bg-lightcard dark:bg-cardbg border border-gray-300 dark:border-gray-700 rounded-lg p-2 dark:text-white outline-none">
                             <div class="flex gap-2">
                                 <select id="linkCategory" class="flex-1 bg-lightcard dark:bg-cardbg border border-gray-300 dark:border-gray-700 rounded-lg p-2 dark:text-white outline-none"></select>
-                                <input type="text" id="linkIcon" placeholder="أيقونة (fa-globe)" class="flex-1 bg-lightcard dark:bg-cardbg border border-gray-300 dark:border-gray-700 rounded-lg p-2 dark:text-white outline-none">
+                                <input type="text" id="linkIcon" placeholder="أيقونة (مثل fa-brands fa-whatsapp)" class="flex-1 bg-lightcard dark:bg-cardbg border border-gray-300 dark:border-gray-700 rounded-lg p-2 dark:text-white outline-none">
                             </div>
                             <div class="flex gap-2 pt-1">
                                 <button type="button" onclick="window.saveLink()" class="flex-1 bg-goldaccent text-black font-bold py-2 rounded-lg">حفظ الرابط</button>
@@ -293,7 +359,7 @@
                     </div>
                 </div>
 
-                <!-- Accordion 6: Security / PIN -->
+                <!-- Accordion 7: Security / PIN -->
                 <div class="bg-lightbg dark:bg-darkbg rounded-xl border border-gray-200 dark:border-gray-800 overflow-hidden transition-colors">
                     <button type="button" onclick="window.toggleAccordion('accSecurity')" class="w-full p-3 flex justify-between items-center font-bold text-gray-700 dark:text-gray-300">
                         <span class="flex items-center gap-2"><i class="fa-solid fa-key text-goldaccent"></i> الأمان وتغيير رمز PIN</span>
@@ -337,7 +403,7 @@
         const db = getDatabase(app);
 
         const defaultData = {
-            displayName: "محمود دملخي",
+            displayName: "محمود للتصميم والبناء",
             bio: "خدمات التصميم الإعلاني، حلول الطباعة، وتكسية واجهات الألوكوبوند",
             pin: "1234",
             image: "",
@@ -352,7 +418,10 @@
             categories: ["الكل", "إعلان وتصميم", "بناء وألوكبوند"],
             sidebarLinks: [
                 { id: 'sb1', title: 'لوحة الإدارة', url: '#', icon: 'fa-lock', action: 'openPin' },
-                { id: 'sb2', title: 'تواصل معنا عبر واتساب', url: 'https://wa.me/', icon: 'fa-whatsapp', action: 'link' }
+                { id: 'sb2', title: 'تواصل معنا عبر واتساب', url: 'https://wa.me/', icon: 'fa-brands fa-whatsapp', action: 'link' }
+            ],
+            gallery: [
+                { id: 'g1', title: 'تصميم وإكسسوارات', url: 'https://i.ibb.co/6y4g8qf/sample.jpg', category: 'تصاميم' }
             ],
             links: [
                 { id: '1', title: 'لمسة فن بلس للخدمات الإعلانية', url: 'https://wa.me/', category: 'إعلان وتصميم', icon: 'fa-paint-brush' },
@@ -362,6 +431,7 @@
 
         let appData = defaultData;
         let activeCategory = "الكل";
+        let activeGalleryCategory = "الكل";
         let tempImageBase64 = "";
 
         const dataRef = ref(db, 'linktreeData');
@@ -369,9 +439,8 @@
             const data = snapshot.val();
             if (data) {
                 appData = data;
-                if (!appData.sidebarLinks) {
-                    appData.sidebarLinks = defaultData.sidebarLinks;
-                }
+                if (!appData.sidebarLinks) appData.sidebarLinks = defaultData.sidebarLinks;
+                if (!appData.gallery) appData.gallery = defaultData.gallery;
             } else {
                 set(dataRef, defaultData);
                 appData = defaultData;
@@ -396,6 +465,7 @@
             renderSidebarMenu();
             renderCategories();
             renderLinks();
+            renderGalleryGrid();
         }
 
         function initTheme() {
@@ -441,6 +511,154 @@
             }
         };
 
+        // Gallery Modal Handlers
+        window.openGalleryModal = function() {
+            renderGalleryGrid();
+            document.getElementById('galleryModal').classList.remove('hidden');
+        };
+
+        window.closeGalleryModal = function() {
+            document.getElementById('galleryModal').classList.add('hidden');
+        };
+
+        window.openImageView = function(url, title) {
+            document.getElementById('enlargedImage').src = url;
+            document.getElementById('enlargedTitle').textContent = title || '';
+            document.getElementById('imageViewModal').classList.remove('hidden');
+        };
+
+        window.closeImageView = function() {
+            document.getElementById('imageViewModal').classList.add('hidden');
+        };
+
+        function renderGalleryGrid() {
+            const grid = document.getElementById('galleryGrid');
+            const filters = document.getElementById('galleryCategoryFilter');
+            if (!grid || !filters) return;
+
+            grid.innerHTML = '';
+            filters.innerHTML = '';
+
+            const galleryItems = appData.gallery || [];
+            const categories = ["الكل", ...new Set(galleryItems.map(i => i.category).filter(Boolean))];
+
+            categories.forEach(cat => {
+                const isActive = cat === activeGalleryCategory;
+                const btn = document.createElement('button');
+                btn.type = 'button';
+                btn.className = `px-3 py-1 rounded-xl whitespace-nowrap border text-xs transition ${isActive ? 'bg-goldaccent text-black font-bold border-goldaccent' : 'bg-lightbg dark:bg-darkbg text-gray-500 border-gray-200 dark:border-gray-800'}`;
+                btn.textContent = cat;
+                btn.onclick = () => { activeGalleryCategory = cat; renderGalleryGrid(); };
+                filters.appendChild(btn);
+            });
+
+            const filtered = activeGalleryCategory === "الكل" ? galleryItems : galleryItems.filter(i => i.category === activeGalleryCategory);
+
+            if (filtered.length === 0) {
+                grid.innerHTML = '<div class="col-span-full text-center py-8 text-xs text-gray-400">لا توجد صور مضافة في المعرض حالياً.</div>';
+                return;
+            }
+
+            filtered.forEach(item => {
+                const card = document.createElement('div');
+                card.className = 'group relative aspect-square rounded-xl overflow-hidden bg-darkbg border border-gray-200 dark:border-gray-800 cursor-pointer shadow-sm';
+                card.onclick = () => window.openImageView(item.url, item.title);
+                card.innerHTML = `
+                    <img src="${item.url}" alt="${item.title}" class="w-full h-full object-cover group-hover:scale-110 transition duration-300" onerror="this.src='https://via.placeholder.com/300?text=رابط+غير+صالح'" />
+                    <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition p-2 flex flex-col justify-end">
+                        <span class="text-[11px] font-bold text-goldaccent truncate">${item.title}</span>
+                        <span class="text-[9px] text-gray-300 truncate">${item.category || ''}</span>
+                    </div>
+                `;
+                grid.appendChild(card);
+            });
+        }
+
+        // Gallery Admin Actions
+        window.saveGalleryItem = function() {
+            const id = document.getElementById('editingGalleryId').value;
+            const title = document.getElementById('galleryTitle').value.trim();
+            const url = document.getElementById('galleryImageUrl').value.trim();
+            const category = document.getElementById('galleryCategory').value.trim() || 'عام';
+
+            if (!title || !url) {
+                alert('الرجاء إدخال عنوان الصورة ورابط ImgBB المباشر.');
+                return;
+            }
+
+            if (!appData.gallery) appData.gallery = [];
+
+            if (id) {
+                const item = appData.gallery.find(g => g.id === id);
+                if (item) {
+                    item.title = title;
+                    item.url = url;
+                    item.category = category;
+                }
+            } else {
+                appData.gallery.push({
+                    id: 'g_' + Date.now(),
+                    title, url, category
+                });
+            }
+
+            window.resetGalleryForm();
+            renderAdminGalleryList();
+            renderGalleryGrid();
+        };
+
+        window.resetGalleryForm = function() {
+            document.getElementById('editingGalleryId').value = '';
+            document.getElementById('galleryTitle').value = '';
+            document.getElementById('galleryImageUrl').value = '';
+            document.getElementById('galleryCategory').value = '';
+            document.getElementById('galleryFormTitle').textContent = 'إضافة صورة جديدة للمعرض';
+        };
+
+        window.editGalleryItem = function(id) {
+            const item = appData.gallery.find(g => g.id === id);
+            if (!item) return;
+            document.getElementById('editingGalleryId').value = item.id;
+            document.getElementById('galleryTitle').value = item.title;
+            document.getElementById('galleryImageUrl').value = item.url;
+            document.getElementById('galleryCategory').value = item.category;
+            document.getElementById('galleryFormTitle').textContent = 'تعديل صورة المعرض';
+        };
+
+        window.deleteGalleryItem = function(id) {
+            appData.gallery = appData.gallery.filter(g => g.id !== id);
+            renderAdminGalleryList();
+            renderGalleryGrid();
+        };
+
+        function renderAdminGalleryList() {
+            const container = document.getElementById('adminGalleryList');
+            if (!container) return;
+            container.innerHTML = '';
+            if (!appData.gallery || appData.gallery.length === 0) {
+                container.innerHTML = '<div class="text-gray-400 text-center py-2">لا توجد صور في المعرض.</div>';
+                return;
+            }
+            appData.gallery.forEach(g => {
+                const item = document.createElement('div');
+                item.className = 'bg-lightcard dark:bg-cardbg border border-gray-200 dark:border-gray-700 rounded-xl p-2 flex items-center justify-between transition-colors';
+                item.innerHTML = `
+                    <div class="flex items-center gap-2 overflow-hidden">
+                        <img src="${g.url}" class="w-8 h-8 rounded-lg object-cover border border-gray-700 flex-shrink-0" onerror="this.src='https://via.placeholder.com/50'" />
+                        <div class="truncate">
+                            <div class="font-bold text-gray-800 dark:text-white truncate">${g.title}</div>
+                            <div class="text-[10px] text-gray-400">${g.category}</div>
+                        </div>
+                    </div>
+                    <div class="flex gap-1.5 flex-shrink-0">
+                        <button type="button" onclick="window.editGalleryItem('${g.id}')" class="bg-blue-500/20 text-blue-500 dark:text-blue-400 px-2.5 py-1 rounded-lg">تعديل</button>
+                        <button type="button" onclick="window.deleteGalleryItem('${g.id}')" class="bg-red-500/20 text-red-500 dark:text-red-400 px-2.5 py-1 rounded-lg">حذف</button>
+                    </div>
+                `;
+                container.appendChild(item);
+            });
+        }
+
         function renderSidebarMenu() {
             const container = document.getElementById('sidebarLinksContainer');
             container.innerHTML = '';
@@ -448,7 +666,7 @@
                 const btn = document.createElement('button');
                 btn.type = 'button';
                 btn.className = `w-full p-3 rounded-xl flex items-center gap-3 font-bold transition text-right ${item.action === 'openPin' ? 'bg-goldaccent/10 hover:bg-goldaccent/20 border border-goldaccent/30 text-goldaccent' : 'bg-gray-100 dark:bg-darkbg hover:bg-gray-200 dark:hover:bg-gray-800 border border-gray-200 dark:border-gray-700 text-gray-700 dark:text-gray-300'}`;
-                btn.innerHTML = `<i class="fa-solid ${item.icon || 'fa-link'} text-sm"></i><span>${item.title}</span>`;
+                btn.innerHTML = `<i class="${item.icon || 'fa-solid fa-link'} text-sm"></i><span>${item.title}</span>`;
                 
                 if (item.action === 'openPin') {
                     btn.onclick = () => { window.toggleSidebar(); window.openPinModal(); };
@@ -555,7 +773,7 @@
                 a.innerHTML = `
                     <div class="flex items-center gap-3">
                         <div class="w-9 h-9 rounded-xl bg-lightbg dark:bg-darkbg border border-gray-200 dark:border-gray-800 flex items-center justify-center text-goldaccent">
-                            <i class="fa-solid ${link.icon || 'fa-link'}"></i>
+                            <i class="${link.icon || 'fa-solid fa-link'}"></i>
                         </div>
                         <span class="text-xs font-bold text-gray-800 dark:text-gray-200">${link.title}</span>
                     </div>
@@ -601,10 +819,12 @@
             document.getElementById('showEmail').checked = appData.contacts.showEmail;
             document.getElementById('editEmail').value = appData.contacts.email;
 
+            renderAdminGalleryList();
             renderAdminSidebarList();
             renderAdminCategories();
             renderAdminCategorySelect();
             renderAdminLinksList();
+            window.resetGalleryForm();
             window.resetSidebarForm();
             window.resetLinkForm();
         }
@@ -614,7 +834,7 @@
             const id = document.getElementById('editingSidebarId').value;
             const title = document.getElementById('sidebarTitle').value.trim();
             const url = document.getElementById('sidebarUrl').value.trim();
-            const icon = document.getElementById('sidebarIcon').value.trim() || 'fa-link';
+            const icon = document.getElementById('sidebarIcon').value.trim() || 'fa-solid fa-link';
 
             if (!title || !url) {
                 alert('الرجاء إدخال العنوان والرابط.');
@@ -669,6 +889,7 @@
 
         function renderAdminSidebarList() {
             const container = document.getElementById('adminSidebarList');
+            if(!container) return;
             container.innerHTML = '';
             if (!appData.sidebarLinks || appData.sidebarLinks.length === 0) {
                 container.innerHTML = '<div class="text-gray-400 text-center py-2">لا توجد عناصر.</div>';
@@ -679,7 +900,7 @@
                 item.className = 'bg-lightcard dark:bg-cardbg border border-gray-200 dark:border-gray-700 rounded-xl p-2.5 flex items-center justify-between transition-colors';
                 item.innerHTML = `
                     <div class="flex items-center gap-2">
-                        <i class="fa-solid ${s.icon} text-goldaccent"></i>
+                        <i class="${s.icon} text-goldaccent"></i>
                         <span class="font-bold text-gray-800 dark:text-white">${s.title}</span>
                     </div>
                     <div class="flex gap-1.5">
@@ -715,6 +936,7 @@
 
         function renderAdminCategories() {
             const container = document.getElementById('adminCategoriesList');
+            if(!container) return;
             container.innerHTML = '';
             (appData.categories || []).forEach(cat => {
                 if (cat === "الكل") return;
@@ -745,6 +967,7 @@
 
         function renderAdminCategorySelect() {
             const select = document.getElementById('linkCategory');
+            if(!select) return;
             select.innerHTML = '';
             (appData.categories || ["الكل"]).forEach(cat => {
                 const opt = document.createElement('option');
@@ -759,7 +982,7 @@
             const title = document.getElementById('linkTitle').value.trim();
             const url = document.getElementById('linkUrl').value.trim();
             const category = document.getElementById('linkCategory').value;
-            const icon = document.getElementById('linkIcon').value.trim() || 'fa-link';
+            const icon = document.getElementById('linkIcon').value.trim() || 'fa-solid fa-link';
 
             if (!title || !url) {
                 alert('الرجاء إدخال عنوان الرابط والرابط بشكل صحيح.');
@@ -813,6 +1036,7 @@
 
         function renderAdminLinksList() {
             const container = document.getElementById('adminLinksList');
+            if(!container) return;
             container.innerHTML = '';
             if (!appData.links || appData.links.length === 0) {
                 container.innerHTML = '<div class="text-gray-400 text-center py-2">لا توجد روابط مضافة بعد.</div>';
@@ -823,7 +1047,7 @@
                 item.className = 'bg-lightcard dark:bg-cardbg border border-gray-200 dark:border-gray-700 rounded-xl p-2.5 flex items-center justify-between transition-colors';
                 item.innerHTML = `
                     <div class="flex items-center gap-2">
-                        <i class="fa-solid ${l.icon} text-goldaccent"></i>
+                        <i class="${l.icon} text-goldaccent"></i>
                         <div>
                             <div class="font-bold text-gray-800 dark:text-white">${l.title}</div>
                             <div class="text-[10px] text-gray-400">${l.category}</div>
