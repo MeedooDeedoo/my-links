@@ -77,17 +77,8 @@
             <button type="button" onclick="window.toggleSidebar()" class="text-gray-400 hover:text-gray-700 dark:hover:text-white text-lg"><i class="fa-solid fa-xmark"></i></button>
         </div>
         
-        <!-- Sidebar Navigation Links / Actions -->
-        <div class="flex-grow space-y-2 text-xs">
-            <button type="button" onclick="window.toggleSidebar(); window.openPinModal();" class="w-full bg-goldaccent/10 hover:bg-goldaccent/20 border border-goldaccent/30 text-goldaccent p-3 rounded-xl flex items-center gap-3 font-bold transition">
-                <i class="fa-solid fa-lock text-sm"></i>
-                لوحة الإدارة
-            </button>
-            <a href="https://wa.me/" target="_blank" class="w-full bg-gray-100 dark:bg-darkbg hover:bg-gray-200 dark:hover:bg-gray-800 border border-gray-200 dark:border-gray-700 text-gray-700 dark:text-gray-300 p-3 rounded-xl flex items-center gap-3 font-bold transition">
-                <i class="fa-brands fa-whatsapp text-emerald-400 text-sm"></i>
-                تواصل معنا عبر واتساب
-            </a>
-        </div>
+        <!-- Dynamic Sidebar Links Container -->
+        <div id="sidebarLinksContainer" class="flex-grow space-y-2 text-xs overflow-y-auto"></div>
 
         <div class="border-t border-gray-200 dark:border-gray-800 pt-3 text-center text-[10px] text-gray-400">
             شجرة الروابط الاحترافية © 2026
@@ -233,7 +224,33 @@
                     </div>
                 </div>
 
-                <!-- Accordion 3: Categories -->
+                <!-- Accordion 3: Sidebar Menu Management (NEW) -->
+                <div class="bg-lightbg dark:bg-darkbg rounded-xl border border-gray-200 dark:border-gray-800 overflow-hidden transition-colors">
+                    <button type="button" onclick="window.toggleAccordion('accSidebar')" class="w-full p-3 flex justify-between items-center font-bold text-gray-700 dark:text-gray-300">
+                        <span class="flex items-center gap-2"><i class="fa-solid fa-bars-staggered text-goldaccent"></i> إدارة القائمة الجانبية (Sidebar)</span>
+                        <i id="icon-accSidebar" class="fa-solid fa-chevron-down transition-transform"></i>
+                    </button>
+                    <div id="accSidebar" class="hidden p-3 pt-0 space-y-3 border-t border-gray-200 dark:border-gray-800 mt-1">
+                        <div class="space-y-2 mt-2">
+                            <h4 id="sidebarFormTitle" class="font-bold text-goldaccent">إضافة عنصر للقائمة الجانبية</h4>
+                            <input type="hidden" id="editingSidebarId">
+                            <input type="text" id="sidebarTitle" placeholder="عنوان العنصر (مثال: تواصل معنا)" class="w-full bg-lightcard dark:bg-cardbg border border-gray-300 dark:border-gray-700 rounded-lg p-2 dark:text-white outline-none">
+                            <input type="text" id="sidebarUrl" placeholder="الرابط https://... أو اجعله # لفتح وظيفة" class="w-full bg-lightcard dark:bg-cardbg border border-gray-300 dark:border-gray-700 rounded-lg p-2 dark:text-white outline-none">
+                            <input type="text" id="sidebarIcon" placeholder="أيقونة FontAwesome (مثل fa-whatsapp أو fa-phone)" class="w-full bg-lightcard dark:bg-cardbg border border-gray-300 dark:border-gray-700 rounded-lg p-2 dark:text-white outline-none">
+                            
+                            <div class="flex gap-2 pt-1">
+                                <button type="button" onclick="window.saveSidebarItem()" class="flex-1 bg-goldaccent text-black font-bold py-2 rounded-lg">حفظ العنصر</button>
+                                <button type="button" onclick="window.resetSidebarForm()" class="bg-gray-200 dark:bg-gray-800 text-gray-700 dark:text-gray-300 px-3 py-2 rounded-lg">إلغاء</button>
+                            </div>
+                        </div>
+                        <div class="space-y-1.5 pt-2 border-t border-gray-300 dark:border-gray-700">
+                            <h4 class="font-bold text-gray-500 dark:text-gray-400">عناصر القائمة الجانبية الحالية</h4>
+                            <div id="adminSidebarList" class="space-y-1.5"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Accordion 4: Categories -->
                 <div class="bg-lightbg dark:bg-darkbg rounded-xl border border-gray-200 dark:border-gray-800 overflow-hidden transition-colors">
                     <button type="button" onclick="window.toggleAccordion('accCategories')" class="w-full p-3 flex justify-between items-center font-bold text-gray-700 dark:text-gray-300">
                         <span class="flex items-center gap-2"><i class="fa-solid fa-folder-tree text-goldaccent"></i> إدارة الفئات</span>
@@ -248,7 +265,7 @@
                     </div>
                 </div>
 
-                <!-- Accordion 4: Links Management -->
+                <!-- Accordion 5: Links Management -->
                 <div class="bg-lightbg dark:bg-darkbg rounded-xl border border-gray-200 dark:border-gray-800 overflow-hidden transition-colors">
                     <button type="button" onclick="window.toggleAccordion('accLinks')" class="w-full p-3 flex justify-between items-center font-bold text-gray-700 dark:text-gray-300">
                         <span class="flex items-center gap-2"><i class="fa-solid fa-link text-goldaccent"></i> إدارة الروابط الحالية</span>
@@ -276,7 +293,7 @@
                     </div>
                 </div>
 
-                <!-- Accordion 5: Security / PIN -->
+                <!-- Accordion 6: Security / PIN -->
                 <div class="bg-lightbg dark:bg-darkbg rounded-xl border border-gray-200 dark:border-gray-800 overflow-hidden transition-colors">
                     <button type="button" onclick="window.toggleAccordion('accSecurity')" class="w-full p-3 flex justify-between items-center font-bold text-gray-700 dark:text-gray-300">
                         <span class="flex items-center gap-2"><i class="fa-solid fa-key text-goldaccent"></i> الأمان وتغيير رمز PIN</span>
@@ -316,7 +333,6 @@
             measurementId: "G-M5C32KCP93"
         };
 
-        // Initialize Firebase
         const app = initializeApp(firebaseConfig);
         const db = getDatabase(app);
 
@@ -334,6 +350,10 @@
                 showEmail: true
             },
             categories: ["الكل", "إعلان وتصميم", "بناء وألوكبوند"],
+            sidebarLinks: [
+                { id: 'sb1', title: 'لوحة الإدارة', url: '#', icon: 'fa-lock', action: 'openPin' },
+                { id: 'sb2', title: 'تواصل معنا عبر واتساب', url: 'https://wa.me/', icon: 'fa-whatsapp', action: 'link' }
+            ],
             links: [
                 { id: '1', title: 'لمسة فن بلس للخدمات الإعلانية', url: 'https://wa.me/', category: 'إعلان وتصميم', icon: 'fa-paint-brush' },
                 { id: '2', title: 'طيبانو للتجارة والبناء والألوكوبوند', url: 'https://wa.me/', category: 'بناء وألوكبوند', icon: 'fa-building' }
@@ -344,12 +364,14 @@
         let activeCategory = "الكل";
         let tempImageBase64 = "";
 
-        // Load data from Firebase Realtime Database
         const dataRef = ref(db, 'linktreeData');
         onValue(dataRef, (snapshot) => {
             const data = snapshot.val();
             if (data) {
                 appData = data;
+                if (!appData.sidebarLinks) {
+                    appData.sidebarLinks = defaultData.sidebarLinks;
+                }
             } else {
                 set(dataRef, defaultData);
                 appData = defaultData;
@@ -371,6 +393,7 @@
         function initApp() {
             initTheme();
             renderProfile();
+            renderSidebarMenu();
             renderCategories();
             renderLinks();
         }
@@ -415,6 +438,30 @@
             } else {
                 el.classList.add('hidden');
                 icon.style.transform = 'rotate(0deg)';
+            }
+        };
+
+        function renderSidebarMenu() {
+            const container = document.getElementById('sidebarLinksContainer');
+            container.innerHTML = '';
+            (appData.sidebarLinks || []).forEach(item => {
+                const btn = document.createElement('button');
+                btn.type = 'button';
+                btn.className = `w-full p-3 rounded-xl flex items-center gap-3 font-bold transition text-right ${item.action === 'openPin' ? 'bg-goldaccent/10 hover:bg-goldaccent/20 border border-goldaccent/30 text-goldaccent' : 'bg-gray-100 dark:bg-darkbg hover:bg-gray-200 dark:hover:bg-gray-800 border border-gray-200 dark:border-gray-700 text-gray-700 dark:text-gray-300'}`;
+                btn.innerHTML = `<i class="fa-solid ${item.icon || 'fa-link'} text-sm"></i><span>${item.title}</span>`;
+                
+                if (item.action === 'openPin') {
+                    btn.onclick = () => { window.toggleSidebar(); window.openPinModal(); };
+                } else {
+                    btn.onclick = () => { window.openExternalLink(item.url); };
+                }
+                container.appendChild(btn);
+            });
+        }
+
+        window.openExternalLink = function(url) {
+            if(url && url !== '#') {
+                window.open(url, '_blank');
             }
         };
 
@@ -554,17 +601,101 @@
             document.getElementById('showEmail').checked = appData.contacts.showEmail;
             document.getElementById('editEmail').value = appData.contacts.email;
 
+            renderAdminSidebarList();
             renderAdminCategories();
             renderAdminCategorySelect();
             renderAdminLinksList();
+            window.resetSidebarForm();
             window.resetLinkForm();
+        }
+
+        // Sidebar Admin Logic
+        window.saveSidebarItem = function() {
+            const id = document.getElementById('editingSidebarId').value;
+            const title = document.getElementById('sidebarTitle').value.trim();
+            const url = document.getElementById('sidebarUrl').value.trim();
+            const icon = document.getElementById('sidebarIcon').value.trim() || 'fa-link';
+
+            if (!title || !url) {
+                alert('الرجاء إدخال العنوان والرابط.');
+                return;
+            }
+
+            if (!appData.sidebarLinks) appData.sidebarLinks = [];
+
+            const action = (url === '#') ? 'openPin' : 'link';
+
+            if (id) {
+                const item = appData.sidebarLinks.find(s => s.id === id);
+                if (item) {
+                    item.title = title;
+                    item.url = url;
+                    item.icon = icon;
+                    item.action = action;
+                }
+            } else {
+                appData.sidebarLinks.push({
+                    id: 'sb_' + Date.now(),
+                    title, url, icon, action
+                });
+            }
+
+            window.resetSidebarForm();
+            renderAdminSidebarList();
+        };
+
+        window.resetSidebarForm = function() {
+            document.getElementById('editingSidebarId').value = '';
+            document.getElementById('sidebarTitle').value = '';
+            document.getElementById('sidebarUrl').value = '';
+            document.getElementById('sidebarIcon').value = '';
+            document.getElementById('sidebarFormTitle').textContent = 'إضافة عنصر للقائمة الجانبية';
+        };
+
+        window.editSidebarItem = function(id) {
+            const item = appData.sidebarLinks.find(s => s.id === id);
+            if (!item) return;
+            document.getElementById('editingSidebarId').value = item.id;
+            document.getElementById('sidebarTitle').value = item.title;
+            document.getElementById('sidebarUrl').value = item.url;
+            document.getElementById('sidebarIcon').value = item.icon;
+            document.getElementById('sidebarFormTitle').textContent = 'تعديل عنصر القائمة';
+        };
+
+        window.deleteSidebarItem = function(id) {
+            appData.sidebarLinks = appData.sidebarLinks.filter(s => s.id !== id);
+            renderAdminSidebarList();
+        };
+
+        function renderAdminSidebarList() {
+            const container = document.getElementById('adminSidebarList');
+            container.innerHTML = '';
+            if (!appData.sidebarLinks || appData.sidebarLinks.length === 0) {
+                container.innerHTML = '<div class="text-gray-400 text-center py-2">لا توجد عناصر.</div>';
+                return;
+            }
+            appData.sidebarLinks.forEach(s => {
+                const item = document.createElement('div');
+                item.className = 'bg-lightcard dark:bg-cardbg border border-gray-200 dark:border-gray-700 rounded-xl p-2.5 flex items-center justify-between transition-colors';
+                item.innerHTML = `
+                    <div class="flex items-center gap-2">
+                        <i class="fa-solid ${s.icon} text-goldaccent"></i>
+                        <span class="font-bold text-gray-800 dark:text-white">${s.title}</span>
+                    </div>
+                    <div class="flex gap-1.5">
+                        <button type="button" onclick="window.editSidebarItem('${s.id}')" class="bg-blue-500/20 text-blue-500 dark:text-blue-400 px-2.5 py-1 rounded-lg">تعديل</button>
+                        <button type="button" onclick="window.deleteSidebarItem('${s.id}')" class="bg-red-500/20 text-red-500 dark:text-red-400 px-2.5 py-1 rounded-lg">حذف</button>
+                    </div>
+                `;
+                container.appendChild(item);
+            });
         }
 
         window.handleImageUpload = function(event) {
             const file = event.target.files[0];
             if (file) {
                 if(file.size > 800 * 1024) {
-                    alert('حجم الصورة كبير جداً، يرجى اختيار صورة أقل من 800 كيلوبايت لتناسب قاعدة البيانات المجانية.');
+                    alert('حجم الصورة كبير جداً، يرجى اختيار صورة أقل من 800 كيلوبايت.');
                     return;
                 }
                 const reader = new FileReader();
