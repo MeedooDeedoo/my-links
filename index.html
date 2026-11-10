@@ -127,13 +127,13 @@
 
                 <!-- Profile Settings -->
                 <div class="bg-darkbg p-3 rounded-xl border border-gray-800 space-y-2">
-                    <h4 class="font-bold text-gray-400">الملف الشخصي</h4>
+                    <h4 class="font-bold text-gray-400">الملف الشخصي وصورة البروفايل</h4>
                     <input type="text" id="editDisplayName" placeholder="الاسم الظاهر" class="w-full bg-cardbg border border-gray-700 rounded-lg p-2 text-white outline-none">
                     <input type="text" id="editBio" placeholder="الوصف المختصر" class="w-full bg-cardbg border border-gray-700 rounded-lg p-2 text-white outline-none">
                     <div>
-                        <label class="block text-gray-400 mb-1">صورة البروفايل (رابط صورة)</label>
-                        <input type="text" id="editImageUrl" placeholder="رابط مباشر للصورة https://..." class="w-full bg-cardbg border border-gray-700 rounded-lg p-2 text-white outline-none mb-1">
-                        <button type="button" onclick="window.removeProfileImage()" class="text-red-400 block">إزالة الصورة الحالية</button>
+                        <label class="block text-gray-400 mb-1">رفع صورة شخصية من الجهاز:</label>
+                        <input type="file" id="imageFileInput" accept="image/*" onchange="window.handleImageUpload(event)" class="w-full text-gray-400 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-xs file:font-semibold file:bg-goldaccent/20 file:text-goldaccent hover:file:bg-goldaccent/30 cursor-pointer mb-2">
+                        <button type="button" onclick="window.removeProfileImage()" class="text-red-400 block mt-1">إزالة الصورة الحالية</button>
                     </div>
                 </div>
 
@@ -237,6 +237,7 @@
 
         let appData = loadData();
         let activeCategory = "الكل";
+        let tempImageBase64 = "";
 
         function saveData() {
             try {
@@ -352,7 +353,7 @@
         function populateAdminForm() {
             document.getElementById('editDisplayName').value = appData.displayName;
             document.getElementById('editBio').value = appData.bio;
-            document.getElementById('editImageUrl').value = appData.image || '';
+            tempImageBase64 = appData.image || "";
 
             document.getElementById('showWhatsapp').checked = appData.contacts.showWhatsapp;
             document.getElementById('editWhatsapp').value = appData.contacts.whatsapp;
@@ -366,6 +367,28 @@
             renderAdminLinksList();
             window.resetLinkForm();
         }
+
+        window.handleImageUpload = function(event) {
+            const file = event.target.files[0];
+            if (file) {
+                if(file.size > 2 * 1024 * 1024) {
+                    alert('حجم الصورة كبير جداً، يرجى اختيار صورة أقل من 2 ميغابايت.');
+                    return;
+                }
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    tempImageBase64 = e.target.result;
+                    alert('تم تحميل الصورة بنجاح! انقر على "حفظ التغييرات" لتثبيتها.');
+                };
+                reader.readAsDataURL(file);
+            }
+        };
+
+        window.removeProfileImage = function() {
+            tempImageBase64 = '';
+            document.getElementById('imageFileInput').value = '';
+            alert('تمت إزالة الصورة. انقر على "حفظ التغييرات" لتأكيد الحذف.');
+        };
 
         function renderAdminCategories() {
             const container = document.getElementById('adminCategoriesList');
@@ -490,11 +513,6 @@
             });
         }
 
-        window.removeProfileImage = function() {
-            appData.image = '';
-            document.getElementById('editImageUrl').value = '';
-        };
-
         window.changePin = function() {
             const newPin = document.getElementById('newPinInput').value.trim();
             if (newPin.length >= 4) {
@@ -519,7 +537,7 @@
         window.saveAllChanges = function() {
             appData.displayName = document.getElementById('editDisplayName').value.trim() || appData.displayName;
             appData.bio = document.getElementById('editBio').value.trim();
-            appData.image = document.getElementById('editImageUrl').value.trim();
+            appData.image = tempImageBase64;
 
             appData.contacts.showWhatsapp = document.getElementById('showWhatsapp').checked;
             appData.contacts.whatsapp = document.getElementById('editWhatsapp').value.trim();
@@ -531,7 +549,7 @@
             saveData();
             initApp();
             window.closeAdminModal();
-            alert('تم حفظ التغييرات بنجاح!');
+            alert('تم حفظ التغييرات وتحديث الصورة بنجاح!');
         };
 
         window.copyProfileLink = function() {
