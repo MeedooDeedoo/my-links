@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>منصة شجرة الروابط الاحترافية</title>
+    <title>منصة شجرة الروابط الاحترافية - متعددة الأعضاء</title>
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
@@ -42,7 +42,7 @@
         .glow-gold-hover:hover {
             box-shadow: 0 0 20px rgba(212, 175, 55, 0.4);
         }
-        button, select, input, a, label {
+        button, select, input, a, label, textarea {
             touch-action: manipulation;
             cursor: pointer;
         }
@@ -57,7 +57,7 @@
             <button type="button" onclick="window.toggleSidebar()" class="w-9 h-9 rounded-xl bg-gray-100 dark:bg-darkbg border border-gray-200 dark:border-gray-700 text-goldaccent flex items-center justify-center transition active:scale-95" title="القائمة الجانبية">
                 <i class="fa-solid fa-bars"></i>
             </button>
-            <span id="topBarName" class="text-xs font-bold truncate max-w-[150px]">لوحة المستخدم</span>
+            <span id="topBarName" class="text-xs font-bold truncate max-w-[150px]">جاري التحميل...</span>
         </div>
         <div class="flex items-center gap-2">
             <!-- Theme Toggle Button -->
@@ -80,7 +80,14 @@
         <!-- Dynamic Sidebar Links Container -->
         <div id="sidebarLinksContainer" class="flex-grow space-y-2 text-xs overflow-y-auto"></div>
 
-        <div class="border-t border-gray-200 dark:border-gray-800 pt-3 text-center text-[10px] text-gray-400">
+        <!-- Feedback Button in Sidebar -->
+        <div class="pt-3 border-t border-gray-200 dark:border-gray-800 mt-2">
+            <button type="button" onclick="window.openFeedbackModal()" class="w-full bg-goldaccent/10 border border-goldaccent/30 text-goldaccent font-bold py-2.5 rounded-xl flex items-center justify-center gap-2 transition hover:bg-goldaccent/20">
+                <i class="fa-solid fa-comment-dots"></i> إرسال ملاحظة للإدارة
+            </button>
+        </div>
+
+        <div class="border-t border-gray-200 dark:border-gray-800 pt-3 text-center text-[10px] text-gray-400 mt-2">
             شجرة الروابط الاحترافية © 2026
         </div>
     </div>
@@ -98,10 +105,10 @@
             </div>
             
             <h1 id="displayName" class="text-xl font-bold dark:text-white flex items-center justify-center gap-2">
-                <span>محمود دملخي</span>
+                <span>جاري التحميل...</span>
                 <i class="fa-solid fa-circle-check text-goldaccent text-base"></i>
             </h1>
-            <p id="displayBio" class="text-xs text-gray-500 dark:text-gray-400 mt-1 px-4">خدمات التصميم الإعلاني، حلول الطباعة، وتكسية واجهات الألوكوبوند</p>
+            <p id="displayBio" class="text-xs text-gray-500 dark:text-gray-400 mt-1 px-4">...</p>
             
             <!-- Contact Buttons -->
             <div id="contactButtons" class="flex justify-center gap-3 mt-4"></div>
@@ -118,7 +125,7 @@
                 </div>
                 <div class="text-right">
                     <span class="text-xs font-bold text-gray-800 dark:text-gray-100 block">معرض المشاريع والأعمال</span>
-                    <span class="text-[10px] text-gray-500 dark:text-gray-400">تصاميم 3D وواجهات ألوكوبوند متعددة الزوايا</span>
+                    <span class="text-[10px] text-gray-500 dark:text-gray-400">تصاميم وزوايا متعددة</span>
                 </div>
             </div>
             <i class="fa-solid fa-chevron-left text-xs text-goldaccent"></i>
@@ -127,6 +134,10 @@
         <!-- Links Container -->
         <div id="linksContainer" class="w-full flex flex-col gap-3 mb-8"></div>
 
+        <!-- Join Platform Button Banner -->
+        <button type="button" onclick="window.openJoinModal()" class="w-full bg-gradient-to-r from-cyanaccent/20 via-blue-500/10 to-cyanaccent/20 border border-cyanaccent/40 rounded-2xl p-3 flex items-center justify-center gap-2 text-cyanaccent font-bold text-xs shadow-lg transition hover:scale-[1.01]">
+            <i class="fa-solid fa-user-plus"></i> انضم إلينا وأنشئ صفحتك الخاصة مجاناً
+        </button>
     </div>
 
     <!-- Footer -->
@@ -134,23 +145,71 @@
         <p>© <span id="year">2026</span> جميع الحقوق محفوظة - شجرة الروابط</p>
     </footer>
 
-    <!-- Gallery Showcase Modal (عرض معرض المشاريع للزوار) -->
+    <!-- Feedback Modal (إرسال ملاحظة للإدارة) -->
+    <div id="feedbackModal" class="fixed inset-0 bg-black/85 backdrop-blur-md hidden flex items-center justify-center z-[110] p-3">
+        <div class="bg-lightcard dark:bg-cardbg border border-gray-200 dark:border-gray-800 w-full max-w-md rounded-2xl p-5 shadow-2xl max-h-[92vh] flex flex-col transition-colors duration-300">
+            <div class="flex justify-between items-center border-b border-gray-200 dark:border-gray-800 pb-3 mb-3">
+                <h3 class="text-base font-bold text-goldaccent flex items-center gap-2">
+                    <i class="fa-solid fa-comment-dots"></i> إرسال ملاحظة أو رسالة للإدارة
+                </h3>
+                <button type="button" onclick="window.closeFeedbackModal()" class="text-gray-400 hover:text-gray-700 dark:hover:text-white text-xl px-2"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            <div class="overflow-y-auto flex-grow space-y-3 text-xs">
+                <p class="text-gray-500 dark:text-gray-400">كتب ملاحظتك أو استفسارك، وستصل فوراً كرسالة إلى لوحة تحكم الأدمن الرئيسي:</p>
+                <input type="text" id="feedbackSenderName" placeholder="اسمك أو اسم العضو (اختياري)" class="w-full bg-lightbg dark:bg-darkbg border border-gray-300 dark:border-gray-700 rounded-xl p-2.5 dark:text-white outline-none">
+                <input type="text" id="feedbackSenderContact" placeholder="رقم الواتساب أو وسيلة التواصل (اختياري)" class="w-full bg-lightbg dark:bg-darkbg border border-gray-300 dark:border-gray-700 rounded-xl p-2.5 dark:text-white outline-none">
+                <textarea id="feedbackMessage" placeholder="اكتب ملاحظتك هنا بالتفصيل..." class="w-full bg-lightbg dark:bg-darkbg border border-gray-300 dark:border-gray-700 rounded-xl p-2.5 dark:text-white outline-none h-28 resize-none"></textarea>
+                
+                <button type="button" onclick="window.submitFeedback()" class="w-full bg-goldaccent text-black font-bold py-3 rounded-xl mt-2">إرسال الملاحظة للإدارة</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Join Platform Modal -->
+    <div id="joinModal" class="fixed inset-0 bg-black/85 backdrop-blur-md hidden flex items-center justify-center z-[110] p-3">
+        <div class="bg-lightcard dark:bg-cardbg border border-gray-200 dark:border-gray-800 w-full max-w-md rounded-2xl p-5 shadow-2xl max-h-[92vh] flex flex-col transition-colors duration-300">
+            <div class="flex justify-between items-center border-b border-gray-200 dark:border-gray-800 pb-3 mb-3">
+                <h3 class="text-base font-bold text-cyanaccent flex items-center gap-2">
+                    <i class="fa-solid fa-user-plus"></i> انضم إلى منصة شجرة الروابط
+                </h3>
+                <button type="button" onclick="window.closeJoinModal()" class="text-gray-400 hover:text-gray-700 dark:hover:text-white text-xl px-2"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            <div class="overflow-y-auto flex-grow space-y-3 text-xs">
+                <p class="text-gray-500 dark:text-gray-400">املأ النموذج أدناه لطلب إنشاء صفحتك الشخصية وروابطك على المنصة، وسيتم مراجعته وقبوله من قبل الإدارة:</p>
+                <input type="text" id="joinUsername" placeholder="معرف الصفحة بالإنجليزية (مثال: ahmad أو design)" class="w-full bg-lightbg dark:bg-darkbg border border-gray-300 dark:border-gray-700 rounded-xl p-2.5 dark:text-white outline-none">
+                <input type="text" id="joinDisplayName" placeholder="اسمك الكامل أو اسم نشاطك" class="w-full bg-lightbg dark:bg-darkbg border border-gray-300 dark:border-gray-700 rounded-xl p-2.5 dark:text-white outline-none">
+                <textarea id="joinBio" placeholder="نبذة مختصرة عن خدماتك أو عملك..." class="w-full bg-lightbg dark:bg-darkbg border border-gray-300 dark:border-gray-700 rounded-xl p-2.5 dark:text-white outline-none h-20 resize-none"></textarea>
+                <input type="url" id="joinAvatar" placeholder="رابط صورتك الشخصية من ImgBB (اختياري)" class="w-full bg-lightbg dark:bg-darkbg border border-gray-300 dark:border-gray-700 rounded-xl p-2.5 dark:text-white outline-none">
+                <input type="text" id="joinWhatsapp" placeholder="رقم الواتساب للتواصل (مع رمز الدولة)" class="w-full bg-lightbg dark:bg-darkbg border border-gray-300 dark:border-gray-700 rounded-xl p-2.5 dark:text-white outline-none">
+                
+                <!-- Notice Message Box -->
+                <div class="bg-cyanaccent/10 border border-cyanaccent/30 rounded-xl p-3 text-cyanaccent flex items-start gap-2 mt-1">
+                    <i class="fa-solid fa-circle-info text-sm mt-0.5 shrink-0"></i>
+                    <p class="text-[11px] leading-relaxed">
+                        ملاحظة: بمجرد إرسال الطلب ومراجعته من قبل الإدارة، <strong>سيتم إرسال رابط صفحتك الخاصة والرمز السري (PIN) الخاص بك على رقم الواتساب المرفق أعلاه</strong>.
+                    </p>
+                </div>
+
+                <button type="button" onclick="window.submitJoinRequest()" class="w-full bg-cyanaccent text-black font-bold py-3 rounded-xl mt-2">إرسال طلب الانضمام للإدارة</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Gallery Showcase Modal -->
     <div id="galleryModal" class="fixed inset-0 bg-black/85 backdrop-blur-md hidden flex items-center justify-center z-[105] p-3">
         <div class="bg-lightcard dark:bg-cardbg border border-gray-200 dark:border-gray-800 w-full max-w-lg rounded-2xl p-4 shadow-2xl max-h-[92vh] flex flex-col transition-colors duration-300">
             <div class="flex justify-between items-center border-b border-gray-200 dark:border-gray-800 pb-3 mb-3">
                 <h3 class="text-base font-bold text-goldaccent flex items-center gap-2">
-                    <i class="fa-solid fa-images"></i> معرض المشاريع والأعمال الهندسية
+                    <i class="fa-solid fa-images"></i> معرض المشاريع والأعمال
                 </h3>
                 <button type="button" onclick="window.closeGalleryModal()" class="text-gray-400 hover:text-gray-700 dark:hover:text-white text-xl px-2"><i class="fa-solid fa-xmark"></i></button>
             </div>
-            
             <div id="galleryCategoryFilter" class="flex gap-2 overflow-x-auto pb-2 mb-3 text-xs"></div>
-
             <div id="galleryGrid" class="overflow-y-auto flex-grow grid grid-cols-2 gap-3 pr-1"></div>
         </div>
     </div>
 
-    <!-- Project Detail Modal (عرض تفاصيل المشروع وصوره المتعددة) -->
+    <!-- Project Detail Modal -->
     <div id="projectDetailModal" class="fixed inset-0 bg-black/90 backdrop-blur-md hidden flex items-center justify-center z-[115] p-3">
         <div class="bg-lightcard dark:bg-cardbg border border-gray-200 dark:border-gray-800 w-full max-w-lg rounded-2xl p-4 shadow-2xl max-h-[92vh] flex flex-col transition-colors duration-300">
             <div class="flex justify-between items-center border-b border-gray-200 dark:border-gray-800 pb-3 mb-3">
@@ -160,17 +219,15 @@
                 </div>
                 <button type="button" onclick="window.closeProjectDetail()" class="text-gray-400 hover:text-gray-700 dark:hover:text-white text-xl px-2"><i class="fa-solid fa-xmark"></i></button>
             </div>
-            
             <div class="overflow-y-auto flex-grow space-y-3 pr-1">
                 <p id="modalProjectDesc" class="text-xs text-gray-600 dark:text-gray-300 leading-relaxed"></p>
-                
-                <h4 class="text-xs font-bold text-goldaccent pt-2 border-t border-gray-200 dark:border-gray-800">صور المشروع وزواياه المختلفة (انقر للتكبير):</h4>
+                <h4 class="text-xs font-bold text-goldaccent pt-2 border-t border-gray-200 dark:border-gray-800">صور المشروع (انقر للتكبير):</h4>
                 <div id="modalProjectImagesGrid" class="grid grid-cols-2 gap-2.5"></div>
             </div>
         </div>
     </div>
 
-    <!-- Image View Modal (تكبير الصورة المنفردة بحجم كامل) -->
+    <!-- Image View Modal -->
     <div id="imageViewModal" class="fixed inset-0 bg-black/95 backdrop-blur-lg hidden flex flex-col items-center justify-center z-[130] p-4" onclick="window.closeImageView()">
         <img id="enlargedImage" src="" class="max-w-full max-h-[80vh] rounded-2xl border border-gray-800 shadow-2xl object-contain mb-3" />
         <button type="button" class="mt-4 bg-gray-800 text-gray-300 px-4 py-1.5 rounded-xl text-xs"><i class="fa-solid fa-xmark"></i> إغلاق المعاينة</button>
@@ -185,7 +242,6 @@
                 </h3>
                 <button type="button" onclick="window.closeShareModal()" class="text-gray-400 hover:text-gray-700 dark:hover:text-white text-lg"><i class="fa-solid fa-xmark"></i></button>
             </div>
-            
             <div class="grid grid-cols-4 gap-3 mb-5 text-center text-xs">
                 <a id="shareWhatsapp" href="#" target="_blank" class="flex flex-col items-center gap-1.5 p-3 rounded-2xl bg-emerald-500/10 border border-emerald-500/20 text-emerald-500 hover:bg-emerald-500/20 transition">
                     <i class="fa-brands fa-whatsapp text-2xl"></i>
@@ -204,7 +260,6 @@
                     <span>إكس</span>
                 </a>
             </div>
-
             <div class="flex gap-2 bg-lightbg dark:bg-darkbg p-2 rounded-xl border border-gray-200 dark:border-gray-700 items-center">
                 <input type="text" id="shareUrlInput" readonly class="w-full bg-transparent text-[11px] text-gray-500 dark:text-gray-400 outline-none px-2" />
                 <button type="button" onclick="window.copyProfileLink()" class="bg-goldaccent text-black font-bold px-4 py-2 rounded-lg text-xs whitespace-nowrap">نسخ الرابط</button>
@@ -212,53 +267,92 @@
         </div>
     </div>
 
-    <!-- PIN Authentication Modal -->
+    <!-- PIN Authentication Modal (الأدمن الأساسي) -->
     <div id="pinModal" class="fixed inset-0 bg-black/85 backdrop-blur-md hidden flex items-center justify-center z-[100] p-4">
         <div class="bg-lightcard dark:bg-cardbg border border-gray-200 dark:border-gray-800 w-full max-w-xs rounded-2xl p-6 text-center shadow-2xl transition-colors duration-300">
             <div class="w-12 h-12 bg-goldaccent/10 border border-goldaccent/30 rounded-full flex items-center justify-center mx-auto mb-3 text-goldaccent">
                 <i class="fa-solid fa-shield-halved text-xl"></i>
             </div>
-            <h3 class="text-lg font-bold dark:text-white mb-1">تسجيل الدخول للإدارة</h3>
-            <p class="text-xs text-gray-500 dark:text-gray-400 mb-4">خاص بقسم الإدارة <span class="text-goldaccent font-mono font-bold">☠️</span></p>
+            <h3 class="text-lg font-bold dark:text-white mb-1">تسجيل دخول الأدمن الرئيسي</h3>
+            <p class="text-xs text-gray-500 dark:text-gray-400 mb-4">خاص بقسم الادارة: <span class="text-goldaccent font-mono font-bold">☠️</span></p>
             <input type="password" id="pinInput" maxlength="6" class="w-full bg-lightbg dark:bg-darkbg border border-gray-300 dark:border-gray-700 text-center text-xl tracking-widest text-goldaccent rounded-xl py-2 mb-4 outline-none focus:border-goldaccent">
             <div class="flex gap-2">
                 <button type="button" onclick="window.verifyPin()" class="flex-1 bg-goldaccent active:bg-yellow-600 text-black font-bold py-2.5 rounded-xl text-sm">دخول</button>
-                <button type="button" onclick="window.closePinModal()" class="flex-1 bg-gray-200 dark:bg-gray-800 active:bg-gray-300 dark:active:bg-gray-700 text-gray-700 dark:text-gray-300 font-bold py-2.5 rounded-xl text-sm">إلغاء</button>
+                <button type="button" onclick="window.closePinModal()" class="flex-1 bg-gray-200 dark:bg-gray-800 text-gray-700 dark:text-gray-300 font-bold py-2.5 rounded-xl text-sm">إلغاء</button>
             </div>
         </div>
     </div>
 
-    <!-- Admin Panel Modal -->
+    <!-- Member PIN Authentication Modal (لوحة تحكم العضو) -->
+    <div id="memberPinModal" class="fixed inset-0 bg-black/85 backdrop-blur-md hidden flex items-center justify-center z-[100] p-4">
+        <div class="bg-lightcard dark:bg-cardbg border border-gray-200 dark:border-gray-800 w-full max-w-xs rounded-2xl p-6 text-center shadow-2xl transition-colors duration-300">
+            <div class="w-12 h-12 bg-cyanaccent/10 border border-cyanaccent/30 rounded-full flex items-center justify-center mx-auto mb-3 text-cyanaccent">
+                <i class="fa-solid fa-user-gear text-xl"></i>
+            </div>
+            <h3 class="text-lg font-bold dark:text-white mb-1">تسجيل دخول لوحة العضو</h3>
+            <p class="text-xs text-gray-500 dark:text-gray-400 mb-4">أدخل رمز الـ PIN الخاص بصفحتك:</p>
+            <input type="password" id="memberPinInput" maxlength="6" class="w-full bg-lightbg dark:bg-darkbg border border-gray-300 dark:border-gray-700 text-center text-xl tracking-widest text-cyanaccent rounded-xl py-2 mb-4 outline-none focus:border-cyanaccent">
+            <div class="flex gap-2">
+                <button type="button" onclick="window.verifyMemberPin()" class="flex-1 bg-cyanaccent active:bg-cyan-600 text-black font-bold py-2.5 rounded-xl text-sm">دخول</button>
+                <button type="button" onclick="window.closeMemberPinModal()" class="flex-1 bg-gray-200 dark:bg-gray-800 text-gray-700 dark:text-gray-300 font-bold py-2.5 rounded-xl text-sm">إلغاء</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Admin Panel Modal (اللوحة الرئيسية للأدمن الأساسي) -->
     <div id="adminModal" class="fixed inset-0 bg-black/85 backdrop-blur-md hidden flex items-center justify-center z-[100] p-3">
         <div class="bg-lightcard dark:bg-cardbg border border-gray-200 dark:border-gray-800 w-full max-w-lg rounded-2xl p-4 shadow-2xl max-h-[92vh] flex flex-col transition-colors duration-300">
-            
             <div class="flex justify-between items-center border-b border-gray-200 dark:border-gray-800 pb-3 mb-3">
                 <h3 class="text-base font-bold text-goldaccent flex items-center gap-2">
-                    <i class="fa-solid fa-sliders"></i> لوحة التحكم الاحترافية (معرض المشاريع المتقدم)
+                    <i class="fa-solid fa-sliders"></i> لوحة التحكم الرئيسية (الأدمن الأساسي)
                 </h3>
                 <button type="button" onclick="window.closeAdminModal()" class="text-gray-400 hover:text-gray-700 dark:hover:text-white text-xl px-2"><i class="fa-solid fa-xmark"></i></button>
             </div>
-
             <div class="overflow-y-auto flex-grow pr-1 space-y-3 text-xs">
 
-                <!-- Accordion 1: Profile Settings -->
+                <!-- Accordion 0: Manage Feedback / Messages from Members -->
+                <div class="bg-lightbg dark:bg-darkbg rounded-xl border border-gray-200 dark:border-gray-800 overflow-hidden transition-colors">
+                    <button type="button" onclick="window.toggleAccordion('accFeedback')" class="w-full p-3 flex justify-between items-center font-bold text-gray-700 dark:text-gray-300">
+                        <span class="flex items-center gap-2"><i class="fa-solid fa-comment-dots text-goldaccent"></i> ملاحظات ورسائل الأعضاء الواردة</span>
+                        <i id="icon-accFeedback" class="fa-solid fa-chevron-down transition-transform"></i>
+                    </button>
+                    <div id="accFeedback" class="hidden p-3 pt-0 space-y-2 border-t border-gray-200 dark:border-gray-800 mt-1">
+                        <div id="adminFeedbackList" class="space-y-2 mt-2"></div>
+                    </div>
+                </div>
+
+                <!-- Accordion 1: Manage Join Requests & Users -->
+                <div class="bg-lightbg dark:bg-darkbg rounded-xl border border-gray-200 dark:border-gray-800 overflow-hidden transition-colors">
+                    <button type="button" onclick="window.toggleAccordion('accJoinRequests')" class="w-full p-3 flex justify-between items-center font-bold text-gray-700 dark:text-gray-300">
+                        <span class="flex items-center gap-2"><i class="fa-solid fa-users-gear text-cyanaccent"></i> طلبات الأعضاء الجدد والأعضاء المقبولين</span>
+                        <i id="icon-accJoinRequests" class="fa-solid fa-chevron-down transition-transform"></i>
+                    </button>
+                    <div id="accJoinRequests" class="hidden p-3 pt-0 space-y-3 border-t border-gray-200 dark:border-gray-800 mt-1">
+                        <h4 class="font-bold text-cyanaccent mt-2">طلبات الانضمام المعلقة:</h4>
+                        <div id="adminPendingRequestsList" class="space-y-2"></div>
+                        <h4 class="font-bold text-goldaccent pt-3 border-t border-gray-300 dark:border-gray-700">الأعضاء الحاليين في المنصة:</h4>
+                        <div id="adminUsersList" class="space-y-1.5"></div>
+                    </div>
+                </div>
+
+                <!-- Accordion 2: Profile Settings -->
                 <div class="bg-lightbg dark:bg-darkbg rounded-xl border border-gray-200 dark:border-gray-800 overflow-hidden transition-colors">
                     <button type="button" onclick="window.toggleAccordion('accProfile')" class="w-full p-3 flex justify-between items-center font-bold text-gray-700 dark:text-gray-300">
-                        <span class="flex items-center gap-2"><i class="fa-solid fa-user-pen text-goldaccent"></i> الملف الشخصي وصورة البروفايل</span>
+                        <span class="flex items-center gap-2"><i class="fa-solid fa-user-pen text-goldaccent"></i> الملف الشخصي والصورة للرئيسي</span>
                         <i id="icon-accProfile" class="fa-solid fa-chevron-down transition-transform"></i>
                     </button>
                     <div id="accProfile" class="hidden p-3 pt-0 space-y-2 border-t border-gray-200 dark:border-gray-800 mt-1">
                         <input type="text" id="editDisplayName" placeholder="الاسم الظاهر" class="w-full bg-lightcard dark:bg-cardbg border border-gray-300 dark:border-gray-700 rounded-lg p-2 dark:text-white outline-none mt-2">
                         <input type="text" id="editBio" placeholder="الوصف المختصر" class="w-full bg-lightcard dark:bg-cardbg border border-gray-300 dark:border-gray-700 rounded-lg p-2 dark:text-white outline-none">
                         <div>
-                            <label class="block text-gray-500 dark:text-gray-400 mb-1">رفع صورة شخصية من الجهاز:</label>
-                            <input type="file" id="imageFileInput" accept="image/*" onchange="window.handleImageUpload(event)" class="w-full text-gray-500 dark:text-gray-400 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-xs file:font-semibold file:bg-goldaccent/20 file:text-goldaccent hover:file:bg-goldaccent/30 cursor-pointer mb-2">
+                            <label class="block text-gray-500 dark:text-gray-400 mb-1">رفع صورة شخصية:</label>
+                            <input type="file" id="imageFileInput" accept="image/*" onchange="window.handleImageUpload(event)" class="w-full text-gray-500 dark:text-gray-400 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-xs file:font-semibold file:bg-goldaccent/20 file:text-goldaccent cursor-pointer mb-2">
                             <button type="button" onclick="window.removeProfileImage()" class="text-red-500 dark:text-red-400 block mt-1">إزالة الصورة الحالية</button>
                         </div>
                     </div>
                 </div>
 
-                <!-- Accordion 2: Contacts -->
+                <!-- Accordion 3: Contacts -->
                 <div class="bg-lightbg dark:bg-darkbg rounded-xl border border-gray-200 dark:border-gray-800 overflow-hidden transition-colors">
                     <button type="button" onclick="window.toggleAccordion('accContacts')" class="w-full p-3 flex justify-between items-center font-bold text-gray-700 dark:text-gray-300">
                         <span class="flex items-center gap-2"><i class="fa-solid fa-address-book text-goldaccent"></i> معلومات الاتصال</span>
@@ -267,7 +361,7 @@
                     <div id="accContacts" class="hidden p-3 pt-0 space-y-2 border-t border-gray-200 dark:border-gray-800 mt-1">
                         <div class="flex items-center gap-2 mt-2">
                             <input type="checkbox" id="showWhatsapp" class="accent-goldaccent">
-                            <input type="text" id="editWhatsapp" placeholder="رقم الواتساب مع الرمز الدولي" class="flex-1 bg-lightcard dark:bg-cardbg border border-gray-300 dark:border-gray-700 rounded-lg p-2 dark:text-white outline-none">
+                            <input type="text" id="editWhatsapp" placeholder="رقم الواتساب" class="flex-1 bg-lightcard dark:bg-cardbg border border-gray-300 dark:border-gray-700 rounded-lg p-2 dark:text-white outline-none">
                         </div>
                         <div class="flex items-center gap-2">
                             <input type="checkbox" id="showPhone" class="accent-goldaccent">
@@ -280,67 +374,29 @@
                     </div>
                 </div>
 
-                <!-- Accordion 3: Multi-Image Projects Gallery Admin (NEW) -->
+                <!-- Accordion 4: Gallery Admin -->
                 <div class="bg-lightbg dark:bg-darkbg rounded-xl border border-gray-200 dark:border-gray-800 overflow-hidden transition-colors">
                     <button type="button" onclick="window.toggleAccordion('accGalleryAdmin')" class="w-full p-3 flex justify-between items-center font-bold text-gray-700 dark:text-gray-300">
-                        <span class="flex items-center gap-2"><i class="fa-solid fa-images text-goldaccent"></i> إدارة المشاريع والأعمال متعددة الصور</span>
+                        <span class="flex items-center gap-2"><i class="fa-solid fa-images text-goldaccent"></i> إدارة المشاريع والأعمال</span>
                         <i id="icon-accGalleryAdmin" class="fa-solid fa-chevron-down transition-transform"></i>
                     </button>
                     <div id="accGalleryAdmin" class="hidden p-3 pt-0 space-y-3 border-t border-gray-200 dark:border-gray-800 mt-1">
-                        <div class="bg-goldaccent/10 p-2.5 rounded-xl border border-goldaccent/20 text-[11px] text-goldaccent mb-2">
-                            <i class="fa-solid fa-circle-info"></i> ارفع صورك على <a href="https://imgbb.com" target="_blank" class="underline font-bold">ImgBB.com</a> وضع الروابط مفصولين بفواصل أو تحت بعضهم.
-                        </div>
-                        <div class="space-y-2">
+                        <div class="space-y-2 mt-2">
                             <h4 id="galleryFormTitle" class="font-bold text-goldaccent">إضافة مشروع جديد</h4>
                             <input type="hidden" id="editingGalleryId">
-                            <input type="text" id="galleryTitle" placeholder="عنوان المشروع (مثال: واجهة معمل الألوكوبوند)" class="w-full bg-lightcard dark:bg-cardbg border border-gray-300 dark:border-gray-700 rounded-lg p-2 dark:text-white outline-none">
-                            <input type="text" id="galleryCategory" placeholder="الفئة (مثال: واجهات ألوكوبوند، تصاميم 3D)" class="w-full bg-lightcard dark:bg-cardbg border border-gray-300 dark:border-gray-700 rounded-lg p-2 dark:text-white outline-none">
-                            <textarea id="galleryDesc" placeholder="تفاصيل المشروع (وصف العمل والمواصفات)..." class="w-full bg-lightcard dark:bg-cardbg border border-gray-300 dark:border-gray-700 rounded-lg p-2 dark:text-white outline-none h-16 resize-none"></textarea>
-                            
-                            <div>
-                                <label class="block text-[11px] font-bold text-goldaccent mb-1">رابط الصورة الرئيسية (الغلاف):</label>
-                                <input type="url" id="galleryCoverUrl" placeholder="https://i.ibb.co/..." class="w-full bg-lightcard dark:bg-cardbg border border-gray-300 dark:border-gray-700 rounded-lg p-2 dark:text-white outline-none">
-                            </div>
-
-                            <div>
-                                <label class="block text-[11px] font-bold text-gray-400 mb-1">روابط الصور الإضافية (باقي الزوايا - ضع كل رابط في سطر أو افصل بينها بفاصلة):</label>
-                                <textarea id="galleryExtraUrls" placeholder="https://i.ibb.co/image1...&#10;https://i.ibb.co/image2..." class="w-full bg-lightcard dark:bg-cardbg border border-gray-300 dark:border-gray-700 rounded-lg p-2 dark:text-white outline-none h-20 text-[11px] font-mono"></textarea>
-                            </div>
-                            
+                            <input type="text" id="galleryTitle" placeholder="عنوان المشروع" class="w-full bg-lightcard dark:bg-cardbg border border-gray-300 dark:border-gray-700 rounded-lg p-2 dark:text-white outline-none">
+                            <input type="text" id="galleryCategory" placeholder="الفئة" class="w-full bg-lightcard dark:bg-cardbg border border-gray-300 dark:border-gray-700 rounded-lg p-2 dark:text-white outline-none">
+                            <textarea id="galleryDesc" placeholder="تفاصيل المشروع..." class="w-full bg-lightcard dark:bg-cardbg border border-gray-300 dark:border-gray-700 rounded-lg p-2 dark:text-white outline-none h-16 resize-none"></textarea>
+                            <input type="url" id="galleryCoverUrl" placeholder="رابط الغلاف" class="w-full bg-lightcard dark:bg-cardbg border border-gray-300 dark:border-gray-700 rounded-lg p-2 dark:text-white outline-none">
+                            <textarea id="galleryExtraUrls" placeholder="روابط إضافية (كل رابط في سطر)" class="w-full bg-lightcard dark:bg-cardbg border border-gray-300 dark:border-gray-700 rounded-lg p-2 dark:text-white outline-none h-16 text-[11px] font-mono"></textarea>
                             <div class="flex gap-2 pt-1">
                                 <button type="button" onclick="window.saveGalleryItem()" class="flex-1 bg-goldaccent text-black font-bold py-2 rounded-lg">حفظ المشروع</button>
                                 <button type="button" onclick="window.resetGalleryForm()" class="bg-gray-200 dark:bg-gray-800 text-gray-700 dark:text-gray-300 px-3 py-2 rounded-lg">إلغاء</button>
                             </div>
                         </div>
                         <div class="space-y-1.5 pt-2 border-t border-gray-300 dark:border-gray-700">
-                            <h4 class="font-bold text-gray-500 dark:text-gray-400">المشاريع المضافة</h4>
+                            <h4 class="font-bold text-gray-500 dark:text-gray-400">المشاريع المضافة (مع الترتيب صعوداً ونزولاً)</h4>
                             <div id="adminGalleryList" class="space-y-1.5"></div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Accordion 4: Sidebar Menu Management -->
-                <div class="bg-lightbg dark:bg-darkbg rounded-xl border border-gray-200 dark:border-gray-800 overflow-hidden transition-colors">
-                    <button type="button" onclick="window.toggleAccordion('accSidebar')" class="w-full p-3 flex justify-between items-center font-bold text-gray-700 dark:text-gray-300">
-                        <span class="flex items-center gap-2"><i class="fa-solid fa-bars-staggered text-goldaccent"></i> إدارة القائمة الجانبية (Sidebar)</span>
-                        <i id="icon-accSidebar" class="fa-solid fa-chevron-down transition-transform"></i>
-                    </button>
-                    <div id="accSidebar" class="hidden p-3 pt-0 space-y-3 border-t border-gray-200 dark:border-gray-800 mt-1">
-                        <div class="space-y-2 mt-2">
-                            <h4 id="sidebarFormTitle" class="font-bold text-goldaccent">إضافة عنصر للقائمة الجانبية</h4>
-                            <input type="hidden" id="editingSidebarId">
-                            <input type="text" id="sidebarTitle" placeholder="عنوان العنصر" class="w-full bg-lightcard dark:bg-cardbg border border-gray-300 dark:border-gray-700 rounded-lg p-2 dark:text-white outline-none">
-                            <input type="text" id="sidebarUrl" placeholder="الرابط أو #" class="w-full bg-lightcard dark:bg-cardbg border border-gray-300 dark:border-gray-700 rounded-lg p-2 dark:text-white outline-none">
-                            <input type="text" id="sidebarIcon" placeholder="أيقونة (مثل fa-brands fa-whatsapp)" class="w-full bg-lightcard dark:bg-cardbg border border-gray-300 dark:border-gray-700 rounded-lg p-2 dark:text-white outline-none">
-                            
-                            <div class="flex gap-2 pt-1">
-                                <button type="button" onclick="window.saveSidebarItem()" class="flex-1 bg-goldaccent text-black font-bold py-2 rounded-lg">حفظ العنصر</button>
-                                <button type="button" onclick="window.resetSidebarForm()" class="bg-gray-200 dark:bg-gray-800 text-gray-700 dark:text-gray-300 px-3 py-2 rounded-lg">إلغاء</button>
-                            </div>
-                        </div>
-                        <div class="space-y-1.5 pt-2 border-t border-gray-300 dark:border-gray-700">
-                            <h4 class="font-bold text-gray-500 dark:text-gray-400">عناصر القائمة الجانبية الحالية</h4>
-                            <div id="adminSidebarList" class="space-y-1.5"></div>
                         </div>
                     </div>
                 </div>
@@ -348,7 +404,7 @@
                 <!-- Accordion 5: Categories -->
                 <div class="bg-lightbg dark:bg-darkbg rounded-xl border border-gray-200 dark:border-gray-800 overflow-hidden transition-colors">
                     <button type="button" onclick="window.toggleAccordion('accCategories')" class="w-full p-3 flex justify-between items-center font-bold text-gray-700 dark:text-gray-300">
-                        <span class="flex items-center gap-2"><i class="fa-solid fa-folder-tree text-goldaccent"></i> إدارة فئات الروابط</span>
+                        <span class="flex items-center gap-2"><i class="fa-solid fa-folder-tree text-goldaccent"></i> إدارة الفئات</span>
                         <i id="icon-accCategories" class="fa-solid fa-chevron-down transition-transform"></i>
                     </button>
                     <div id="accCategories" class="hidden p-3 pt-0 space-y-2 border-t border-gray-200 dark:border-gray-800 mt-1">
@@ -356,14 +412,14 @@
                             <input type="text" id="newCategoryInput" placeholder="فئة جديدة..." class="flex-1 bg-lightcard dark:bg-cardbg border border-gray-300 dark:border-gray-700 rounded-lg p-2 dark:text-white outline-none">
                             <button type="button" onclick="window.addCategory()" class="bg-goldaccent/20 text-goldaccent border border-goldaccent/40 px-3 py-1 rounded-lg font-bold">إضافة</button>
                         </div>
-                        <div id="adminCategoriesList" class="flex flex-wrap gap-1.5 pt-1"></div>
+                        <div id="adminCategoriesList" class="space-y-1.5 pt-2"></div>
                     </div>
                 </div>
 
                 <!-- Accordion 6: Links Management -->
                 <div class="bg-lightbg dark:bg-darkbg rounded-xl border border-gray-200 dark:border-gray-800 overflow-hidden transition-colors">
                     <button type="button" onclick="window.toggleAccordion('accLinks')" class="w-full p-3 flex justify-between items-center font-bold text-gray-700 dark:text-gray-300">
-                        <span class="flex items-center gap-2"><i class="fa-solid fa-link text-goldaccent"></i> إدارة الروابط الحالية</span>
+                        <span class="flex items-center gap-2"><i class="fa-solid fa-link text-goldaccent"></i> إدارة الروابط</span>
                         <i id="icon-accLinks" class="fa-solid fa-chevron-down transition-transform"></i>
                     </button>
                     <div id="accLinks" class="hidden p-3 pt-0 space-y-3 border-t border-gray-200 dark:border-gray-800 mt-1">
@@ -374,29 +430,28 @@
                             <input type="url" id="linkUrl" placeholder="الرابط https://..." class="w-full bg-lightcard dark:bg-cardbg border border-gray-300 dark:border-gray-700 rounded-lg p-2 dark:text-white outline-none">
                             <div class="flex gap-2">
                                 <select id="linkCategory" class="flex-1 bg-lightcard dark:bg-cardbg border border-gray-300 dark:border-gray-700 rounded-lg p-2 dark:text-white outline-none"></select>
-                                <input type="text" id="linkIcon" placeholder="أيقونة (مثل fa-brands fa-whatsapp)" class="flex-1 bg-lightcard dark:bg-cardbg border border-gray-300 dark:border-gray-700 rounded-lg p-2 dark:text-white outline-none">
+                                <input type="text" id="linkIcon" placeholder="أيقونة" class="flex-1 bg-lightcard dark:bg-cardbg border border-gray-300 dark:border-gray-700 rounded-lg p-2 dark:text-white outline-none">
                             </div>
                             <div class="flex gap-2 pt-1">
-                                <button type="button" onclick="window.saveLink()" class="flex-1 bg-goldaccent text-black font-bold py-2 rounded-lg">حفظ الرابط</button>
+                                <button type="button" onclick="window.saveLink()" class="flex-1 bg-goldaccent text-black font-bold py-2 rounded-lg">حفظ</button>
                                 <button type="button" onclick="window.resetLinkForm()" class="bg-gray-200 dark:bg-gray-800 text-gray-700 dark:text-gray-300 px-3 py-2 rounded-lg">إلغاء</button>
                             </div>
                         </div>
                         <div class="space-y-1.5 pt-2 border-t border-gray-300 dark:border-gray-700">
-                            <h4 class="font-bold text-gray-500 dark:text-gray-400">الروابط المضافة</h4>
                             <div id="adminLinksList" class="space-y-1.5"></div>
                         </div>
                     </div>
                 </div>
 
-                <!-- Accordion 7: Security / PIN -->
+                <!-- Accordion 7: Security -->
                 <div class="bg-lightbg dark:bg-darkbg rounded-xl border border-gray-200 dark:border-gray-800 overflow-hidden transition-colors">
                     <button type="button" onclick="window.toggleAccordion('accSecurity')" class="w-full p-3 flex justify-between items-center font-bold text-gray-700 dark:text-gray-300">
-                        <span class="flex items-center gap-2"><i class="fa-solid fa-key text-goldaccent"></i> الأمان وتغيير رمز PIN</span>
+                        <span class="flex items-center gap-2"><i class="fa-solid fa-key text-goldaccent"></i> تغيير رمز PIN</span>
                         <i id="icon-accSecurity" class="fa-solid fa-chevron-down transition-transform"></i>
                     </button>
                     <div id="accSecurity" class="hidden p-3 pt-0 space-y-2 border-t border-gray-200 dark:border-gray-800 mt-1">
                         <div class="flex gap-2 mt-2">
-                            <input type="password" id="newPinInput" maxlength="6" placeholder="رمز PIN جديد" class="flex-1 bg-lightcard dark:bg-cardbg border border-gray-300 dark:border-gray-700 rounded-lg p-2 dark:text-white outline-none">
+                            <input type="password" id="newPinInput" maxlength="6" placeholder="رمز جديد" class="flex-1 bg-lightcard dark:bg-cardbg border border-gray-300 dark:border-gray-700 rounded-lg p-2 dark:text-white outline-none">
                             <button type="button" onclick="window.changePin()" class="bg-goldaccent/20 text-goldaccent border border-goldaccent/40 px-3 py-1 rounded-lg font-bold">تحديث</button>
                         </div>
                     </div>
@@ -405,14 +460,79 @@
             </div>
 
             <div class="border-t border-gray-200 dark:border-gray-800 pt-3 mt-3 flex justify-between items-center transition-colors">
-                <button type="button" onclick="window.exportDataJson()" class="bg-gray-200 dark:bg-gray-800 text-gray-700 dark:text-gray-300 px-3 py-2 rounded-xl text-xs">تصدير النسخة الاحتياطية</button>
-                <button type="button" onclick="window.saveAllChanges()" class="bg-goldaccent text-black font-bold px-5 py-2 rounded-xl text-xs">حفظ ونشر التغييرات للسحاب</button>
+                <button type="button" onclick="window.exportDataJson()" class="bg-gray-200 dark:bg-gray-800 text-gray-700 dark:text-gray-300 px-3 py-2 rounded-xl text-xs">تصدير النسخة</button>
+                <button type="button" onclick="window.saveAllChanges()" class="bg-goldaccent text-black font-bold px-5 py-2 rounded-xl text-xs">حفظ ونشر للسحاب</button>
             </div>
-
         </div>
     </div>
 
-    <!-- Script Engine with Firebase Modular SDK -->
+    <!-- Member Panel Modal (لوحة تحكم العضو الفرعية مع إدارة المشاريع والأعمال والترتيب) -->
+    <div id="memberModal" class="fixed inset-0 bg-black/85 backdrop-blur-md hidden flex items-center justify-center z-[100] p-3">
+        <div class="bg-lightcard dark:bg-cardbg border border-gray-200 dark:border-gray-800 w-full max-w-lg rounded-2xl p-4 shadow-2xl max-h-[92vh] flex flex-col transition-colors duration-300">
+            <div class="flex justify-between items-center border-b border-gray-200 dark:border-gray-800 pb-3 mb-3">
+                <h3 class="text-base font-bold text-cyanaccent flex items-center gap-2">
+                    <i class="fa-solid fa-user-gear"></i> لوحة التحكم الفرعية الخاصة بك (<span id="memberNameTitle"></span>)
+                </h3>
+                <button type="button" onclick="window.closeMemberModal()" class="text-gray-400 hover:text-gray-700 dark:hover:text-white text-xl px-2"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            <div class="overflow-y-auto flex-grow pr-1 space-y-3 text-xs">
+
+                <!-- Profile & Security Edit -->
+                <div class="bg-lightbg dark:bg-darkbg rounded-xl border border-gray-200 dark:border-gray-800 p-3 space-y-2">
+                    <h4 class="font-bold text-cyanaccent">تعديل معلومات صفحتك والصورة وكلمة المرور</h4>
+                    <input type="text" id="memberEditName" placeholder="اسمك الظاهر" class="w-full bg-lightcard dark:bg-cardbg border border-gray-300 dark:border-gray-700 rounded-lg p-2 dark:text-white outline-none">
+                    <textarea id="memberEditBio" placeholder="نبذة مختصرة..." class="w-full bg-lightcard dark:bg-cardbg border border-gray-300 dark:border-gray-700 rounded-lg p-2 dark:text-white outline-none h-16 resize-none"></textarea>
+                    
+                    <div>
+                        <label class="block text-gray-500 dark:text-gray-400 mb-1">رفع صورة شخصية جديدة من الجهاز:</label>
+                        <input type="file" id="memberImageFileInput" accept="image/*" onchange="window.handleMemberImageUpload(event)" class="w-full text-gray-500 dark:text-gray-400 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-xs file:font-semibold file:bg-cyanaccent/20 file:text-cyanaccent cursor-pointer mb-1">
+                    </div>
+                    <input type="url" id="memberEditAvatar" placeholder="أو أدخل رابط الصورة الشخصية مباشرة" class="w-full bg-lightcard dark:bg-cardbg border border-gray-300 dark:border-gray-700 rounded-lg p-2 dark:text-white outline-none">
+                    
+                    <input type="text" id="memberEditWhatsapp" placeholder="رقم الواتساب" class="w-full bg-lightcard dark:bg-cardbg border border-gray-300 dark:border-gray-700 rounded-lg p-2 dark:text-white outline-none">
+
+                    <!-- Change Member PIN Option -->
+                    <div class="pt-2 border-t border-gray-200 dark:border-gray-700">
+                        <label class="block text-cyanaccent font-bold mb-1"><i class="fa-solid fa-key"></i> تغيير كلمة المرور / رمز PIN الخاص بك:</label>
+                        <input type="password" id="memberNewPinInput" maxlength="6" placeholder="أدخل رمز PIN الجديد (أو اتركه فارغاً لعدم التغيير)" class="w-full bg-lightcard dark:bg-cardbg border border-gray-300 dark:border-gray-700 rounded-lg p-2 dark:text-white outline-none">
+                    </div>
+                </div>
+
+                <!-- Member Gallery Management -->
+                <div class="bg-lightbg dark:bg-darkbg rounded-xl border border-gray-200 dark:border-gray-800 p-3 space-y-2">
+                    <h4 id="memberGalleryFormTitle" class="font-bold text-cyanaccent">إدارة معرض المشاريع والأعمال</h4>
+                    <input type="hidden" id="memberEditingGalleryId">
+                    <input type="text" id="memberGalleryTitle" placeholder="عنوان المشروع" class="w-full bg-lightcard dark:bg-cardbg border border-gray-300 dark:border-gray-700 rounded-lg p-2 dark:text-white outline-none">
+                    <input type="text" id="memberGalleryCategory" placeholder="فئة المشروع (مثال: تصاميم، واجهات)" class="w-full bg-lightcard dark:bg-cardbg border border-gray-300 dark:border-gray-700 rounded-lg p-2 dark:text-white outline-none">
+                    <textarea id="memberGalleryDesc" placeholder="تفاصيل المشروع..." class="w-full bg-lightcard dark:bg-cardbg border border-gray-300 dark:border-gray-700 rounded-lg p-2 dark:text-white outline-none h-16 resize-none"></textarea>
+                    <input type="url" id="memberGalleryCoverUrl" placeholder="رابط صورة الغلاف الرئيسية للمشروع" class="w-full bg-lightcard dark:bg-cardbg border border-gray-300 dark:border-gray-700 rounded-lg p-2 dark:text-white outline-none">
+                    <textarea id="memberGalleryExtraUrls" placeholder="روابط صور إضافية (كل رابط في سطر)" class="w-full bg-lightcard dark:bg-cardbg border border-gray-300 dark:border-gray-700 rounded-lg p-2 dark:text-white outline-none h-16 text-[11px] font-mono"></textarea>
+                    <div class="flex gap-2 pt-1">
+                        <button type="button" onclick="window.saveMemberGalleryItem()" class="flex-1 bg-cyanaccent text-black font-bold py-2 rounded-lg">حفظ المشروع</button>
+                        <button type="button" onclick="window.resetMemberGalleryForm()" class="bg-gray-200 dark:bg-gray-800 text-gray-700 dark:text-gray-300 px-3 py-2 rounded-lg">إلغاء</button>
+                    </div>
+                    <div id="memberGalleryList" class="space-y-1.5 pt-2 border-t border-gray-200 dark:border-gray-700"></div>
+                </div>
+
+                <!-- Links Edit -->
+                <div class="bg-lightbg dark:bg-darkbg rounded-xl border border-gray-200 dark:border-gray-800 p-3 space-y-2">
+                    <h4 class="font-bold text-cyanaccent">إدارة روابط صفحتك (مع أزرار الترتيب)</h4>
+                    <input type="text" id="memberLinkTitle" placeholder="عنوان الرابط (مثل: تليجرام، موقعي)" class="w-full bg-lightcard dark:bg-cardbg border border-gray-300 dark:border-gray-700 rounded-lg p-2 dark:text-white outline-none">
+                    <input type="url" id="memberLinkUrl" placeholder="الرابط https://..." class="w-full bg-lightcard dark:bg-cardbg border border-gray-300 dark:border-gray-700 rounded-lg p-2 dark:text-white outline-none">
+                    <input type="text" id="memberLinkIcon" placeholder="أيقونة (مثل fa-brands fa-telegram)" class="w-full bg-lightcard dark:bg-cardbg border border-gray-300 dark:border-gray-700 rounded-lg p-2 dark:text-white outline-none">
+                    <button type="button" onclick="window.saveMemberLink()" class="w-full bg-cyanaccent/20 text-cyanaccent border border-cyanaccent/40 font-bold py-2 rounded-lg">إضافة الرابط لقائمتي</button>
+                    <div id="memberLinksList" class="space-y-1.5 pt-2"></div>
+                </div>
+
+            </div>
+
+            <div class="border-t border-gray-200 dark:border-gray-800 pt-3 mt-3 flex justify-end">
+                <button type="button" onclick="window.saveMemberChanges()" class="bg-cyanaccent text-black font-bold px-5 py-2 rounded-xl text-xs">حفظ ونشر التغييرات</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Script Engine with Firebase -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/13.2.0/firebase-app.js";
         import { getDatabase, ref, set, onValue } from "https://www.gstatic.com/firebasejs/13.2.0/firebase-database.js";
@@ -430,7 +550,10 @@
         const app = initializeApp(firebaseConfig);
         const db = getDatabase(app);
 
-        const defaultData = {
+        const urlParams = new URLSearchParams(window.location.search);
+        const currentUsername = urlParams.get('user') || 'mahmoud';
+
+        const defaultUserData = {
             displayName: "محمود دملخي",
             bio: "خدمات التصميم الإعلاني، حلول الطباعة، وتكسية واجهات الألوكوبوند",
             pin: "1234",
@@ -445,52 +568,64 @@
             },
             categories: ["الكل", "إعلان وتصميم", "بناء وألوكبوند"],
             sidebarLinks: [
-                { id: 'sb1', title: 'لوحة الإدارة', url: '#', icon: 'fa-lock', action: 'openPin' },
-                { id: 'sb2', title: 'تواصل معنا عبر واتساب', url: 'https://wa.me/', icon: 'fa-brands fa-whatsapp', action: 'link' }
+                { id: 'sb1', title: 'لوحة الإدارة الرئيسية', url: '#', icon: 'fa-solid fa-lock', action: 'openPin' },
+                { id: 'sb2', title: 'لوحة تحكم العضو', url: '#', icon: 'fa-solid fa-user-gear', action: 'openMemberPanel' },
+                { id: 'sb3', title: 'انضم إلينا كعضو', url: '#', icon: 'fa-solid fa-user-plus', action: 'openJoin' }
             ],
             gallery: [
                 { 
                     id: 'g1', 
                     title: 'واجهة معمل الألوكوبوند النموذجي', 
                     category: 'واجهات ألوكوبوند', 
-                    desc: 'تنفيذ وتكسية واجهات معمل بالكامل بمادة الألوكوبوند المقاوم للعوامل الجوية مع تصميم هندسي دقيق.',
+                    desc: 'تنفيذ وتكسية واجهات معمل بالكامل بمادة الألوكوبوند المقاوم للعوامل الجوية.',
                     coverUrl: 'https://i.ibb.co/6y4g8qf/sample.jpg', 
                     extraUrls: ['https://i.ibb.co/6y4g8qf/sample.jpg'] 
                 }
             ],
             links: [
-                { id: '1', title: 'لمسة فن بلس للخدمات الإعلانية', url: 'https://wa.me/', category: 'إعلان وتصميم', icon: 'fa-paint-brush' },
-                { id: '2', title: 'طيبانو للتجارة والبناء والألوكوبوند', url: 'https://wa.me/', category: 'بناء وألوكبوند', icon: 'fa-building' }
+                { id: '1', title: 'لمسة فن بلس للخدمات الإعلانية', url: 'https://wa.me/', category: 'إعلان وتصميم', icon: 'fa-solid fa-paint-brush' },
+                { id: '2', title: 'طيبانو للتجارة والبناء والألوكوبوند', url: 'https://wa.me/', category: 'بناء وألوكبوند', icon: 'fa-solid fa-building' }
             ]
         };
 
-        let appData = defaultData;
+        let rootData = { users: {}, pendingRequests: {}, feedbackMessages: {} };
+        let appData = defaultUserData;
         let activeCategory = "الكل";
         let activeGalleryCategory = "الكل";
         let tempImageBase64 = "";
+        let memberTempImageBase64 = "";
 
-        const dataRef = ref(db, 'linktreeData');
-        onValue(dataRef, (snapshot) => {
+        const dbRef = ref(db, 'platformData');
+        onValue(dbRef, (snapshot) => {
             const data = snapshot.val();
             if (data) {
-                appData = data;
-                if (!appData.sidebarLinks) appData.sidebarLinks = defaultData.sidebarLinks;
-                if (!appData.gallery) appData.gallery = defaultData.gallery;
+                rootData = data;
+                if (!rootData.users) rootData.users = {};
+                if (!rootData.pendingRequests) rootData.pendingRequests = {};
+                if (!rootData.feedbackMessages) rootData.feedbackMessages = {};
+
+                if (!rootData.users['mahmoud']) {
+                    rootData.users['mahmoud'] = defaultUserData;
+                }
+
+                appData = rootData.users[currentUsername] || rootData.users['mahmoud'];
             } else {
-                set(dataRef, defaultData);
-                appData = defaultData;
+                rootData.users['mahmoud'] = defaultUserData;
+                appData = defaultUserData;
+                set(dbRef, rootData);
             }
             initApp();
         }, (error) => {
-            console.error("Firebase load error", error);
+            console.error("Firebase error", error);
             initApp();
         });
 
         function saveDataToFirebase() {
-            set(dataRef, appData).then(() => {
-                alert('تم حفظ التغييرات على سحابة Firebase بنجاح وأصبحت مرئية لجميع الزوار!');
-            }).catch((error) => {
-                alert('حدث خطأ أثناء الحفظ بالسحابة: ' + error.message);
+            rootData.users[currentUsername] = appData;
+            set(dbRef, rootData).then(() => {
+                alert('تم الحفظ والتحديث على السحابة بنجاح!');
+            }).catch((err) => {
+                alert('خطأ في الحفظ: ' + err.message);
             });
         }
 
@@ -504,8 +639,8 @@
         }
 
         function initTheme() {
-            const savedTheme = localStorage.getItem('theme') || 'dark';
-            if (savedTheme === 'light') {
+            const saved = localStorage.getItem('theme') || 'dark';
+            if (saved === 'light') {
                 document.documentElement.classList.remove('dark');
                 document.getElementById('themeIcon').className = 'fa-solid fa-sun';
             } else {
@@ -546,253 +681,159 @@
             }
         };
 
-        // Gallery Modal Handlers
-        window.openGalleryModal = function() {
-            renderGalleryGrid();
-            document.getElementById('galleryModal').classList.remove('hidden');
+        // Feedback / Note Modals
+        window.openFeedbackModal = function() {
+            window.toggleSidebar();
+            document.getElementById('feedbackModal').classList.remove('hidden');
+        };
+        window.closeFeedbackModal = function() {
+            document.getElementById('feedbackModal').classList.add('hidden');
         };
 
-        window.closeGalleryModal = function() {
-            document.getElementById('galleryModal').classList.add('hidden');
+        window.submitFeedback = function() {
+            const senderName = document.getElementById('feedbackSenderName').value.trim() || 'عضو زائر';
+            const senderContact = document.getElementById('feedbackSenderContact').value.trim() || 'غير متوفر';
+            const message = document.getElementById('feedbackMessage').value.trim();
+
+            if (!message) { alert('الرجاء كتابة نص الملاحظة أو الرسالة.'); return; }
+
+            if (!rootData.feedbackMessages) rootData.feedbackMessages = {};
+            const msgId = 'msg_' + Date.now();
+            rootData.feedbackMessages[msgId] = {
+                id: msgId,
+                senderName,
+                senderContact,
+                message,
+                pageUser: currentUsername,
+                createdAt: Date.now()
+            };
+
+            set(dbRef, rootData).then(() => {
+                alert('تم إرسال ملاحظتك بنجاح إلى لوحة تحكم الإدارة!');
+                document.getElementById('feedbackSenderName').value = '';
+                document.getElementById('feedbackSenderContact').value = '';
+                document.getElementById('feedbackMessage').value = '';
+                window.closeFeedbackModal();
+            }).catch(err => {
+                alert('خطأ في إرسال الرسالة: ' + err.message);
+            });
         };
 
-        // Open Detailed Project View
+        // Join Request Modals
+        window.openJoinModal = function() { document.getElementById('joinModal').classList.remove('hidden'); };
+        window.closeJoinModal = function() { document.getElementById('joinModal').classList.add('hidden'); };
+
+        window.submitJoinRequest = function() {
+            const username = document.getElementById('joinUsername').value.trim().toLowerCase();
+            const displayName = document.getElementById('joinDisplayName').value.trim();
+            const bio = document.getElementById('joinBio').value.trim();
+            const image = document.getElementById('joinAvatar').value.trim();
+            const whatsapp = document.getElementById('joinWhatsapp').value.trim();
+
+            if (!username || !displayName) { alert('الرجاء إدخال المعرف والاسم.'); return; }
+            if (!whatsapp) { alert('الرجاء إدخال رقم الواتساب لتتمكن الإدارة من إرسال الرابط والرمز السري.'); return; }
+
+            if (!rootData.pendingRequests) rootData.pendingRequests = {};
+            rootData.pendingRequests[username] = { username, displayName, bio, image, whatsapp, createdAt: Date.now() };
+
+            set(dbRef, rootData).then(() => {
+                alert('تم إرسال طلب انضمامك بنجاح! سيتم مراجعته وإرسال رابط صفحتك ورمزك السري عبر رقم الواتساب الخاص بك قريباً.');
+                window.closeJoinModal();
+            });
+        };
+
+        // Gallery Handlers
+        window.openGalleryModal = function() { renderGalleryGrid(); document.getElementById('galleryModal').classList.remove('hidden'); };
+        window.closeGalleryModal = function() { document.getElementById('galleryModal').classList.add('hidden'); };
+
         window.openProjectDetail = function(id) {
             const project = (appData.gallery || []).find(g => g.id === id);
             if (!project) return;
-
             document.getElementById('modalProjectTitle').textContent = project.title;
             document.getElementById('modalProjectCategory').textContent = project.category || 'عام';
-            document.getElementById('modalProjectDesc').textContent = project.desc || 'لا توجد تفاصيل إضافية لهذا المشروع.';
+            document.getElementById('modalProjectDesc').textContent = project.desc || '';
 
             const imagesGrid = document.getElementById('modalProjectImagesGrid');
             imagesGrid.innerHTML = '';
-
-            // جمع الصور (الصورة الرئيسية + الصور الإضافية)
             let allImages = [];
             if (project.coverUrl) allImages.push(project.coverUrl);
             if (project.extraUrls) {
-                if (Array.isArray(project.extraUrls)) {
-                    allImages = allImages.concat(project.extraUrls);
-                } else if (typeof project.extraUrls === 'string') {
-                    const parsed = project.extraUrls.split(/[\n,]+/).map(s => s.trim()).filter(Boolean);
-                    allImages = allImages.concat(parsed);
-                }
+                if (Array.isArray(project.extraUrls)) allImages = allImages.concat(project.extraUrls);
+                else allImages = allImages.concat(project.extraUrls.split(/[\n,]+/).map(s => s.trim()).filter(Boolean));
             }
 
-            if (allImages.length === 0) {
-                imagesGrid.innerHTML = '<div class="col-span-full text-xs text-gray-400 text-center py-4">لا توجد صور متاحة.</div>';
-            } else {
-                allImages.forEach((imgUrl, idx) => {
-                    const imgCard = document.createElement('div');
-                    imgCard.className = 'aspect-video rounded-xl overflow-hidden bg-darkbg border border-gray-700 cursor-pointer group relative';
-                    imgCard.onclick = () => window.openImageView(imgUrl);
-                    imgCard.innerHTML = `
-                        <img src="${imgUrl}" class="w-full h-full object-cover group-hover:scale-105 transition duration-300" onerror="this.src='https://via.placeholder.com/300?text=رابط+غير+صالح'" />
-                        <div class="absolute bottom-1 right-1 bg-black/60 text-white text-[9px] px-1.5 py-0.5 rounded">زاوية ${idx + 1}</div>
-                    `;
-                    imagesGrid.appendChild(imgCard);
-                });
-            }
-
+            allImages.forEach((url, idx) => {
+                const card = document.createElement('div');
+                card.className = 'aspect-video rounded-xl overflow-hidden bg-darkbg border border-gray-700 cursor-pointer relative group';
+                card.onclick = () => window.openImageView(url);
+                card.innerHTML = `<img src="${url}" class="w-full h-full object-cover group-hover:scale-105 transition" /><span class="absolute bottom-1 right-1 bg-black/60 text-white text-[9px] px-1 py-0.5 rounded">زاوية ${idx+1}</span>`;
+                imagesGrid.appendChild(card);
+            });
             document.getElementById('projectDetailModal').classList.remove('hidden');
         };
-
-        window.closeProjectDetail = function() {
-            document.getElementById('projectDetailModal').classList.add('hidden');
-        };
-
-        window.openImageView = function(url) {
-            document.getElementById('enlargedImage').src = url;
-            document.getElementById('imageViewModal').classList.remove('hidden');
-        };
-
-        window.closeImageView = function() {
-            document.getElementById('imageViewModal').classList.add('hidden');
-        };
+        window.closeProjectDetail = function() { document.getElementById('projectDetailModal').classList.add('hidden'); };
+        window.openImageView = function(url) { document.getElementById('enlargedImage').src = url; document.getElementById('imageViewModal').classList.remove('hidden'); };
+        window.closeImageView = function() { document.getElementById('imageViewModal').classList.add('hidden'); };
 
         function renderGalleryGrid() {
             const grid = document.getElementById('galleryGrid');
             const filters = document.getElementById('galleryCategoryFilter');
             if (!grid || !filters) return;
-
-            grid.innerHTML = '';
-            filters.innerHTML = '';
+            grid.innerHTML = ''; filters.innerHTML = '';
 
             const galleryItems = appData.gallery || [];
-            const categories = ["الكل", ...new Set(galleryItems.map(i => i.category).filter(Boolean))];
+            const cats = ["الكل", ...new Set(galleryItems.map(i => i.category).filter(Boolean))];
 
-            categories.forEach(cat => {
-                const isActive = cat === activeGalleryCategory;
+            cats.forEach(cat => {
                 const btn = document.createElement('button');
                 btn.type = 'button';
-                btn.className = `px-3 py-1 rounded-xl whitespace-nowrap border text-xs transition ${isActive ? 'bg-goldaccent text-black font-bold border-goldaccent' : 'bg-lightbg dark:bg-darkbg text-gray-500 border-gray-200 dark:border-gray-800'}`;
+                btn.className = `px-3 py-1 rounded-xl whitespace-nowrap border text-xs transition ${cat === activeGalleryCategory ? 'bg-goldaccent text-black font-bold border-goldaccent' : 'bg-lightbg dark:bg-darkbg text-gray-500 border-gray-200 dark:border-gray-800'}`;
                 btn.textContent = cat;
                 btn.onclick = () => { activeGalleryCategory = cat; renderGalleryGrid(); };
                 filters.appendChild(btn);
             });
 
             const filtered = activeGalleryCategory === "الكل" ? galleryItems : galleryItems.filter(i => i.category === activeGalleryCategory);
-
             if (filtered.length === 0) {
-                grid.innerHTML = '<div class="col-span-full text-center py-8 text-xs text-gray-400">لا توجد مشاريع مضافة حالياً.</div>';
+                grid.innerHTML = '<div class="col-span-full text-center py-8 text-xs text-gray-400">لا توجد مشاريع مضافة.</div>';
                 return;
             }
 
             filtered.forEach(item => {
-                let imgCount = 1;
-                if (item.extraUrls) {
-                    if (Array.isArray(item.extraUrls)) imgCount += item.extraUrls.length;
-                    else if (typeof item.extraUrls === 'string') {
-                        imgCount += item.extraUrls.split(/[\n,]+/).map(s => s.trim()).filter(Boolean).length;
-                    }
-                }
-
                 const card = document.createElement('div');
                 card.className = 'group relative rounded-2xl overflow-hidden bg-cardbg border border-gray-200 dark:border-gray-800 cursor-pointer shadow-md flex flex-col';
                 card.onclick = () => window.openProjectDetail(item.id);
                 card.innerHTML = `
                     <div class="relative aspect-video w-full overflow-hidden bg-darkbg">
-                        <img src="${item.coverUrl || 'https://via.placeholder.com/300'}" alt="${item.title}" class="w-full h-full object-cover group-hover:scale-105 transition duration-300" onerror="this.src='https://via.placeholder.com/300?text=صورة+الغلاف'" />
-                        <span class="absolute top-2 left-2 bg-black/70 backdrop-blur-md text-goldaccent text-[10px] px-2 py-0.5 rounded-lg border border-goldaccent/30 flex items-center gap-1">
-                            <i class="fa-solid fa-images"></i> ${imgCount} صور
-                        </span>
+                        <img src="${item.coverUrl || 'https://via.placeholder.com/300'}" class="w-full h-full object-cover group-hover:scale-105 transition" />
                     </div>
-                    <div class="p-3 flex flex-col justify-between flex-grow">
-                        <div>
-                            <span class="text-[9px] text-goldaccent font-bold uppercase tracking-wider">${item.category || 'عام'}</span>
-                            <h4 class="text-xs font-bold text-gray-800 dark:text-white mt-0.5 truncate">${item.title}</h4>
-                        </div>
-                        <span class="text-[10px] text-gray-400 mt-2 flex items-center gap-1">استعراض الزوايا <i class="fa-solid fa-arrow-left text-[9px]"></i></span>
+                    <div class="p-3">
+                        <span class="text-[9px] text-goldaccent font-bold">${item.category || ''}</span>
+                        <h4 class="text-xs font-bold text-gray-800 dark:text-white truncate">${item.title}</h4>
                     </div>
                 `;
                 grid.appendChild(card);
             });
         }
 
-        // Gallery Admin Actions
-        window.saveGalleryItem = function() {
-            const id = document.getElementById('editingGalleryId').value;
-            const title = document.getElementById('galleryTitle').value.trim();
-            const category = document.getElementById('galleryCategory').value.trim() || 'عام';
-            const desc = document.getElementById('galleryDesc').value.trim();
-            const coverUrl = document.getElementById('galleryCoverUrl').value.trim();
-            const extraUrlsText = document.getElementById('galleryExtraUrls').value.trim();
-
-            if (!title || !coverUrl) {
-                alert('الرجاء إدخال عنوان المشروع ورابط الصورة الرئيسية (الغلاف).');
-                return;
-            }
-
-            const extraUrls = extraUrlsText.split(/[\n,]+/).map(s => s.trim()).filter(Boolean);
-
-            if (!appData.gallery) appData.gallery = [];
-
-            if (id) {
-                const item = appData.gallery.find(g => g.id === id);
-                if (item) {
-                    item.title = title;
-                    item.category = category;
-                    item.desc = desc;
-                    item.coverUrl = coverUrl;
-                    item.extraUrls = extraUrls;
-                }
-            } else {
-                appData.gallery.push({
-                    id: 'g_' + Date.now(),
-                    title, category, desc, coverUrl, extraUrls
-                });
-            }
-
-            window.resetGalleryForm();
-            renderAdminGalleryList();
-            renderGalleryGrid();
-        };
-
-        window.resetGalleryForm = function() {
-            document.getElementById('editingGalleryId').value = '';
-            document.getElementById('galleryTitle').value = '';
-            document.getElementById('galleryCategory').value = '';
-            document.getElementById('galleryDesc').value = '';
-            document.getElementById('galleryCoverUrl').value = '';
-            document.getElementById('galleryExtraUrls').value = '';
-            document.getElementById('galleryFormTitle').textContent = 'إضافة مشروع جديد';
-        };
-
-        window.editGalleryItem = function(id) {
-            const item = appData.gallery.find(g => g.id === id);
-            if (!item) return;
-            document.getElementById('editingGalleryId').value = item.id;
-            document.getElementById('galleryTitle').value = item.title;
-            document.getElementById('galleryCategory').value = item.category || '';
-            document.getElementById('galleryDesc').value = item.desc || '';
-            document.getElementById('galleryCoverUrl').value = item.coverUrl || '';
-            document.getElementById('galleryExtraUrls').value = Array.isArray(item.extraUrls) ? item.extraUrls.join('\n') : (item.extraUrls || '');
-            document.getElementById('galleryFormTitle').textContent = 'تعديل المشروع';
-        };
-
-        window.deleteGalleryItem = function(id) {
-            appData.gallery = appData.gallery.filter(g => g.id !== id);
-            renderAdminGalleryList();
-            renderGalleryGrid();
-        };
-
-        function renderAdminGalleryList() {
-            const container = document.getElementById('adminGalleryList');
-            if (!container) return;
-            container.innerHTML = '';
-            if (!appData.gallery || appData.gallery.length === 0) {
-                container.innerHTML = '<div class="text-gray-400 text-center py-2">لا توجد مشاريع مضافة.</div>';
-                return;
-            }
-            appData.gallery.forEach(g => {
-                let count = 1;
-                if (g.extraUrls) {
-                    if (Array.isArray(g.extraUrls)) count += g.extraUrls.length;
-                    else if (typeof g.extraUrls === 'string') count += g.extraUrls.split(/[\n,]+/).filter(Boolean).length;
-                }
-
-                const item = document.createElement('div');
-                item.className = 'bg-lightcard dark:bg-cardbg border border-gray-200 dark:border-gray-700 rounded-xl p-2.5 flex items-center justify-between transition-colors';
-                item.innerHTML = `
-                    <div class="flex items-center gap-2.5 overflow-hidden">
-                        <img src="${g.coverUrl}" class="w-10 h-10 rounded-lg object-cover border border-gray-700 flex-shrink-0" onerror="this.src='https://via.placeholder.com/50'" />
-                        <div class="truncate">
-                            <div class="font-bold text-gray-800 dark:text-white truncate">${g.title}</div>
-                            <div class="text-[10px] text-goldaccent">${g.category} (${count} صور)</div>
-                        </div>
-                    </div>
-                    <div class="flex gap-1.5 flex-shrink-0">
-                        <button type="button" onclick="window.editGalleryItem('${g.id}')" class="bg-blue-500/20 text-blue-500 dark:text-blue-400 px-2.5 py-1 rounded-lg">تعديل</button>
-                        <button type="button" onclick="window.deleteGalleryItem('${g.id}')" class="bg-red-500/20 text-red-500 dark:text-red-400 px-2.5 py-1 rounded-lg">حذف</button>
-                    </div>
-                `;
-                container.appendChild(item);
-            });
-        }
-
+        // Sidebar & Profile Rendering
         function renderSidebarMenu() {
             const container = document.getElementById('sidebarLinksContainer');
-            if(!container) return;
+            if (!container) return;
             container.innerHTML = '';
             (appData.sidebarLinks || []).forEach(item => {
                 const btn = document.createElement('button');
                 btn.type = 'button';
-                btn.className = `w-full p-3 rounded-xl flex items-center gap-3 font-bold transition text-right ${item.action === 'openPin' ? 'bg-goldaccent/10 hover:bg-goldaccent/20 border border-goldaccent/30 text-goldaccent' : 'bg-gray-100 dark:bg-darkbg hover:bg-gray-200 dark:hover:bg-gray-800 border border-gray-200 dark:border-gray-700 text-gray-700 dark:text-gray-300'}`;
-                btn.innerHTML = `<i class="${item.icon || 'fa-solid fa-link'} text-sm"></i><span>${item.title}</span>`;
+                btn.className = `w-full p-3 rounded-xl flex items-center gap-3 font-bold transition text-right ${item.action === 'openPin' ? 'bg-goldaccent/10 hover:bg-goldaccent/20 border border-goldaccent/30 text-goldaccent' : item.action === 'openMemberPanel' ? 'bg-cyanaccent/10 border border-cyanaccent/30 text-cyanaccent' : item.action === 'openJoin' ? 'bg-blue-500/10 border border-blue-500/30 text-blue-400' : 'bg-gray-100 dark:bg-darkbg text-gray-700 dark:text-gray-300'}`;
+                btn.innerHTML = `<i class="${item.icon} text-sm"></i><span>${item.title}</span>`;
                 
-                if (item.action === 'openPin') {
-                    btn.onclick = () => { window.toggleSidebar(); window.openPinModal(); };
-                } else {
-                    btn.onclick = () => { window.openExternalLink(item.url); };
-                }
+                if (item.action === 'openPin') btn.onclick = () => { window.toggleSidebar(); window.openPinModal(); };
+                else if (item.action === 'openMemberPanel') btn.onclick = () => { window.toggleSidebar(); window.openMemberPinModal(); };
+                else if (item.action === 'openJoin') btn.onclick = () => { window.toggleSidebar(); window.openJoinModal(); };
+                else btn.onclick = () => { if(item.url && item.url !== '#') window.open(item.url, '_blank'); };
                 container.appendChild(btn);
             });
         }
-
-        window.openExternalLink = function(url) {
-            if(url && url !== '#') window.open(url, '_blank');
-        };
 
         function renderProfile() {
             document.getElementById('topBarName').textContent = appData.displayName;
@@ -802,17 +843,13 @@
             const img = document.getElementById('profileImage');
             const icon = document.getElementById('defaultAvatarIcon');
             if (appData.image) {
-                img.src = appData.image;
-                img.classList.remove('hidden');
-                icon.classList.add('hidden');
+                img.src = appData.image; img.classList.remove('hidden'); icon.classList.add('hidden');
             } else {
-                img.classList.add('hidden');
-                icon.classList.remove('hidden');
+                img.classList.add('hidden'); icon.classList.remove('hidden');
             }
 
             const cContainer = document.getElementById('contactButtons');
             cContainer.innerHTML = '';
-            
             if (appData.contacts.showWhatsapp && appData.contacts.whatsapp) {
                 cContainer.innerHTML += `<a href="https://wa.me/${appData.contacts.whatsapp.replace(/[^0-9]/g, '')}" target="_blank" class="w-9 h-9 rounded-full bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 flex items-center justify-center"><i class="fa-brands fa-whatsapp"></i></a>`;
             }
@@ -822,31 +859,22 @@
             if (appData.contacts.showEmail && appData.contacts.email) {
                 cContainer.innerHTML += `<a href="mailto:${appData.contacts.email}" class="w-9 h-9 rounded-full bg-goldaccent/10 border border-goldaccent/30 text-goldaccent flex items-center justify-center"><i class="fa-solid fa-envelope"></i></a>`;
             }
-            cContainer.innerHTML += `<button type="button" onclick="window.openShareModal()" class="w-9 h-9 rounded-full bg-gray-200 dark:bg-gray-800 border border-gray-300 dark:border-gray-700 text-gray-700 dark:text-gray-300 flex items-center justify-center transition active:scale-95" title="مشاركة الصفحة"><i class="fa-solid fa-share-nodes"></i></button>`;
+            cContainer.innerHTML += `<button type="button" onclick="window.openShareModal()" class="w-9 h-9 rounded-full bg-gray-200 dark:bg-gray-800 border border-gray-300 dark:border-gray-700 text-gray-700 dark:text-gray-300 flex items-center justify-center"><i class="fa-solid fa-share-nodes"></i></button>`;
         }
 
         window.openShareModal = function() {
-            const currentUrl = window.location.href;
-            const text = encodeURIComponent(`شاهد منصة الروابط الخاصة بـ ${appData.displayName}: ${currentUrl}`);
-            
-            document.getElementById('shareWhatsapp').href = `https://api.whatsapp.com/send?text=${text}`;
-            document.getElementById('shareTelegram').href = `https://t.me/share/url?url=${encodeURIComponent(currentUrl)}&text=${encodeURIComponent(appData.displayName)}`;
-            document.getElementById('shareFacebook').href = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(currentUrl)}`;
-            document.getElementById('shareTwitter').href = `https://twitter.com/intent/tweet?url=${encodeURIComponent(currentUrl)}&text=${encodeURIComponent(appData.displayName)}`;
-            document.getElementById('shareUrlInput').value = currentUrl;
-
+            const url = window.location.href;
+            document.getElementById('shareWhatsapp').href = `https://api.whatsapp.com/send?text=${encodeURIComponent(url)}`;
+            document.getElementById('shareTelegram').href = `https://t.me/share/url?url=${encodeURIComponent(url)}`;
+            document.getElementById('shareFacebook').href = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(url)}`;
+            document.getElementById('shareTwitter').href = `https://twitter.com/intent/tweet?url=${encodeURIComponent(url)}`;
+            document.getElementById('shareUrlInput').value = url;
             document.getElementById('shareModal').classList.remove('hidden');
         };
-
-        window.closeShareModal = function() {
-            document.getElementById('shareModal').classList.add('hidden');
-        };
-
+        window.closeShareModal = function() { document.getElementById('shareModal').classList.add('hidden'); };
         window.copyProfileLink = function() {
-            navigator.clipboard.writeText(window.location.href).then(() => {
-                alert('تم نسخ رابط الصفحة إلى الحافظة بنجاح!');
-                window.closeShareModal();
-            });
+            navigator.clipboard.writeText(window.location.href).then(() => alert('تم النسخ بنجاح!'));
+            window.closeShareModal();
         };
 
         function renderCategories() {
@@ -854,10 +882,9 @@
             if(!container) return;
             container.innerHTML = '';
             (appData.categories || ["الكل"]).forEach(cat => {
-                const isActive = cat === activeCategory;
                 const btn = document.createElement('button');
                 btn.type = "button";
-                btn.className = `px-3 py-1.5 rounded-xl whitespace-nowrap border text-xs transition ${isActive ? 'bg-goldaccent text-black font-bold border-goldaccent' : 'bg-lightcard dark:bg-cardbg text-gray-500 dark:text-gray-400 border-gray-200 dark:border-gray-800'}`;
+                btn.className = `px-3 py-1.5 rounded-xl whitespace-nowrap border text-xs transition ${cat === activeCategory ? 'bg-goldaccent text-black font-bold border-goldaccent' : 'bg-lightcard dark:bg-cardbg text-gray-500 border-gray-200 dark:border-gray-800'}`;
                 btn.textContent = cat;
                 btn.onclick = () => { activeCategory = cat; renderCategories(); renderLinks(); };
                 container.appendChild(btn);
@@ -868,62 +895,227 @@
             const container = document.getElementById('linksContainer');
             if(!container) return;
             container.innerHTML = '';
-
             const links = appData.links || [];
             const filtered = activeCategory === "الكل" ? links : links.filter(l => l.category === activeCategory);
 
-            if (filtered.length === 0) {
-                container.innerHTML = `<div class="text-center py-6 text-xs text-gray-400">لا توجد روابط لهذه الفئة حالياً.</div>`;
-                return;
-            }
-
             filtered.forEach(link => {
                 const a = document.createElement('a');
-                a.href = link.url;
-                a.target = '_blank';
+                a.href = link.url; a.target = '_blank';
                 a.className = 'w-full bg-lightcard dark:bg-cardbg border border-gray-200 dark:border-gray-800 rounded-2xl p-3.5 flex items-center justify-between glow-gold-hover transition';
-                a.innerHTML = `
-                    <div class="flex items-center gap-3">
-                        <div class="w-9 h-9 rounded-xl bg-lightbg dark:bg-darkbg border border-gray-200 dark:border-gray-800 flex items-center justify-center text-goldaccent">
-                            <i class="${link.icon || 'fa-solid fa-link'}"></i>
-                        </div>
-                        <span class="text-xs font-bold text-gray-800 dark:text-gray-200">${link.title}</span>
-                    </div>
-                    <i class="fa-solid fa-chevron-left text-xs text-gray-400 dark:text-gray-600"></i>
-                `;
+                a.innerHTML = `<div class="flex items-center gap-3"><div class="w-9 h-9 rounded-xl bg-lightbg dark:bg-darkbg border border-gray-200 dark:border-gray-800 flex items-center justify-center text-goldaccent"><i class="${link.icon || 'fa-solid fa-link'}"></i></div><span class="text-xs font-bold text-gray-800 dark:text-gray-200">${link.title}</span></div><i class="fa-solid fa-chevron-left text-xs text-gray-400"></i>`;
                 container.appendChild(a);
             });
         }
 
-        window.openPinModal = function() {
-            document.getElementById('pinModal').classList.remove('hidden');
-        };
-
-        window.closePinModal = function() {
-            document.getElementById('pinModal').classList.add('hidden');
-        };
-
+        // Admin & Member PIN Logic
+        window.openPinModal = function() { document.getElementById('pinModal').classList.remove('hidden'); };
+        window.closePinModal = function() { document.getElementById('pinModal').classList.add('hidden'); };
         window.verifyPin = function() {
             const pin = document.getElementById('pinInput').value;
-            if (pin === appData.pin || pin === "9999") {
+            if (currentUsername === 'mahmoud' && pin === appData.pin) {
                 document.getElementById('pinModal').classList.add('hidden');
                 document.getElementById('adminModal').classList.remove('hidden');
                 document.getElementById('pinInput').value = '';
                 populateAdminForm();
-            } else {
-                alert('الرمز السري غير صحيح');
+            } else { 
+                alert('عذراً، هذه اللوحة خاصة بالأدمن الأساسي فقط ولا يمكن لأي عضو الدخول إليها!'); 
+            }
+        };
+        window.closeAdminModal = function() { document.getElementById('adminModal').classList.add('hidden'); };
+
+        // Member Panel Logic
+        window.openMemberPinModal = function() { document.getElementById('memberPinModal').classList.remove('hidden'); };
+        window.closeMemberPinModal = function() { document.getElementById('memberPinModal').classList.add('hidden'); };
+        window.verifyMemberPin = function() {
+            const pin = document.getElementById('memberPinInput').value;
+            if (pin === appData.pin) {
+                document.getElementById('memberPinModal').classList.add('hidden');
+                document.getElementById('memberModal').classList.remove('hidden');
+                document.getElementById('memberPinInput').value = '';
+                populateMemberForm();
+            } else { alert('رمز PIN الخاص بك غير صحيح'); }
+        };
+        window.closeMemberModal = function() { document.getElementById('memberModal').classList.add('hidden'); };
+
+        function populateMemberForm() {
+            document.getElementById('memberNameTitle').textContent = appData.displayName;
+            document.getElementById('memberEditName').value = appData.displayName;
+            document.getElementById('memberEditBio').value = appData.bio || '';
+            document.getElementById('memberEditAvatar').value = appData.image || '';
+            document.getElementById('memberEditWhatsapp').value = appData.contacts.whatsapp || '';
+            document.getElementById('memberNewPinInput').value = '';
+            memberTempImageBase64 = appData.image || '';
+            renderMemberLinksList();
+            renderMemberGalleryList();
+        }
+
+        window.handleMemberImageUpload = function(e) {
+            const file = e.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = (ev) => {
+                    memberTempImageBase64 = ev.target.result;
+                    document.getElementById('memberEditAvatar').value = memberTempImageBase64;
+                    alert('تم تحميل وتجهيز الصورة بنجاح!');
+                };
+                reader.readAsDataURL(file);
             }
         };
 
-        window.closeAdminModal = function() {
-            document.getElementById('adminModal').classList.add('hidden');
+        // Member Gallery Management
+        window.saveMemberGalleryItem = function() {
+            const id = document.getElementById('memberEditingGalleryId').value;
+            const title = document.getElementById('memberGalleryTitle').value.trim();
+            const category = document.getElementById('memberGalleryCategory').value.trim() || 'عام';
+            const desc = document.getElementById('memberGalleryDesc').value.trim();
+            const coverUrl = document.getElementById('memberGalleryCoverUrl').value.trim();
+            const extraUrls = document.getElementById('memberGalleryExtraUrls').value.trim().split(/[\n,]+/).map(s => s.trim()).filter(Boolean);
+
+            if (!title || !coverUrl) { alert('أدخل عنوان المشروع ورابط الغلاف'); return; }
+            if (!appData.gallery) appData.gallery = [];
+
+            if (id) {
+                const item = appData.gallery.find(g => g.id === id);
+                if (item) { item.title = title; item.category = category; item.desc = desc; item.coverUrl = coverUrl; item.extraUrls = extraUrls; }
+            } else {
+                appData.gallery.push({ id: 'g_' + Date.now(), title, category, desc, coverUrl, extraUrls });
+            }
+            window.resetMemberGalleryForm();
+            renderMemberGalleryList();
+            renderGalleryGrid();
+        };
+
+        window.resetMemberGalleryForm = function() {
+            document.getElementById('memberEditingGalleryId').value = '';
+            document.getElementById('memberGalleryTitle').value = '';
+            document.getElementById('memberGalleryCategory').value = '';
+            document.getElementById('memberGalleryDesc').value = '';
+            document.getElementById('memberGalleryCoverUrl').value = '';
+            document.getElementById('memberGalleryExtraUrls').value = '';
+            document.getElementById('memberGalleryFormTitle').textContent = 'إدارة معرض المشاريع والأعمال';
+        };
+
+        window.editMemberGalleryItem = function(id) {
+            const item = (appData.gallery || []).find(g => g.id === id);
+            if(!item) return;
+            document.getElementById('memberEditingGalleryId').value = item.id;
+            document.getElementById('memberGalleryTitle').value = item.title;
+            document.getElementById('memberGalleryCategory').value = item.category || '';
+            document.getElementById('memberGalleryDesc').value = item.desc || '';
+            document.getElementById('memberGalleryCoverUrl').value = item.coverUrl || '';
+            document.getElementById('memberGalleryExtraUrls').value = Array.isArray(item.extraUrls) ? item.extraUrls.join('\n') : '';
+            document.getElementById('memberGalleryFormTitle').textContent = 'تعديل المشروع';
+        };
+
+        window.deleteMemberGalleryItem = function(id) {
+            appData.gallery = (appData.gallery || []).filter(g => g.id !== id);
+            renderMemberGalleryList();
+            renderGalleryGrid();
+        };
+
+        window.moveMemberGalleryItem = function(index, direction) {
+            const gallery = appData.gallery || [];
+            const newIndex = index + direction;
+            if (newIndex < 0 || newIndex >= gallery.length) return;
+            const temp = gallery[index];
+            gallery[index] = gallery[newIndex];
+            gallery[newIndex] = temp;
+            renderMemberGalleryList();
+            renderGalleryGrid();
+        };
+
+        function renderMemberGalleryList() {
+            const container = document.getElementById('memberGalleryList');
+            if(!container) return; container.innerHTML = '';
+            (appData.gallery || []).forEach((g, index) => {
+                container.innerHTML += `
+                    <div class="bg-cardbg border border-gray-700 rounded-xl p-2 flex items-center justify-between">
+                        <div class="flex items-center gap-2">
+                            <img src="${g.coverUrl}" class="w-8 h-8 rounded object-cover" />
+                            <div><div class="font-bold text-white">${g.title}</div><div class="text-[10px] text-gray-400">${g.category || ''}</div></div>
+                        </div>
+                        <div class="flex items-center gap-1">
+                            <button type="button" onclick="window.moveMemberGalleryItem(${index}, -1)" class="bg-gray-700 text-cyanaccent px-2 py-0.5 rounded text-[10px]" title="نحو الأعلى">⬆️</button>
+                            <button type="button" onclick="window.moveMemberGalleryItem(${index}, 1)" class="bg-gray-700 text-cyanaccent px-2 py-0.5 rounded text-[10px]" title="نحو الأسفل">⬇️</button>
+                            <button type="button" onclick="window.editMemberGalleryItem('${g.id}')" class="bg-blue-500/20 text-blue-400 px-2 py-0.5 rounded text-[10px]">تعديل</button>
+                            <button type="button" onclick="window.deleteMemberGalleryItem('${g.id}')" class="bg-red-500/20 text-red-400 px-2 py-0.5 rounded text-[10px]">حذف</button>
+                        </div>
+                    </div>`;
+            });
+        }
+
+        window.saveMemberLink = function() {
+            const title = document.getElementById('memberLinkTitle').value.trim();
+            const url = document.getElementById('memberLinkUrl').value.trim();
+            const icon = document.getElementById('memberLinkIcon').value.trim() || 'fa-solid fa-link';
+            if (!title || !url) { alert('أدخل العنوان والرابط'); return; }
+            if (!appData.links) appData.links = [];
+            appData.links.push({ id: 'l_' + Date.now(), title, url, category: 'الكل', icon });
+            document.getElementById('memberLinkTitle').value = '';
+            document.getElementById('memberLinkUrl').value = '';
+            document.getElementById('memberLinkIcon').value = '';
+            renderMemberLinksList();
+        };
+
+        window.deleteMemberLink = function(id) {
+            appData.links = appData.links.filter(l => l.id !== id);
+            renderMemberLinksList();
+        };
+
+        function renderMemberLinksList() {
+            const container = document.getElementById('memberLinksList');
+            if(!container) return; container.innerHTML = '';
+            (appData.links || []).forEach((l, index) => {
+                container.innerHTML += `
+                    <div class="bg-cardbg border border-gray-700 p-2 rounded-lg flex items-center justify-between">
+                        <div class="flex items-center gap-2">
+                            <span class="text-white font-bold"><i class="${l.icon}"></i> ${l.title}</span>
+                        </div>
+                        <div class="flex items-center gap-1">
+                            <button type="button" onclick="window.moveMemberLink(${index}, -1)" class="bg-gray-700 text-cyanaccent px-2 py-0.5 rounded text-[10px]" title="نحو الأعلى">⬆️</button>
+                            <button type="button" onclick="window.moveMemberLink(${index}, 1)" class="bg-gray-700 text-cyanaccent px-2 py-0.5 rounded text-[10px]" title="نحو الأسفل">⬇️</button>
+                            <button type="button" onclick="window.deleteMemberLink('${l.id}')" class="bg-red-500/20 text-red-400 px-2 py-0.5 rounded text-[10px]">حذف</button>
+                        </div>
+                    </div>`;
+            });
+        }
+
+        window.moveMemberLink = function(index, direction) {
+            const links = appData.links || [];
+            const newIndex = index + direction;
+            if (newIndex < 0 || newIndex >= links.length) return;
+            const temp = links[index];
+            links[index] = links[newIndex];
+            links[newIndex] = temp;
+            renderMemberLinksList();
+        };
+
+        window.saveMemberChanges = function() {
+            appData.displayName = document.getElementById('memberEditName').value.trim() || appData.displayName;
+            appData.bio = document.getElementById('memberEditBio').value.trim();
+            
+            const avatarInputVal = document.getElementById('memberEditAvatar').value.trim();
+            if (memberTempImageBase64 !== '') {
+                appData.image = memberTempImageBase64;
+            } else if (avatarInputVal !== '') {
+                appData.image = avatarInputVal;
+            }
+
+            appData.contacts.whatsapp = document.getElementById('memberEditWhatsapp').value.trim();
+
+            const newPinVal = document.getElementById('memberNewPinInput').value.trim();
+            if (newPinVal.length >= 4) {
+                appData.pin = newPinVal;
+            }
+
+            saveDataToFirebase();
+            window.closeMemberModal();
         };
 
         function populateAdminForm() {
             document.getElementById('editDisplayName').value = appData.displayName;
             document.getElementById('editBio').value = appData.bio;
             tempImageBase64 = appData.image || "";
-
             document.getElementById('showWhatsapp').checked = appData.contacts.showWhatsapp;
             document.getElementById('editWhatsapp').value = appData.contacts.whatsapp;
             document.getElementById('showPhone').checked = appData.contacts.showPhone;
@@ -931,152 +1123,255 @@
             document.getElementById('showEmail').checked = appData.contacts.showEmail;
             document.getElementById('editEmail').value = appData.contacts.email;
 
+            renderAdminFeedbackList();
+            renderAdminPendingRequests();
+            renderAdminUsersList();
             renderAdminGalleryList();
-            renderAdminSidebarList();
             renderAdminCategories();
             renderAdminCategorySelect();
             renderAdminLinksList();
-            window.resetGalleryForm();
-            window.resetSidebarForm();
-            window.resetLinkForm();
         }
 
-        window.saveSidebarItem = function() {
-            const id = document.getElementById('editingSidebarId').value;
-            const title = document.getElementById('sidebarTitle').value.trim();
-            const url = document.getElementById('sidebarUrl').value.trim();
-            const icon = document.getElementById('sidebarIcon').value.trim() || 'fa-solid fa-link';
+        // Admin Actions for Feedback / Messages
+        window.deleteFeedbackMessage = function(msgId) {
+            if (rootData.feedbackMessages && rootData.feedbackMessages[msgId]) {
+                delete rootData.feedbackMessages[msgId];
+                set(dbRef, rootData).then(() => {
+                    renderAdminFeedbackList();
+                });
+            }
+        };
 
-            if (!title || !url) {
-                alert('الرجاء إدخال العنوان والرابط.');
+        function renderAdminFeedbackList() {
+            const container = document.getElementById('adminFeedbackList');
+            if(!container) return; container.innerHTML = '';
+            const msgs = rootData.feedbackMessages || {};
+            const keys = Object.keys(msgs);
+            if (keys.length === 0) {
+                container.innerHTML = '<div class="text-gray-400 text-center py-1">لا توجد ملاحظات أو رسائل واردة حالياً.</div>';
                 return;
             }
+            keys.reverse().forEach(k => {
+                const m = msgs[k];
+                const dateStr = new Date(m.createdAt).toLocaleString();
+                const div = document.createElement('div');
+                div.className = 'bg-cardbg border border-gray-700 p-2.5 rounded-xl space-y-1';
+                div.innerHTML = `
+                    <div class="flex justify-between items-center text-[11px]">
+                        <span class="font-bold text-goldaccent">${m.senderName} (${m.senderContact})</span>
+                        <span class="text-gray-400">${dateStr}</span>
+                    </div>
+                    <p class="text-gray-200 text-xs bg-darkbg p-2 rounded-lg border border-gray-800">${m.message}</p>
+                    <div class="flex justify-between items-center pt-1">
+                        <span class="text-[10px] text-gray-400">الصفحة: ${m.pageUser}</span>
+                        <button type="button" onclick="window.deleteFeedbackMessage('${m.id}')" class="bg-red-500/20 text-red-400 px-2 py-0.5 rounded text-[10px]">حذف الرسالة</button>
+                    </div>`;
+                container.appendChild(div);
+            });
+        }
 
-            if (!appData.sidebarLinks) appData.sidebarLinks = [];
-            const action = (url === '#') ? 'openPin' : 'link';
+        // Admin Actions for Requests & Users
+        window.approveRequest = function(username) {
+            if (!rootData.pendingRequests[username]) return;
+            const req = rootData.pendingRequests[username];
+            rootData.users[username] = {
+                displayName: req.displayName,
+                bio: req.bio || '',
+                pin: '1234',
+                image: req.image || '',
+                contacts: { whatsapp: req.whatsapp || '', showWhatsapp: true, phone: '', showPhone: false, email: '', showEmail: false },
+                categories: ["الكل", "عام"],
+                sidebarLinks: [
+                    { id: 'sb1', title: 'لوحة تحكم العضو', url: '#', icon: 'fa-solid fa-user-gear', action: 'openMemberPanel' },
+                    { id: 'sb2', title: 'انضم إلينا كعضو', url: '#', icon: 'fa-solid fa-user-plus', action: 'openJoin' }
+                ],
+                gallery: [],
+                links: []
+            };
+            delete rootData.pendingRequests[username];
+            set(dbRef, rootData).then(() => {
+                alert(`تم قبول العضو ${username} بنجاح وأصبحت صفحته جاهزة عبر الرابط: ?user=${username}`);
+                populateAdminForm();
+            });
+        };
+
+        window.rejectRequest = function(username) {
+            delete rootData.pendingRequests[username];
+            set(dbRef, rootData).then(() => { populateAdminForm(); });
+        };
+
+        window.deletePlatformUser = function(username) {
+            if (username === 'mahmoud') { alert('لا يمكنك حذف الحساب الأساسي!'); return; }
+            if (confirm(`هل أنت متأكد من حذف حساب العضو ${username}؟`)) {
+                delete rootData.users[username];
+                set(dbRef, rootData).then(() => { populateAdminForm(); });
+            }
+        };
+
+        function renderAdminPendingRequests() {
+            const container = document.getElementById('adminPendingRequestsList');
+            if(!container) return; container.innerHTML = '';
+            const reqs = rootData.pendingRequests || {};
+            const keys = Object.keys(reqs);
+            if (keys.length === 0) {
+                container.innerHTML = '<div class="text-gray-400 text-center py-1">لا توجد طلبات انضمام معلقة.</div>';
+                return;
+            }
+            keys.forEach(k => {
+                const r = reqs[k];
+                const div = document.createElement('div');
+                div.className = 'bg-cardbg border border-gray-700 p-2.5 rounded-xl flex items-center justify-between';
+                div.innerHTML = `<div><div class="font-bold text-white">${r.displayName} (<span class="text-cyanaccent">${r.username}</span>)</div><div class="text-[10px] text-gray-400">${r.bio || ''}</div></div><div class="flex gap-1.5"><button type="button" onclick="window.approveRequest('${k}')" class="bg-emerald-500/20 text-emerald-400 px-2 py-1 rounded">قبول</button><button type="button" onclick="window.rejectRequest('${k}')" class="bg-red-500/20 text-red-400 px-2 py-1 rounded">رفض</button></div>`;
+                container.appendChild(div);
+            });
+        }
+
+        function renderAdminUsersList() {
+            const container = document.getElementById('adminUsersList');
+            if(!container) return; container.innerHTML = '';
+            const users = rootData.users || {};
+            Object.keys(users).forEach(u => {
+                const usr = users[u];
+                const div = document.createElement('div');
+                div.className = 'bg-cardbg border border-gray-700 p-2 rounded-xl flex items-center justify-between';
+                div.innerHTML = `<div><span class="font-bold text-white">${usr.displayName}</span> <a href="?user=${u}" target="_blank" class="text-[10px] text-goldaccent underline">(?user=${u})</a></div>${u !== 'mahmoud' ? `<button type="button" onclick="window.deletePlatformUser('${u}')" class="bg-red-500/20 text-red-400 px-2 py-0.5 rounded">حذف</button>` : '<span class="text-[10px] text-gray-500">الأدمن الأساسي</span>'}`;
+                container.appendChild(div);
+            });
+        }
+
+        window.saveGalleryItem = function() {
+            const id = document.getElementById('editingGalleryId').value;
+            const title = document.getElementById('galleryTitle').value.trim();
+            const category = document.getElementById('galleryCategory').value.trim() || 'عام';
+            const desc = document.getElementById('galleryDesc').value.trim();
+            const coverUrl = document.getElementById('galleryCoverUrl').value.trim();
+            const extraUrls = document.getElementById('galleryExtraUrls').value.trim().split(/[\n,]+/).map(s => s.trim()).filter(Boolean);
+
+            if (!title || !coverUrl) { alert('أدخل العنوان والغلاف'); return; }
+            if (!appData.gallery) appData.gallery = [];
 
             if (id) {
-                const item = appData.sidebarLinks.find(s => s.id === id);
-                if (item) {
-                    item.title = title;
-                    item.url = url;
-                    item.icon = icon;
-                    item.action = action;
-                }
+                const item = appData.gallery.find(g => g.id === id);
+                if (item) { item.title = title; item.category = category; item.desc = desc; item.coverUrl = coverUrl; item.extraUrls = extraUrls; }
             } else {
-                appData.sidebarLinks.push({ id: 'sb_' + Date.now(), title, url, icon, action });
+                appData.gallery.push({ id: 'g_' + Date.now(), title, category, desc, coverUrl, extraUrls });
             }
-
-            window.resetSidebarForm();
-            renderAdminSidebarList();
+            window.resetGalleryForm();
+            renderAdminGalleryList();
+            renderGalleryGrid();
+        };
+        window.resetGalleryForm = function() {
+            document.getElementById('editingGalleryId').value = '';
+            document.getElementById('galleryTitle').value = '';
+            document.getElementById('galleryCategory').value = '';
+            document.getElementById('galleryDesc').value = '';
+            document.getElementById('galleryCoverUrl').value = '';
+            document.getElementById('galleryExtraUrls').value = '';
+            document.getElementById('galleryFormTitle').textContent = 'إضافة مشروع جديد';
+        };
+        window.editGalleryItem = function(id) {
+            const item = appData.gallery.find(g => g.id === id);
+            if(!item) return;
+            document.getElementById('editingGalleryId').value = item.id;
+            document.getElementById('galleryTitle').value = item.title;
+            document.getElementById('galleryCategory').value = item.category || '';
+            document.getElementById('galleryDesc').value = item.desc || '';
+            document.getElementById('galleryCoverUrl').value = item.coverUrl || '';
+            document.getElementById('galleryExtraUrls').value = Array.isArray(item.extraUrls) ? item.extraUrls.join('\n') : '';
+            document.getElementById('galleryFormTitle').textContent = 'تعديل المشروع';
+        };
+        window.deleteGalleryItem = function(id) {
+            appData.gallery = appData.gallery.filter(g => g.id !== id);
+            renderAdminGalleryList(); renderGalleryGrid();
         };
 
-        window.resetSidebarForm = function() {
-            document.getElementById('editingSidebarId').value = '';
-            document.getElementById('sidebarTitle').value = '';
-            document.getElementById('sidebarUrl').value = '';
-            document.getElementById('sidebarIcon').value = '';
-            document.getElementById('sidebarFormTitle').textContent = 'إضافة عنصر للقائمة الجانبية';
+        window.moveGalleryItem = function(index, direction) {
+            const gallery = appData.gallery || [];
+            const newIndex = index + direction;
+            if (newIndex < 0 || newIndex >= gallery.length) return;
+            const temp = gallery[index];
+            gallery[index] = gallery[newIndex];
+            gallery[newIndex] = temp;
+            renderAdminGalleryList();
+            renderGalleryGrid();
         };
 
-        window.editSidebarItem = function(id) {
-            const item = appData.sidebarLinks.find(s => s.id === id);
-            if (!item) return;
-            document.getElementById('editingSidebarId').value = item.id;
-            document.getElementById('sidebarTitle').value = item.title;
-            document.getElementById('sidebarUrl').value = item.url;
-            document.getElementById('sidebarIcon').value = item.icon;
-            document.getElementById('sidebarFormTitle').textContent = 'تعديل عنصر القائمة';
-        };
-
-        window.deleteSidebarItem = function(id) {
-            appData.sidebarLinks = appData.sidebarLinks.filter(s => s.id !== id);
-            renderAdminSidebarList();
-        };
-
-        function renderAdminSidebarList() {
-            const container = document.getElementById('adminSidebarList');
-            if(!container) return;
-            container.innerHTML = '';
-            (appData.sidebarLinks || []).forEach(s => {
+        function renderAdminGalleryList() {
+            const container = document.getElementById('adminGalleryList');
+            if(!container) return; container.innerHTML = '';
+            (appData.gallery || []).forEach((g, index) => {
                 const item = document.createElement('div');
-                item.className = 'bg-lightcard dark:bg-cardbg border border-gray-200 dark:border-gray-700 rounded-xl p-2.5 flex items-center justify-between transition-colors';
+                item.className = 'bg-cardbg border border-gray-700 rounded-xl p-2 flex items-center justify-between';
                 item.innerHTML = `
                     <div class="flex items-center gap-2">
-                        <i class="${s.icon} text-goldaccent"></i>
-                        <span class="font-bold text-gray-800 dark:text-white">${s.title}</span>
+                        <img src="${g.coverUrl}" class="w-8 h-8 rounded object-cover" />
+                        <div><div class="font-bold text-white">${g.title}</div><div class="text-[10px] text-gray-400">${g.category}</div></div>
                     </div>
-                    <div class="flex gap-1.5">
-                        <button type="button" onclick="window.editSidebarItem('${s.id}')" class="bg-blue-500/20 text-blue-500 dark:text-blue-400 px-2.5 py-1 rounded-lg">تعديل</button>
-                        <button type="button" onclick="window.deleteSidebarItem('${s.id}')" class="bg-red-500/20 text-red-500 dark:text-red-400 px-2.5 py-1 rounded-lg">حذف</button>
-                    </div>
-                `;
+                    <div class="flex items-center gap-1">
+                        <button type="button" onclick="window.moveGalleryItem(${index}, -1)" class="bg-gray-700 text-goldaccent px-2 py-0.5 rounded text-[10px]" title="نحو الأعلى">⬆️</button>
+                        <button type="button" onclick="window.moveGalleryItem(${index}, 1)" class="bg-gray-700 text-goldaccent px-2 py-0.5 rounded text-[10px]" title="نحو الأسفل">⬇️</button>
+                        <button type="button" onclick="window.editGalleryItem('${g.id}')" class="bg-blue-500/20 text-blue-400 px-2 py-0.5 rounded text-[10px]">تعديل</button>
+                        <button type="button" onclick="window.deleteGalleryItem('${g.id}')" class="bg-red-500/20 text-red-400 px-2 py-0.5 rounded text-[10px]">حذف</button>
+                    </div>`;
                 container.appendChild(item);
             });
         }
 
-        window.handleImageUpload = function(event) {
-            const file = event.target.files[0];
+        window.handleImageUpload = function(e) {
+            const file = e.target.files[0];
             if (file) {
-                if(file.size > 800 * 1024) {
-                    alert('حجم الصورة كبير جداً، يرجى اختيار صورة أقل من 800 كيلوبايت.');
-                    return;
-                }
                 const reader = new FileReader();
-                reader.onload = function(e) {
-                    tempImageBase64 = e.target.result;
-                    alert('تم تحميل الصورة بنجاح! انقر على "حفظ ونشر التغييرات للسحاب".');
-                };
+                reader.onload = (ev) => { tempImageBase64 = ev.target.result; alert('تم تحميل الصورة'); };
                 reader.readAsDataURL(file);
             }
         };
+        window.removeProfileImage = function() { tempImageBase64 = ''; alert('تمت إزالة الصورة'); };
 
-        window.removeProfileImage = function() {
-            tempImageBase64 = '';
-            document.getElementById('imageFileInput').value = '';
-            alert('تمت إزالة الصورة. انقر على "حفظ ونشر التغييرات للسحاب" للتأكيد.');
+        window.addCategory = function() {
+            const val = document.getElementById('newCategoryInput').value.trim();
+            if(val && !appData.categories.includes(val)) {
+                appData.categories.push(val);
+                document.getElementById('newCategoryInput').value = '';
+                renderAdminCategories(); renderAdminCategorySelect(); renderCategories();
+            }
+        };
+        window.deleteCategory = function(cat) {
+            if (cat === 'الكل') { alert('لا يمكن حذف فئة الكل الأساسية!'); return; }
+            appData.categories = appData.categories.filter(c => c !== cat);
+            renderAdminCategories(); renderAdminCategorySelect(); renderCategories();
+        };
+
+        window.moveCategory = function(index, direction) {
+            const cats = appData.categories || [];
+            const newIndex = index + direction;
+            if (newIndex < 0 || newIndex >= cats.length) return;
+            const temp = cats[index];
+            cats[index] = cats[newIndex];
+            cats[newIndex] = temp;
+            renderAdminCategories();
+            renderCategories();
         };
 
         function renderAdminCategories() {
-            const container = document.getElementById('adminCategoriesList');
-            if(!container) return;
-            container.innerHTML = '';
-            (appData.categories || []).forEach(cat => {
-                if (cat === "الكل") return;
-                const tag = document.createElement('div');
-                tag.className = 'bg-lightbg dark:bg-darkbg border border-gray-300 dark:border-gray-700 px-2.5 py-1 rounded-lg flex items-center gap-2 text-gray-700 dark:text-gray-300';
-                tag.innerHTML = `<span>${cat}</span><button type="button" onclick="window.deleteCategory('${cat}')" class="text-red-500 hover:text-red-400"><i class="fa-solid fa-xmark"></i></button>`;
-                container.appendChild(tag);
+            const c = document.getElementById('adminCategoriesList');
+            if(!c) return; c.innerHTML = '';
+            (appData.categories || []).forEach((cat, index) => {
+                c.innerHTML += `
+                    <div class="bg-cardbg border border-gray-700 px-2.5 py-1.5 rounded-lg flex items-center justify-between text-white">
+                        <span>${cat}</span>
+                        <div class="flex items-center gap-1">
+                            <button type="button" onclick="window.moveCategory(${index}, -1)" class="bg-gray-700 text-goldaccent px-2 py-0.5 rounded text-[10px]" title="نحو الأعلى">⬆️</button>
+                            <button type="button" onclick="window.moveCategory(${index}, 1)" class="bg-gray-700 text-goldaccent px-2 py-0.5 rounded text-[10px]" title="نحو الأسفل">⬇️</button>
+                            ${cat !== 'الكل' ? `<button type="button" onclick="window.deleteCategory('${cat}')" class="bg-red-500/20 text-red-400 px-2 py-0.5 rounded text-[10px]">حذف</button>` : ''}
+                        </div>
+                    </div>`;
             });
         }
-
-        window.addCategory = function() {
-            const input = document.getElementById('newCategoryInput');
-            const val = input.value.trim();
-            if (val && !appData.categories.includes(val)) {
-                appData.categories.push(val);
-                input.value = '';
-                renderAdminCategories();
-                renderAdminCategorySelect();
-            }
-        };
-
-        window.deleteCategory = function(cat) {
-            appData.categories = appData.categories.filter(c => c !== cat);
-            appData.links.forEach(l => { if (l.category === cat) l.category = 'الكل'; });
-            renderAdminCategories();
-            renderAdminCategorySelect();
-        };
-
         function renderAdminCategorySelect() {
-            const select = document.getElementById('linkCategory');
-            if(!select) return;
-            select.innerHTML = '';
+            const s = document.getElementById('linkCategory');
+            if(!s) return; s.innerHTML = '';
             (appData.categories || ["الكل"]).forEach(cat => {
-                const opt = document.createElement('option');
-                opt.value = cat;
-                opt.textContent = cat;
-                select.appendChild(opt);
+                s.innerHTML += `<option value="${cat}">${cat}</option>`;
             });
         }
 
@@ -1086,25 +1381,16 @@
             const url = document.getElementById('linkUrl').value.trim();
             const category = document.getElementById('linkCategory').value;
             const icon = document.getElementById('linkIcon').value.trim() || 'fa-solid fa-link';
-
-            if (!title || !url) {
-                alert('الرجاء إدخال عنوان الرابط والرابط بشكل صحيح.');
-                return;
-            }
-
-            if (!appData.links) appData.links = [];
-
-            if (id) {
-                const link = appData.links.find(l => l.id === id);
-                if (link) { link.title = title; link.url = url; link.category = category; link.icon = icon; }
+            if(!title || !url) return;
+            if(!appData.links) appData.links = [];
+            if(id) {
+                const l = appData.links.find(x => x.id === id);
+                if(l) { l.title = title; l.url = url; l.category = category; l.icon = icon; }
             } else {
                 appData.links.push({ id: Date.now().toString(), title, url, category, icon });
             }
-
-            window.resetLinkForm();
-            renderAdminLinksList();
+            window.resetLinkForm(); renderAdminLinksList(); renderLinks();
         };
-
         window.resetLinkForm = function() {
             document.getElementById('editingLinkId').value = '';
             document.getElementById('linkTitle').value = '';
@@ -1112,72 +1398,66 @@
             document.getElementById('linkIcon').value = '';
             document.getElementById('linkFormTitle').textContent = 'إضافة رابط جديد';
         };
-
         window.editLink = function(id) {
-            const link = appData.links.find(l => l.id === id);
-            if (!link) return;
-            document.getElementById('editingLinkId').value = link.id;
-            document.getElementById('linkTitle').value = link.title;
-            document.getElementById('linkUrl').value = link.url;
-            document.getElementById('linkCategory').value = link.category;
-            document.getElementById('linkIcon').value = link.icon;
+            const l = appData.links.find(x => x.id === id);
+            if(!l) return;
+            document.getElementById('editingLinkId').value = l.id;
+            document.getElementById('linkTitle').value = l.title;
+            document.getElementById('linkUrl').value = l.url;
+            document.getElementById('linkCategory').value = l.category;
+            document.getElementById('linkIcon').value = l.icon;
             document.getElementById('linkFormTitle').textContent = 'تعديل الرابط';
         };
-
         window.deleteLink = function(id) {
-            appData.links = appData.links.filter(l => l.id !== id);
+            appData.links = appData.links.filter(x => x.id !== id);
+            renderAdminLinksList(); renderLinks();
+        };
+
+        window.moveLink = function(index, direction) {
+            const links = appData.links || [];
+            const newIndex = index + direction;
+            if (newIndex < 0 || newIndex >= links.length) return;
+            const temp = links[index];
+            links[index] = links[newIndex];
+            links[newIndex] = temp;
             renderAdminLinksList();
+            renderLinks();
         };
 
         function renderAdminLinksList() {
             const container = document.getElementById('adminLinksList');
-            if(!container) return;
-            container.innerHTML = '';
-            (appData.links || []).forEach(l => {
-                const item = document.createElement('div');
-                item.className = 'bg-lightcard dark:bg-cardbg border border-gray-200 dark:border-gray-700 rounded-xl p-2.5 flex items-center justify-between transition-colors';
-                item.innerHTML = `
-                    <div class="flex items-center gap-2">
-                        <i class="${l.icon} text-goldaccent"></i>
+            if(!container) return; container.innerHTML = '';
+            (appData.links || []).forEach((l, index) => {
+                container.innerHTML += `
+                    <div class="bg-cardbg border border-gray-700 rounded-xl p-2 flex items-center justify-between">
                         <div>
-                            <div class="font-bold text-gray-800 dark:text-white">${l.title}</div>
+                            <div class="font-bold text-white"><i class="${l.icon}"></i> ${l.title}</div>
                             <div class="text-[10px] text-gray-400">${l.category}</div>
                         </div>
-                    </div>
-                    <div class="flex gap-1.5">
-                        <button type="button" onclick="window.editLink('${l.id}')" class="bg-blue-500/20 text-blue-500 dark:text-blue-400 px-2.5 py-1 rounded-lg">تعديل</button>
-                        <button type="button" onclick="window.deleteLink('${l.id}')" class="bg-red-500/20 text-red-500 dark:text-red-400 px-2.5 py-1 rounded-lg">حذف</button>
-                    </div>
-                `;
-                container.appendChild(item);
+                        <div class="flex items-center gap-1">
+                            <button type="button" onclick="window.moveLink(${index}, -1)" class="bg-gray-700 text-goldaccent px-2 py-0.5 rounded text-[10px]" title="نحو الأعلى">⬆️</button>
+                            <button type="button" onclick="window.moveLink(${index}, 1)" class="bg-gray-700 text-goldaccent px-2 py-0.5 rounded text-[10px]" title="نحو الأسفل">⬇️</button>
+                            <button type="button" onclick="window.editLink('${l.id}')" class="bg-blue-500/20 text-blue-400 px-2 py-0.5 rounded text-[10px]">تعديل</button>
+                            <button type="button" onclick="window.deleteLink('${l.id}')" class="bg-red-500/20 text-red-400 px-2 py-0.5 rounded text-[10px]">حذف</button>
+                        </div>
+                    </div>`;
             });
         }
 
         window.changePin = function() {
-            const newPin = document.getElementById('newPinInput').value.trim();
-            if (newPin.length >= 4) {
-                appData.pin = newPin;
-                document.getElementById('newPinInput').value = '';
-                alert('تم تحديث رمز PIN بنجاح. تذكر الضغط على حفظ في الأسفل.');
-            } else {
-                alert('الرمز يجب ألا يقل عن 4 أرقام');
-            }
+            const p = document.getElementById('newPinInput').value.trim();
+            if(p.length >= 4) { appData.pin = p; document.getElementById('newPinInput').value = ''; alert('تم تحديث رمز PIN'); }
         };
-
         window.exportDataJson = function() {
-            const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(appData, null, 2));
-            const downloadAnchor = document.createElement('a');
-            downloadAnchor.setAttribute("href", dataStr);
-            downloadAnchor.setAttribute("download", "linktree_backup.json");
-            document.body.appendChild(downloadAnchor);
-            downloadAnchor.click();
-            downloadAnchor.remove();
+            const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(rootData, null, 2));
+            const dl = document.createElement('a'); dl.setAttribute("href", dataStr); dl.setAttribute("download", "platform_backup.json");
+            document.body.appendChild(dl); dl.click(); dl.remove();
         };
 
         window.saveAllChanges = function() {
             appData.displayName = document.getElementById('editDisplayName').value.trim() || appData.displayName;
             appData.bio = document.getElementById('editBio').value.trim();
-            appData.image = tempImageBase64;
+            if (tempImageBase64 !== "") appData.image = tempImageBase64;
 
             appData.contacts.showWhatsapp = document.getElementById('showWhatsapp').checked;
             appData.contacts.whatsapp = document.getElementById('editWhatsapp').value.trim();
