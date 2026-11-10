@@ -1,23 +1,21 @@
 <!DOCTYPE html>
-<html lang="ar" dir="rtl">
+<html lang="ar" dir="rtl" class="dark">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>منصة شجرة الروابط الاحترافية</title>
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- FontAwesome Icons -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <!-- Google Fonts: Tajawal -->
-    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800&display=swap" rel="stylesheet">
-    
     <script>
         tailwind.config = {
+            darkMode: 'class',
             theme: {
                 extend: {
                     colors: {
                         darkbg: '#0F1117',
                         cardbg: '#1A1D26',
+                        lightbg: '#F8FAFC',
+                        lightcard: '#FFFFFF',
                         goldaccent: '#D4AF37',
                         cyanaccent: '#00E5FF'
                     },
@@ -28,11 +26,14 @@
             }
         }
     </script>
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts: Tajawal -->
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800&display=swap" rel="stylesheet">
+    
     <style>
         body {
             font-family: 'Tajawal', sans-serif;
-            background-color: #0F1117;
-            color: #E2E8F0;
             -webkit-tap-highlight-color: transparent;
         }
         .glow-gold {
@@ -47,18 +48,51 @@
         }
     </style>
 </head>
-<body class="min-h-screen flex flex-col items-center justify-between p-4 pb-12">
+<body class="min-h-screen flex flex-col items-center justify-between p-4 pb-12 bg-lightbg dark:bg-darkbg text-gray-800 dark:text-gray-200 transition-colors duration-300">
 
     <!-- Top Bar -->
-    <div class="w-full max-w-md flex justify-between items-center mb-6 bg-cardbg p-3 rounded-2xl border border-gray-800 shadow-lg relative z-50">
+    <div class="w-full max-w-md flex justify-between items-center mb-6 bg-lightcard dark:bg-cardbg p-3.5 rounded-2xl border border-gray-200 dark:border-gray-800 shadow-lg relative z-50 transition-colors duration-300">
         <div class="flex items-center gap-2">
-            <i class="fa-solid fa-user-shield text-goldaccent"></i>
-            <span id="topBarName" class="text-xs font-bold text-gray-200">لوحة المستخدم</span>
+            <!-- Sidebar Menu Trigger Button -->
+            <button type="button" onclick="window.toggleSidebar()" class="w-9 h-9 rounded-xl bg-gray-100 dark:bg-darkbg border border-gray-200 dark:border-gray-700 text-goldaccent flex items-center justify-center transition active:scale-95" title="القائمة الجانبية">
+                <i class="fa-solid fa-bars"></i>
+            </button>
+            <span id="topBarName" class="text-xs font-bold truncate max-w-[150px]">لوحة المستخدم</span>
         </div>
-        <button type="button" onclick="window.openPinModal()" class="text-xs bg-goldaccent/20 active:bg-goldaccent text-goldaccent active:text-black border border-goldaccent/40 px-3.5 py-2 rounded-xl flex items-center gap-1.5 font-bold transition">
-            <i class="fa-solid fa-lock"></i>
-            لوحة الإدارة
-        </button>
+        <div class="flex items-center gap-2">
+            <!-- Theme Toggle Button -->
+            <button type="button" onclick="window.toggleTheme()" class="w-9 h-9 rounded-xl bg-gray-100 dark:bg-darkbg border border-gray-200 dark:border-gray-700 text-goldaccent flex items-center justify-center transition" title="تبديل الوضع">
+                <i id="themeIcon" class="fa-solid fa-moon"></i>
+            </button>
+        </div>
+    </div>
+
+    <!-- Sidebar Drawer Menu -->
+    <div id="sidebarOverlay" class="fixed inset-0 bg-black/60 backdrop-blur-sm hidden z-[90] transition-opacity" onclick="window.toggleSidebar()"></div>
+    <div id="sidebarMenu" class="fixed top-0 right-[-280px] w-[280px] h-full bg-lightcard dark:bg-cardbg border-l border-gray-200 dark:border-gray-800 shadow-2xl z-[95] transition-all duration-300 flex flex-col p-5">
+        <div class="flex justify-between items-center border-b border-gray-200 dark:border-gray-800 pb-4 mb-4">
+            <h3 class="font-bold text-goldaccent flex items-center gap-2 text-sm">
+                <i class="fa-solid fa-compass"></i> القائمة الرئيسية
+            </h3>
+            <button type="button" onclick="window.toggleSidebar()" class="text-gray-400 hover:text-gray-700 dark:hover:text-white text-lg"><i class="fa-solid fa-xmark"></i></button>
+        </div>
+        
+        <!-- Sidebar Navigation Links / Actions -->
+        <div class="flex-grow space-y-2 text-xs">
+            <button type="button" onclick="window.toggleSidebar(); window.openPinModal();" class="w-full bg-goldaccent/10 hover:bg-goldaccent/20 border border-goldaccent/30 text-goldaccent p-3 rounded-xl flex items-center gap-3 font-bold transition">
+                <i class="fa-solid fa-lock text-sm"></i>
+                لوحة الإدارة
+            </button>
+            <!-- يمكنك إضافة عناصر جديدة هنا بسهولة مستقبلاً -->
+            <a href="https://wa.me/" target="_blank" class="w-full bg-gray-100 dark:bg-darkbg hover:bg-gray-200 dark:hover:bg-gray-800 border border-gray-200 dark:border-gray-700 text-gray-700 dark:text-gray-300 p-3 rounded-xl flex items-center gap-3 font-bold transition">
+                <i class="fa-brands fa-whatsapp text-emerald-400 text-sm"></i>
+                تواصل معنا عبر واتساب
+            </a>
+        </div>
+
+        <div class="border-t border-gray-200 dark:border-gray-800 pt-3 text-center text-[10px] text-gray-400">
+            شجرة الروابط الاحترافية © 2026
+        </div>
     </div>
 
     <!-- Main Profile Card Container -->
@@ -67,17 +101,17 @@
         <!-- Profile Header -->
         <div class="text-center w-full mb-6">
             <div class="relative w-24 h-24 mx-auto mb-3">
-                <div id="avatarContainer" class="w-full h-full rounded-full border-2 border-goldaccent glow-gold overflow-hidden bg-darkbg flex items-center justify-center">
+                <div id="avatarContainer" class="w-full h-full rounded-full border-2 border-goldaccent glow-gold overflow-hidden bg-lightcard dark:bg-darkbg flex items-center justify-center transition-colors duration-300">
                     <i id="defaultAvatarIcon" class="fa-solid fa-user text-3xl text-goldaccent/60"></i>
                     <img id="profileImage" src="" alt="Profile" class="w-full h-full object-cover hidden">
                 </div>
             </div>
             
-            <h1 id="displayName" class="text-xl font-bold text-white flex items-center justify-center gap-2">
+            <h1 id="displayName" class="text-xl font-bold dark:text-white flex items-center justify-center gap-2">
                 <span>محمود للتصميم والبناء</span>
                 <i class="fa-solid fa-circle-check text-goldaccent text-base"></i>
             </h1>
-            <p id="displayBio" class="text-xs text-gray-400 mt-1 px-4">خدمات التصميم الإعلاني، حلول الطباعة، وتكسية واجهات الألوكوبوند</p>
+            <p id="displayBio" class="text-xs text-gray-500 dark:text-gray-400 mt-1 px-4">خدمات التصميم الإعلاني، حلول الطباعة، وتكسية واجهات الألوكوبوند</p>
             
             <!-- Contact Buttons -->
             <div id="contactButtons" class="flex justify-center gap-3 mt-4"></div>
@@ -92,113 +126,139 @@
     </div>
 
     <!-- Footer -->
-    <footer class="w-full max-w-md text-center py-4 border-t border-gray-800 text-xs text-gray-500 relative z-10">
+    <footer class="w-full max-w-md text-center py-4 border-t border-gray-200 dark:border-gray-800 text-xs text-gray-400 dark:text-gray-500 relative z-10 transition-colors duration-300">
         <p>© <span id="year">2026</span> جميع الحقوق محفوظة - شجرة الروابط</p>
     </footer>
 
     <!-- PIN Authentication Modal -->
     <div id="pinModal" class="fixed inset-0 bg-black/85 backdrop-blur-md hidden flex items-center justify-center z-[100] p-4">
-        <div class="bg-cardbg border border-gray-800 w-full max-w-xs rounded-2xl p-6 text-center shadow-2xl">
+        <div class="bg-lightcard dark:bg-cardbg border border-gray-200 dark:border-gray-800 w-full max-w-xs rounded-2xl p-6 text-center shadow-2xl transition-colors duration-300">
             <div class="w-12 h-12 bg-goldaccent/10 border border-goldaccent/30 rounded-full flex items-center justify-center mx-auto mb-3 text-goldaccent">
                 <i class="fa-solid fa-shield-halved text-xl"></i>
             </div>
-            <h3 class="text-lg font-bold text-white mb-1">تسجيل الدخول للإدارة</h3>
-            <p class="text-xs text-gray-400 mb-4">الرمز الافتراضي: <span class="text-goldaccent font-mono font-bold">1234</span></p>
-            <input type="password" id="pinInput" maxlength="6" class="w-full bg-darkbg border border-gray-700 text-center text-xl tracking-widest text-goldaccent rounded-xl py-2 mb-4 outline-none focus:border-goldaccent">
+            <h3 class="text-lg font-bold dark:text-white mb-1">تسجيل الدخول للإدارة</h3>
+            <p class="text-xs text-gray-500 dark:text-gray-400 mb-4">الرمز الافتراضي: <span class="text-goldaccent font-mono font-bold">1234</span></p>
+            <input type="password" id="pinInput" maxlength="6" class="w-full bg-lightbg dark:bg-darkbg border border-gray-300 dark:border-gray-700 text-center text-xl tracking-widest text-goldaccent rounded-xl py-2 mb-4 outline-none focus:border-goldaccent">
             <div class="flex gap-2">
                 <button type="button" onclick="window.verifyPin()" class="flex-1 bg-goldaccent active:bg-yellow-600 text-black font-bold py-2.5 rounded-xl text-sm">دخول</button>
-                <button type="button" onclick="window.closePinModal()" class="flex-1 bg-gray-800 active:bg-gray-700 text-gray-300 font-bold py-2.5 rounded-xl text-sm">إلغاء</button>
+                <button type="button" onclick="window.closePinModal()" class="flex-1 bg-gray-200 dark:bg-gray-800 active:bg-gray-300 dark:active:bg-gray-700 text-gray-700 dark:text-gray-300 font-bold py-2.5 rounded-xl text-sm">إلغاء</button>
             </div>
         </div>
     </div>
 
     <!-- Admin Panel Modal -->
     <div id="adminModal" class="fixed inset-0 bg-black/85 backdrop-blur-md hidden flex items-center justify-center z-[100] p-3">
-        <div class="bg-cardbg border border-gray-800 w-full max-w-lg rounded-2xl p-4 shadow-2xl max-h-[92vh] flex flex-col">
+        <div class="bg-lightcard dark:bg-cardbg border border-gray-200 dark:border-gray-800 w-full max-w-lg rounded-2xl p-4 shadow-2xl max-h-[92vh] flex flex-col transition-colors duration-300">
             
-            <div class="flex justify-between items-center border-b border-gray-800 pb-3 mb-3">
+            <div class="flex justify-between items-center border-b border-gray-200 dark:border-gray-800 pb-3 mb-3">
                 <h3 class="text-base font-bold text-goldaccent flex items-center gap-2">
                     <i class="fa-solid fa-sliders"></i> لوحة التحكم الاحترافية
                 </h3>
-                <button type="button" onclick="window.closeAdminModal()" class="text-gray-400 hover:text-white text-xl px-2"><i class="fa-solid fa-xmark"></i></button>
+                <button type="button" onclick="window.closeAdminModal()" class="text-gray-400 hover:text-gray-700 dark:hover:text-white text-xl px-2"><i class="fa-solid fa-xmark"></i></button>
             </div>
 
-            <div class="overflow-y-auto flex-grow pr-1 space-y-4 text-xs">
+            <div class="overflow-y-auto flex-grow pr-1 space-y-3 text-xs">
 
-                <!-- Profile Settings -->
-                <div class="bg-darkbg p-3 rounded-xl border border-gray-800 space-y-2">
-                    <h4 class="font-bold text-gray-400">الملف الشخصي وصورة البروفايل</h4>
-                    <input type="text" id="editDisplayName" placeholder="الاسم الظاهر" class="w-full bg-cardbg border border-gray-700 rounded-lg p-2 text-white outline-none">
-                    <input type="text" id="editBio" placeholder="الوصف المختصر" class="w-full bg-cardbg border border-gray-700 rounded-lg p-2 text-white outline-none">
-                    <div>
-                        <label class="block text-gray-400 mb-1">رفع صورة شخصية من الجهاز:</label>
-                        <input type="file" id="imageFileInput" accept="image/*" onchange="window.handleImageUpload(event)" class="w-full text-gray-400 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-xs file:font-semibold file:bg-goldaccent/20 file:text-goldaccent hover:file:bg-goldaccent/30 cursor-pointer mb-2">
-                        <button type="button" onclick="window.removeProfileImage()" class="text-red-400 block mt-1">إزالة الصورة الحالية</button>
+                <!-- Accordion 1: Profile Settings -->
+                <div class="bg-lightbg dark:bg-darkbg rounded-xl border border-gray-200 dark:border-gray-800 overflow-hidden transition-colors">
+                    <button type="button" onclick="window.toggleAccordion('accProfile')" class="w-full p-3 flex justify-between items-center font-bold text-gray-700 dark:text-gray-300">
+                        <span class="flex items-center gap-2"><i class="fa-solid fa-user-pen text-goldaccent"></i> الملف الشخصي وصورة البروفايل</span>
+                        <i id="icon-accProfile" class="fa-solid fa-chevron-down transition-transform"></i>
+                    </button>
+                    <div id="accProfile" class="hidden p-3 pt-0 space-y-2 border-t border-gray-200 dark:border-gray-800 mt-1">
+                        <input type="text" id="editDisplayName" placeholder="الاسم الظاهر" class="w-full bg-lightcard dark:bg-cardbg border border-gray-300 dark:border-gray-700 rounded-lg p-2 dark:text-white outline-none mt-2">
+                        <input type="text" id="editBio" placeholder="الوصف المختصر" class="w-full bg-lightcard dark:bg-cardbg border border-gray-300 dark:border-gray-700 rounded-lg p-2 dark:text-white outline-none">
+                        <div>
+                            <label class="block text-gray-500 dark:text-gray-400 mb-1">رفع صورة شخصية من الجهاز:</label>
+                            <input type="file" id="imageFileInput" accept="image/*" onchange="window.handleImageUpload(event)" class="w-full text-gray-500 dark:text-gray-400 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-xs file:font-semibold file:bg-goldaccent/20 file:text-goldaccent hover:file:bg-goldaccent/30 cursor-pointer mb-2">
+                            <button type="button" onclick="window.removeProfileImage()" class="text-red-500 dark:text-red-400 block mt-1">إزالة الصورة الحالية</button>
+                        </div>
                     </div>
                 </div>
 
-                <!-- Contacts -->
-                <div class="bg-darkbg p-3 rounded-xl border border-gray-800 space-y-2">
-                    <h4 class="font-bold text-gray-400">معلومات الاتصال</h4>
-                    <div class="flex items-center gap-2">
-                        <input type="checkbox" id="showWhatsapp" class="accent-goldaccent">
-                        <input type="text" id="editWhatsapp" placeholder="رقم الواتساب مع الرمز الدولي" class="flex-1 bg-cardbg border border-gray-700 rounded-lg p-2 text-white outline-none">
-                    </div>
-                    <div class="flex items-center gap-2">
-                        <input type="checkbox" id="showPhone" class="accent-goldaccent">
-                        <input type="text" id="editPhone" placeholder="رقم الهاتف" class="flex-1 bg-cardbg border border-gray-700 rounded-lg p-2 text-white outline-none">
-                    </div>
-                    <div class="flex items-center gap-2">
-                        <input type="checkbox" id="showEmail" class="accent-goldaccent">
-                        <input type="email" id="editEmail" placeholder="البريد الإلكتروني" class="flex-1 bg-cardbg border border-gray-700 rounded-lg p-2 text-white outline-none">
-                    </div>
-                </div>
-
-                <!-- Categories -->
-                <div class="bg-darkbg p-3 rounded-xl border border-gray-800 space-y-2">
-                    <h4 class="font-bold text-gray-400">إدارة الفئات</h4>
-                    <div class="flex gap-2">
-                        <input type="text" id="newCategoryInput" placeholder="فئة جديدة..." class="flex-1 bg-cardbg border border-gray-700 rounded-lg p-2 text-white outline-none">
-                        <button type="button" onclick="window.addCategory()" class="bg-goldaccent/20 text-goldaccent border border-goldaccent/40 px-3 py-1 rounded-lg font-bold">إضافة</button>
-                    </div>
-                    <div id="adminCategoriesList" class="flex flex-wrap gap-1.5 pt-1"></div>
-                </div>
-
-                <!-- Add/Edit Link Form -->
-                <div class="bg-darkbg p-3 rounded-xl border border-gray-800 space-y-2">
-                    <h4 id="linkFormTitle" class="font-bold text-goldaccent">إضافة رابط جديد</h4>
-                    <input type="hidden" id="editingLinkId">
-                    <input type="text" id="linkTitle" placeholder="عنوان الرابط (مثال: موقعنا الرسمي)" class="w-full bg-cardbg border border-gray-700 rounded-lg p-2 text-white outline-none">
-                    <input type="url" id="linkUrl" placeholder="الرابط https://..." class="w-full bg-cardbg border border-gray-700 rounded-lg p-2 text-white outline-none">
-                    <div class="flex gap-2">
-                        <select id="linkCategory" class="flex-1 bg-cardbg border border-gray-700 rounded-lg p-2 text-white outline-none"></select>
-                        <input type="text" id="linkIcon" placeholder="أيقونة (fa-globe أو fa-whatsapp)" class="flex-1 bg-cardbg border border-gray-700 rounded-lg p-2 text-white outline-none">
-                    </div>
-                    <div class="flex gap-2 pt-1">
-                        <button type="button" onclick="window.saveLink()" class="flex-1 bg-goldaccent text-black font-bold py-2 rounded-lg">حفظ الرابط</button>
-                        <button type="button" onclick="window.resetLinkForm()" class="bg-gray-800 text-gray-300 px-3 py-2 rounded-lg">إلغاء التعديل</button>
+                <!-- Accordion 2: Contacts -->
+                <div class="bg-lightbg dark:bg-darkbg rounded-xl border border-gray-200 dark:border-gray-800 overflow-hidden transition-colors">
+                    <button type="button" onclick="window.toggleAccordion('accContacts')" class="w-full p-3 flex justify-between items-center font-bold text-gray-700 dark:text-gray-300">
+                        <span class="flex items-center gap-2"><i class="fa-solid fa-address-book text-goldaccent"></i> معلومات الاتصال</span>
+                        <i id="icon-accContacts" class="fa-solid fa-chevron-down transition-transform"></i>
+                    </button>
+                    <div id="accContacts" class="hidden p-3 pt-0 space-y-2 border-t border-gray-200 dark:border-gray-800 mt-1">
+                        <div class="flex items-center gap-2 mt-2">
+                            <input type="checkbox" id="showWhatsapp" class="accent-goldaccent">
+                            <input type="text" id="editWhatsapp" placeholder="رقم الواتساب مع الرمز الدولي" class="flex-1 bg-lightcard dark:bg-cardbg border border-gray-300 dark:border-gray-700 rounded-lg p-2 dark:text-white outline-none">
+                        </div>
+                        <div class="flex items-center gap-2">
+                            <input type="checkbox" id="showPhone" class="accent-goldaccent">
+                            <input type="text" id="editPhone" placeholder="رقم الهاتف" class="flex-1 bg-lightcard dark:bg-cardbg border border-gray-300 dark:border-gray-700 rounded-lg p-2 dark:text-white outline-none">
+                        </div>
+                        <div class="flex items-center gap-2">
+                            <input type="checkbox" id="showEmail" class="accent-goldaccent">
+                            <input type="email" id="editEmail" placeholder="البريد الإلكتروني" class="flex-1 bg-lightcard dark:bg-cardbg border border-gray-300 dark:border-gray-700 rounded-lg p-2 dark:text-white outline-none">
+                        </div>
                     </div>
                 </div>
 
-                <!-- Current Links List -->
-                <div class="bg-darkbg p-3 rounded-xl border border-gray-800 space-y-2">
-                    <h4 class="font-bold text-gray-400">الروابط الحالية</h4>
-                    <div id="adminLinksList" class="space-y-1.5"></div>
+                <!-- Accordion 3: Categories -->
+                <div class="bg-lightbg dark:bg-darkbg rounded-xl border border-gray-200 dark:border-gray-800 overflow-hidden transition-colors">
+                    <button type="button" onclick="window.toggleAccordion('accCategories')" class="w-full p-3 flex justify-between items-center font-bold text-gray-700 dark:text-gray-300">
+                        <span class="flex items-center gap-2"><i class="fa-solid fa-folder-tree text-goldaccent"></i> إدارة الفئات</span>
+                        <i id="icon-accCategories" class="fa-solid fa-chevron-down transition-transform"></i>
+                    </button>
+                    <div id="accCategories" class="hidden p-3 pt-0 space-y-2 border-t border-gray-200 dark:border-gray-800 mt-1">
+                        <div class="flex gap-2 mt-2">
+                            <input type="text" id="newCategoryInput" placeholder="فئة جديدة..." class="flex-1 bg-lightcard dark:bg-cardbg border border-gray-300 dark:border-gray-700 rounded-lg p-2 dark:text-white outline-none">
+                            <button type="button" onclick="window.addCategory()" class="bg-goldaccent/20 text-goldaccent border border-goldaccent/40 px-3 py-1 rounded-lg font-bold">إضافة</button>
+                        </div>
+                        <div id="adminCategoriesList" class="flex flex-wrap gap-1.5 pt-1"></div>
+                    </div>
                 </div>
 
-                <!-- Change PIN -->
-                <div class="bg-darkbg p-3 rounded-xl border border-gray-800 space-y-2">
-                    <h4 class="font-bold text-gray-400">تغيير رمز PIN السري</h4>
-                    <div class="flex gap-2">
-                        <input type="password" id="newPinInput" maxlength="6" placeholder="رمز PIN جديد" class="flex-1 bg-cardbg border border-gray-700 rounded-lg p-2 text-white outline-none">
-                        <button type="button" onclick="window.changePin()" class="bg-goldaccent/20 text-goldaccent border border-goldaccent/40 px-3 py-1 rounded-lg font-bold">تحديث</button>
+                <!-- Accordion 4: Links Management -->
+                <div class="bg-lightbg dark:bg-darkbg rounded-xl border border-gray-200 dark:border-gray-800 overflow-hidden transition-colors">
+                    <button type="button" onclick="window.toggleAccordion('accLinks')" class="w-full p-3 flex justify-between items-center font-bold text-gray-700 dark:text-gray-300">
+                        <span class="flex items-center gap-2"><i class="fa-solid fa-link text-goldaccent"></i> إدارة الروابط الحالية</span>
+                        <i id="icon-accLinks" class="fa-solid fa-chevron-down transition-transform"></i>
+                    </button>
+                    <div id="accLinks" class="hidden p-3 pt-0 space-y-3 border-t border-gray-200 dark:border-gray-800 mt-1">
+                        <div class="space-y-2 mt-2">
+                            <h4 id="linkFormTitle" class="font-bold text-goldaccent">إضافة رابط جديد</h4>
+                            <input type="hidden" id="editingLinkId">
+                            <input type="text" id="linkTitle" placeholder="عنوان الرابط (مثال: موقعنا الرسمي)" class="w-full bg-lightcard dark:bg-cardbg border border-gray-300 dark:border-gray-700 rounded-lg p-2 dark:text-white outline-none">
+                            <input type="url" id="linkUrl" placeholder="الرابط https://..." class="w-full bg-lightcard dark:bg-cardbg border border-gray-300 dark:border-gray-700 rounded-lg p-2 dark:text-white outline-none">
+                            <div class="flex gap-2">
+                                <select id="linkCategory" class="flex-1 bg-lightcard dark:bg-cardbg border border-gray-300 dark:border-gray-700 rounded-lg p-2 dark:text-white outline-none"></select>
+                                <input type="text" id="linkIcon" placeholder="أيقونة (fa-globe)" class="flex-1 bg-lightcard dark:bg-cardbg border border-gray-300 dark:border-gray-700 rounded-lg p-2 dark:text-white outline-none">
+                            </div>
+                            <div class="flex gap-2 pt-1">
+                                <button type="button" onclick="window.saveLink()" class="flex-1 bg-goldaccent text-black font-bold py-2 rounded-lg">حفظ الرابط</button>
+                                <button type="button" onclick="window.resetLinkForm()" class="bg-gray-200 dark:bg-gray-800 text-gray-700 dark:text-gray-300 px-3 py-2 rounded-lg">إلغاء</button>
+                            </div>
+                        </div>
+                        <div class="space-y-1.5 pt-2 border-t border-gray-300 dark:border-gray-700">
+                            <h4 class="font-bold text-gray-500 dark:text-gray-400">الروابط المضافة</h4>
+                            <div id="adminLinksList" class="space-y-1.5"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Accordion 5: Security / PIN -->
+                <div class="bg-lightbg dark:bg-darkbg rounded-xl border border-gray-200 dark:border-gray-800 overflow-hidden transition-colors">
+                    <button type="button" onclick="window.toggleAccordion('accSecurity')" class="w-full p-3 flex justify-between items-center font-bold text-gray-700 dark:text-gray-300">
+                        <span class="flex items-center gap-2"><i class="fa-solid fa-key text-goldaccent"></i> الأمان وتغيير رمز PIN</span>
+                        <i id="icon-accSecurity" class="fa-solid fa-chevron-down transition-transform"></i>
+                    </button>
+                    <div id="accSecurity" class="hidden p-3 pt-0 space-y-2 border-t border-gray-200 dark:border-gray-800 mt-1">
+                        <div class="flex gap-2 mt-2">
+                            <input type="password" id="newPinInput" maxlength="6" placeholder="رمز PIN جديد" class="flex-1 bg-lightcard dark:bg-cardbg border border-gray-300 dark:border-gray-700 rounded-lg p-2 dark:text-white outline-none">
+                            <button type="button" onclick="window.changePin()" class="bg-goldaccent/20 text-goldaccent border border-goldaccent/40 px-3 py-1 rounded-lg font-bold">تحديث</button>
+                        </div>
                     </div>
                 </div>
 
             </div>
 
-            <div class="border-t border-gray-800 pt-3 mt-3 flex justify-between items-center">
-                <button type="button" onclick="window.exportDataJson()" class="bg-gray-800 text-gray-300 px-3 py-2 rounded-xl text-xs">تصدير النسخة الاحتياطية</button>
+            <div class="border-t border-gray-200 dark:border-gray-800 pt-3 mt-3 flex justify-between items-center transition-colors">
+                <button type="button" onclick="window.exportDataJson()" class="bg-gray-200 dark:bg-gray-800 text-gray-700 dark:text-gray-300 px-3 py-2 rounded-xl text-xs">تصدير النسخة الاحتياطية</button>
                 <button type="button" onclick="window.saveAllChanges()" class="bg-goldaccent text-black font-bold px-5 py-2 rounded-xl text-xs">حفظ التغييرات</button>
             </div>
 
@@ -246,10 +306,56 @@
         }
 
         function initApp() {
+            initTheme();
             renderProfile();
             renderCategories();
             renderLinks();
         }
+
+        function initTheme() {
+            const savedTheme = localStorage.getItem('theme') || 'dark';
+            if (savedTheme === 'light') {
+                document.documentElement.classList.remove('dark');
+                document.getElementById('themeIcon').className = 'fa-solid fa-sun';
+            } else {
+                document.documentElement.classList.add('dark');
+                document.getElementById('themeIcon').className = 'fa-solid fa-moon';
+            }
+        }
+
+        window.toggleTheme = function() {
+            const isDark = document.documentElement.classList.toggle('dark');
+            localStorage.setItem('theme', isDark ? 'dark' : 'light');
+            document.getElementById('themeIcon').className = isDark ? 'fa-solid fa-moon' : 'fa-solid fa-sun';
+        };
+
+        // Sidebar Drawer Control
+        window.toggleSidebar = function() {
+            const menu = document.getElementById('sidebarMenu');
+            const overlay = document.getElementById('sidebarOverlay');
+            if (menu.classList.contains('right-[-280px]')) {
+                menu.classList.remove('right-[-280px]');
+                menu.classList.add('right-0');
+                overlay.classList.remove('hidden');
+            } else {
+                menu.classList.remove('right-0');
+                menu.classList.add('right-[-280px]');
+                overlay.classList.add('hidden');
+            }
+        };
+
+        // Accordion Toggle Engine
+        window.toggleAccordion = function(id) {
+            const el = document.getElementById(id);
+            const icon = document.getElementById('icon-' + id);
+            if (el.classList.contains('hidden')) {
+                el.classList.remove('hidden');
+                icon.style.transform = 'rotate(180deg)';
+            } else {
+                el.classList.add('hidden');
+                icon.style.transform = 'rotate(0deg)';
+            }
+        };
 
         function renderProfile() {
             document.getElementById('topBarName').textContent = appData.displayName;
@@ -279,7 +385,7 @@
             if (appData.contacts.showEmail && appData.contacts.email) {
                 cContainer.innerHTML += `<a href="mailto:${appData.contacts.email}" class="w-9 h-9 rounded-full bg-goldaccent/10 border border-goldaccent/30 text-goldaccent flex items-center justify-center"><i class="fa-solid fa-envelope"></i></a>`;
             }
-            cContainer.innerHTML += `<button type="button" onclick="window.copyProfileLink()" class="w-9 h-9 rounded-full bg-gray-800 border border-gray-700 text-gray-300 flex items-center justify-center"><i class="fa-solid fa-share-nodes"></i></button>`;
+            cContainer.innerHTML += `<button type="button" onclick="window.copyProfileLink()" class="w-9 h-9 rounded-full bg-gray-200 dark:bg-gray-800 border border-gray-300 dark:border-gray-700 text-gray-700 dark:text-gray-300 flex items-center justify-center"><i class="fa-solid fa-share-nodes"></i></button>`;
         }
 
         function renderCategories() {
@@ -289,7 +395,7 @@
                 const isActive = cat === activeCategory;
                 const btn = document.createElement('button');
                 btn.type = "button";
-                btn.className = `px-3 py-1.5 rounded-xl whitespace-nowrap border text-xs transition ${isActive ? 'bg-goldaccent text-black font-bold border-goldaccent' : 'bg-cardbg text-gray-400 border-gray-800'}`;
+                btn.className = `px-3 py-1.5 rounded-xl whitespace-nowrap border text-xs transition ${isActive ? 'bg-goldaccent text-black font-bold border-goldaccent' : 'bg-lightcard dark:bg-cardbg text-gray-500 dark:text-gray-400 border-gray-200 dark:border-gray-800'}`;
                 btn.textContent = cat;
                 btn.onclick = () => { activeCategory = cat; renderCategories(); renderLinks(); };
                 container.appendChild(btn);
@@ -304,7 +410,7 @@
             const filtered = activeCategory === "الكل" ? links : links.filter(l => l.category === activeCategory);
 
             if (filtered.length === 0) {
-                container.innerHTML = `<div class="text-center py-6 text-xs text-gray-500">لا توجد روابط لهذه الفئة حالياً.</div>`;
+                container.innerHTML = `<div class="text-center py-6 text-xs text-gray-400">لا توجد روابط لهذه الفئة حالياً.</div>`;
                 return;
             }
 
@@ -312,15 +418,15 @@
                 const a = document.createElement('a');
                 a.href = link.url;
                 a.target = '_blank';
-                a.className = 'w-full bg-cardbg border border-gray-800 rounded-2xl p-3.5 flex items-center justify-between glow-gold-hover transition';
+                a.className = 'w-full bg-lightcard dark:bg-cardbg border border-gray-200 dark:border-gray-800 rounded-2xl p-3.5 flex items-center justify-between glow-gold-hover transition';
                 a.innerHTML = `
                     <div class="flex items-center gap-3">
-                        <div class="w-9 h-9 rounded-xl bg-darkbg border border-gray-800 flex items-center justify-center text-goldaccent">
+                        <div class="w-9 h-9 rounded-xl bg-lightbg dark:bg-darkbg border border-gray-200 dark:border-gray-800 flex items-center justify-center text-goldaccent">
                             <i class="fa-solid ${link.icon || 'fa-link'}"></i>
                         </div>
-                        <span class="text-xs font-bold text-gray-200">${link.title}</span>
+                        <span class="text-xs font-bold text-gray-800 dark:text-gray-200">${link.title}</span>
                     </div>
-                    <i class="fa-solid fa-chevron-left text-xs text-gray-600"></i>
+                    <i class="fa-solid fa-chevron-left text-xs text-gray-400 dark:text-gray-600"></i>
                 `;
                 container.appendChild(a);
             });
@@ -396,8 +502,8 @@
             (appData.categories || []).forEach(cat => {
                 if (cat === "الكل") return;
                 const tag = document.createElement('div');
-                tag.className = 'bg-darkbg border border-gray-700 px-2.5 py-1 rounded-lg flex items-center gap-2 text-gray-300';
-                tag.innerHTML = `<span>${cat}</span><button type="button" onclick="window.deleteCategory('${cat}')" class="text-red-400 hover:text-red-300"><i class="fa-solid fa-xmark"></i></button>`;
+                tag.className = 'bg-lightbg dark:bg-darkbg border border-gray-300 dark:border-gray-700 px-2.5 py-1 rounded-lg flex items-center gap-2 text-gray-700 dark:text-gray-300';
+                tag.innerHTML = `<span>${cat}</span><button type="button" onclick="window.deleteCategory('${cat}')" class="text-red-500 hover:text-red-400"><i class="fa-solid fa-xmark"></i></button>`;
                 container.appendChild(tag);
             });
         }
@@ -490,23 +596,23 @@
             const container = document.getElementById('adminLinksList');
             container.innerHTML = '';
             if (appData.links.length === 0) {
-                container.innerHTML = '<div class="text-gray-500 text-center py-2">لا توجد روابط مضافة بعد.</div>';
+                container.innerHTML = '<div class="text-gray-400 text-center py-2">لا توجد روابط مضافة بعد.</div>';
                 return;
             }
             appData.links.forEach(l => {
                 const item = document.createElement('div');
-                item.className = 'bg-cardbg border border-gray-700 rounded-xl p-2.5 flex items-center justify-between';
+                item.className = 'bg-lightcard dark:bg-cardbg border border-gray-200 dark:border-gray-700 rounded-xl p-2.5 flex items-center justify-between transition-colors';
                 item.innerHTML = `
                     <div class="flex items-center gap-2">
                         <i class="fa-solid ${l.icon} text-goldaccent"></i>
                         <div>
-                            <div class="font-bold text-white">${l.title}</div>
+                            <div class="font-bold text-gray-800 dark:text-white">${l.title}</div>
                             <div class="text-[10px] text-gray-400">${l.category}</div>
                         </div>
                     </div>
                     <div class="flex gap-1.5">
-                        <button type="button" onclick="window.editLink('${l.id}')" class="bg-blue-500/20 text-blue-400 px-2.5 py-1 rounded-lg">تعديل</button>
-                        <button type="button" onclick="window.deleteLink('${l.id}')" class="bg-red-500/20 text-red-400 px-2.5 py-1 rounded-lg">حذف</button>
+                        <button type="button" onclick="window.editLink('${l.id}')" class="bg-blue-500/20 text-blue-500 dark:text-blue-400 px-2.5 py-1 rounded-lg">تعديل</button>
+                        <button type="button" onclick="window.deleteLink('${l.id}')" class="bg-red-500/20 text-red-500 dark:text-red-400 px-2.5 py-1 rounded-lg">حذف</button>
                     </div>
                 `;
                 container.appendChild(item);
@@ -549,7 +655,7 @@
             saveData();
             initApp();
             window.closeAdminModal();
-            alert('تم حفظ التغييرات وتحديث الصورة بنجاح!');
+            alert('تم حفظ التغييرات بنجاح!');
         };
 
         window.copyProfileLink = function() {
