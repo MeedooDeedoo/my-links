@@ -53,14 +53,12 @@
     <!-- Top Bar -->
     <div class="w-full max-w-md flex justify-between items-center mb-6 bg-lightcard dark:bg-cardbg p-3.5 rounded-2xl border border-gray-300 dark:border-gray-800 shadow-md relative z-50 transition-colors duration-300">
         <div class="flex items-center gap-2">
-            <!-- Sidebar Menu Trigger Button -->
             <button type="button" onclick="window.toggleSidebar()" class="w-9 h-9 rounded-xl bg-gray-100 dark:bg-darkbg border border-gray-300 dark:border-gray-700 text-goldaccent flex items-center justify-center transition active:scale-95 shadow-sm" title="القائمة الجانبية">
                 <i class="fa-solid fa-bars"></i>
             </button>
             <span id="topBarName" class="text-xs font-bold text-gray-900 dark:text-gray-100 truncate max-w-[150px]">جاري التحميل...</span>
         </div>
         <div class="flex items-center gap-2">
-            <!-- Theme Toggle Button -->
             <button type="button" onclick="window.toggleTheme()" class="w-9 h-9 rounded-xl bg-gray-100 dark:bg-darkbg border border-gray-300 dark:border-gray-700 text-goldaccent flex items-center justify-center transition shadow-sm" title="تبديل الوضع">
                 <i id="themeIcon" class="fa-solid fa-moon"></i>
             </button>
@@ -128,10 +126,10 @@
             <i class="fa-solid fa-chevron-left text-xs text-goldaccent"></i>
         </button>
 
-        <!-- Links Container (Only active links shown) -->
+        <!-- Links Container (Only active/enabled links shown) -->
         <div id="linksContainer" class="w-full flex flex-col gap-3 mb-6"></div>
 
-        <!-- Google Maps Section (Dynamic Visibility) -->
+        <!-- Google Maps Section -->
         <div id="mapSectionContainer" class="w-full bg-lightcard dark:bg-cardbg border border-gray-300 dark:border-gray-800 rounded-2xl p-3.5 shadow-sm mb-6 hidden">
             <div class="flex items-center justify-between mb-2 px-1">
                 <span class="text-xs font-extrabold text-gray-900 dark:text-white flex items-center gap-1.5">
@@ -306,7 +304,7 @@
                         <label for="adminShowMap" class="font-bold text-gray-800 dark:text-gray-200">إظهار الخريطة في أسفل الصفحة الرئيسية</label>
                     </div>
                     <input type="url" id="adminMapUrl" placeholder="رابط زر الخريطة (Google Maps Share Link)" class="w-full bg-lightcard dark:bg-cardbg border border-gray-300 dark:border-gray-700 rounded-lg p-2 text-gray-900 dark:text-white outline-none">
-                    <textarea id="adminMapEmbed" placeholder="كود التضمين iframe src لخرائط جوجل (Google Maps Embed URL)" class="w-full bg-lightcard dark:bg-cardbg border border-gray-300 dark:border-gray-700 rounded-lg p-2 text-gray-900 dark:text-white outline-none h-16 text-[11px] font-mono"></textarea>
+                    <textarea id="adminMapEmbed" placeholder="كود التضمين iframe src لخرائط جوجل" class="w-full bg-lightcard dark:bg-cardbg border border-gray-300 dark:border-gray-700 rounded-lg p-2 text-gray-900 dark:text-white outline-none h-16 text-[11px] font-mono"></textarea>
                 </div>
 
                 <!-- Feedback -->
@@ -427,7 +425,7 @@
                     </div>
                 </div>
 
-                <!-- Links Management (Includes Enable/Disable & Reorder) -->
+                <!-- Links Management (Includes Enable/Disable Toggle) -->
                 <div class="bg-lightbg dark:bg-darkbg rounded-xl border border-gray-300 dark:border-gray-800 overflow-hidden transition-colors">
                     <button type="button" onclick="window.toggleAccordion('accLinks')" class="w-full p-3 flex justify-between items-center font-bold text-gray-800 dark:text-gray-200">
                         <span class="flex items-center gap-2"><i class="fa-solid fa-link text-goldaccent"></i> إدارة الروابط (تشغيل/إيقاف وترتيب)</span>
@@ -443,9 +441,9 @@
                                 <select id="linkCategory" class="flex-1 bg-lightcard dark:bg-cardbg border border-gray-300 dark:border-gray-700 rounded-lg p-2 text-gray-900 dark:text-white outline-none"></select>
                                 <input type="text" id="linkIcon" placeholder="أيقونة" class="flex-1 bg-lightcard dark:bg-cardbg border border-gray-300 dark:border-gray-700 rounded-lg p-2 text-gray-900 dark:text-white outline-none">
                             </div>
-                            <div class="flex items-center gap-2 pt-1">
+                            <div class="flex items-center gap-2 pt-1 bg-goldaccent/10 p-2 rounded-lg border border-goldaccent/30">
                                 <input type="checkbox" id="linkEnabled" class="accent-goldaccent w-4 h-4" checked>
-                                <label for="linkEnabled" class="font-bold text-gray-800 dark:text-gray-200">تفعيل الرابط وعرضه في الصفحة</label>
+                                <label for="linkEnabled" class="font-bold text-gray-900 dark:text-white text-xs">تفعيل وعرض الرابط في الصفحة الرئيسية</label>
                             </div>
                             <div class="flex gap-2 pt-1">
                                 <button type="button" onclick="window.saveLink()" class="flex-1 bg-goldaccent text-black font-bold py-2 rounded-lg">حفظ</button>
@@ -545,9 +543,9 @@
                     <input type="text" id="memberLinkTitle" placeholder="عنوان الرابط" class="w-full bg-lightcard dark:bg-cardbg border border-gray-300 dark:border-gray-700 rounded-lg p-2 text-gray-900 dark:text-white outline-none">
                     <input type="url" id="memberLinkUrl" placeholder="الرابط https://..." class="w-full bg-lightcard dark:bg-cardbg border border-gray-300 dark:border-gray-700 rounded-lg p-2 text-gray-900 dark:text-white outline-none">
                     <input type="text" id="memberLinkIcon" placeholder="أيقونة" class="w-full bg-lightcard dark:bg-cardbg border border-gray-300 dark:border-gray-700 rounded-lg p-2 text-gray-900 dark:text-white outline-none">
-                    <div class="flex items-center gap-2 pt-1">
+                    <div class="flex items-center gap-2 pt-1 bg-cyanaccent/10 p-2 rounded-lg border border-cyanaccent/30">
                         <input type="checkbox" id="memberLinkEnabled" class="accent-cyanaccent w-4 h-4" checked>
-                        <label for="memberLinkEnabled" class="font-bold text-gray-800 dark:text-gray-200">تفعيل وعرض الرابط في الصفحة</label>
+                        <label for="memberLinkEnabled" class="font-bold text-gray-900 dark:text-white text-xs">تفعيل وعرض الرابط في الصفحة</label>
                     </div>
                     <div class="flex gap-2 pt-1">
                         <button type="button" onclick="window.saveMemberLinkItem()" class="flex-1 bg-cyanaccent text-black font-bold py-2 rounded-lg">حفظ الرابط</button>
@@ -908,7 +906,6 @@
             if(!container) return;
             container.innerHTML = '';
             const links = appData.links || [];
-            // Filter active category AND ensure enabled !== false
             const filtered = links.filter(l => l.enabled !== false && (activeCategory === "الكل" || l.category === activeCategory));
 
             filtered.forEach(link => {
@@ -920,23 +917,16 @@
             });
         }
 
-        // Render Map Section based on showMap toggle
         function renderMapSection() {
             const mapContainer = document.getElementById('mapSectionContainer');
             if (!mapContainer) return;
-
             if (appData.showMap === false) {
                 mapContainer.classList.add('hidden');
                 return;
             }
-
             mapContainer.classList.remove('hidden');
-            if (appData.mapUrl) {
-                document.getElementById('mapOpenLink').href = appData.mapUrl;
-            }
-            if (appData.mapEmbed) {
-                document.getElementById('mapIframe').src = appData.mapEmbed;
-            }
+            if (appData.mapUrl) document.getElementById('mapOpenLink').href = appData.mapUrl;
+            if (appData.mapEmbed) document.getElementById('mapIframe').src = appData.mapEmbed;
         }
 
         window.openPinModal = function() { document.getElementById('pinModal').classList.remove('hidden'); };
@@ -1004,7 +994,6 @@
             }
         };
 
-        // Member Links with Enable/Disable Toggle
         window.saveMemberLinkItem = function() {
             const id = document.getElementById('memberEditingLinkId').value;
             const title = document.getElementById('memberLinkTitle').value.trim();
@@ -1048,8 +1037,7 @@
 
         window.deleteMemberLinkItem = function(id) {
             appData.links = (appData.links || []).filter(l => l.id !== id);
-            renderMemberLinksList();
-            renderLinks();
+            renderMemberLinksList(); renderLinks();
         };
 
         window.moveMemberLink = function(index, direction) {
@@ -1101,9 +1089,7 @@
             } else {
                 appData.gallery.push({ id: 'g_' + Date.now(), title, category, desc, coverUrl, extraUrls });
             }
-            window.resetMemberGalleryForm();
-            renderMemberGalleryList();
-            renderGalleryGrid();
+            window.resetMemberGalleryForm(); renderMemberGalleryList(); renderGalleryGrid();
         };
 
         window.resetMemberGalleryForm = function() {
@@ -1147,10 +1133,7 @@
             (appData.gallery || []).forEach((g, index) => {
                 container.innerHTML += `
                     <div class="bg-white dark:bg-cardbg border border-gray-300 dark:border-gray-700 rounded-xl p-2.5 flex items-center justify-between shadow-sm">
-                        <div class="flex items-center gap-2">
-                            <img src="${g.coverUrl}" class="w-8 h-8 rounded object-cover" />
-                            <div><div class="font-extrabold text-gray-900 dark:text-white">${g.title}</div><div class="text-[10px] text-gray-500">${g.category}</div></div>
-                        </div>
+                        <div class="flex items-center gap-2"><img src="${g.coverUrl}" class="w-8 h-8 rounded object-cover" /><div><div class="font-extrabold text-gray-900 dark:text-white">${g.title}</div><div class="text-[10px] text-gray-500">${g.category}</div></div></div>
                         <div class="flex items-center gap-1">
                             <button type="button" onclick="window.moveMemberGalleryItem(${index}, -1)" class="bg-gray-200 dark:bg-gray-700 text-cyanaccent px-1.5 py-0.5 rounded text-[10px] font-bold">⬆️</button>
                             <button type="button" onclick="window.moveMemberGalleryItem(${index}, 1)" class="bg-gray-200 dark:bg-gray-700 text-cyanaccent px-1.5 py-0.5 rounded text-[10px] font-bold">⬇️</button>
