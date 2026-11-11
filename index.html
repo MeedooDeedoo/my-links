@@ -61,7 +61,7 @@
             background-size: 100% 20px;
         }
         .glass-card {
-            background: rgba(26, 29, 38, 0.75);
+            background: rgba(26, 29, 38, 0.75) !important;
             backdrop-filter: blur(12px);
             -webkit-backdrop-filter: blur(12px);
         }
@@ -323,57 +323,74 @@
             </div>
             <div class="overflow-y-auto flex-grow pr-1 space-y-3 text-xs">
 
-                <!-- Advanced Design & Style Customization Section -->
-                <div class="bg-lightbg dark:bg-darkbg rounded-xl border border-gray-300 dark:border-gray-800 p-3 space-y-3">
-                    <div class="flex justify-between items-center">
-                        <h4 class="font-bold text-goldaccent flex items-center gap-2"><i class="fa-solid fa-palette"></i> إعدادات التصميم والتخصيص البصري</h4>
-                        <button type="button" onclick="window.resetDesignDefaults()" class="bg-red-500/10 text-red-500 border border-red-500/30 px-2.5 py-1 rounded-lg text-[10px] font-bold hover:bg-red-500/20 transition">استعادة التصميم الأساسي</button>
-                    </div>
-                    
-                    <div>
-                        <label class="block font-bold text-gray-800 dark:text-gray-200 mb-1">شكل الصورة الشخصية:</label>
-                        <select id="adminAvatarShape" class="w-full bg-lightcard dark:bg-cardbg border border-gray-300 dark:border-gray-700 rounded-lg p-2 text-gray-900 dark:text-white outline-none">
-                            <option value="rounded-full">دائري بالكامل (Full Circle)</option>
-                            <option value="rounded-2xl">مربع بحواف مبرومة / مفتولة الزوايا (Rounded Corners)</option>
-                            <option value="rounded-xl">مربع بحواف ناعمة متوسطة (Soft Rounded)</option>
-                            <option value="rounded-none">مربع حاد الزوايا (Sharp Square)</option>
-                        </select>
-                    </div>
+                <!-- Advanced Design & Style Customization Section (Accordion Foldable) -->
+                <div class="bg-lightbg dark:bg-darkbg rounded-xl border border-gray-300 dark:border-gray-800 overflow-hidden transition-colors">
+                    <button type="button" onclick="window.toggleAccordion('accDesignAdmin')" class="w-full p-3 flex justify-between items-center font-bold text-gray-800 dark:text-gray-200">
+                        <span class="flex items-center gap-2"><i class="fa-solid fa-palette text-goldaccent"></i> إعدادات التصميم والتخصيص البصري</span>
+                        <div class="flex items-center gap-2">
+                            <span class="text-[10px] bg-goldaccent/20 text-goldaccent px-2 py-0.5 rounded font-mono">احترافي</span>
+                            <i id="icon-accDesignAdmin" class="fa-solid fa-chevron-down transition-transform"></i>
+                        </div>
+                    </button>
+                    <div id="accDesignAdmin" class="hidden p-3 pt-0 space-y-3 border-t border-gray-200 dark:border-gray-800 mt-1">
+                        <div class="flex justify-between items-center pt-2">
+                            <span class="text-[11px] text-gray-500">إدارة مظهر الصفحة بالكامل</span>
+                            <button type="button" onclick="window.resetDesignDefaults()" class="bg-red-500/10 text-red-500 border border-red-500/30 px-2.5 py-1 rounded-lg text-[10px] font-bold hover:bg-red-500/20 transition">استعادة التصميم الأساسي</button>
+                        </div>
+                        
+                        <div>
+                            <label class="block font-bold text-gray-800 dark:text-gray-200 mb-1">شكل الصورة الشخصية:</label>
+                            <select id="adminAvatarShape" class="w-full bg-lightcard dark:bg-cardbg border border-gray-300 dark:border-gray-700 rounded-lg p-2 text-gray-900 dark:text-white outline-none">
+                                <option value="rounded-full">دائري بالكامل (Full Circle)</option>
+                                <option value="rounded-2xl">مربع بحواف مبرومة / مفتولة الزوايا (Rounded Corners)</option>
+                                <option value="rounded-xl">مربع بحواف ناعمة متوسطة (Soft Rounded)</option>
+                                <option value="rounded-none">مربع حاد الزوايا (Sharp Square)</option>
+                            </select>
+                        </div>
 
-                    <div>
-                        <label class="block font-bold text-gray-800 dark:text-gray-200 mb-1">شكل وانحناء البطاقات وأزرار الروابط:</label>
-                        <select id="adminCardShape" class="w-full bg-lightcard dark:bg-cardbg border border-gray-300 dark:border-gray-700 rounded-lg p-2 text-gray-900 dark:text-white outline-none">
-                            <option value="rounded-2xl">مفتولة الزوايا بشكل أنيق (Rounded 2XL)</option>
-                            <option value="rounded-full">دائرية الأطراف بالكامل (Pill Shape)</option>
-                            <option value="rounded-lg">زوايا معتدلة (Rounded LG)</option>
-                            <option value="rounded-none">زوايا حادة (Sharp Square)</option>
-                        </select>
-                    </div>
+                        <div>
+                            <label class="block font-bold text-gray-800 dark:text-gray-200 mb-1">شكل وانحناء البطاقات وأزرار الروابط:</label>
+                            <select id="adminCardShape" class="w-full bg-lightcard dark:bg-cardbg border border-gray-300 dark:border-gray-700 rounded-lg p-2 text-gray-900 dark:text-white outline-none">
+                                <option value="rounded-2xl">مفتولة الزوايا بشكل أنيق (Rounded 2XL)</option>
+                                <option value="rounded-full">دائرية الأطراف بالكامل (Pill Shape)</option>
+                                <option value="rounded-lg">زوايا معتدلة (Rounded LG)</option>
+                                <option value="rounded-none">زوايا حادة (Sharp Square)</option>
+                            </select>
+                        </div>
 
-                    <div>
-                        <label class="block font-bold text-gray-800 dark:text-gray-200 mb-1">نمط زخرفة ونقوش الخلفية:</label>
-                        <select id="adminBgPattern" class="w-full bg-lightcard dark:bg-cardbg border border-gray-300 dark:border-gray-700 rounded-lg p-2 text-gray-900 dark:text-white outline-none">
-                            <option value="none">بدون زخرفة (سادة)</option>
-                            <option value="pattern-grid">نقاط شبكية رقمية (Grid Dots)</option>
-                            <option value="pattern-dots">نجوم ونقاط مضيئة (Star Dots)</option>
-                            <option value="pattern-lines">خطوط عرضية سينمائية (Scanlines)</option>
-                        </select>
-                    </div>
+                        <div>
+                            <label class="block font-bold text-gray-800 dark:text-gray-200 mb-1">نمط البطاقات البصري (Effects & Glass):</label>
+                            <select id="adminCardStyle" class="w-full bg-lightcard dark:bg-cardbg border border-gray-300 dark:border-gray-700 rounded-lg p-2 text-gray-900 dark:text-white outline-none">
+                                <option value="normal">عادي (Solid)</option>
+                                <option value="glass-card">زجاجي شفاف فاخر (Glassmorphism)</option>
+                            </select>
+                        </div>
 
-                    <div>
-                        <label class="block font-bold text-gray-800 dark:text-gray-200 mb-1">تدرج ألوان الخلفية (Gradient Background):</label>
-                        <select id="adminBgGradient" class="w-full bg-lightcard dark:bg-cardbg border border-gray-300 dark:border-gray-700 rounded-lg p-2 text-gray-900 dark:text-white outline-none">
-                            <option value="none">بدون تدرج (اللون الافتراضي)</option>
-                            <option value="bg-gradient-to-br from-gray-900 via-zinc-900 to-black">فحمي ليلي عميق (Dark Charcoal)</option>
-                            <option value="bg-gradient-to-tr from-slate-900 via-indigo-950 to-slate-900">أزرق ملكي سينمائي (Cinematic Blue)</option>
-                            <option value="bg-gradient-to-br from-neutral-900 via-stone-900 to-amber-950/40">برونزي ذهبي دافئ (Warm Gold)</option>
-                            <option value="bg-gradient-to-r from-gray-900 via-purple-950/30 to-gray-900">بنفسجي داكن خافت (Dark Purple)</option>
-                        </select>
-                    </div>
+                        <div>
+                            <label class="block font-bold text-gray-800 dark:text-gray-200 mb-1">نمط زخرفة ونقوش الخلفية:</label>
+                            <select id="adminBgPattern" class="w-full bg-lightcard dark:bg-cardbg border border-gray-300 dark:border-gray-700 rounded-lg p-2 text-gray-900 dark:text-white outline-none">
+                                <option value="none">بدون زخرفة (سادة)</option>
+                                <option value="pattern-grid">نقاط شبكية رقمية (Grid Dots)</option>
+                                <option value="pattern-dots">نجوم ونقاط مضيئة (Star Dots)</option>
+                                <option value="pattern-lines">خطوط عرضية سينمائية (Scanlines)</option>
+                            </select>
+                        </div>
 
-                    <div>
-                        <label class="block font-bold text-gray-800 dark:text-gray-200 mb-1">رابط صورة خلفية الصفحة المخصصة (Background Image URL):</label>
-                        <input type="url" id="adminBgImageUrl" placeholder="https://example.com/bg.jpg (اتركه فارغاً للافتراضي)" class="w-full bg-lightcard dark:bg-cardbg border border-gray-300 dark:border-gray-700 rounded-lg p-2 text-gray-900 dark:text-white outline-none">
+                        <div>
+                            <label class="block font-bold text-gray-800 dark:text-gray-200 mb-1">تدرج ألوان الخلفية (Gradient Background):</label>
+                            <select id="adminBgGradient" class="w-full bg-lightcard dark:bg-cardbg border border-gray-300 dark:border-gray-700 rounded-lg p-2 text-gray-900 dark:text-white outline-none">
+                                <option value="none">بدون تدرج (اللون الافتراضي)</option>
+                                <option value="bg-gradient-to-br from-gray-900 via-zinc-900 to-black">فحمي ليلي عميق (Dark Charcoal)</option>
+                                <option value="bg-gradient-to-tr from-slate-900 via-indigo-950 to-slate-900">أزرق ملكي سينمائي (Cinematic Blue)</option>
+                                <option value="bg-gradient-to-br from-neutral-900 via-stone-900 to-amber-950/40">برونزي ذهبي دافئ (Warm Gold)</option>
+                                <option value="bg-gradient-to-r from-gray-900 via-purple-950/30 to-gray-900">بنفسجي داكن خافت (Dark Purple)</option>
+                            </select>
+                        </div>
+
+                        <div>
+                            <label class="block font-bold text-gray-800 dark:text-gray-200 mb-1">رابط صورة خلفية الصفحة المخصصة (Background Image URL):</label>
+                            <input type="url" id="adminBgImageUrl" placeholder="https://example.com/bg.jpg (اتركه فارغاً للافتراضي)" class="w-full bg-lightcard dark:bg-cardbg border border-gray-300 dark:border-gray-700 rounded-lg p-2 text-gray-900 dark:text-white outline-none">
+                        </div>
                     </div>
                 </div>
 
@@ -580,52 +597,68 @@
             </div>
             <div class="overflow-y-auto flex-grow pr-1 space-y-3 text-xs">
 
-                <!-- Advanced Design Customization for Member -->
-                <div class="bg-lightbg dark:bg-darkbg rounded-xl border border-gray-300 dark:border-gray-800 p-3 space-y-2">
-                    <div class="flex justify-between items-center">
-                        <h4 class="font-bold text-cyanaccent flex items-center gap-2"><i class="fa-solid fa-palette"></i> إعدادات التصميم لصفحتك</h4>
-                        <button type="button" onclick="window.resetMemberDesignDefaults()" class="bg-red-500/10 text-red-500 border border-red-500/30 px-2 py-0.5 rounded-lg text-[10px] font-bold">استعادة الافتراضي</button>
-                    </div>
-                    <div>
-                        <label class="block font-bold text-gray-800 dark:text-gray-200 mb-1">شكل صورتك الشخصية:</label>
-                        <select id="memberAvatarShape" class="w-full bg-lightcard dark:bg-cardbg border border-gray-300 dark:border-gray-700 rounded-lg p-2 text-gray-900 dark:text-white outline-none">
-                            <option value="rounded-full">دائري بالكامل (Full Circle)</option>
-                            <option value="rounded-2xl">مربع بحواف مبرومة / مفتولة الزوايا (Rounded Corners)</option>
-                            <option value="rounded-xl">مربع بحواف ناعمة متوسطة (Soft Rounded)</option>
-                            <option value="rounded-none">مربع حاد الزوايا (Sharp Square)</option>
-                        </select>
-                    </div>
-                    <div>
-                        <label class="block font-bold text-gray-800 dark:text-gray-200 mb-1">شكل البطاقات وأزرار الروابط:</label>
-                        <select id="memberCardShape" class="w-full bg-lightcard dark:bg-cardbg border border-gray-300 dark:border-gray-700 rounded-lg p-2 text-gray-900 dark:text-white outline-none">
-                            <option value="rounded-2xl">مفتولة الزوايا بشكل أنيق (Rounded 2XL)</option>
-                            <option value="rounded-full">دائرية الأطراف بالكامل (Pill Shape)</option>
-                            <option value="rounded-lg">زوايا معتدلة (Rounded LG)</option>
-                            <option value="rounded-none">زوايا حادة (Sharp Square)</option>
-                        </select>
-                    </div>
-                    <div>
-                        <label class="block font-bold text-gray-800 dark:text-gray-200 mb-1">نمط زخرفة ونقوش الخلفية:</label>
-                        <select id="memberBgPattern" class="w-full bg-lightcard dark:bg-cardbg border border-gray-300 dark:border-gray-700 rounded-lg p-2 text-gray-900 dark:text-white outline-none">
-                            <option value="none">بدون زخرفة (سادة)</option>
-                            <option value="pattern-grid">نقاط شبكية رقمية (Grid Dots)</option>
-                            <option value="pattern-dots">نجوم ونقاط مضيئة (Star Dots)</option>
-                            <option value="pattern-lines">خطوط عرضية سينمائية (Scanlines)</option>
-                        </select>
-                    </div>
-                    <div>
-                        <label class="block font-bold text-gray-800 dark:text-gray-200 mb-1">تدرج ألوان الخلفية (Gradient Background):</label>
-                        <select id="memberBgGradient" class="w-full bg-lightcard dark:bg-cardbg border border-gray-300 dark:border-gray-700 rounded-lg p-2 text-gray-900 dark:text-white outline-none">
-                            <option value="none">بدون تدرج (اللون الافتراضي)</option>
-                            <option value="bg-gradient-to-br from-gray-900 via-zinc-900 to-black">فحمي ليلي عميق (Dark Charcoal)</option>
-                            <option value="bg-gradient-to-tr from-slate-900 via-indigo-950 to-slate-900">أزرق ملكي سينمائي (Cinematic Blue)</option>
-                            <option value="bg-gradient-to-br from-neutral-900 via-stone-900 to-amber-950/40">برونزي ذهبي دافئ (Warm Gold)</option>
-                            <option value="bg-gradient-to-r from-gray-900 via-purple-950/30 to-gray-900">بنفسجي داكن خافت (Dark Purple)</option>
-                        </select>
-                    </div>
-                    <div>
-                        <label class="block font-bold text-gray-800 dark:text-gray-200 mb-1">رابط خلفية مخصصة لصفحتك (اختياري):</label>
-                        <input type="url" id="memberBgImageUrl" placeholder="https://example.com/bg.jpg" class="w-full bg-lightcard dark:bg-cardbg border border-gray-300 dark:border-gray-700 rounded-lg p-2 text-gray-900 dark:text-white outline-none">
+                <!-- Advanced Design Customization for Member (Accordion Foldable) -->
+                <div class="bg-lightbg dark:bg-darkbg rounded-xl border border-gray-300 dark:border-gray-800 overflow-hidden transition-colors">
+                    <button type="button" onclick="window.toggleAccordion('accDesignMember')" class="w-full p-3 flex justify-between items-center font-bold text-gray-800 dark:text-gray-200">
+                        <span class="flex items-center gap-2"><i class="fa-solid fa-palette text-cyanaccent"></i> إعدادات التصميم لصفحتك</span>
+                        <div class="flex items-center gap-2">
+                            <span class="text-[10px] bg-cyanaccent/20 text-cyanaccent px-2 py-0.5 rounded font-mono">تخصيص</span>
+                            <i id="icon-accDesignMember" class="fa-solid fa-chevron-down transition-transform"></i>
+                        </div>
+                    </button>
+                    <div id="accDesignMember" class="hidden p-3 pt-0 space-y-2 border-t border-gray-200 dark:border-gray-800 mt-1">
+                        <div class="flex justify-between items-center pt-2">
+                            <span class="text-[11px] text-gray-500">تخصيص مظهر صفحتك المستقلة</span>
+                            <button type="button" onclick="window.resetMemberDesignDefaults()" class="bg-red-500/10 text-red-500 border border-red-500/30 px-2.5 py-1 rounded-lg text-[10px] font-bold">استعادة الافتراضي</button>
+                        </div>
+                        <div>
+                            <label class="block font-bold text-gray-800 dark:text-gray-200 mb-1">شكل صورتك الشخصية:</label>
+                            <select id="memberAvatarShape" class="w-full bg-lightcard dark:bg-cardbg border border-gray-300 dark:border-gray-700 rounded-lg p-2 text-gray-900 dark:text-white outline-none">
+                                <option value="rounded-full">دائري بالكامل (Full Circle)</option>
+                                <option value="rounded-2xl">مربع بحواف مبرومة / مفتولة الزوايا (Rounded Corners)</option>
+                                <option value="rounded-xl">مربع بحواف ناعمة متوسطة (Soft Rounded)</option>
+                                <option value="rounded-none">مربع حاد الزوايا (Sharp Square)</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block font-bold text-gray-800 dark:text-gray-200 mb-1">شكل البطاقات وأزرار الروابط:</label>
+                            <select id="memberCardShape" class="w-full bg-lightcard dark:bg-cardbg border border-gray-300 dark:border-gray-700 rounded-lg p-2 text-gray-900 dark:text-white outline-none">
+                                <option value="rounded-2xl">مفتولة الزوايا بشكل أنيق (Rounded 2XL)</option>
+                                <option value="rounded-full">دائرية الأطراف بالكامل (Pill Shape)</option>
+                                <option value="rounded-lg">زوايا معتدلة (Rounded LG)</option>
+                                <option value="rounded-none">زوايا حادة (Sharp Square)</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block font-bold text-gray-800 dark:text-gray-200 mb-1">نمط البطاقات البصري (Effects & Glass):</label>
+                            <select id="memberCardStyle" class="w-full bg-lightcard dark:bg-cardbg border border-gray-300 dark:border-gray-700 rounded-lg p-2 text-gray-900 dark:text-white outline-none">
+                                <option value="normal">عادي (Solid)</option>
+                                <option value="glass-card">زجاجي شفاف فاخر (Glassmorphism)</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block font-bold text-gray-800 dark:text-gray-200 mb-1">نمط زخرفة ونقوش الخلفية:</label>
+                            <select id="memberBgPattern" class="w-full bg-lightcard dark:bg-cardbg border border-gray-300 dark:border-gray-700 rounded-lg p-2 text-gray-900 dark:text-white outline-none">
+                                <option value="none">بدون زخرفة (سادة)</option>
+                                <option value="pattern-grid">نقاط شبكية رقمية (Grid Dots)</option>
+                                <option value="pattern-dots">نجوم ونقاط مضيئة (Star Dots)</option>
+                                <option value="pattern-lines">خطوط عرضية سينمائية (Scanlines)</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block font-bold text-gray-800 dark:text-gray-200 mb-1">تدرج ألوان الخلفية (Gradient Background):</label>
+                            <select id="memberBgGradient" class="w-full bg-lightcard dark:bg-cardbg border border-gray-300 dark:border-gray-700 rounded-lg p-2 text-gray-900 dark:text-white outline-none">
+                                <option value="none">بدون تدرج (اللون الافتراضي)</option>
+                                <option value="bg-gradient-to-br from-gray-900 via-zinc-900 to-black">فحمي ليلي عميق (Dark Charcoal)</option>
+                                <option value="bg-gradient-to-tr from-slate-900 via-indigo-950 to-slate-900">أزرق ملكي سينمائي (Cinematic Blue)</option>
+                                <option value="bg-gradient-to-br from-neutral-900 via-stone-900 to-amber-950/40">برونزي ذهبي دافئ (Warm Gold)</option>
+                                <option value="bg-gradient-to-r from-gray-900 via-purple-950/30 to-gray-900">بنفسجي داكن خافت (Dark Purple)</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block font-bold text-gray-800 dark:text-gray-200 mb-1">رابط خلفية مخصصة لصفحتك (اختياري):</label>
+                            <input type="url" id="memberBgImageUrl" placeholder="https://example.com/bg.jpg" class="w-full bg-lightcard dark:bg-cardbg border border-gray-300 dark:border-gray-700 rounded-lg p-2 text-gray-900 dark:text-white outline-none">
+                        </div>
                     </div>
                 </div>
 
@@ -736,6 +769,7 @@
             image: "",
             avatarShape: "rounded-full",
             cardShape: "rounded-2xl",
+            cardStyle: "normal",
             bgPattern: "none",
             bgGradient: "none",
             bgImageUrl: "",
@@ -797,6 +831,7 @@
                 if (appData.showMap === undefined) appData.showMap = true;
                 if (!appData.avatarShape) appData.avatarShape = "rounded-full";
                 if (!appData.cardShape) appData.cardShape = "rounded-2xl";
+                if (!appData.cardStyle) appData.cardStyle = "normal";
                 if (!appData.bgPattern) appData.bgPattern = "none";
                 if (!appData.bgGradient) appData.bgGradient = "none";
                 
@@ -858,8 +893,10 @@
                 avatarContainer.className = `w-full h-full ${appData.avatarShape || 'rounded-full'} border-2 border-goldaccent glow-gold overflow-hidden bg-lightcard dark:bg-cardbg flex items-center justify-center shadow-md transition-colors duration-300`;
             }
 
-            // تطبيق شكل البطاقات على عناصر الصفحة
+            // تطبيق شكل ونمط البطاقات (عادي أو زجاجي Glassmorphism)
             const cardShape = appData.cardShape || 'rounded-2xl';
+            const cardStyle = appData.cardStyle || 'normal';
+            
             const topBarEl = document.getElementById('topBarEl');
             const galleryBtnCard = document.getElementById('galleryBtnCard');
             const joinBannerBtn = document.getElementById('joinBannerBtn');
@@ -867,8 +904,11 @@
 
             [topBarEl, galleryBtnCard, joinBannerBtn, mapSectionContainer].forEach(el => {
                 if(el) {
-                    el.classList.remove('rounded-2xl', 'rounded-full', 'rounded-lg', 'rounded-none');
+                    el.classList.remove('rounded-2xl', 'rounded-full', 'rounded-lg', 'rounded-none', 'glass-card');
                     el.classList.add(cardShape);
+                    if (cardStyle === 'glass-card') {
+                        el.classList.add('glass-card');
+                    }
                 }
             });
 
@@ -896,6 +936,7 @@
         window.resetDesignDefaults = function() {
             document.getElementById('adminAvatarShape').value = 'rounded-full';
             document.getElementById('adminCardShape').value = 'rounded-2xl';
+            document.getElementById('adminCardStyle').value = 'normal';
             document.getElementById('adminBgPattern').value = 'none';
             document.getElementById('adminBgGradient').value = 'none';
             document.getElementById('adminBgImageUrl').value = '';
@@ -905,6 +946,7 @@
         window.resetMemberDesignDefaults = function() {
             document.getElementById('memberAvatarShape').value = 'rounded-full';
             document.getElementById('memberCardShape').value = 'rounded-2xl';
+            document.getElementById('memberCardStyle').value = 'normal';
             document.getElementById('memberBgPattern').value = 'none';
             document.getElementById('memberBgGradient').value = 'none';
             document.getElementById('memberBgImageUrl').value = '';
@@ -1078,7 +1120,9 @@
 
             filtered.forEach(item => {
                 const card = document.createElement('div');
-                card.className = `group relative ${appData.cardShape || 'rounded-2xl'} overflow-hidden bg-white dark:bg-cardbg border border-gray-300 dark:border-gray-800 cursor-pointer shadow-sm flex flex-col`;
+                const cardShape = appData.cardShape || 'rounded-2xl';
+                const cardStyle = appData.cardStyle || 'normal';
+                card.className = `group relative ${cardShape} ${cardStyle === 'glass-card' ? 'glass-card' : 'bg-white dark:bg-cardbg'} border border-gray-300 dark:border-gray-800 cursor-pointer shadow-sm flex flex-col overflow-hidden`;
                 card.onclick = () => window.openProjectDetail(item.id);
                 card.innerHTML = `
                     <div class="relative aspect-video w-full overflow-hidden bg-gray-100 dark:bg-darkbg">
@@ -1183,11 +1227,12 @@
             const links = appData.links || [];
             const filtered = links.filter(l => l.enabled !== false && (activeCategory === "الكل" || l.category === activeCategory));
             const cardShape = appData.cardShape || 'rounded-2xl';
+            const cardStyle = appData.cardStyle || 'normal';
 
             filtered.forEach(link => {
                 const a = document.createElement('a');
                 a.href = link.url; a.target = '_blank';
-                a.className = `w-full bg-white dark:bg-cardbg border border-gray-300 dark:border-gray-800 ${cardShape} p-3.5 flex items-center justify-between shadow-sm glow-gold-hover transition`;
+                a.className = `w-full ${cardStyle === 'glass-card' ? 'glass-card' : 'bg-white dark:bg-cardbg'} border border-gray-300 dark:border-gray-800 ${cardShape} p-3.5 flex items-center justify-between shadow-sm glow-gold-hover transition`;
                 a.innerHTML = `<div class="flex items-center gap-3"><div class="w-9 h-9 rounded-xl bg-gray-100 dark:bg-darkbg border border-gray-200 dark:border-gray-700 flex items-center justify-center text-goldaccent"><i class="${link.icon || 'fa-solid fa-link'}"></i></div><span class="text-xs font-extrabold text-gray-900 dark:text-gray-100">${link.title}</span></div><i class="fa-solid fa-chevron-left text-xs text-gray-400"></i>`;
                 container.appendChild(a);
             });
@@ -1239,6 +1284,7 @@
             
             document.getElementById('memberAvatarShape').value = appData.avatarShape || 'rounded-full';
             document.getElementById('memberCardShape').value = appData.cardShape || 'rounded-2xl';
+            document.getElementById('memberCardStyle').value = appData.cardStyle || 'normal';
             document.getElementById('memberBgPattern').value = appData.bgPattern || 'none';
             document.getElementById('memberBgGradient').value = appData.bgGradient || 'none';
             document.getElementById('memberBgImageUrl').value = appData.bgImageUrl || '';
@@ -1444,6 +1490,7 @@
             appData.bio = document.getElementById('memberEditBio').value.trim();
             appData.avatarShape = document.getElementById('memberAvatarShape').value;
             appData.cardShape = document.getElementById('memberCardShape').value;
+            appData.cardStyle = document.getElementById('memberCardStyle').value;
             appData.bgPattern = document.getElementById('memberBgPattern').value;
             appData.bgGradient = document.getElementById('memberBgGradient').value;
             appData.bgImageUrl = document.getElementById('memberBgImageUrl').value.trim();
@@ -1478,6 +1525,7 @@
             
             document.getElementById('adminAvatarShape').value = appData.avatarShape || 'rounded-full';
             document.getElementById('adminCardShape').value = appData.cardShape || 'rounded-2xl';
+            document.getElementById('adminCardStyle').value = appData.cardStyle || 'normal';
             document.getElementById('adminBgPattern').value = appData.bgPattern || 'none';
             document.getElementById('adminBgGradient').value = appData.bgGradient || 'none';
             document.getElementById('adminBgImageUrl').value = appData.bgImageUrl || '';
@@ -1611,6 +1659,7 @@
                 image: req.image || '',
                 avatarShape: 'rounded-full',
                 cardShape: 'rounded-2xl',
+                cardStyle: 'normal',
                 bgPattern: 'none',
                 bgGradient: 'none',
                 bgImageUrl: '',
@@ -1886,6 +1935,7 @@
             appData.bio = document.getElementById('editBio').value.trim();
             appData.avatarShape = document.getElementById('adminAvatarShape').value;
             appData.cardShape = document.getElementById('adminCardShape').value;
+            appData.cardStyle = document.getElementById('adminCardStyle').value;
             appData.bgPattern = document.getElementById('adminBgPattern').value;
             appData.bgGradient = document.getElementById('adminBgGradient').value;
             appData.bgImageUrl = document.getElementById('adminBgImageUrl').value.trim();
