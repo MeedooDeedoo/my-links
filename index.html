@@ -225,10 +225,18 @@
         </div>
     </div>
 
-    <!-- Image View Modal -->
-    <div id="imageViewModal" class="fixed inset-0 bg-black/95 backdrop-blur-lg hidden flex flex-col items-center justify-center z-[130] p-4" onclick="window.closeImageView()">
-        <img id="enlargedImage" src="" class="max-w-full max-h-[80vh] rounded-2xl border border-gray-800 shadow-2xl object-contain mb-3" />
-        <button type="button" class="mt-4 bg-gray-800 text-gray-200 px-4 py-1.5 rounded-xl text-xs font-bold"><i class="fa-solid fa-xmark"></i> إغلاق المعاينة</button>
+    <!-- Image View Modal (With Direct Share Button for Project & Image) -->
+    <div id="imageViewModal" class="fixed inset-0 bg-black/95 backdrop-blur-lg hidden flex flex-col items-center justify-center z-[130] p-4">
+        <img id="enlargedImage" src="" class="max-w-full max-h-[75vh] rounded-2xl border border-gray-800 shadow-2xl object-contain mb-3" />
+        
+        <div class="flex items-center gap-3 mt-2">
+            <button type="button" onclick="window.shareCurrentProjectImage()" class="bg-goldaccent text-black px-4 py-2 rounded-xl text-xs font-extrabold shadow-md flex items-center gap-2 transition hover:scale-105">
+                <i class="fa-solid fa-share-nodes"></i> مشاركة هذا المشروع والصورة
+            </button>
+            <button type="button" onclick="window.closeImageView()" class="bg-gray-800 text-gray-200 px-4 py-2 rounded-xl text-xs font-bold border border-gray-700">
+                <i class="fa-solid fa-xmark"></i> إغلاق
+            </button>
+        </div>
     </div>
 
     <!-- Share Options Modal -->
@@ -386,7 +394,7 @@
                     </div>
                 </div>
 
-                <!-- Gallery Admin (Includes Project Enable/Disable Toggle) -->
+                <!-- Gallery Admin -->
                 <div class="bg-lightbg dark:bg-darkbg rounded-xl border border-gray-300 dark:border-gray-800 overflow-hidden transition-colors">
                     <button type="button" onclick="window.toggleAccordion('accGalleryAdmin')" class="w-full p-3 flex justify-between items-center font-bold text-gray-800 dark:text-gray-200">
                         <span class="flex items-center gap-2"><i class="fa-solid fa-images text-goldaccent"></i> إدارة المشاريع (تشغيل/إيقاف وترتيب)</span>
@@ -524,7 +532,7 @@
                     <div class="flex items-center gap-2"><input type="checkbox" id="memberShowEmail" class="accent-cyanaccent"><input type="email" id="memberEditEmail" placeholder="إيميل" class="flex-1 bg-lightcard dark:bg-cardbg border border-gray-300 dark:border-gray-700 rounded-lg p-2 text-gray-900 dark:text-white outline-none"></div>
                 </div>
 
-                <!-- Gallery (With Enable/Disable) -->
+                <!-- Gallery -->
                 <div class="bg-lightbg dark:bg-darkbg rounded-xl border border-gray-300 dark:border-gray-800 p-3 space-y-2">
                     <h4 id="memberGalleryFormTitle" class="font-bold text-cyanaccent">إدارة المشاريع (تشغيل/إيقاف وترتيب)</h4>
                     <input type="hidden" id="memberEditingGalleryId">
@@ -544,7 +552,7 @@
                     <div id="memberGalleryList" class="space-y-1.5 pt-2 border-t border-gray-200 dark:border-gray-700"></div>
                 </div>
 
-                <!-- Links (With Enable/Disable) -->
+                <!-- Links -->
                 <div class="bg-lightbg dark:bg-darkbg rounded-xl border border-gray-300 dark:border-gray-800 p-3 space-y-2">
                     <h4 id="memberLinkFormTitle" class="font-bold text-cyanaccent">إدارة الروابط (تشغيل/إيقاف وترتيب)</h4>
                     <input type="hidden" id="memberEditingLinkId">
@@ -570,7 +578,7 @@
         </div>
     </div>
 
-    <!-- Script Engine with Firebase -->
+    <!-- Script Engine with Firebase & Direct Project/Image Sharing -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/13.2.0/firebase-app.js";
         import { getDatabase, ref, set, onValue } from "https://www.gstatic.com/firebasejs/13.2.0/firebase-database.js";
@@ -590,6 +598,7 @@
 
         const urlParams = new URLSearchParams(window.location.search);
         const currentUsername = urlParams.get('user') || 'mahmoud';
+        const targetProjectId = urlParams.get('project'); // لمعرفة المشروع المطلوب فتحه تلقائياً
 
         const defaultUserData = {
             displayName: "محمود دملخي",
@@ -629,6 +638,7 @@
         let activeGalleryCategory = "الكل";
         let tempImageBase64 = "";
         let memberTempImageBase64 = "";
+        let currentViewingProjectId = null; // لتخزين معرف المشروع الحالي المعروض
 
         const dbRef = ref(db, 'platformData');
         onValue(dbRef, (snapshot) => {
@@ -653,6 +663,13 @@
                 set(dbRef, rootData);
             }
             initApp();
+            
+            // إذا كان الرابط يحتوي على معرّف مشروع مخصص، افتحه تلقائياً عند تحميل الصفحة
+            if (targetProjectId) {
+                setTimeout(() => {
+                    window.openProjectDetail(targetProjectId);
+                }, 500);
+            }
         }, (error) => {
             console.error("Firebase error", error);
             initApp();
@@ -760,6 +777,7 @@
         window.closeGalleryModal = function() { document.getElementById('galleryModal').classList.add('hidden'); };
 
         window.openProjectDetail = function(id) {
+            currentViewingProjectId = id;
             const project = (appData.gallery || []).find(g => g.id === id);
             if (!project) return;
             document.getElementById('modalProjectTitle').textContent = project.title;
@@ -791,8 +809,9 @@
                     card.innerHTML = `<video src="${url}" controls class="w-full h-full object-cover"></video>`;
                 } else {
                     card.className = 'aspect-video rounded-xl overflow-hidden bg-darkbg border border-gray-700 cursor-pointer relative group';
+                    card.oncontextmenu = (e) => { e.preventDefault(); window.openImageView(url); }; // الضغط المطول أو كليك يمين
                     card.onclick = () => window.openImageView(url);
-                    card.innerHTML = `<img src="${url}" class="w-full h-full object-cover group-hover:scale-105 transition" /><span class="absolute bottom-1 right-1 bg-black/60 text-white text-[9px] px-1 py-0.5 rounded">صورة ${idx+1}</span>`;
+                    card.innerHTML = `<img src="${url}" class="w-full h-full object-cover group-hover:scale-105 transition" /><span class="absolute bottom-1 right-1 bg-black/60 text-white text-[9px] px-1 py-0.5 rounded">صورة ${idx+1} (اضغط للعرض أو مشاركة)</span>`;
                 }
                 imagesGrid.appendChild(card);
             });
@@ -800,10 +819,33 @@
         };
 
         window.closeProjectDetail = function() { document.getElementById('projectDetailModal').classList.add('hidden'); };
-        window.openImageView = function(url) { document.getElementById('enlargedImage').src = url; document.getElementById('imageViewModal').classList.remove('hidden'); };
+        
+        window.openImageView = function(url) { 
+            document.getElementById('enlargedImage').src = url; 
+            document.getElementById('imageViewModal').classList.remove('hidden'); 
+        };
+        
         window.closeImageView = function() { document.getElementById('imageViewModal').classList.add('hidden'); };
 
-        // Render Only Enabled Gallery Projects
+        // دالة مشاركة الصورة مع رابط مباشر للمشروع الحالي
+        window.shareCurrentProjectImage = function() {
+            const baseUrl = window.location.origin + window.location.pathname;
+            const projectLink = `${baseUrl}?user=${currentUsername}&project=${currentViewingProjectId}`;
+            const shareText = `شاهد هذا المشروع المميز:\n${projectLink}`;
+
+            if (navigator.share) {
+                navigator.share({
+                    title: 'مشاركة مشروع',
+                    text: shareText,
+                    url: projectLink
+                }).catch(() => {});
+            } else {
+                navigator.clipboard.writeText(projectLink).then(() => {
+                    alert('تم نسخ رابط المشروع المباشر بنجاح! يمكنك لصقه في أي مكان.');
+                });
+            }
+        };
+
         function renderGalleryGrid() {
             const grid = document.getElementById('galleryGrid');
             const filters = document.getElementById('galleryCategoryFilter');
@@ -1014,7 +1056,6 @@
             }
         };
 
-        // Member Links with Enable/Disable Toggle
         window.saveMemberLinkItem = function() {
             const id = document.getElementById('memberEditingLinkId').value;
             const title = document.getElementById('memberLinkTitle').value.trim();
@@ -1093,7 +1134,6 @@
             });
         }
 
-        // Member Gallery with Enable/Disable Toggle
         window.saveMemberGalleryItem = function() {
             const id = document.getElementById('memberEditingGalleryId').value;
             const title = document.getElementById('memberGalleryTitle').value.trim();
@@ -1373,7 +1413,6 @@
             });
         }
 
-        // Admin Gallery with Enable/Disable Toggle
         window.saveGalleryItem = function() {
             const id = document.getElementById('editingGalleryId').value;
             const title = document.getElementById('galleryTitle').value.trim();
