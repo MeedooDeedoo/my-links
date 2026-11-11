@@ -578,7 +578,7 @@
         </div>
     </div>
 
-    <!-- Script Engine with Firebase & Clean Sharing -->
+    <!-- Script Engine with Firebase & Clean Single Link Sharing -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/13.2.0/firebase-app.js";
         import { getDatabase, ref, set, onValue } from "https://www.gstatic.com/firebasejs/13.2.0/firebase-database.js";
@@ -826,10 +826,10 @@
         
         window.closeImageView = function() { document.getElementById('imageViewModal').classList.add('hidden'); };
 
-        // دالة مشاركة المشروع دون تكرار الرابط
+        // دالة مشاركة المشروع بدون تكرار للرابط نهائياً
         window.shareCurrentProjectImage = function() {
-            const baseUrl = window.location.origin + window.location.pathname;
-            const projectLink = `${baseUrl}?user=${currentUsername}&project=${currentViewingProjectId}`;
+            const cleanBaseUrl = window.location.origin + window.location.pathname;
+            const projectLink = `${cleanBaseUrl}?user=${currentUsername}&project=${currentViewingProjectId}`;
             const shareText = `شاهد هذا المشروع المميز:\n${projectLink}`;
 
             if (navigator.share) {
@@ -933,17 +933,20 @@
         }
 
         window.openShareModal = function() {
-            const url = window.location.href;
-            document.getElementById('shareWhatsapp').href = `https://api.whatsapp.com/send?text=${encodeURIComponent(url)}`;
-            document.getElementById('shareTelegram').href = `https://t.me/share/url?url=${encodeURIComponent(url)}`;
-            document.getElementById('shareFacebook').href = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(url)}`;
-            document.getElementById('shareTwitter').href = `https://twitter.com/intent/tweet?url=${encodeURIComponent(url)}`;
-            document.getElementById('shareUrlInput').value = url;
+            const cleanUrl = window.location.origin + window.location.pathname;
+            const fullProfileUrl = `${cleanUrl}?user=${currentUsername}`;
+            document.getElementById('shareWhatsapp').href = `https://api.whatsapp.com/send?text=${encodeURIComponent(fullProfileUrl)}`;
+            document.getElementById('shareTelegram').href = `https://t.me/share/url?url=${encodeURIComponent(fullProfileUrl)}`;
+            document.getElementById('shareFacebook').href = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(fullProfileUrl)}`;
+            document.getElementById('shareTwitter').href = `https://twitter.com/intent/tweet?url=${encodeURIComponent(fullProfileUrl)}`;
+            document.getElementById('shareUrlInput').value = fullProfileUrl;
             document.getElementById('shareModal').classList.remove('hidden');
         };
         window.closeShareModal = function() { document.getElementById('shareModal').classList.add('hidden'); };
         window.copyProfileLink = function() {
-            navigator.clipboard.writeText(window.location.href).then(() => alert('تم النسخ بنجاح!'));
+            const cleanUrl = window.location.origin + window.location.pathname;
+            const fullProfileUrl = `${cleanUrl}?user=${currentUsername}`;
+            navigator.clipboard.writeText(fullProfileUrl).then(() => alert('تم النسخ بنجاح!'));
             window.closeShareModal();
         };
 
