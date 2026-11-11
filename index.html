@@ -495,7 +495,7 @@
         </div>
     </div>
 
-    <!-- Member Panel Modal (لوحة تحكم العضو الفرعية مع إدارة المشاريع والأعمال والترتيب) -->
+    <!-- Member Panel Modal (لوحة تحكم العضو الفرعية مع معلومات الاتصال والمشاريع والروابط) -->
     <div id="memberModal" class="fixed inset-0 bg-black/70 backdrop-blur-md hidden flex items-center justify-center z-[100] p-3">
         <div class="bg-lightcard dark:bg-cardbg border border-gray-300 dark:border-gray-800 w-full max-w-lg rounded-2xl p-4 shadow-2xl max-h-[92vh] flex flex-col transition-colors duration-300">
             <div class="flex justify-between items-center border-b border-gray-200 dark:border-gray-800 pb-3 mb-3">
@@ -518,12 +518,27 @@
                     </div>
                     <input type="url" id="memberEditAvatar" placeholder="أو أدخل رابط الصورة الشخصية مباشرة" class="w-full bg-lightcard dark:bg-cardbg border border-gray-300 dark:border-gray-700 rounded-lg p-2 text-gray-900 dark:text-white outline-none">
                     
-                    <input type="text" id="memberEditWhatsapp" placeholder="رقم الواتساب" class="w-full bg-lightcard dark:bg-cardbg border border-gray-300 dark:border-gray-700 rounded-lg p-2 text-gray-900 dark:text-white outline-none">
-
                     <!-- Change Member PIN Option -->
                     <div class="pt-2 border-t border-gray-200 dark:border-gray-700">
                         <label class="block text-cyanaccent font-bold mb-1"><i class="fa-solid fa-key"></i> تغيير كلمة المرور / رمز PIN الخاص بك:</label>
                         <input type="password" id="memberNewPinInput" maxlength="6" placeholder="أدخل رمز PIN الجديد (أو اتركه فارغاً لعدم التغيير)" class="w-full bg-lightcard dark:bg-cardbg border border-gray-300 dark:border-gray-700 rounded-lg p-2 text-gray-900 dark:text-white outline-none">
+                    </div>
+                </div>
+
+                <!-- Member Contacts Management (مطابق للأدمن تماماً) -->
+                <div class="bg-lightbg dark:bg-darkbg rounded-xl border border-gray-300 dark:border-gray-800 p-3 space-y-2">
+                    <h4 class="font-bold text-cyanaccent"><i class="fa-solid fa-address-book"></i> معلومات الاتصال (واتساب، هاتف، بريد)</h4>
+                    <div class="flex items-center gap-2 mt-1">
+                        <input type="checkbox" id="memberShowWhatsapp" class="accent-cyanaccent">
+                        <input type="text" id="memberEditWhatsapp" placeholder="رقم الواتساب" class="flex-1 bg-lightcard dark:bg-cardbg border border-gray-300 dark:border-gray-700 rounded-lg p-2 text-gray-900 dark:text-white outline-none">
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <input type="checkbox" id="memberShowPhone" class="accent-cyanaccent">
+                        <input type="text" id="memberEditPhone" placeholder="رقم الهاتف" class="flex-1 bg-lightcard dark:bg-cardbg border border-gray-300 dark:border-gray-700 rounded-lg p-2 text-gray-900 dark:text-white outline-none">
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <input type="checkbox" id="memberShowEmail" class="accent-cyanaccent">
+                        <input type="email" id="memberEditEmail" placeholder="البريد الإلكتروني" class="flex-1 bg-lightcard dark:bg-cardbg border border-gray-300 dark:border-gray-700 rounded-lg p-2 text-gray-900 dark:text-white outline-none">
                     </div>
                 </div>
 
@@ -543,14 +558,18 @@
                     <div id="memberGalleryList" class="space-y-1.5 pt-2 border-t border-gray-200 dark:border-gray-700"></div>
                 </div>
 
-                <!-- Links Edit -->
+                <!-- Links Edit (مع التعديل، الحذف، والترتيب) -->
                 <div class="bg-lightbg dark:bg-darkbg rounded-xl border border-gray-300 dark:border-gray-800 p-3 space-y-2">
-                    <h4 class="font-bold text-cyanaccent">إدارة روابط صفحتك (مع أزرار الترتيب)</h4>
+                    <h4 id="memberLinkFormTitle" class="font-bold text-cyanaccent">إدارة روابط صفحتك (إضافة، تعديل، وترتيب ⬆️⬇️)</h4>
+                    <input type="hidden" id="memberEditingLinkId">
                     <input type="text" id="memberLinkTitle" placeholder="عنوان الرابط (مثل: تليجرام، موقعي)" class="w-full bg-lightcard dark:bg-cardbg border border-gray-300 dark:border-gray-700 rounded-lg p-2 text-gray-900 dark:text-white outline-none">
                     <input type="url" id="memberLinkUrl" placeholder="الرابط https://..." class="w-full bg-lightcard dark:bg-cardbg border border-gray-300 dark:border-gray-700 rounded-lg p-2 text-gray-900 dark:text-white outline-none">
-                    <input type="text" id="memberLinkIcon" placeholder="أيقونة (مثل fa-brands fa-telegram)" class="w-full bg-lightcard dark:bg-cardbg border border-gray-300 dark:border-gray-700 rounded-lg p-2 text-gray-900 dark:text-white outline-none">
-                    <button type="button" onclick="window.saveMemberLink()" class="w-full bg-cyanaccent/20 text-cyanaccent border border-cyanaccent/40 font-bold py-2 rounded-lg">إضافة الرابط لقائمتي</button>
-                    <div id="memberLinksList" class="space-y-1.5 pt-2"></div>
+                    <input type="text" id="memberLinkIcon" placeholder="أيقونة (مثل fa-brands fa-telegram أو fa-solid fa-link)" class="w-full bg-lightcard dark:bg-cardbg border border-gray-300 dark:border-gray-700 rounded-lg p-2 text-gray-900 dark:text-white outline-none">
+                    <div class="flex gap-2 pt-1">
+                        <button type="button" onclick="window.saveMemberLinkItem()" class="flex-1 bg-cyanaccent text-black font-bold py-2 rounded-lg">حفظ الرابط</button>
+                        <button type="button" onclick="window.resetMemberLinkForm()" class="bg-gray-200 dark:bg-gray-800 text-gray-800 dark:text-gray-200 px-3 py-2 rounded-lg font-bold">إلغاء</button>
+                    </div>
+                    <div id="memberLinksList" class="space-y-1.5 pt-2 border-t border-gray-200 dark:border-gray-700"></div>
                 </div>
 
             </div>
@@ -612,8 +631,8 @@
                 }
             ],
             links: [
-                { id: '1', title: 'لمسة فن بلس للخدمات الإعلانية', url: 'https://wa.me/', category: 'إعلان وتصميم', icon: 'fa-solid fa-paint-brush' },
-                { id: '2', title: 'طيبانو للتجارة والبناء والألوكوبوند', url: 'https://wa.me/', category: 'بناء وألوكبوند', icon: 'fa-solid fa-building' }
+                { id: '1', title: 'لمسة فن بلس للخدمات الإعلانية', url: 'https://wa.me/', category: 'الكل', icon: 'fa-solid fa-paint-brush' },
+                { id: '2', title: 'طيبانو للتجارة والبناء والألوكوبوند', url: 'https://wa.me/', category: 'الكل', icon: 'fa-solid fa-building' }
             ]
         };
 
@@ -640,6 +659,9 @@
                 appData = rootData.users[currentUsername] || rootData.users['mahmoud'];
                 if (!appData.sidebarLinks) {
                     appData.sidebarLinks = defaultUserData.sidebarLinks;
+                }
+                if (!appData.contacts) {
+                    appData.contacts = defaultUserData.contacts;
                 }
             } else {
                 rootData.users['mahmoud'] = defaultUserData;
@@ -882,16 +904,18 @@
 
             const cContainer = document.getElementById('contactButtons');
             cContainer.innerHTML = '';
-            if (appData.contacts.showWhatsapp && appData.contacts.whatsapp) {
-                cContainer.innerHTML += `<a href="https://wa.me/${appData.contacts.whatsapp.replace(/[^0-9]/g, '')}" target="_blank" class="w-9 h-9 rounded-full bg-emerald-500/10 border border-emerald-500/30 text-emerald-600 dark:text-emerald-400 flex items-center justify-center font-bold"><i class="fa-brands fa-whatsapp"></i></a>`;
+            if (appData.contacts) {
+                if (appData.contacts.showWhatsapp && appData.contacts.whatsapp) {
+                    cContainer.innerHTML += `<a href="https://wa.me/${appData.contacts.whatsapp.replace(/[^0-9]/g, '')}" target="_blank" class="w-9 h-9 rounded-full bg-emerald-500/10 border border-emerald-500/30 text-emerald-600 dark:text-emerald-400 flex items-center justify-center font-bold" title="واتساب"><i class="fa-brands fa-whatsapp"></i></a>`;
+                }
+                if (appData.contacts.showPhone && appData.contacts.phone) {
+                    cContainer.innerHTML += `<a href="tel:${appData.contacts.phone}" class="w-9 h-9 rounded-full bg-cyanaccent/10 border border-cyanaccent/30 text-cyanaccent flex items-center justify-center font-bold" title="اتصال"><i class="fa-solid fa-phone"></i></a>`;
+                }
+                if (appData.contacts.showEmail && appData.contacts.email) {
+                    cContainer.innerHTML += `<a href="mailto:${appData.contacts.email}" class="w-9 h-9 rounded-full bg-goldaccent/10 border border-goldaccent/30 text-goldaccent flex items-center justify-center font-bold" title="إيميل"><i class="fa-solid fa-envelope"></i></a>`;
+                }
             }
-            if (appData.contacts.showPhone && appData.contacts.phone) {
-                cContainer.innerHTML += `<a href="tel:${appData.contacts.phone}" class="w-9 h-9 rounded-full bg-cyanaccent/10 border border-cyanaccent/30 text-cyanaccent flex items-center justify-center font-bold"><i class="fa-solid fa-phone"></i></a>`;
-            }
-            if (appData.contacts.showEmail && appData.contacts.email) {
-                cContainer.innerHTML += `<a href="mailto:${appData.contacts.email}" class="w-9 h-9 rounded-full bg-goldaccent/10 border border-goldaccent/30 text-goldaccent flex items-center justify-center font-bold"><i class="fa-solid fa-envelope"></i></a>`;
-            }
-            cContainer.innerHTML += `<button type="button" onclick="window.openShareModal()" class="w-9 h-9 rounded-full bg-gray-200 dark:bg-gray-800 border border-gray-300 dark:border-gray-700 text-gray-800 dark:text-gray-200 flex items-center justify-center font-bold"><i class="fa-solid fa-share-nodes"></i></button>`;
+            cContainer.innerHTML += `<button type="button" onclick="window.openShareModal()" class="w-9 h-9 rounded-full bg-gray-200 dark:bg-gray-800 border border-gray-300 dark:border-gray-700 text-gray-800 dark:text-gray-200 flex items-center justify-center font-bold" title="مشاركة"><i class="fa-solid fa-share-nodes"></i></button>`;
         }
 
         window.openShareModal = function() {
@@ -974,9 +998,19 @@
             document.getElementById('memberEditName').value = appData.displayName;
             document.getElementById('memberEditBio').value = appData.bio || '';
             document.getElementById('memberEditAvatar').value = appData.image || '';
-            document.getElementById('memberEditWhatsapp').value = appData.contacts.whatsapp || '';
+            
+            if (appData.contacts) {
+                document.getElementById('memberShowWhatsapp').checked = !!appData.contacts.showWhatsapp;
+                document.getElementById('memberEditWhatsapp').value = appData.contacts.whatsapp || '';
+                document.getElementById('memberShowPhone').checked = !!appData.contacts.showPhone;
+                document.getElementById('memberEditPhone').value = appData.contacts.phone || '';
+                document.getElementById('memberShowEmail').checked = !!appData.contacts.showEmail;
+                document.getElementById('memberEditEmail').value = appData.contacts.email || '';
+            }
+
             document.getElementById('memberNewPinInput').value = '';
             memberTempImageBase64 = appData.image || '';
+            window.resetMemberLinkForm();
             renderMemberLinksList();
             renderMemberGalleryList();
         }
@@ -993,6 +1027,85 @@
                 reader.readAsDataURL(file);
             }
         };
+
+        // Member Links Management (إضافة، تعديل، حذف، وترتيب روابط العضو)
+        window.saveMemberLinkItem = function() {
+            const id = document.getElementById('memberEditingLinkId').value;
+            const title = document.getElementById('memberLinkTitle').value.trim();
+            const url = document.getElementById('memberLinkUrl').value.trim();
+            const icon = document.getElementById('memberLinkIcon').value.trim() || 'fa-solid fa-link';
+
+            if (!title || !url) { alert('الرجاء إدخال عنوان الرابط ورابط الـ URL.'); return; }
+            if (!appData.links) appData.links = [];
+
+            if (id) {
+                const link = appData.links.find(l => l.id === id);
+                if (link) { link.title = title; link.url = url; link.icon = icon; }
+            } else {
+                appData.links.push({ id: 'l_' + Date.now(), title, url, category: 'الكل', icon });
+            }
+            window.resetMemberLinkForm();
+            renderMemberLinksList();
+            renderLinks();
+        };
+
+        window.resetMemberLinkForm = function() {
+            document.getElementById('memberEditingLinkId').value = '';
+            document.getElementById('memberLinkTitle').value = '';
+            document.getElementById('memberLinkUrl').value = '';
+            document.getElementById('memberLinkIcon').value = '';
+            document.getElementById('memberLinkFormTitle').textContent = 'إدارة روابط صفحتك (إضافة، تعديل، وترتيب ⬆️⬇️)';
+        };
+
+        window.editMemberLinkItem = function(id) {
+            const link = (appData.links || []).find(l => l.id === id);
+            if (!link) return;
+            document.getElementById('memberEditingLinkId').value = link.id;
+            document.getElementById('memberLinkTitle').value = link.title;
+            document.getElementById('memberLinkUrl').value = link.url;
+            document.getElementById('memberLinkIcon').value = link.icon || 'fa-solid fa-link';
+            document.getElementById('memberLinkFormTitle').textContent = 'تعديل الرابط الحالي';
+        };
+
+        window.deleteMemberLinkItem = function(id) {
+            appData.links = (appData.links || []).filter(l => l.id !== id);
+            renderMemberLinksList();
+            renderLinks();
+        };
+
+        window.moveMemberLink = function(index, direction) {
+            const links = appData.links || [];
+            const newIndex = index + direction;
+            if (newIndex < 0 || newIndex >= links.length) return;
+            const temp = links[index];
+            links[index] = links[newIndex];
+            links[newIndex] = temp;
+            renderMemberLinksList();
+            renderLinks();
+        };
+
+        function renderMemberLinksList() {
+            const container = document.getElementById('memberLinksList');
+            if(!container) return; container.innerHTML = '';
+            (appData.links || []).forEach((l, index) => {
+                container.innerHTML += `
+                    <div class="bg-white dark:bg-cardbg border border-gray-300 dark:border-gray-700 p-2.5 rounded-lg flex items-center justify-between shadow-sm">
+                        <div class="flex items-center gap-2">
+                            <i class="${l.icon || 'fa-solid fa-link'} text-cyanaccent"></i>
+                            <div>
+                                <div class="text-gray-900 dark:text-white font-extrabold text-xs">${l.title}</div>
+                                <div class="text-[10px] text-gray-500 truncate max-w-[140px]">${l.url}</div>
+                            </div>
+                        </div>
+                        <div class="flex items-center gap-1">
+                            <button type="button" onclick="window.moveMemberLink(${index}, -1)" class="bg-gray-200 dark:bg-gray-700 text-cyanaccent px-2 py-0.5 rounded text-[10px] font-bold" title="نحو الأعلى">⬆️</button>
+                            <button type="button" onclick="window.moveMemberLink(${index}, 1)" class="bg-gray-200 dark:bg-gray-700 text-cyanaccent px-2 py-0.5 rounded text-[10px] font-bold" title="نحو الأسفل">⬇️</button>
+                            <button type="button" onclick="window.editMemberLinkItem('${l.id}')" class="bg-blue-500/20 text-blue-600 dark:text-blue-400 px-2 py-0.5 rounded text-[10px] font-bold">تعديل</button>
+                            <button type="button" onclick="window.deleteMemberLinkItem('${l.id}')" class="bg-red-500/20 text-red-600 dark:text-red-400 px-2 py-0.5 rounded text-[10px] font-bold">حذف</button>
+                        </div>
+                    </div>`;
+            });
+        }
 
         // Member Gallery Management
         window.saveMemberGalleryItem = function() {
@@ -1076,52 +1189,6 @@
             });
         }
 
-        window.saveMemberLink = function() {
-            const title = document.getElementById('memberLinkTitle').value.trim();
-            const url = document.getElementById('memberLinkUrl').value.trim();
-            const icon = document.getElementById('memberLinkIcon').value.trim() || 'fa-solid fa-link';
-            if (!title || !url) { alert('أدخل العنوان والرابط'); return; }
-            if (!appData.links) appData.links = [];
-            appData.links.push({ id: 'l_' + Date.now(), title, url, category: 'الكل', icon });
-            document.getElementById('memberLinkTitle').value = '';
-            document.getElementById('memberLinkUrl').value = '';
-            document.getElementById('memberLinkIcon').value = '';
-            renderMemberLinksList();
-        };
-
-        window.deleteMemberLink = function(id) {
-            appData.links = appData.links.filter(l => l.id !== id);
-            renderMemberLinksList();
-        };
-
-        function renderMemberLinksList() {
-            const container = document.getElementById('memberLinksList');
-            if(!container) return; container.innerHTML = '';
-            (appData.links || []).forEach((l, index) => {
-                container.innerHTML += `
-                    <div class="bg-white dark:bg-cardbg border border-gray-300 dark:border-gray-700 p-2.5 rounded-lg flex items-center justify-between shadow-sm">
-                        <div class="flex items-center gap-2">
-                            <span class="text-gray-900 dark:text-white font-extrabold text-xs"><i class="${l.icon}"></i> ${l.title}</span>
-                        </div>
-                        <div class="flex items-center gap-1">
-                            <button type="button" onclick="window.moveMemberLink(${index}, -1)" class="bg-gray-200 dark:bg-gray-700 text-cyanaccent px-2 py-0.5 rounded text-[10px] font-bold" title="نحو الأعلى">⬆️</button>
-                            <button type="button" onclick="window.moveMemberLink(${index}, 1)" class="bg-gray-200 dark:bg-gray-700 text-cyanaccent px-2 py-0.5 rounded text-[10px] font-bold" title="نحو الأسفل">⬇️</button>
-                            <button type="button" onclick="window.deleteMemberLink('${l.id}')" class="bg-red-500/20 text-red-600 dark:text-red-400 px-2 py-0.5 rounded text-[10px] font-bold">حذف</button>
-                        </div>
-                    </div>`;
-            });
-        }
-
-        window.moveMemberLink = function(index, direction) {
-            const links = appData.links || [];
-            const newIndex = index + direction;
-            if (newIndex < 0 || newIndex >= links.length) return;
-            const temp = links[index];
-            links[index] = links[newIndex];
-            links[newIndex] = temp;
-            renderMemberLinksList();
-        };
-
         window.saveMemberChanges = function() {
             appData.displayName = document.getElementById('memberEditName').value.trim() || appData.displayName;
             appData.bio = document.getElementById('memberEditBio').value.trim();
@@ -1133,7 +1200,13 @@
                 appData.image = avatarInputVal;
             }
 
+            if (!appData.contacts) appData.contacts = {};
+            appData.contacts.showWhatsapp = document.getElementById('memberShowWhatsapp').checked;
             appData.contacts.whatsapp = document.getElementById('memberEditWhatsapp').value.trim();
+            appData.contacts.showPhone = document.getElementById('memberShowPhone').checked;
+            appData.contacts.phone = document.getElementById('memberEditPhone').value.trim();
+            appData.contacts.showEmail = document.getElementById('memberShowEmail').checked;
+            appData.contacts.email = document.getElementById('memberEditEmail').value.trim();
 
             const newPinVal = document.getElementById('memberNewPinInput').value.trim();
             if (newPinVal.length >= 4) {
@@ -1149,12 +1222,15 @@
             document.getElementById('editBio').value = appData.bio;
             tempImageBase64 = appData.image || "";
             document.getElementById('editAvatarUrl').value = appData.image || "";
-            document.getElementById('showWhatsapp').checked = appData.contacts.showWhatsapp;
-            document.getElementById('editWhatsapp').value = appData.contacts.whatsapp;
-            document.getElementById('showPhone').checked = appData.contacts.showPhone;
-            document.getElementById('editPhone').value = appData.contacts.phone;
-            document.getElementById('showEmail').checked = appData.contacts.showEmail;
-            document.getElementById('editEmail').value = appData.contacts.email;
+            
+            if (appData.contacts) {
+                document.getElementById('showWhatsapp').checked = !!appData.contacts.showWhatsapp;
+                document.getElementById('editWhatsapp').value = appData.contacts.whatsapp || '';
+                document.getElementById('showPhone').checked = !!appData.contacts.showPhone;
+                document.getElementById('editPhone').value = appData.contacts.phone || '';
+                document.getElementById('showEmail').checked = !!appData.contacts.showEmail;
+                document.getElementById('editEmail').value = appData.contacts.email || '';
+            }
 
             renderAdminFeedbackList();
             renderAdminPendingRequests();
@@ -1587,6 +1663,7 @@
                 appData.image = avatarUrlInputVal;
             }
 
+            if (!appData.contacts) appData.contacts = {};
             appData.contacts.showWhatsapp = document.getElementById('showWhatsapp').checked;
             appData.contacts.whatsapp = document.getElementById('editWhatsapp').value.trim();
             appData.contacts.showPhone = document.getElementById('showPhone').checked;
