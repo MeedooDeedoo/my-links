@@ -372,7 +372,7 @@
                 <!-- Sidebar Admin -->
                 <div class="bg-lightbg dark:bg-darkbg rounded-xl border border-gray-300 dark:border-gray-800 overflow-hidden transition-colors">
                     <button type="button" onclick="window.toggleAccordion('accSidebarAdmin')" class="w-full p-3 flex justify-between items-center font-bold text-gray-800 dark:text-gray-200">
-                        <span class="flex items-center gap-2"><i class="fa-solid fa-compass text-goldaccent"></i> إدارة القائمة الجانبية</span>
+                        <span class="flex items-center gap-2"><i class="fa-solid fa-compass text-goldaccent"></i> إدارة القائمة الجانبية (تشغيل/إيقاف وترتيب)</span>
                         <i id="icon-accSidebarAdmin" class="fa-solid fa-chevron-down transition-transform"></i>
                     </button>
                     <div id="accSidebarAdmin" class="hidden p-3 pt-0 space-y-3 border-t border-gray-200 dark:border-gray-800 mt-1">
@@ -384,6 +384,10 @@
                             <div class="flex gap-2">
                                 <input type="text" id="sidebarIcon" placeholder="أيقونة fa-solid fa-lock" class="flex-1 bg-lightcard dark:bg-cardbg border border-gray-300 dark:border-gray-700 rounded-lg p-2 text-gray-900 dark:text-white outline-none">
                                 <input type="text" id="sidebarAction" placeholder="إجراء openPin" class="flex-1 bg-lightcard dark:bg-cardbg border border-gray-300 dark:border-gray-700 rounded-lg p-2 text-gray-900 dark:text-white outline-none">
+                            </div>
+                            <div class="flex items-center gap-2 pt-1 bg-goldaccent/10 p-2 rounded-lg border border-goldaccent/30">
+                                <input type="checkbox" id="sidebarEnabled" class="accent-goldaccent w-4 h-4" checked>
+                                <label for="sidebarEnabled" class="font-bold text-gray-900 dark:text-white text-xs">تفعيل وعرض العنصر في القائمة الجانبية</label>
                             </div>
                             <div class="flex gap-2 pt-1">
                                 <button type="button" onclick="window.saveSidebarItem()" class="flex-1 bg-goldaccent text-black font-bold py-2 rounded-lg">حفظ</button>
@@ -611,9 +615,9 @@
             contacts: { whatsapp: "+963900000000", showWhatsapp: true, phone: "+963900000000", showPhone: true, email: "info@example.com", showEmail: true },
             categories: ["الكل", "إعلان وتصميم", "بناء وألوكبوند"],
             sidebarLinks: [
-                { id: 'sb1', title: 'لوحة الإدارة الرئيسية', url: '#', icon: 'fa-solid fa-lock', action: 'openPin' },
-                { id: 'sb2', title: 'لوحة تحكم العضو', url: '#', icon: 'fa-solid fa-user-gear', action: 'openMemberPanel' },
-                { id: 'sb3', title: 'انضم إلينا كعضو', url: '#', icon: 'fa-solid fa-user-plus', action: 'openJoin' }
+                { id: 'sb1', title: 'لوحة الإدارة الرئيسية', url: '#', icon: 'fa-solid fa-lock', action: 'openPin', enabled: true },
+                { id: 'sb2', title: 'لوحة تحكم العضو', url: '#', icon: 'fa-solid fa-user-gear', action: 'openMemberPanel', enabled: true },
+                { id: 'sb3', title: 'انضم إلينا كعضو', url: '#', icon: 'fa-solid fa-user-plus', action: 'openJoin', enabled: true }
             ],
             gallery: [
                 { 
@@ -826,12 +830,10 @@
         
         window.closeImageView = function() { document.getElementById('imageViewModal').classList.add('hidden'); };
 
-        // [تعديل جذري لمنع تكرار الرابط نهائياً]
         window.shareCurrentProjectImage = function() {
             const cleanBaseUrl = window.location.origin + window.location.pathname;
             const projectLink = `${cleanBaseUrl}?user=${currentUsername}&project=${currentViewingProjectId}`;
             
-            // عند استخدام navigator.share نمرر الرابط لوحده في خانة url لكي لا يقوم النظام بتكراره مع النص
             if (navigator.share) {
                 navigator.share({
                     title: 'شاهد هذا المشروع المميز',
@@ -887,11 +889,14 @@
             });
         }
 
+        // عرض عناصر القائمة الجانبية المفعلة فقط
         function renderSidebarMenu() {
             const container = document.getElementById('sidebarLinksContainer');
             if (!container) return;
             container.innerHTML = '';
-            (appData.sidebarLinks || []).forEach(item => {
+            const activeSidebarLinks = (appData.sidebarLinks || []).filter(item => item.enabled !== false);
+            
+            activeSidebarLinks.forEach(item => {
                 const btn = document.createElement('button');
                 btn.type = 'button';
                 btn.className = `w-full p-3 rounded-xl flex items-center gap-3 font-extrabold transition text-right ${item.action === 'openPin' ? 'bg-goldaccent/10 border border-goldaccent/30 text-goldaccent' : item.action === 'openMemberPanel' ? 'bg-cyanaccent/10 border border-cyanaccent/30 text-cyanaccent' : item.action === 'openJoin' ? 'bg-blue-500/10 border border-blue-500/30 text-blue-600 dark:text-blue-400' : 'bg-gray-100 dark:bg-darkbg text-gray-800 dark:text-gray-200 border border-gray-200 dark:border-gray-800'}`;
@@ -1282,13 +1287,15 @@
             const url = document.getElementById('sidebarUrl').value.trim() || '#';
             const icon = document.getElementById('sidebarIcon').value.trim() || 'fa-solid fa-link';
             const action = document.getElementById('sidebarAction').value.trim();
+            const enabled = document.getElementById('sidebarEnabled').checked;
+
             if (!title) { alert('أدخل العنوان'); return; }
             if (!appData.sidebarLinks) appData.sidebarLinks = [];
             if (id) {
                 const item = appData.sidebarLinks.find(s => s.id === id);
-                if (item) { item.title = title; item.url = url; item.icon = icon; item.action = action; }
+                if (item) { item.title = title; item.url = url; item.icon = icon; item.action = action; item.enabled = enabled; }
             } else {
-                appData.sidebarLinks.push({ id: 'sb_' + Date.now(), title, url, icon, action });
+                appData.sidebarLinks.push({ id: 'sb_' + Date.now(), title, url, icon, action, enabled });
             }
             window.resetSidebarForm(); renderAdminSidebarList(); renderSidebarMenu();
         };
@@ -1299,6 +1306,7 @@
             document.getElementById('sidebarUrl').value = '';
             document.getElementById('sidebarIcon').value = '';
             document.getElementById('sidebarAction').value = '';
+            document.getElementById('sidebarEnabled').checked = true;
             document.getElementById('sidebarFormTitle').textContent = 'إضافة عنصر جديد';
         };
 
@@ -1310,6 +1318,7 @@
             document.getElementById('sidebarUrl').value = item.url || '';
             document.getElementById('sidebarIcon').value = item.icon || '';
             document.getElementById('sidebarAction').value = item.action || '';
+            document.getElementById('sidebarEnabled').checked = item.enabled !== false;
             document.getElementById('sidebarFormTitle').textContent = 'تعديل العنصر';
         };
 
@@ -1330,9 +1339,10 @@
             const container = document.getElementById('adminSidebarList');
             if(!container) return; container.innerHTML = '';
             (appData.sidebarLinks || []).forEach((s, index) => {
+                const statusBadge = s.enabled !== false ? '<span class="text-emerald-500 font-bold">مفعل</span>' : '<span class="text-red-500 font-bold">متوقف</span>';
                 container.innerHTML += `
                     <div class="bg-white dark:bg-cardbg border border-gray-300 dark:border-gray-700 rounded-xl p-2.5 flex items-center justify-between shadow-sm">
-                        <div class="flex items-center gap-2"><i class="${s.icon} text-goldaccent"></i><div><div class="font-extrabold text-gray-900 dark:text-white">${s.title}</div></div></div>
+                        <div class="flex items-center gap-2"><i class="${s.icon} text-goldaccent"></i><div><div class="font-extrabold text-gray-900 dark:text-white">${s.title} (${statusBadge})</div></div></div>
                         <div class="flex items-center gap-1">
                             <button type="button" onclick="window.moveSidebarItem(${index}, -1)" class="bg-gray-200 dark:bg-gray-700 text-goldaccent px-1.5 py-0.5 rounded text-[10px] font-bold">⬆️</button>
                             <button type="button" onclick="window.moveSidebarItem(${index}, 1)" class="bg-gray-200 dark:bg-gray-700 text-goldaccent px-1.5 py-0.5 rounded text-[10px] font-bold">⬇️</button>
@@ -1381,8 +1391,8 @@
                 contacts: { whatsapp: req.whatsapp || '', showWhatsapp: true, phone: '', showPhone: false, email: '', showEmail: false },
                 categories: ["الكل", "عام"],
                 sidebarLinks: [
-                    { id: 'sb1', title: 'لوحة تحكم العضو', url: '#', icon: 'fa-solid fa-user-gear', action: 'openMemberPanel' },
-                    { id: 'sb2', title: 'انضم إلينا كعضو', url: '#', icon: 'fa-solid fa-user-plus', action: 'openJoin' }
+                    { id: 'sb1', title: 'لوحة تحكم العضو', url: '#', icon: 'fa-solid fa-user-gear', action: 'openMemberPanel', enabled: true },
+                    { id: 'sb2', title: 'انضم إلينا كعضو', url: '#', icon: 'fa-solid fa-user-plus', action: 'openJoin', enabled: true }
                 ],
                 gallery: [],
                 links: []
