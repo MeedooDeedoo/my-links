@@ -46,12 +46,31 @@
             touch-action: manipulation;
             cursor: pointer;
         }
+        /* أنماط الزخارف والخلفيات */
+        .pattern-grid {
+            background-image: radial-gradient(rgba(212, 175, 55, 0.15) 1px, transparent 1px);
+            background-size: 24px 24px;
+        }
+        .pattern-dots {
+            background-image: radial-gradient(#ffffff 1px, transparent 1px);
+            background-size: 20px 20px;
+            background-color: #0f1117;
+        }
+        .pattern-lines {
+            background-image: linear-gradient(0deg, rgba(255,255,255,0.03) 1px, transparent 1px);
+            background-size: 100% 20px;
+        }
+        .glass-card {
+            background: rgba(26, 29, 38, 0.75);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+        }
     </style>
 </head>
-<body class="min-h-screen flex flex-col items-center justify-between p-4 pb-12 bg-lightbg dark:bg-darkbg text-gray-900 dark:text-gray-100 transition-colors duration-300">
+<body id="pageBody" class="min-h-screen flex flex-col items-center justify-between p-4 pb-12 bg-lightbg dark:bg-darkbg text-gray-900 dark:text-gray-100 transition-colors duration-300">
 
     <!-- Top Bar -->
-    <div class="w-full max-w-md flex justify-between items-center mb-6 bg-lightcard dark:bg-cardbg p-3.5 rounded-2xl border border-gray-300 dark:border-gray-800 shadow-md relative z-50 transition-colors duration-300">
+    <div id="topBarEl" class="w-full max-w-md flex justify-between items-center mb-6 bg-lightcard dark:bg-cardbg p-3.5 rounded-2xl border border-gray-300 dark:border-gray-800 shadow-md relative z-50 transition-colors duration-300">
         <div class="flex items-center gap-2">
             <button type="button" onclick="window.toggleSidebar()" class="w-9 h-9 rounded-xl bg-gray-100 dark:bg-darkbg border border-gray-300 dark:border-gray-700 text-goldaccent flex items-center justify-center transition active:scale-95 shadow-sm" title="القائمة الجانبية">
                 <i class="fa-solid fa-bars"></i>
@@ -113,7 +132,7 @@
         <div id="categoryTabs" class="w-full flex gap-2 overflow-x-auto pb-2 mb-4 text-xs"></div>
 
         <!-- Gallery Preview Card Button -->
-        <button type="button" onclick="window.openGalleryModal()" class="w-full mb-4 bg-gradient-to-r from-goldaccent/20 via-yellow-500/10 to-goldaccent/20 border border-goldaccent/40 rounded-2xl p-3.5 flex items-center justify-between shadow-sm glow-gold-hover transition">
+        <button type="button" id="galleryBtnCard" onclick="window.openGalleryModal()" class="w-full mb-4 bg-gradient-to-r from-goldaccent/20 via-yellow-500/10 to-goldaccent/20 border border-goldaccent/40 rounded-2xl p-3.5 flex items-center justify-between shadow-sm glow-gold-hover transition">
             <div class="flex items-center gap-3">
                 <div class="w-9 h-9 rounded-xl bg-goldaccent/20 text-goldaccent flex items-center justify-center">
                     <i class="fa-solid fa-images"></i>
@@ -145,7 +164,7 @@
         </div>
 
         <!-- Join Platform Button Banner -->
-        <button type="button" onclick="window.openJoinModal()" class="w-full bg-gradient-to-r from-cyanaccent/20 via-blue-500/10 to-cyanaccent/20 border border-cyanaccent/40 rounded-2xl p-3 flex items-center justify-center gap-2 text-cyanaccent font-extrabold text-xs shadow-md transition hover:scale-[1.01]">
+        <button type="button" id="joinBannerBtn" onclick="window.openJoinModal()" class="w-full bg-gradient-to-r from-cyanaccent/20 via-blue-500/10 to-cyanaccent/20 border border-cyanaccent/40 rounded-2xl p-3 flex items-center justify-center gap-2 text-cyanaccent font-extrabold text-xs shadow-md transition hover:scale-[1.01]">
             <i class="fa-solid fa-user-plus"></i> انضم إلينا وأنشئ صفحتك الخاصة مجاناً
         </button>
     </div>
@@ -303,6 +322,60 @@
                 <button type="button" onclick="window.closeAdminModal()" class="text-gray-500 hover:text-gray-800 dark:hover:text-white text-xl px-2"><i class="fa-solid fa-xmark"></i></button>
             </div>
             <div class="overflow-y-auto flex-grow pr-1 space-y-3 text-xs">
+
+                <!-- Advanced Design & Style Customization Section -->
+                <div class="bg-lightbg dark:bg-darkbg rounded-xl border border-gray-300 dark:border-gray-800 p-3 space-y-3">
+                    <div class="flex justify-between items-center">
+                        <h4 class="font-bold text-goldaccent flex items-center gap-2"><i class="fa-solid fa-palette"></i> إعدادات التصميم والتخصيص البصري</h4>
+                        <button type="button" onclick="window.resetDesignDefaults()" class="bg-red-500/10 text-red-500 border border-red-500/30 px-2.5 py-1 rounded-lg text-[10px] font-bold hover:bg-red-500/20 transition">استعادة التصميم الأساسي</button>
+                    </div>
+                    
+                    <div>
+                        <label class="block font-bold text-gray-800 dark:text-gray-200 mb-1">شكل الصورة الشخصية:</label>
+                        <select id="adminAvatarShape" class="w-full bg-lightcard dark:bg-cardbg border border-gray-300 dark:border-gray-700 rounded-lg p-2 text-gray-900 dark:text-white outline-none">
+                            <option value="rounded-full">دائري بالكامل (Full Circle)</option>
+                            <option value="rounded-2xl">مربع بحواف مبرومة / مفتولة الزوايا (Rounded Corners)</option>
+                            <option value="rounded-xl">مربع بحواف ناعمة متوسطة (Soft Rounded)</option>
+                            <option value="rounded-none">مربع حاد الزوايا (Sharp Square)</option>
+                        </select>
+                    </div>
+
+                    <div>
+                        <label class="block font-bold text-gray-800 dark:text-gray-200 mb-1">شكل وانحناء البطاقات وأزرار الروابط:</label>
+                        <select id="adminCardShape" class="w-full bg-lightcard dark:bg-cardbg border border-gray-300 dark:border-gray-700 rounded-lg p-2 text-gray-900 dark:text-white outline-none">
+                            <option value="rounded-2xl">مفتولة الزوايا بشكل أنيق (Rounded 2XL)</option>
+                            <option value="rounded-full">دائرية الأطراف بالكامل (Pill Shape)</option>
+                            <option value="rounded-lg">زوايا معتدلة (Rounded LG)</option>
+                            <option value="rounded-none">زوايا حادة (Sharp Square)</option>
+                        </select>
+                    </div>
+
+                    <div>
+                        <label class="block font-bold text-gray-800 dark:text-gray-200 mb-1">نمط زخرفة ونقوش الخلفية:</label>
+                        <select id="adminBgPattern" class="w-full bg-lightcard dark:bg-cardbg border border-gray-300 dark:border-gray-700 rounded-lg p-2 text-gray-900 dark:text-white outline-none">
+                            <option value="none">بدون زخرفة (سادة)</option>
+                            <option value="pattern-grid">نقاط شبكية رقمية (Grid Dots)</option>
+                            <option value="pattern-dots">نجوم ونقاط مضيئة (Star Dots)</option>
+                            <option value="pattern-lines">خطوط عرضية سينمائية (Scanlines)</option>
+                        </select>
+                    </div>
+
+                    <div>
+                        <label class="block font-bold text-gray-800 dark:text-gray-200 mb-1">تدرج ألوان الخلفية (Gradient Background):</label>
+                        <select id="adminBgGradient" class="w-full bg-lightcard dark:bg-cardbg border border-gray-300 dark:border-gray-700 rounded-lg p-2 text-gray-900 dark:text-white outline-none">
+                            <option value="none">بدون تدرج (اللون الافتراضي)</option>
+                            <option value="bg-gradient-to-br from-gray-900 via-zinc-900 to-black">فحمي ليلي عميق (Dark Charcoal)</option>
+                            <option value="bg-gradient-to-tr from-slate-900 via-indigo-950 to-slate-900">أزرق ملكي سينمائي (Cinematic Blue)</option>
+                            <option value="bg-gradient-to-br from-neutral-900 via-stone-900 to-amber-950/40">برونزي ذهبي دافئ (Warm Gold)</option>
+                            <option value="bg-gradient-to-r from-gray-900 via-purple-950/30 to-gray-900">بنفسجي داكن خافت (Dark Purple)</option>
+                        </select>
+                    </div>
+
+                    <div>
+                        <label class="block font-bold text-gray-800 dark:text-gray-200 mb-1">رابط صورة خلفية الصفحة المخصصة (Background Image URL):</label>
+                        <input type="url" id="adminBgImageUrl" placeholder="https://example.com/bg.jpg (اتركه فارغاً للافتراضي)" class="w-full bg-lightcard dark:bg-cardbg border border-gray-300 dark:border-gray-700 rounded-lg p-2 text-gray-900 dark:text-white outline-none">
+                    </div>
+                </div>
 
                 <!-- Map Management Section -->
                 <div class="bg-lightbg dark:bg-darkbg rounded-xl border border-gray-300 dark:border-gray-800 p-3 space-y-2">
@@ -507,6 +580,55 @@
             </div>
             <div class="overflow-y-auto flex-grow pr-1 space-y-3 text-xs">
 
+                <!-- Advanced Design Customization for Member -->
+                <div class="bg-lightbg dark:bg-darkbg rounded-xl border border-gray-300 dark:border-gray-800 p-3 space-y-2">
+                    <div class="flex justify-between items-center">
+                        <h4 class="font-bold text-cyanaccent flex items-center gap-2"><i class="fa-solid fa-palette"></i> إعدادات التصميم لصفحتك</h4>
+                        <button type="button" onclick="window.resetMemberDesignDefaults()" class="bg-red-500/10 text-red-500 border border-red-500/30 px-2 py-0.5 rounded-lg text-[10px] font-bold">استعادة الافتراضي</button>
+                    </div>
+                    <div>
+                        <label class="block font-bold text-gray-800 dark:text-gray-200 mb-1">شكل صورتك الشخصية:</label>
+                        <select id="memberAvatarShape" class="w-full bg-lightcard dark:bg-cardbg border border-gray-300 dark:border-gray-700 rounded-lg p-2 text-gray-900 dark:text-white outline-none">
+                            <option value="rounded-full">دائري بالكامل (Full Circle)</option>
+                            <option value="rounded-2xl">مربع بحواف مبرومة / مفتولة الزوايا (Rounded Corners)</option>
+                            <option value="rounded-xl">مربع بحواف ناعمة متوسطة (Soft Rounded)</option>
+                            <option value="rounded-none">مربع حاد الزوايا (Sharp Square)</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block font-bold text-gray-800 dark:text-gray-200 mb-1">شكل البطاقات وأزرار الروابط:</label>
+                        <select id="memberCardShape" class="w-full bg-lightcard dark:bg-cardbg border border-gray-300 dark:border-gray-700 rounded-lg p-2 text-gray-900 dark:text-white outline-none">
+                            <option value="rounded-2xl">مفتولة الزوايا بشكل أنيق (Rounded 2XL)</option>
+                            <option value="rounded-full">دائرية الأطراف بالكامل (Pill Shape)</option>
+                            <option value="rounded-lg">زوايا معتدلة (Rounded LG)</option>
+                            <option value="rounded-none">زوايا حادة (Sharp Square)</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block font-bold text-gray-800 dark:text-gray-200 mb-1">نمط زخرفة ونقوش الخلفية:</label>
+                        <select id="memberBgPattern" class="w-full bg-lightcard dark:bg-cardbg border border-gray-300 dark:border-gray-700 rounded-lg p-2 text-gray-900 dark:text-white outline-none">
+                            <option value="none">بدون زخرفة (سادة)</option>
+                            <option value="pattern-grid">نقاط شبكية رقمية (Grid Dots)</option>
+                            <option value="pattern-dots">نجوم ونقاط مضيئة (Star Dots)</option>
+                            <option value="pattern-lines">خطوط عرضية سينمائية (Scanlines)</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block font-bold text-gray-800 dark:text-gray-200 mb-1">تدرج ألوان الخلفية (Gradient Background):</label>
+                        <select id="memberBgGradient" class="w-full bg-lightcard dark:bg-cardbg border border-gray-300 dark:border-gray-700 rounded-lg p-2 text-gray-900 dark:text-white outline-none">
+                            <option value="none">بدون تدرج (اللون الافتراضي)</option>
+                            <option value="bg-gradient-to-br from-gray-900 via-zinc-900 to-black">فحمي ليلي عميق (Dark Charcoal)</option>
+                            <option value="bg-gradient-to-tr from-slate-900 via-indigo-950 to-slate-900">أزرق ملكي سينمائي (Cinematic Blue)</option>
+                            <option value="bg-gradient-to-br from-neutral-900 via-stone-900 to-amber-950/40">برونزي ذهبي دافئ (Warm Gold)</option>
+                            <option value="bg-gradient-to-r from-gray-900 via-purple-950/30 to-gray-900">بنفسجي داكن خافت (Dark Purple)</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block font-bold text-gray-800 dark:text-gray-200 mb-1">رابط خلفية مخصصة لصفحتك (اختياري):</label>
+                        <input type="url" id="memberBgImageUrl" placeholder="https://example.com/bg.jpg" class="w-full bg-lightcard dark:bg-cardbg border border-gray-300 dark:border-gray-700 rounded-lg p-2 text-gray-900 dark:text-white outline-none">
+                    </div>
+                </div>
+
                 <!-- Map Management for Member -->
                 <div class="bg-lightbg dark:bg-darkbg rounded-xl border border-gray-300 dark:border-gray-800 p-3 space-y-2">
                     <h4 class="font-bold text-cyanaccent flex items-center gap-2"><i class="fa-solid fa-map-location-dot"></i> إعدادات الخريطة الجغرافية لصفحتك</h4>
@@ -612,6 +734,11 @@
             bio: "خدمات التصميم الإعلاني، حلول الطباعة، وتكسية واجهات الألوكوبوند",
             pin: "1234",
             image: "",
+            avatarShape: "rounded-full",
+            cardShape: "rounded-2xl",
+            bgPattern: "none",
+            bgGradient: "none",
+            bgImageUrl: "",
             showMap: true,
             mapUrl: "https://maps.app.goo.gl/YourMapLocation",
             mapEmbed: "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3238.8!2d37.134!3d36.202!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zMzbCsDEyJzEyLjgiTiAzN8KwMDgnMDIuNCJF!5e0!3m2!1sar!2s!4v1!5m2!1sar!2s",
@@ -668,8 +795,11 @@
                 if (!appData.sidebarLinks) appData.sidebarLinks = defaultUserData.sidebarLinks;
                 if (!appData.contacts) appData.contacts = defaultUserData.contacts;
                 if (appData.showMap === undefined) appData.showMap = true;
+                if (!appData.avatarShape) appData.avatarShape = "rounded-full";
+                if (!appData.cardShape) appData.cardShape = "rounded-2xl";
+                if (!appData.bgPattern) appData.bgPattern = "none";
+                if (!appData.bgGradient) appData.bgGradient = "none";
                 
-                // تحويل التصنيف القديم للنصوص البسيطة إلى مصفوفة كائنات مدعومة بـ enabled تلقائياً
                 if (appData.categories && appData.categories.length > 0 && typeof appData.categories[0] === 'string') {
                     appData.categories = appData.categories.map(c => ({ name: c, enabled: true }));
                 }
@@ -701,6 +831,7 @@
 
         function initApp() {
             initTheme();
+            applyDesignCustomizations();
             renderProfile();
             renderSidebarMenu();
             renderCategories();
@@ -719,6 +850,66 @@
                 document.getElementById('themeIcon').className = 'fa-solid fa-moon';
             }
         }
+
+        function applyDesignCustomizations() {
+            // شكل الصورة الشخصية
+            const avatarContainer = document.getElementById('avatarContainer');
+            if (avatarContainer) {
+                avatarContainer.className = `w-full h-full ${appData.avatarShape || 'rounded-full'} border-2 border-goldaccent glow-gold overflow-hidden bg-lightcard dark:bg-cardbg flex items-center justify-center shadow-md transition-colors duration-300`;
+            }
+
+            // تطبيق شكل البطاقات على عناصر الصفحة
+            const cardShape = appData.cardShape || 'rounded-2xl';
+            const topBarEl = document.getElementById('topBarEl');
+            const galleryBtnCard = document.getElementById('galleryBtnCard');
+            const joinBannerBtn = document.getElementById('joinBannerBtn');
+            const mapSectionContainer = document.getElementById('mapSectionContainer');
+
+            [topBarEl, galleryBtnCard, joinBannerBtn, mapSectionContainer].forEach(el => {
+                if(el) {
+                    el.classList.remove('rounded-2xl', 'rounded-full', 'rounded-lg', 'rounded-none');
+                    el.classList.add(cardShape);
+                }
+            });
+
+            // تطبيق الخلفية والتدرجات والزخارف
+            const pageBody = document.getElementById('pageBody');
+            if (pageBody) {
+                pageBody.className = `min-h-screen flex flex-col items-center justify-between p-4 pb-12 text-gray-900 dark:text-gray-100 transition-colors duration-300 ${appData.bgGradient && appData.bgGradient !== 'none' ? appData.bgGradient : 'bg-lightbg dark:bg-darkbg'}`;
+                
+                // أنماط الزخرفة
+                pageBody.classList.remove('pattern-grid', 'pattern-dots', 'pattern-lines');
+                if (appData.bgPattern && appData.bgPattern !== 'none') {
+                    pageBody.classList.add(appData.bgPattern);
+                }
+
+                if (appData.bgImageUrl) {
+                    pageBody.style.backgroundImage = `url('${appData.bgImageUrl}')`;
+                    pageBody.style.backgroundSize = 'cover';
+                    pageBody.style.backgroundPosition = 'center';
+                } else if (!appData.bgGradient || appData.bgGradient === 'none') {
+                    pageBody.style.backgroundImage = '';
+                }
+            }
+        }
+
+        window.resetDesignDefaults = function() {
+            document.getElementById('adminAvatarShape').value = 'rounded-full';
+            document.getElementById('adminCardShape').value = 'rounded-2xl';
+            document.getElementById('adminBgPattern').value = 'none';
+            document.getElementById('adminBgGradient').value = 'none';
+            document.getElementById('adminBgImageUrl').value = '';
+            alert('تم استعادة الإعدادات الافتراضية. اضغط على "حفظ ونشر للسحاب" لحفظ التغييرات.');
+        };
+
+        window.resetMemberDesignDefaults = function() {
+            document.getElementById('memberAvatarShape').value = 'rounded-full';
+            document.getElementById('memberCardShape').value = 'rounded-2xl';
+            document.getElementById('memberBgPattern').value = 'none';
+            document.getElementById('memberBgGradient').value = 'none';
+            document.getElementById('memberBgImageUrl').value = '';
+            alert('تم استعادة الإعدادات الافتراضية بنجاح.');
+        };
 
         window.toggleTheme = function() {
             const isDark = document.documentElement.classList.toggle('dark');
@@ -887,7 +1078,7 @@
 
             filtered.forEach(item => {
                 const card = document.createElement('div');
-                card.className = 'group relative rounded-2xl overflow-hidden bg-white dark:bg-cardbg border border-gray-300 dark:border-gray-800 cursor-pointer shadow-sm flex flex-col';
+                card.className = `group relative ${appData.cardShape || 'rounded-2xl'} overflow-hidden bg-white dark:bg-cardbg border border-gray-300 dark:border-gray-800 cursor-pointer shadow-sm flex flex-col`;
                 card.onclick = () => window.openProjectDetail(item.id);
                 card.innerHTML = `
                     <div class="relative aspect-video w-full overflow-hidden bg-gray-100 dark:bg-darkbg">
@@ -902,7 +1093,6 @@
             });
         }
 
-        // عرض عناصر القائمة الجانبية المفعلة فقط
         function renderSidebarMenu() {
             const container = document.getElementById('sidebarLinksContainer');
             if (!container) return;
@@ -992,11 +1182,12 @@
             container.innerHTML = '';
             const links = appData.links || [];
             const filtered = links.filter(l => l.enabled !== false && (activeCategory === "الكل" || l.category === activeCategory));
+            const cardShape = appData.cardShape || 'rounded-2xl';
 
             filtered.forEach(link => {
                 const a = document.createElement('a');
                 a.href = link.url; a.target = '_blank';
-                a.className = 'w-full bg-white dark:bg-cardbg border border-gray-300 dark:border-gray-800 rounded-2xl p-3.5 flex items-center justify-between shadow-sm glow-gold-hover transition';
+                a.className = `w-full bg-white dark:bg-cardbg border border-gray-300 dark:border-gray-800 ${cardShape} p-3.5 flex items-center justify-between shadow-sm glow-gold-hover transition`;
                 a.innerHTML = `<div class="flex items-center gap-3"><div class="w-9 h-9 rounded-xl bg-gray-100 dark:bg-darkbg border border-gray-200 dark:border-gray-700 flex items-center justify-center text-goldaccent"><i class="${link.icon || 'fa-solid fa-link'}"></i></div><span class="text-xs font-extrabold text-gray-900 dark:text-gray-100">${link.title}</span></div><i class="fa-solid fa-chevron-left text-xs text-gray-400"></i>`;
                 container.appendChild(a);
             });
@@ -1046,6 +1237,12 @@
             document.getElementById('memberEditBio').value = appData.bio || '';
             document.getElementById('memberEditAvatar').value = appData.image || '';
             
+            document.getElementById('memberAvatarShape').value = appData.avatarShape || 'rounded-full';
+            document.getElementById('memberCardShape').value = appData.cardShape || 'rounded-2xl';
+            document.getElementById('memberBgPattern').value = appData.bgPattern || 'none';
+            document.getElementById('memberBgGradient').value = appData.bgGradient || 'none';
+            document.getElementById('memberBgImageUrl').value = appData.bgImageUrl || '';
+
             document.getElementById('memberShowMap').checked = appData.showMap !== false;
             document.getElementById('memberMapUrl').value = appData.mapUrl || '';
             document.getElementById('memberMapEmbed').value = appData.mapEmbed || '';
@@ -1245,6 +1442,11 @@
         window.saveMemberChanges = function() {
             appData.displayName = document.getElementById('memberEditName').value.trim() || appData.displayName;
             appData.bio = document.getElementById('memberEditBio').value.trim();
+            appData.avatarShape = document.getElementById('memberAvatarShape').value;
+            appData.cardShape = document.getElementById('memberCardShape').value;
+            appData.bgPattern = document.getElementById('memberBgPattern').value;
+            appData.bgGradient = document.getElementById('memberBgGradient').value;
+            appData.bgImageUrl = document.getElementById('memberBgImageUrl').value.trim();
             appData.showMap = document.getElementById('memberShowMap').checked;
             appData.mapUrl = document.getElementById('memberMapUrl').value.trim();
             appData.mapEmbed = document.getElementById('memberMapEmbed').value.trim();
@@ -1274,6 +1476,12 @@
             tempImageBase64 = appData.image || "";
             document.getElementById('editAvatarUrl').value = appData.image || "";
             
+            document.getElementById('adminAvatarShape').value = appData.avatarShape || 'rounded-full';
+            document.getElementById('adminCardShape').value = appData.cardShape || 'rounded-2xl';
+            document.getElementById('adminBgPattern').value = appData.bgPattern || 'none';
+            document.getElementById('adminBgGradient').value = appData.bgGradient || 'none';
+            document.getElementById('adminBgImageUrl').value = appData.bgImageUrl || '';
+
             document.getElementById('adminShowMap').checked = appData.showMap !== false;
             document.getElementById('adminMapUrl').value = appData.mapUrl || '';
             document.getElementById('adminMapEmbed').value = appData.mapEmbed || '';
@@ -1401,6 +1609,11 @@
                 bio: req.bio || '',
                 pin: '1234',
                 image: req.image || '',
+                avatarShape: 'rounded-full',
+                cardShape: 'rounded-2xl',
+                bgPattern: 'none',
+                bgGradient: 'none',
+                bgImageUrl: '',
                 showMap: true,
                 mapUrl: '',
                 mapEmbed: '',
@@ -1671,6 +1884,11 @@
         window.saveAllChanges = function() {
             appData.displayName = document.getElementById('editDisplayName').value.trim() || appData.displayName;
             appData.bio = document.getElementById('editBio').value.trim();
+            appData.avatarShape = document.getElementById('adminAvatarShape').value;
+            appData.cardShape = document.getElementById('adminCardShape').value;
+            appData.bgPattern = document.getElementById('adminBgPattern').value;
+            appData.bgGradient = document.getElementById('adminBgGradient').value;
+            appData.bgImageUrl = document.getElementById('adminBgImageUrl').value.trim();
             appData.showMap = document.getElementById('adminShowMap').checked;
             appData.mapUrl = document.getElementById('adminMapUrl').value.trim();
             appData.mapEmbed = document.getElementById('adminMapEmbed').value.trim();
