@@ -225,7 +225,7 @@
         </div>
     </div>
 
-    <!-- Image View Modal (With Direct Share Button for Project & Image) -->
+    <!-- Image View Modal -->
     <div id="imageViewModal" class="fixed inset-0 bg-black/95 backdrop-blur-lg hidden flex flex-col items-center justify-center z-[130] p-4">
         <img id="enlargedImage" src="" class="max-w-full max-h-[75vh] rounded-2xl border border-gray-800 shadow-2xl object-contain mb-3" />
         
@@ -578,7 +578,7 @@
         </div>
     </div>
 
-    <!-- Script Engine with Firebase & Direct Project/Image Sharing -->
+    <!-- Script Engine with Firebase & Clean Sharing -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/13.2.0/firebase-app.js";
         import { getDatabase, ref, set, onValue } from "https://www.gstatic.com/firebasejs/13.2.0/firebase-database.js";
@@ -598,7 +598,7 @@
 
         const urlParams = new URLSearchParams(window.location.search);
         const currentUsername = urlParams.get('user') || 'mahmoud';
-        const targetProjectId = urlParams.get('project'); // لمعرفة المشروع المطلوب فتحه تلقائياً
+        const targetProjectId = urlParams.get('project');
 
         const defaultUserData = {
             displayName: "محمود دملخي",
@@ -638,7 +638,7 @@
         let activeGalleryCategory = "الكل";
         let tempImageBase64 = "";
         let memberTempImageBase64 = "";
-        let currentViewingProjectId = null; // لتخزين معرف المشروع الحالي المعروض
+        let currentViewingProjectId = null;
 
         const dbRef = ref(db, 'platformData');
         onValue(dbRef, (snapshot) => {
@@ -664,7 +664,6 @@
             }
             initApp();
             
-            // إذا كان الرابط يحتوي على معرّف مشروع مخصص، افتحه تلقائياً عند تحميل الصفحة
             if (targetProjectId) {
                 setTimeout(() => {
                     window.openProjectDetail(targetProjectId);
@@ -809,7 +808,7 @@
                     card.innerHTML = `<video src="${url}" controls class="w-full h-full object-cover"></video>`;
                 } else {
                     card.className = 'aspect-video rounded-xl overflow-hidden bg-darkbg border border-gray-700 cursor-pointer relative group';
-                    card.oncontextmenu = (e) => { e.preventDefault(); window.openImageView(url); }; // الضغط المطول أو كليك يمين
+                    card.oncontextmenu = (e) => { e.preventDefault(); window.openImageView(url); };
                     card.onclick = () => window.openImageView(url);
                     card.innerHTML = `<img src="${url}" class="w-full h-full object-cover group-hover:scale-105 transition" /><span class="absolute bottom-1 right-1 bg-black/60 text-white text-[9px] px-1 py-0.5 rounded">صورة ${idx+1} (اضغط للعرض أو مشاركة)</span>`;
                 }
@@ -827,7 +826,7 @@
         
         window.closeImageView = function() { document.getElementById('imageViewModal').classList.add('hidden'); };
 
-        // دالة مشاركة الصورة مع رابط مباشر للمشروع الحالي
+        // دالة مشاركة المشروع دون تكرار الرابط
         window.shareCurrentProjectImage = function() {
             const baseUrl = window.location.origin + window.location.pathname;
             const projectLink = `${baseUrl}?user=${currentUsername}&project=${currentViewingProjectId}`;
@@ -841,7 +840,7 @@
                 }).catch(() => {});
             } else {
                 navigator.clipboard.writeText(projectLink).then(() => {
-                    alert('تم نسخ رابط المشروع المباشر بنجاح! يمكنك لصقه في أي مكان.');
+                    alert('تم نسخ رابط المشروع المباشر بنجاح!');
                 });
             }
         };
