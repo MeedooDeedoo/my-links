@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>منصة شجرة الروابط الاحترافية - متعددة الأعضاء</title>
+    <title>منصة شجرة الروابط الاحترافية - متعددة الأعضاء مع نظام الإشعارات</title>
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
@@ -68,9 +68,14 @@
             <button type="button" onclick="window.toggleSidebar()" class="w-9 h-9 rounded-xl bg-gray-100 dark:bg-darkbg border border-gray-300 dark:border-gray-700 text-goldaccent flex items-center justify-center transition active:scale-95 shadow-sm" title="القائمة الجانبية">
                 <i class="fa-solid fa-bars"></i>
             </button>
-            <span id="topBarName" class="text-xs font-bold text-gray-900 dark:text-gray-100 truncate max-w-[150px]">جاري التحميل...</span>
+            <span id="topBarName" class="text-xs font-bold text-gray-900 dark:text-gray-100 truncate max-w-[130px]">جاري التحميل...</span>
         </div>
         <div class="flex items-center gap-2">
+            <!-- زر الإشعارات الجديد -->
+            <button type="button" onclick="window.openNotificationsModal()" class="w-9 h-9 rounded-xl bg-gray-100 dark:bg-darkbg border border-gray-300 dark:border-gray-700 text-goldaccent flex items-center justify-center transition shadow-sm relative" title="الإشعارات">
+                <i class="fa-solid fa-bell"></i>
+                <span id="notificationBadge" class="absolute -top-1 -right-1 bg-red-500 text-white text-[9px] font-bold w-4 h-4 rounded-full flex items-center justify-center hidden">0</span>
+            </button>
             <button type="button" onclick="window.toggleTheme()" class="w-9 h-9 rounded-xl bg-gray-100 dark:bg-darkbg border border-gray-300 dark:border-gray-700 text-goldaccent flex items-center justify-center transition shadow-sm" title="تبديل الوضع">
                 <i id="themeIcon" class="fa-solid fa-moon"></i>
             </button>
@@ -168,6 +173,23 @@
     </footer>
 
     <!-- Modals -->
+    <!-- Notifications Modal -->
+    <div id="notificationsModal" class="fixed inset-0 bg-black/70 backdrop-blur-md hidden flex items-center justify-center z-[115] p-3">
+        <div class="bg-lightcard dark:bg-cardbg border border-gray-300 dark:border-gray-800 w-full max-w-md rounded-2xl p-5 shadow-2xl max-h-[92vh] flex flex-col transition-colors duration-300">
+            <div class="flex justify-between items-center border-b border-gray-200 dark:border-gray-800 pb-3 mb-3">
+                <h3 class="text-base font-bold text-goldaccent flex items-center gap-2">
+                    <i class="fa-solid fa-bell"></i> مركز الإشعارات والتنبيهات
+                </h3>
+                <button type="button" onclick="window.closeNotificationsModal()" class="text-gray-500 hover:text-gray-800 dark:hover:text-white text-xl px-2"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            <div class="flex justify-between items-center mb-2">
+                <span class="text-[11px] text-gray-500">التنبيهات الواردة لصفحتك:</span>
+                <button type="button" onclick="window.markAllNotificationsRead()" class="text-[10px] bg-goldaccent/10 text-goldaccent border border-goldaccent/30 px-2 py-1 rounded-lg font-bold">تحديد الكل مقروء</button>
+            </div>
+            <div id="notificationsListContainer" class="overflow-y-auto flex-grow space-y-2.5 pr-1"></div>
+        </div>
+    </div>
+
     <!-- Feedback Modal -->
     <div id="feedbackModal" class="fixed inset-0 bg-black/70 backdrop-blur-md hidden flex items-center justify-center z-[110] p-3">
         <div class="bg-lightcard dark:bg-cardbg border border-gray-300 dark:border-gray-800 w-full max-w-md rounded-2xl p-5 shadow-2xl max-h-[92vh] flex flex-col transition-colors duration-300">
@@ -314,6 +336,25 @@
                 <button type="button" onclick="window.closeAdminModal()" class="text-gray-500 hover:text-gray-800 dark:hover:text-white text-xl px-2"><i class="fa-solid fa-xmark"></i></button>
             </div>
             <div class="overflow-y-auto flex-grow pr-1 space-y-3 text-xs">
+
+                <!-- Send Notification / Broadcast Section -->
+                <div class="bg-lightbg dark:bg-darkbg rounded-xl border border-gray-300 dark:border-gray-800 overflow-hidden transition-colors">
+                    <button type="button" onclick="window.toggleAccordion('accBroadcast')" class="w-full p-3 flex justify-between items-center font-bold text-gray-800 dark:text-gray-200">
+                        <span class="flex items-center gap-2"><i class="fa-solid fa-paper-plane text-goldaccent"></i> إرسال إشعار جماعي أو فردي للأعضاء</span>
+                        <i id="icon-accBroadcast" class="fa-solid fa-chevron-down transition-transform"></i>
+                    </button>
+                    <div id="accBroadcast" class="hidden p-3 pt-0 space-y-3 border-t border-gray-200 dark:border-gray-800 mt-1">
+                        <div class="space-y-2 mt-2">
+                            <label class="block font-bold text-gray-800 dark:text-gray-200">إرسال إلى:</label>
+                            <select id="broadcastTargetUser" class="w-full bg-lightcard dark:bg-cardbg border border-gray-300 dark:border-gray-700 rounded-lg p-2 text-gray-900 dark:text-white outline-none">
+                                <option value="all">جميع الأعضاء في المنصة (Broadcast)</option>
+                            </select>
+                            <input type="text" id="broadcastTitle" placeholder="عنوان الإشعار (مثال: تحديث هام في النظام)" class="w-full bg-lightcard dark:bg-cardbg border border-gray-300 dark:border-gray-700 rounded-lg p-2 text-gray-900 dark:text-white outline-none">
+                            <textarea id="broadcastMessage" placeholder="نص الرسالة أو الإشعار..." class="w-full bg-lightcard dark:bg-cardbg border border-gray-300 dark:border-gray-700 rounded-lg p-2 text-gray-900 dark:text-white outline-none h-20 resize-none"></textarea>
+                            <button type="button" onclick="window.sendPlatformNotification()" class="w-full bg-goldaccent text-black font-bold py-2 rounded-lg shadow-sm">إرسال الإشعار الآن</button>
+                        </div>
+                    </div>
+                </div>
 
                 <!-- Advanced Design & Style Customization Section (Accordion Foldable) -->
                 <div class="bg-lightbg dark:bg-darkbg rounded-xl border border-gray-300 dark:border-gray-800 overflow-hidden transition-colors">
@@ -869,7 +910,7 @@
             ]
         };
 
-        let rootData = { users: {}, pendingRequests: {}, feedbackMessages: {} };
+        let rootData = { users: {}, pendingRequests: {}, feedbackMessages: {}, notifications: {} };
         let appData = defaultUserData;
         let activeCategory = "الكل";
         let activeGalleryCategory = "الكل";
@@ -885,6 +926,7 @@
                 if (!rootData.users) rootData.users = {};
                 if (!rootData.pendingRequests) rootData.pendingRequests = {};
                 if (!rootData.feedbackMessages) rootData.feedbackMessages = {};
+                if (!rootData.notifications) rootData.notifications = {};
 
                 if (!rootData.users['mahmoud']) {
                     rootData.users['mahmoud'] = defaultUserData;
@@ -940,6 +982,7 @@
             renderLinks();
             renderMapSection();
             renderGalleryGrid();
+            updateNotificationBadge();
         }
 
         function initTheme() {
@@ -990,7 +1033,6 @@
             if (pageBody && bgImageLayer) {
                 pageBody.className = `min-h-screen flex flex-col items-center justify-between p-4 pb-12 text-gray-900 dark:text-gray-100 transition-colors duration-300 bg-lightbg dark:bg-darkbg relative`;
                 
-                // تطبيق تدرج الألوان المخصص إن وجد
                 if (appData.customColors && (appData.customColors.c1 || appData.customColors.c2 || appData.customColors.c3)) {
                     let rgba1 = appData.customColors.c1 ? hexToRgba(appData.customColors.c1, appData.customColors.o1 ?? 1) : 'transparent';
                     let rgba2 = appData.customColors.c2 ? hexToRgba(appData.customColors.c2, appData.customColors.o2 ?? 1) : 'transparent';
@@ -1001,7 +1043,6 @@
                     pageBody.style.backgroundImage = '';
                 }
 
-                // تطبيق صورة الخلفية وشفافيتها
                 if (appData.bgImageUrl) {
                     bgImageLayer.style.backgroundImage = `url('${appData.bgImageUrl}')`;
                     bgImageLayer.style.opacity = appData.bgImgOpacity ?? 0.6;
@@ -1011,6 +1052,131 @@
                 }
             }
         }
+
+        // نظام الإشعارات الوظائف الأساسية
+        window.openNotificationsModal = function() {
+            renderNotificationsList();
+            document.getElementById('notificationsModal').classList.remove('hidden');
+        };
+        window.closeNotificationsModal = function() {
+            document.getElementById('notificationsModal').classList.add('hidden');
+        };
+
+        function updateNotificationBadge() {
+            const badge = document.getElementById('notificationBadge');
+            if (!badge) return;
+            const notifs = rootData.notifications || {};
+            let unreadCount = 0;
+            Object.keys(notifs).forEach(id => {
+                const n = notifs[id];
+                if ((n.target === 'all' || n.target === currentUsername) && !n.read) {
+                    unreadCount++;
+                }
+            });
+            if (unreadCount > 0) {
+                badge.textContent = unreadCount;
+                badge.classList.remove('hidden');
+            } else {
+                badge.classList.add('hidden');
+            }
+        }
+
+        function renderNotificationsList() {
+            const container = document.getElementById('notificationsListContainer');
+            if (!container) return;
+            container.innerHTML = '';
+            const notifs = rootData.notifications || {};
+            const keys = Object.keys(notifs).filter(id => {
+                const n = notifs[id];
+                return n.target === 'all' || n.target === currentUsername;
+            });
+
+            if (keys.length === 0) {
+                container.innerHTML = '<div class="text-center py-8 text-xs text-gray-500">لا توجد إشعارات حالياً.</div>';
+                return;
+            }
+
+            keys.reverse().forEach(id => {
+                const n = notifs[id];
+                const readClass = n.read ? 'opacity-70 bg-gray-50 dark:bg-darkbg' : 'bg-goldaccent/5 border-goldaccent/30';
+                container.innerHTML += `
+                    <div class="border border-gray-300 dark:border-gray-700 p-3 rounded-xl space-y-1 ${readClass} transition">
+                        <div class="flex justify-between items-center text-[11px]">
+                            <span class="font-extrabold text-goldaccent flex items-center gap-1.5"><i class="fa-solid fa-circle-info"></i> ${n.title}</span>
+                            <span class="text-gray-400 text-[10px]">${new Date(n.createdAt).toLocaleDateString('ar')}</span>
+                        </div>
+                        <p class="text-xs text-gray-800 dark:text-gray-200 leading-relaxed">${n.message}</p>
+                        <div class="flex justify-between items-center pt-2 border-t border-gray-200 dark:border-gray-800 mt-1">
+                            <span class="text-[10px] text-gray-400">من: ${n.sender || 'الإدارة'}</span>
+                            <div class="flex gap-2">
+                                ${!n.read ? `<button type="button" onclick="window.markNotificationRead('${id}')" class="text-[10px] bg-emerald-500/20 text-emerald-600 px-2 py-0.5 rounded font-bold">تحديد مقروء</button>` : ''}
+                                <button type="button" onclick="window.deleteNotification('${id}')" class="text-[10px] bg-red-500/20 text-red-600 px-2 py-0.5 rounded font-bold">حذف</button>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            });
+        }
+
+        window.markNotificationRead = function(id) {
+            if (rootData.notifications && rootData.notifications[id]) {
+                rootData.notifications[id].read = true;
+                set(dbRef, rootData).then(() => {
+                    renderNotificationsList();
+                    updateNotificationBadge();
+                });
+            }
+        };
+
+        window.markAllNotificationsRead = function() {
+            const notifs = rootData.notifications || {};
+            Object.keys(notifs).forEach(id => {
+                const n = notifs[id];
+                if (n.target === 'all' || n.target === currentUsername) {
+                    n.read = true;
+                }
+            });
+            set(dbRef, rootData).then(() => {
+                renderNotificationsList();
+                updateNotificationBadge();
+            });
+        };
+
+        window.deleteNotification = function(id) {
+            if (rootData.notifications && rootData.notifications[id]) {
+                delete rootData.notifications[id];
+                set(dbRef, rootData).then(() => {
+                    renderNotificationsList();
+                    updateNotificationBadge();
+                });
+            }
+        };
+
+        window.sendPlatformNotification = function() {
+            const target = document.getElementById('broadcastTargetUser').value;
+            const title = document.getElementById('broadcastTitle').value.trim();
+            const message = document.getElementById('broadcastMessage').value.trim();
+            if (!title || !message) {
+                alert('الرجاء إدخال عنوان ونص الإشعار.');
+                return;
+            }
+            if (!rootData.notifications) rootData.notifications = {};
+            const notifId = 'notif_' + Date.now();
+            rootData.notifications[notifId] = {
+                id: notifId,
+                target: target,
+                title: title,
+                message: message,
+                sender: appData.displayName || 'الإدارة',
+                read: false,
+                createdAt: Date.now()
+            };
+            set(dbRef, rootData).then(() => {
+                alert('تم إرسال الإشعار بنجاح!');
+                document.getElementById('broadcastTitle').value = '';
+                document.getElementById('broadcastMessage').value = '';
+            });
+        };
 
         window.resetDesignDefaults = function() {
             document.getElementById('adminAvatarShape').value = 'rounded-full';
@@ -1672,6 +1838,15 @@
                 document.getElementById('editEmail').value = appData.contacts.email || '';
             }
 
+            // تحديث قائمة الأعضاء في select الإرسال الجماعي للإشعارات
+            const broadcastSelect = document.getElementById('broadcastTargetUser');
+            if (broadcastSelect) {
+                broadcastSelect.innerHTML = '<option value="all">جميع الأعضاء في المنصة (Broadcast)</option>';
+                Object.keys(rootData.users || {}).forEach(u => {
+                    broadcastSelect.innerHTML += `<option value="${u}">عضو: ${rootData.users[u].displayName} (${u})</option>`;
+                });
+            }
+
             renderAdminFeedbackList();
             renderAdminPendingRequests();
             renderAdminUsersList();
@@ -2092,7 +2267,7 @@
             
             const avatarUrlInputVal = document.getElementById('editAvatarUrl').value.trim();
             if (tempImageBase64 !== "") appData.image = tempImageBase64;
-            else if (avatarUrlInputVal !== "") appData.image = avatarUrlInputVal;
+            else if (avatarUrlInputVal !== "") appData.image = avatarUrlUrlInputVal;
 
             if (!appData.contacts) appData.contacts = {};
             appData.contacts.showWhatsapp = document.getElementById('showWhatsapp').checked;
