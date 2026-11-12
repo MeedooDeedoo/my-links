@@ -7,7 +7,6 @@
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
-        // إعداد متغيرات الألوان الديناميكية للثيم المخصص
         let currentThemeColor = localStorage.getItem('theme_accent_color') || '#D4AF37';
         let currentThemeName = localStorage.getItem('theme_accent_name') || 'gold';
 
@@ -69,8 +68,8 @@
             <span id="topBarName" class="text-xs font-bold text-gray-900 dark:text-gray-100 truncate max-w-[130px]">جاري التحميل...</span>
         </div>
         <div class="flex items-center gap-2">
-            <!-- 🎨 زر فتح نافذة تبديل لون الثيم المخصص (Theme Accent Switcher) -->
-            <button type="button" onclick="window.openThemeSwitcherModal()" class="w-9 h-9 rounded-xl bg-gray-100 dark:bg-darkbg border border-gray-300 dark:border-gray-700 text-goldaccent flex items-center justify-center transition shadow-sm" title="تخصيص لون الثيم">
+            <!-- زر تبديل ألوان الثيم المخصص (يظهر فقط إذا كان مفعلاً من الأدمن) -->
+            <button type="button" id="themeSwitcherTopBtn" onclick="window.openThemeSwitcherModal()" class="w-9 h-9 rounded-xl bg-gray-100 dark:bg-darkbg border border-gray-300 dark:border-gray-700 text-goldaccent flex items-center justify-center transition shadow-sm hidden" title="تخصيص لون الثيم">
                 <i class="fa-solid fa-palette"></i>
             </button>
             <button type="button" onclick="window.openNotificationsModal()" class="w-9 h-9 rounded-xl bg-gray-100 dark:bg-darkbg border border-gray-300 dark:border-gray-700 text-goldaccent flex items-center justify-center transition shadow-sm relative" title="الإشعارات">
@@ -106,13 +105,12 @@
     <!-- Main Profile Card Container -->
     <div class="w-full max-w-md flex flex-col items-center flex-grow relative z-10">
 
-        <!-- ⏳ قسم عداد التنازل والتخفيضات المؤقتة (Flash Deals) -->
+        <!-- Flash Deals -->
         <div id="flashDealContainer" class="w-full mb-4 bg-gradient-to-r from-red-500/15 via-amber-500/10 to-red-500/15 border border-red-500/40 rounded-2xl p-3.5 shadow-sm text-center space-y-2 hidden">
             <div class="flex items-center justify-center gap-1.5 text-xs font-extrabold text-red-500 dark:text-red-400">
                 <i class="fa-solid fa-bolt animate-pulse"></i>
                 <span id="flashDealTitle">عرض خاص محدود الوقت!</span>
             </div>
-            <!-- العداد التنازلي -->
             <div class="flex justify-center items-center gap-2 text-[11px] font-mono font-bold">
                 <div class="bg-cardbg dark:bg-darkbg border border-red-500/30 px-2 py-1 rounded-lg text-red-500">
                     <span id="dealSeconds">00</span> <span class="text-[9px] text-gray-400">ثانية</span>
@@ -140,7 +138,6 @@
                 </div>
             </div>
 
-            <!-- شريط الحالة المباشرة البارز -->
             <div id="liveStatusBadgeContainer" class="inline-flex items-center gap-2 px-3.5 py-1 rounded-full text-[11px] font-bold mb-3 border shadow-sm transition-all">
                 <span id="liveStatusDot" class="w-2.5 h-2.5 rounded-full inline-block"></span>
                 <span id="liveStatusText">جاري تحديث الحالة...</span>
@@ -170,7 +167,6 @@
                 <i class="fa-solid fa-chevron-left text-xs text-goldaccent"></i>
             </button>
 
-            <!-- زر مكتبة الملفات والكتالوجات (File Hub) الجديد -->
             <button type="button" id="fileHubBtnCard" onclick="window.openFileHubModal()" class="flex-1 bg-gradient-to-r from-cyanaccent/20 via-blue-500/10 to-cyanaccent/20 border border-cyanaccent/40 rounded-2xl p-3.5 flex items-center justify-between shadow-sm transition">
                 <div class="flex items-center gap-3">
                     <div class="w-9 h-9 rounded-xl bg-cyanaccent/20 text-cyanaccent flex items-center justify-center">
@@ -187,7 +183,6 @@
 
         <div id="linksContainer" class="w-full flex flex-col gap-3 mb-6"></div>
 
-        <!-- قسم الكوبونات والخصومات الترويجية -->
         <div id="promoSectionContainer" class="w-full mb-6 hidden">
             <div class="flex items-center justify-between mb-3 px-1">
                 <span class="text-xs font-extrabold text-gray-900 dark:text-white flex items-center gap-1.5">
@@ -198,7 +193,6 @@
             <div id="promoCodesContainer" class="w-full grid grid-cols-1 gap-3"></div>
         </div>
 
-        <!-- قسم آراء ومراجعات العملاء -->
         <div id="testimonialsSectionContainer" class="w-full mb-6 hidden">
             <div class="flex items-center justify-between mb-3 px-1">
                 <span class="text-xs font-extrabold text-gray-900 dark:text-white flex items-center gap-1.5">
@@ -223,7 +217,6 @@
             </div>
         </div>
 
-        <!-- زر الانضمام إلينا -->
         <button type="button" id="joinBannerBtn" onclick="window.openJoinModal()" class="w-full bg-gradient-to-r from-cyanaccent/20 via-blue-500/10 to-cyanaccent/20 border border-cyanaccent/40 rounded-2xl p-3 flex items-center justify-center gap-2 text-cyanaccent font-extrabold text-xs shadow-md transition hover:scale-[1.01] hidden">
             <i class="fa-solid fa-user-plus"></i> انضم إلينا وأنشئ صفحتك الخاصة مجاناً
         </button>
@@ -234,7 +227,7 @@
         <p>© <span id="year">2026</span> جميع الحقوق محفوظة - شجرة الروابط</p>
     </footer>
 
-    <!-- 🎨 نافذة اختيار ألوان الثيم المخصصة (Theme Color Accent Switcher Modal) -->
+    <!-- Theme Switcher Modal -->
     <div id="themeSwitcherModal" class="fixed inset-0 bg-black/70 backdrop-blur-md hidden flex items-center justify-center z-[120] p-3">
         <div class="bg-lightcard dark:bg-cardbg border border-gray-300 dark:border-gray-800 w-full max-w-sm rounded-2xl p-5 shadow-2xl flex flex-col transition-colors duration-300 space-y-4">
             <div class="flex justify-between items-center border-b border-gray-200 dark:border-gray-800 pb-3">
@@ -271,7 +264,7 @@
         </div>
     </div>
 
-    <!-- File Hub Modal (مكتبة الكتالوجات والملفات للزوار) -->
+    <!-- File Hub Modal -->
     <div id="fileHubModal" class="fixed inset-0 bg-black/70 backdrop-blur-md hidden flex items-center justify-center z-[105] p-3">
         <div class="bg-lightcard dark:bg-cardbg border border-gray-300 dark:border-gray-800 w-full max-w-lg rounded-2xl p-4 shadow-2xl max-h-[92vh] flex flex-col transition-colors duration-300">
             <div class="flex justify-between items-center border-b border-gray-200 dark:border-gray-800 pb-3 mb-3">
@@ -448,6 +441,15 @@
             </div>
             <div class="overflow-y-auto flex-grow pr-1 space-y-3 text-xs">
 
+                <!-- 🎨 قسم إدارة ألوان الثيم المخصصة وإلغاء تفعيلها (Theme Color Settings) -->
+                <div class="bg-lightbg dark:bg-darkbg rounded-xl border border-gray-300 dark:border-gray-800 p-3 space-y-2">
+                    <h4 class="font-bold text-goldaccent flex items-center gap-2"><i class="fa-solid fa-palette"></i> إدارة ألوان الثيم المخصصة للزوار</h4>
+                    <div class="flex items-center gap-2 pt-1 bg-white dark:bg-cardbg p-2.5 rounded-xl border border-gray-200 dark:border-gray-700">
+                        <input type="checkbox" id="adminShowThemeSwitcher" class="accent-goldaccent w-4 h-4" checked>
+                        <label for="adminShowThemeSwitcher" class="font-extrabold text-gray-800 dark:text-gray-200">إظهار زر اختيار ألوان الثيم للزوار في الصفحة الرئيسية</label>
+                    </div>
+                </div>
+
                 <!-- 📊 إحصائيات الزوار وتحليل الأداء -->
                 <div class="bg-lightbg dark:bg-darkbg rounded-xl border border-gray-300 dark:border-gray-800 overflow-hidden transition-colors">
                     <button type="button" onclick="window.toggleAccordion('accAnalytics')" class="w-full p-3 flex justify-between items-center font-bold text-gray-800 dark:text-gray-200">
@@ -489,7 +491,7 @@
                     </div>
                 </div>
 
-                <!-- ⏳ إدارة عداد التنازل والعروض المؤقتة (Flash Deals) -->
+                <!-- Flash Deal Admin -->
                 <div class="bg-lightbg dark:bg-darkbg rounded-xl border border-gray-300 dark:border-gray-800 overflow-hidden transition-colors">
                     <button type="button" onclick="window.toggleAccordion('accFlashDealAdmin')" class="w-full p-3 flex justify-between items-center font-bold text-gray-800 dark:text-gray-200">
                         <span class="flex items-center gap-2"><i class="fa-solid fa-bolt text-red-500"></i> إدارة عداد العروض المؤقتة (Flash Deal)</span>
@@ -514,7 +516,7 @@
                     </div>
                 </div>
 
-                <!-- 📂 قسم إدارة مكتبة الكتالوجات والملفات (File Hub Admin) الجديد -->
+                <!-- File Hub Admin -->
                 <div class="bg-lightbg dark:bg-darkbg rounded-xl border border-gray-300 dark:border-gray-800 overflow-hidden transition-colors">
                     <button type="button" onclick="window.toggleAccordion('accFileHubAdmin')" class="w-full p-3 flex justify-between items-center font-bold text-gray-800 dark:text-gray-200">
                         <span class="flex items-center gap-2"><i class="fa-solid fa-file-arrow-down text-cyanaccent"></i> إدارة مكتبة الملفات والكتالوجات (File Hub)</span>
@@ -543,7 +545,7 @@
                     </div>
                 </div>
 
-                <!-- 🏷️ قسم إدارة الكوبونات والخصومات الترويجية -->
+                <!-- Promo Admin -->
                 <div class="bg-lightbg dark:bg-darkbg rounded-xl border border-gray-300 dark:border-gray-800 overflow-hidden transition-colors">
                     <button type="button" onclick="window.toggleAccordion('accPromoAdmin')" class="w-full p-3 flex justify-between items-center font-bold text-gray-800 dark:text-gray-200">
                         <span class="flex items-center gap-2"><i class="fa-solid fa-tags text-goldaccent"></i> إدارة الكوبونات وعدد مرات الاستخدام</span>
@@ -588,7 +590,7 @@
                     </div>
                 </div>
 
-                <!-- إرسال الإشعارات الفورية الجماعية -->
+                <!-- Broadcast Notification -->
                 <div class="bg-lightbg dark:bg-darkbg rounded-xl border border-gray-300 dark:border-gray-800 overflow-hidden transition-colors">
                     <button type="button" onclick="window.toggleAccordion('accBroadcast')" class="w-full p-3 flex justify-between items-center font-bold text-gray-800 dark:text-gray-200">
                         <span class="flex items-center gap-2"><i class="fa-solid fa-paper-plane text-goldaccent"></i> إرسال إشعار فوري لجميع الهواتف</span>
@@ -607,7 +609,7 @@
                     </div>
                 </div>
 
-                <!-- إعدادات التفعيل والعرض العامة -->
+                <!-- General Settings -->
                 <div class="bg-lightbg dark:bg-darkbg rounded-xl border border-gray-300 dark:border-gray-800 p-3 space-y-2">
                     <h4 class="font-bold text-goldaccent flex items-center gap-2"><i class="fa-solid fa-toggle-on"></i> إعدادات العرض والتفعيل العامة</h4>
                     <div class="flex items-center gap-2 pt-1 bg-white dark:bg-cardbg p-2.5 rounded-xl border border-gray-200 dark:border-gray-700">
@@ -616,7 +618,7 @@
                     </div>
                 </div>
 
-                <!-- إعدادات التصميم -->
+                <!-- Design Settings -->
                 <div class="bg-lightbg dark:bg-darkbg rounded-xl border border-gray-300 dark:border-gray-800 overflow-hidden transition-colors">
                     <button type="button" onclick="window.toggleAccordion('accDesignAdmin')" class="w-full p-3 flex justify-between items-center font-bold text-gray-800 dark:text-gray-200">
                         <span class="flex items-center gap-2"><i class="fa-solid fa-palette text-goldaccent"></i> إعدادات التصميم والتخصيص البصري</span>
@@ -720,7 +722,7 @@
                     </div>
                 </div>
 
-                <!-- إعدادات شريط الحالة المباشرة -->
+                <!-- Live Status Settings -->
                 <div class="bg-lightbg dark:bg-darkbg rounded-xl border border-gray-300 dark:border-gray-800 p-3 space-y-2">
                     <h4 class="font-bold text-goldaccent flex items-center gap-2"><i class="fa-solid fa-signal"></i> إعدادات شريط الحالة المباشرة (Live Status)</h4>
                     <div class="flex items-center gap-2 pt-1">
@@ -742,7 +744,7 @@
                     </div>
                 </div>
 
-                <!-- إعدادات الزر العائم للتواصل السريع -->
+                <!-- Floating Whatsapp Settings -->
                 <div class="bg-lightbg dark:bg-darkbg rounded-xl border border-gray-300 dark:border-gray-800 p-3 space-y-2">
                     <h4 class="font-bold text-goldaccent flex items-center gap-2"><i class="fa-solid fa-comments"></i> إعدادات زر "تواصل معي سريعاً" العائم</h4>
                     <div class="flex items-center gap-2 pt-1">
@@ -759,7 +761,7 @@
                     </div>
                 </div>
 
-                <!-- إعدادات الخريطة -->
+                <!-- Map Settings -->
                 <div class="bg-lightbg dark:bg-darkbg rounded-xl border border-gray-300 dark:border-gray-800 p-3 space-y-2">
                     <h4 class="font-bold text-goldaccent flex items-center gap-2"><i class="fa-solid fa-map-location-dot"></i> إعدادات الخريطة الجغرافية</h4>
                     <div class="flex items-center gap-2">
@@ -770,7 +772,7 @@
                     <textarea id="adminMapEmbed" placeholder="كود التضمين iframe src لخرائط جوجل" class="w-full bg-lightcard dark:bg-cardbg border border-gray-300 dark:border-gray-700 rounded-lg p-2 text-gray-900 dark:text-white outline-none h-16 text-[11px] font-mono"></textarea>
                 </div>
 
-                <!-- الملاحظات -->
+                <!-- Feedback -->
                 <div class="bg-lightbg dark:bg-darkbg rounded-xl border border-gray-300 dark:border-gray-800 overflow-hidden transition-colors">
                     <button type="button" onclick="window.toggleAccordion('accFeedback')" class="w-full p-3 flex justify-between items-center font-bold text-gray-800 dark:text-gray-200">
                         <span class="flex items-center gap-2"><i class="fa-solid fa-comment-dots text-goldaccent"></i> ملاحظات ورسائل الأعضاء</span>
@@ -781,7 +783,7 @@
                     </div>
                 </div>
 
-                <!-- طلبات الأعضاء -->
+                <!-- Join Requests -->
                 <div class="bg-lightbg dark:bg-darkbg rounded-xl border border-gray-300 dark:border-gray-800 overflow-hidden transition-colors">
                     <button type="button" onclick="window.toggleAccordion('accJoinRequests')" class="w-full p-3 flex justify-between items-center font-bold text-gray-800 dark:text-gray-200">
                         <span class="flex items-center gap-2"><i class="fa-solid fa-users-gear text-cyanaccent"></i> طلبات الأعضاء والأعضاء المقبولين</span>
@@ -795,7 +797,7 @@
                     </div>
                 </div>
 
-                <!-- الملف الشخصي -->
+                <!-- Profile -->
                 <div class="bg-lightbg dark:bg-darkbg rounded-xl border border-gray-300 dark:border-gray-800 overflow-hidden transition-colors">
                     <button type="button" onclick="window.toggleAccordion('accProfile')" class="w-full p-3 flex justify-between items-center font-bold text-gray-800 dark:text-gray-200">
                         <span class="flex items-center gap-2"><i class="fa-solid fa-user-pen text-goldaccent"></i> الملف الشخصي والصورة للرئيسي</span>
@@ -811,7 +813,7 @@
                     </div>
                 </div>
 
-                <!-- معلومات الاتصال -->
+                <!-- Contacts -->
                 <div class="bg-lightbg dark:bg-darkbg rounded-xl border border-gray-300 dark:border-gray-800 overflow-hidden transition-colors">
                     <button type="button" onclick="window.toggleAccordion('accContacts')" class="w-full p-3 flex justify-between items-center font-bold text-gray-800 dark:text-gray-200">
                         <span class="flex items-center gap-2"><i class="fa-solid fa-address-book text-goldaccent"></i> معلومات الاتصال</span>
@@ -824,7 +826,7 @@
                     </div>
                 </div>
 
-                <!-- إدارة القائمة الجانبية -->
+                <!-- Sidebar Admin -->
                 <div class="bg-lightbg dark:bg-darkbg rounded-xl border border-gray-300 dark:border-gray-800 overflow-hidden transition-colors">
                     <button type="button" onclick="window.toggleAccordion('accSidebarAdmin')" class="w-full p-3 flex justify-between items-center font-bold text-gray-800 dark:text-gray-200">
                         <span class="flex items-center gap-2"><i class="fa-solid fa-compass text-goldaccent"></i> إدارة القائمة الجانبية</span>
@@ -853,7 +855,7 @@
                     </div>
                 </div>
 
-                <!-- إدارة آراء ومراجعات العملاء -->
+                <!-- Testimonials Admin -->
                 <div class="bg-lightbg dark:bg-darkbg rounded-xl border border-gray-300 dark:border-gray-800 overflow-hidden transition-colors">
                     <button type="button" onclick="window.toggleAccordion('accTestimonialsAdmin')" class="w-full p-3 flex justify-between items-center font-bold text-gray-800 dark:text-gray-200">
                         <span class="flex items-center gap-2"><i class="fa-solid fa-star text-goldaccent"></i> إدارة آراء ومراجعات العملاء</span>
@@ -889,7 +891,7 @@
                     </div>
                 </div>
 
-                <!-- إدارة المشاريع -->
+                <!-- Gallery Admin -->
                 <div class="bg-lightbg dark:bg-darkbg rounded-xl border border-gray-300 dark:border-gray-800 overflow-hidden transition-colors">
                     <button type="button" onclick="window.toggleAccordion('accGalleryAdmin')" class="w-full p-3 flex justify-between items-center font-bold text-gray-800 dark:text-gray-200">
                         <span class="flex items-center gap-2"><i class="fa-solid fa-images text-goldaccent"></i> إدارة المشاريع والأعمال</span>
@@ -917,7 +919,7 @@
                     </div>
                 </div>
 
-                <!-- الفئات -->
+                <!-- Categories -->
                 <div class="bg-lightbg dark:bg-darkbg rounded-xl border border-gray-300 dark:border-gray-800 overflow-hidden transition-colors">
                     <button type="button" onclick="window.toggleAccordion('accCategories')" class="w-full p-3 flex justify-between items-center font-bold text-gray-800 dark:text-gray-200">
                         <span class="flex items-center gap-2"><i class="fa-solid fa-folder-tree text-goldaccent"></i> إدارة الفئات</span>
@@ -935,7 +937,7 @@
                     </div>
                 </div>
 
-                <!-- الروابط وإحصائيات النقرات -->
+                <!-- Links -->
                 <div class="bg-lightbg dark:bg-darkbg rounded-xl border border-gray-300 dark:border-gray-800 overflow-hidden transition-colors">
                     <button type="button" onclick="window.toggleAccordion('accLinks')" class="w-full p-3 flex justify-between items-center font-bold text-gray-800 dark:text-gray-200">
                         <span class="flex items-center gap-2"><i class="fa-solid fa-link text-goldaccent"></i> إدارة الروابط وإحصائيات النقرات</span>
@@ -964,7 +966,7 @@
                     </div>
                 </div>
 
-                <!-- الأمان -->
+                <!-- Security -->
                 <div class="bg-lightbg dark:bg-darkbg rounded-xl border border-gray-300 dark:border-gray-800 overflow-hidden transition-colors">
                     <button type="button" onclick="window.toggleAccordion('accSecurity')" class="w-full p-3 flex justify-between items-center font-bold text-gray-800 dark:text-gray-200">
                         <span class="flex items-center gap-2"><i class="fa-solid fa-key text-goldaccent"></i> تغيير رمز PIN</span>
@@ -987,7 +989,7 @@
         </div>
     </div>
 
-    <!-- Script Engine with Firebase & Theme Color Accent Switcher -->
+    <!-- Script Engine with Firebase & Theme Color Accent Switcher Controls -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/13.2.0/firebase-app.js";
         import { getDatabase, ref, set, onValue } from "https://www.gstatic.com/firebasejs/13.2.0/firebase-database.js";
@@ -1019,6 +1021,7 @@
             cardShape: "rounded-2xl",
             cardGlow: "glow-gold-hover",
             cardStyle: "normal",
+            showThemeSwitcher: true,
             customColors: { c1: "", o1: 0, c2: "", o2: 0, c3: "", o3: 0, angle: "to bottom right" },
             bgImageUrl: "",
             bgImgOpacity: 0.6,
@@ -1084,7 +1087,6 @@
         let currentViewingProjectId = null;
         let flashDealInterval = null;
 
-        // تطبيق لون الثيم المحفوظ عند بدء التحميل
         applyThemeAccent(currentThemeColor, `rgba(${parseInt(currentThemeColor.slice(1,3),16)}, ${parseInt(currentThemeColor.slice(3,5),16)}, ${parseInt(currentThemeColor.slice(5,7),16)}, 0.35)`, `rgba(${parseInt(currentThemeColor.slice(1,3),16)}, ${parseInt(currentThemeColor.slice(3,5),16)}, ${parseInt(currentThemeColor.slice(5,7),16)}, 0.5)`);
 
         const dbRef = ref(db, 'platformData');
@@ -1102,6 +1104,7 @@
                 }
 
                 appData = rootData.users[currentUsername] || rootData.users['mahmoud'];
+                if (appData.showThemeSwitcher === undefined) appData.showThemeSwitcher = true;
                 if (!appData.analytics) appData.analytics = { totalViews: 0 };
                 if (!appData.fileHub) appData.fileHub = defaultUserData.fileHub;
                 if (!appData.promoCodes) appData.promoCodes = defaultUserData.promoCodes;
@@ -1167,7 +1170,6 @@
             initApp();
         });
 
-        // 🎨 دوال إدارة ميزة تبديل ألوان الثيم (Theme Color Accent Switcher)
         window.openThemeSwitcherModal = function() {
             document.getElementById('themeSwitcherModal').classList.remove('hidden');
         };
@@ -1214,6 +1216,7 @@
             renderLiveStatusBadge();
             renderFloatingWhatsappBtn();
             renderJoinBannerVisibility();
+            renderThemeSwitcherVisibility();
             renderFlashDealSection();
             renderPromoSection();
             renderSidebarMenu();
@@ -1224,6 +1227,16 @@
             renderGalleryGrid();
             renderFileHubGrid();
             updateNotificationBadge();
+        }
+
+        function renderThemeSwitcherVisibility() {
+            const btn = document.getElementById('themeSwitcherTopBtn');
+            if (!btn) return;
+            if (appData.showThemeSwitcher === false) {
+                btn.classList.add('hidden');
+            } else {
+                btn.classList.remove('hidden');
+            }
         }
 
         function initTheme() {
@@ -1296,7 +1309,6 @@
             }
         }
 
-        // 📂 إدارة نافذة مكتبة الملفات والكتالوجات (File Hub)
         window.openFileHubModal = function() { renderFileHubGrid(); document.getElementById('fileHubModal').classList.remove('hidden'); };
         window.closeFileHubModal = function() { document.getElementById('fileHubModal').classList.add('hidden'); };
 
@@ -2161,6 +2173,7 @@
             tempImageBase64 = appData.image || "";
             document.getElementById('editAvatarUrl').value = appData.image || "";
             
+            document.getElementById('adminShowThemeSwitcher').checked = appData.showThemeSwitcher !== false;
             document.getElementById('adminAvatarShape').value = appData.avatarShape || 'rounded-full';
             document.getElementById('adminAvatarGlow').value = appData.avatarGlow || 'glow-gold';
             document.getElementById('adminCardShape').value = appData.cardShape || 'rounded-2xl';
@@ -2445,6 +2458,7 @@
                 cardShape: 'rounded-2xl',
                 cardGlow: 'glow-gold-hover',
                 cardStyle: 'normal',
+                showThemeSwitcher: true,
                 showLiveStatus: true,
                 liveStatusText: 'متاح للعمل الحر 🟢',
                 liveStatusType: 'emerald',
@@ -2761,6 +2775,7 @@
         window.saveAllChanges = function() {
             appData.displayName = document.getElementById('editDisplayName').value.trim() || appData.displayName;
             appData.bio = document.getElementById('editBio').value.trim();
+            appData.showThemeSwitcher = document.getElementById('adminShowThemeSwitcher').checked;
             appData.avatarShape = document.getElementById('adminAvatarShape').value;
             appData.avatarGlow = document.getElementById('adminAvatarGlow').value;
             appData.cardShape = document.getElementById('adminCardShape').value;
