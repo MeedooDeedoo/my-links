@@ -2272,5 +2272,52 @@
             window.closeAdminModal();
         };
     </script>
+    <script type="module">
+    import { getMessaging, getToken, onMessage } from "https://www.gstatic.com/firebasejs/13.2.0/firebase-messaging.js";
+
+    // تهيئة نظام الرسائل (يعتمد على متغير app المعرف في مشروعك)
+    const messaging = getMessaging(app);
+
+    // دالة طلب الإذن وتوليد رمز الجهاز وحفظه
+    async function requestNotificationPermissionAndToken() {
+        try {
+            const permission = await Notification.requestPermission();
+            if (permission === 'granted') {
+                console.log('تم منح إذن الإشعارات بنجاح من قبل المستخدم.');
+                
+                // توليد رمز الجهاز باستخدام مفتاح VAPID الخاص بك
+                const currentToken = await getToken(messaging, { 
+                    vapidKey: 'BIIuLJYW1J2uJ503cmsKDFIS2iB5B3HOgS5Y2fpJRvNRLM2GmCcZftH1vnkXM9pGkKMv_QOTsa3tnCfo5sXN9fX4'
+                });
+
+                if (currentToken) {
+                    console.log('رمز الجهاز (FCM Token):', currentToken);
+                    // يمكنك حفظ هذا الرمز في قاعدة البيانات إذا أردت ربطه بالزائر
+                } else {
+                    console.warn('لم يتم العثور على رمز تسجيل لهذا الجهاز.');
+                }
+            } else {
+                console.log('تم رفض إذن الإشعارات من قبل المستخدم.');
+            }
+        } catch (error) {
+            console.error('حدث خطأ أثناء طلب الإذن:', error);
+        }
+    }
+
+    // استدعاء الدالة تلقائياً عند فتح الصفحة (أو يمكنك ربطها بزر مخصص)
+    requestNotificationPermissionAndToken();
+
+    // استقبال الإشعارات عندما يكون الموقع مفتوحاً أمام المستخدم
+    onMessage(messaging, (payload) => {
+        console.log('تم استلام إشعار والموقع مفتوح:', payload);
+        if (Notification.permission === 'granted' && payload.notification) {
+            new Notification(payload.notification.title, {
+                body: payload.notification.body,
+                icon: payload.notification.icon || '/icon.png'
+            });
+        }
+    });
+</script>
+
 </body>
 </html>
