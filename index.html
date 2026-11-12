@@ -111,10 +111,10 @@
             <div id="contactButtons" class="flex justify-center gap-3 mt-4"></div>
         </div>
 
-        <!-- زر تفعيل الإشعارات اليدوي المضاف حديثاً -->
-        <div class="w-full mb-4">
+        <!-- زر تفعيل الإشعارات (يختفي تلقائياً عند منح الإذن) -->
+        <div id="notificationRequestWrapper" class="w-full mb-4 hidden">
             <button type="button" onclick="window.requestNotificationPermissionAndToken()" class="w-full bg-goldaccent/20 border border-goldaccent/50 text-goldaccent font-extrabold py-3 px-4 rounded-2xl flex items-center justify-center gap-2 shadow-sm transition hover:bg-goldaccent/30 text-xs">
-                <i class="fa-solid fa-bell text-sm"></i> تفعيل الإشعارات الفورية (اضغط هنا في حال لم يظهر الطلب تلقائياً)
+                <i class="fa-solid fa-bell text-sm"></i> تفعيل الإشعارات الفورية
             </button>
         </div>
 
@@ -841,12 +841,26 @@
         const db = getDatabase(app);
         const messaging = getMessaging(app);
 
-        // دالة طلب إذن الإشعارات وتوليد رمز الجهاز (متاحة عالمياً عبر window)
+        // التحقق من حالة الإذن وإخفاء أو إظهار زر التفعيل بناءً على ذلك
+        function checkNotificationButtonState() {
+            const wrapper = document.getElementById('notificationRequestWrapper');
+            if (!wrapper) return;
+            
+            if (Notification.permission === 'granted') {
+                wrapper.classList.add('hidden'); // إخفاء الزر تماماً إذا وافق المستخدم مسبقاً
+            } else {
+                wrapper.classList.remove('hidden'); // إظهار الزر إذا لم يمنح الإذن بعد
+            }
+        }
+
+        // دالة طلب إذن الإشعارات وتوليد رمز الجهاز
         window.requestNotificationPermissionAndToken = async function() {
             try {
                 const permission = await Notification.requestPermission();
+                checkNotificationButtonState(); // تحديث حالة إخفاء/إظهار الزر فوراً
+                
                 if (permission === 'granted') {
-                    console.log('تم منح إذن الإشعارات بنجاح من قبل المستخدم.');
+                    console.log('تم منح إذن الإشعارات بنجاح.');
                     const currentToken = await getToken(messaging, { 
                         vapidKey: 'BIIuLJYW1J2uJ503cmsKDFIS2iB5B3HOgS5Y2fpJRvNRLM2GmCcZftH1vnkXM9pGkKMv_QOTsa3tnCfo5sXN9fX4'
                     });
@@ -854,8 +868,6 @@
                     if (currentToken) {
                         console.log('رمز الجهاز (FCM Token):', currentToken);
                         alert('تم تفعيل الإشعارات بنجاح لهذا الجهاز! 🔔');
-                    } else {
-                        console.warn('لم يتم العثور على رمز تسجيل لهذا الجهاز.');
                     }
                 } else {
                     alert('تم رفض إذن الإشعارات من قبل المتصفح.');
@@ -865,19 +877,33 @@
             }
         };
 
-        // طلب الإذن تلقائياً عند فتح الصفحة
+        // فحص الحالة عند تحميل الصفحة
         window.addEventListener('DOMContentLoaded', () => {
-            window.requestNotificationPermissionAndToken();
+            checkNotificationButtonState();
+            // محاولة الطلب تلقائياً، وإن تم رفضها أو منعها يبقى الزر اليدوي متاحاً
+            if (Notification.permission === 'default') {
+                window.requestNotificationPermissionAndToken();
+            }
         });
 
-        // استقبال الإشعارات والموقع مفتوح
+        // استقبال الإشعارات وعرضها في نظام إشعارات الهاتف (System Notification Center) والموقع
         onMessage(messaging, (payload) => {
-            console.log('تم استلام إشعار والموقع مفتوح:', payload);
-            if (Notification.permission === 'granted' && payload.notification) {
-                new Notification(payload.notification.title, {
+            console.log('تم استلام إشعار:', payload);
+            if (payload.notification) {
+                const title = payload.notification.title;
+                const options = {
                     body: payload.notification.body,
                     icon: payload.notification.icon || '/icon.png'
-                });
+                };
+
+                // إظهار الإشعار عبر خدمة المتصفح لضمان ظهوره في شريط إشعارات الهاتف
+                if (navigator.serviceWorker && navigator.serviceWorker.ready) {
+                    navigator.serviceWorker.ready.then(registration => {
+                        registration.showNotification(title, options);
+                    });
+                } else if (Notification.permission === 'granted') {
+                    new Notification(title, options);
+                }
             }
         });
 
