@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>منصة شجرة الروابط الاحترافية - متعددة الأعضاء مع نظام الإشعارات الفورية</title>
+    <title>منصة شجرة الروابط الاحترافية - مع نظام إحصائيات النقرات</title>
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
@@ -63,7 +63,6 @@
             <span id="topBarName" class="text-xs font-bold text-gray-900 dark:text-gray-100 truncate max-w-[130px]">جاري التحميل...</span>
         </div>
         <div class="flex items-center gap-2">
-            <!-- زر الإشعارات مع عداد التنبيهات الفوري -->
             <button type="button" onclick="window.openNotificationsModal()" class="w-9 h-9 rounded-xl bg-gray-100 dark:bg-darkbg border border-gray-300 dark:border-gray-700 text-goldaccent flex items-center justify-center transition shadow-sm relative" title="الإشعارات">
                 <i class="fa-solid fa-bell"></i>
                 <span id="notificationBadge" class="absolute -top-1 -right-1 bg-red-500 text-white text-[9px] font-bold w-4 h-4 rounded-full flex items-center justify-center hidden">0</span>
@@ -397,7 +396,6 @@
                             </select>
                         </div>
 
-                        <!-- تدرج الألوان مع الشفافية 0 افتراضياً -->
                         <div class="bg-white dark:bg-cardbg p-3 rounded-xl border border-gray-300 dark:border-gray-700 space-y-3">
                             <label class="block font-bold text-gray-800 dark:text-gray-200">تدرج الألوان المخصص (الشفافية 0 افتراضياً):</label>
                             <div class="grid grid-cols-3 gap-2">
@@ -534,7 +532,7 @@
                     </div>
                 </div>
 
-                <!-- إدارة المشاريع (مع إرسال إشعار تلقائي عند النشر) -->
+                <!-- إدارة المشاريع -->
                 <div class="bg-lightbg dark:bg-darkbg rounded-xl border border-gray-300 dark:border-gray-800 overflow-hidden transition-colors">
                     <button type="button" onclick="window.toggleAccordion('accGalleryAdmin')" class="w-full p-3 flex justify-between items-center font-bold text-gray-800 dark:text-gray-200">
                         <span class="flex items-center gap-2"><i class="fa-solid fa-images text-goldaccent"></i> إدارة المشاريع والأعمال</span>
@@ -580,10 +578,10 @@
                     </div>
                 </div>
 
-                <!-- الروابط -->
+                <!-- الروابط وإحصائيات النقرات -->
                 <div class="bg-lightbg dark:bg-darkbg rounded-xl border border-gray-300 dark:border-gray-800 overflow-hidden transition-colors">
                     <button type="button" onclick="window.toggleAccordion('accLinks')" class="w-full p-3 flex justify-between items-center font-bold text-gray-800 dark:text-gray-200">
-                        <span class="flex items-center gap-2"><i class="fa-solid fa-link text-goldaccent"></i> إدارة الروابط</span>
+                        <span class="flex items-center gap-2"><i class="fa-solid fa-link text-goldaccent"></i> إدارة الروابط وإحصائيات النقرات</span>
                         <i id="icon-accLinks" class="fa-solid fa-chevron-down transition-transform"></i>
                     </button>
                     <div id="accLinks" class="hidden p-3 pt-0 space-y-3 border-t border-gray-200 dark:border-gray-800 mt-1">
@@ -790,7 +788,7 @@
                 </div>
 
                 <div class="bg-lightbg dark:bg-darkbg rounded-xl border border-gray-300 dark:border-gray-800 p-3 space-y-2">
-                    <h4 id="memberLinkFormTitle" class="font-bold text-cyanaccent">إدارة الروابط</h4>
+                    <h4 id="memberLinkFormTitle" class="font-bold text-cyanaccent">إدارة الروابط وإحصائيات النقرات</h4>
                     <input type="hidden" id="memberEditingLinkId">
                     <input type="text" id="memberLinkTitle" placeholder="عنوان الرابط" class="w-full bg-lightcard dark:bg-cardbg border border-gray-300 dark:border-gray-700 rounded-lg p-2 text-gray-900 dark:text-white outline-none">
                     <input type="url" id="memberLinkUrl" placeholder="الرابط https://..." class="w-full bg-lightcard dark:bg-cardbg border border-gray-300 dark:border-gray-700 rounded-lg p-2 text-gray-900 dark:text-white outline-none">
@@ -814,7 +812,7 @@
         </div>
     </div>
 
-    <!-- Script Engine with Firebase & In-App Notifications -->
+    <!-- Script Engine with Firebase & Click Analytics -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/13.2.0/firebase-app.js";
         import { getDatabase, ref, set, onValue } from "https://www.gstatic.com/firebasejs/13.2.0/firebase-database.js";
@@ -875,8 +873,8 @@
                 }
             ],
             links: [
-                { id: '1', title: 'لمسة فن بلس للخدمات الإعلانية', url: 'https://wa.me/', category: 'إعلان وتصميم', icon: 'fa-solid fa-paint-brush', enabled: true },
-                { id: '2', title: 'طيبانو للتجارة والبناء والألوكوبوند', url: 'https://wa.me/', category: 'بناء وألوكبوند', icon: 'fa-solid fa-building', enabled: true }
+                { id: '1', title: 'لمسة فن بلس للخدمات الإعلانية', url: 'https://wa.me/', category: 'إعلان وتصميم', icon: 'fa-solid fa-paint-brush', clicks: 0, enabled: true },
+                { id: '2', title: 'طيبانو للتجارة والبناء والألوكوبوند', url: 'https://wa.me/', category: 'بناء وألوكبوند', icon: 'fa-solid fa-building', clicks: 0, enabled: true }
             ]
         };
 
@@ -914,6 +912,10 @@
                 if (appData.bgImgOpacity === undefined) appData.bgImgOpacity = 0.6;
                 if (!appData.customColors) appData.customColors = { c1: "", o1: 0, c2: "", o2: 0, c3: "", o3: 0, angle: "to bottom right" };
                 
+                if (appData.links) {
+                    appData.links.forEach(l => { if (l.clicks === undefined) l.clicks = 0; });
+                }
+
                 if (appData.categories && appData.categories.length > 0 && typeof appData.categories[0] === 'string') {
                     appData.categories = appData.categories.map(c => ({ name: c, enabled: true }));
                 }
@@ -1023,7 +1025,16 @@
             }
         }
 
-        // نظام مركز الإشعارات الفورية الداخلي
+        window.trackLinkClick = function(id) {
+            if (!appData.links) return;
+            const link = appData.links.find(l => l.id === id);
+            if (link) {
+                link.clicks = (link.clicks || 0) + 1;
+                rootData.users[currentUsername] = appData;
+                set(dbRef, rootData).catch(err => console.log(err));
+            }
+        };
+
         window.openNotificationsModal = function() {
             renderNotificationsList();
             document.getElementById('notificationsModal').classList.remove('hidden');
@@ -1452,8 +1463,19 @@
             filtered.forEach(link => {
                 const a = document.createElement('a');
                 a.href = link.url; a.target = '_blank';
+                a.onclick = () => { window.trackLinkClick(link.id); };
                 a.className = `w-full ${cardStyle === 'glass-card' ? 'glass-card' : 'bg-white dark:bg-cardbg'} border border-gray-300 dark:border-gray-800 ${cardShape} p-3.5 flex items-center justify-between shadow-sm transition ${cardGlow !== 'none' ? cardGlow : ''}`;
-                a.innerHTML = `<div class="flex items-center gap-3"><div class="w-9 h-9 rounded-xl bg-gray-100 dark:bg-darkbg border border-gray-200 dark:border-gray-700 flex items-center justify-center text-goldaccent"><i class="${link.icon || 'fa-solid fa-link'}"></i></div><span class="text-xs font-extrabold text-gray-900 dark:text-gray-100">${link.title}</span></div><i class="fa-solid fa-chevron-left text-xs text-gray-400"></i>`;
+                a.innerHTML = `
+                    <div class="flex items-center gap-3">
+                        <div class="w-9 h-9 rounded-xl bg-gray-100 dark:bg-darkbg border border-gray-200 dark:border-gray-700 flex items-center justify-center text-goldaccent">
+                            <i class="${link.icon || 'fa-solid fa-link'}"></i>
+                        </div>
+                        <div>
+                            <span class="text-xs font-extrabold text-gray-900 dark:text-gray-100 block">${link.title}</span>
+                            <span class="text-[9px] text-gray-500 font-medium">النقرات: ${link.clicks || 0}</span>
+                        </div>
+                    </div>
+                    <i class="fa-solid fa-chevron-left text-xs text-gray-400"></i>`;
                 container.appendChild(a);
             });
         }
@@ -1577,7 +1599,7 @@
                 const link = appData.links.find(l => l.id === id);
                 if (link) { link.title = title; link.url = url; link.icon = icon; link.enabled = enabled; }
             } else {
-                appData.links.push({ id: 'l_' + Date.now(), title, url, category: 'الكل', icon, enabled });
+                appData.links.push({ id: 'l_' + Date.now(), title, url, category: 'الكل', icon, clicks: 0, enabled });
             }
             window.resetMemberLinkForm();
             renderMemberLinksList();
@@ -1590,7 +1612,7 @@
             document.getElementById('memberLinkUrl').value = '';
             document.getElementById('memberLinkIcon').value = '';
             document.getElementById('memberLinkEnabled').checked = true;
-            document.getElementById('memberLinkFormTitle').textContent = 'إدارة الروابط';
+            document.getElementById('memberLinkFormTitle').textContent = 'إدارة الروابط وإحصائيات النقرات';
         };
 
         window.editMemberLinkItem = function(id) {
@@ -1627,7 +1649,7 @@
                         <div class="flex items-center gap-2">
                             <i class="${l.icon || 'fa-solid fa-link'} text-cyanaccent"></i>
                             <div>
-                                <div class="text-gray-900 dark:text-white font-extrabold text-xs">${l.title} (${statusBadge})</div>
+                                <div class="text-gray-900 dark:text-white font-extrabold text-xs">${l.title} (${statusBadge}) - <span class="text-cyanaccent">النقرات: ${l.clicks || 0}</span></div>
                                 <div class="text-[10px] text-gray-500 truncate max-w-[130px]">${l.url}</div>
                             </div>
                         </div>
@@ -1979,7 +2001,6 @@
             });
         }
 
-        // حفظ المشروع الجديد مع إرسال إشعار تلقائي لكل الزوار
         window.saveGalleryItem = function() {
             const id = document.getElementById('editingGalleryId').value;
             const title = document.getElementById('galleryTitle').value.trim();
@@ -2000,7 +2021,6 @@
                 const newId = 'g_' + Date.now();
                 appData.gallery.push({ id: newId, title, category, desc, coverUrl, extraUrls, enabled });
 
-                // إرسال إشعار داخل النظام لكل الزوار عند إضافة مشروع جديد
                 if (!rootData.notifications) rootData.notifications = {};
                 const notifId = 'notif_' + Date.now();
                 rootData.notifications[notifId] = {
@@ -2160,7 +2180,7 @@
                 const l = appData.links.find(x => x.id === id);
                 if(l) { l.title = title; l.url = url; l.category = category; l.icon = icon; l.enabled = enabled; }
             } else {
-                appData.links.push({ id: Date.now().toString(), title, url, category, icon, enabled });
+                appData.links.push({ id: Date.now().toString(), title, url, category, icon, clicks: 0, enabled });
             }
             window.resetLinkForm(); renderAdminLinksList(); renderLinks();
         };
@@ -2207,14 +2227,14 @@
                 container.innerHTML += `
                     <div class="bg-white dark:bg-cardbg border border-gray-300 dark:border-gray-700 rounded-xl p-2.5 flex items-center justify-between shadow-sm">
                         <div>
-                            <div class="font-extrabold text-gray-900 dark:text-white"><i class="${l.icon}"></i> ${l.title} (${statusBadge})</div>
+                            <div class="font-extrabold text-gray-900 dark:text-white"><i class="${l.icon}"></i> ${l.title} (${statusBadge}) - <span class="text-goldaccent">النقرات: ${l.clicks || 0}</span></div>
                             <div class="text-[10px] font-semibold text-gray-500">${l.category}</div>
                         </div>
                         <div class="flex items-center gap-1">
                             <button type="button" onclick="window.moveLink(${index}, -1)" class="bg-gray-200 dark:bg-gray-700 text-goldaccent px-1.5 py-0.5 rounded text-[10px] font-bold">⬆️</button>
                             <button type="button" onclick="window.moveLink(${index}, 1)" class="bg-gray-200 dark:bg-gray-700 text-goldaccent px-1.5 py-0.5 rounded text-[10px] font-bold">⬇️</button>
                             <button type="button" onclick="window.editLink('${l.id}')" class="bg-blue-500/20 text-blue-600 dark:text-blue-400 px-2 py-0.5 rounded text-[10px] font-bold">تعديل</button>
-                            <button type="button" onclick="window.deleteLink('${l.id}')" class="bg-red-500/20 text-red-600 px-2 py-0.5 rounded text-[10px] font-bold">حذف</button>
+                            <button type="button" onclick="window.deleteLink('${l.id}')" class="bg-red-500/20 text-red-600 dark:text-red-400 px-2 py-0.5 rounded text-[10px] font-bold">حذف</button>
                         </div>
                     </div>`;
             });
