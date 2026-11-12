@@ -853,7 +853,7 @@
             }
         }
 
-        // دالة طلب إذن الإشعارات وتوليد رمز الجهاز
+        // دالة طلب إذن الإشعارات وتوليد رمز الجهاز مع إدراج مفتاح الـ VAPID Key بدقة
         window.requestNotificationPermissionAndToken = async function() {
             try {
                 const permission = await Notification.requestPermission();
@@ -880,11 +880,17 @@
         // فحص الحالة عند تحميل الصفحة
         window.addEventListener('DOMContentLoaded', () => {
             checkNotificationButtonState();
-            // محاولة الطلب تلقائياً، وإن تم رفضها أو منعها يبقى الزر اليدوي متاحاً
             if (Notification.permission === 'default') {
                 window.requestNotificationPermissionAndToken();
             }
         });
+
+        // تسجيل الـ Service Worker لضمان استلام الإشعارات في الخلفية
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.register('./firebase-messaging-sw.js')
+            .then((reg) => console.log('Service Worker registered successfully:', reg))
+            .catch((err) => console.log('Service Worker registration failed:', err));
+        }
 
         // استقبال الإشعارات وعرضها في نظام إشعارات الهاتف (System Notification Center) والموقع
         onMessage(messaging, (payload) => {
@@ -896,7 +902,6 @@
                     icon: payload.notification.icon || '/icon.png'
                 };
 
-                // إظهار الإشعار عبر خدمة المتصفح لضمان ظهوره في شريط إشعارات الهاتف
                 if (navigator.serviceWorker && navigator.serviceWorker.ready) {
                     navigator.serviceWorker.ready.then(registration => {
                         registration.showNotification(title, options);
