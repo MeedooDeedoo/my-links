@@ -143,18 +143,34 @@
 
         <div id="categoryTabs" class="w-full flex gap-2 overflow-x-auto pb-2 mb-4 text-xs"></div>
 
-        <button type="button" id="galleryBtnCard" onclick="window.openGalleryModal()" class="w-full mb-4 bg-gradient-to-r from-goldaccent/20 via-yellow-500/10 to-goldaccent/20 border border-goldaccent/40 rounded-2xl p-3.5 flex items-center justify-between shadow-sm transition">
-            <div class="flex items-center gap-3">
-                <div class="w-9 h-9 rounded-xl bg-goldaccent/20 text-goldaccent flex items-center justify-center">
-                    <i class="fa-solid fa-images"></i>
+        <div class="w-full flex gap-2 mb-4">
+            <button type="button" id="galleryBtnCard" onclick="window.openGalleryModal()" class="flex-1 bg-gradient-to-r from-goldaccent/20 via-yellow-500/10 to-goldaccent/20 border border-goldaccent/40 rounded-2xl p-3.5 flex items-center justify-between shadow-sm transition">
+                <div class="flex items-center gap-3">
+                    <div class="w-9 h-9 rounded-xl bg-goldaccent/20 text-goldaccent flex items-center justify-center">
+                        <i class="fa-solid fa-images"></i>
+                    </div>
+                    <div class="text-right">
+                        <span class="text-xs font-bold text-gray-900 dark:text-gray-100 block">معرض المشاريع</span>
+                        <span class="text-[10px] font-medium text-gray-600 dark:text-gray-400">تصاميم وصور</span>
+                    </div>
                 </div>
-                <div class="text-right">
-                    <span class="text-xs font-bold text-gray-900 dark:text-gray-100 block">معرض المشاريع والأعمال</span>
-                    <span class="text-[10px] font-medium text-gray-600 dark:text-gray-400">تصاميم، صور وفيديوهات</span>
+                <i class="fa-solid fa-chevron-left text-xs text-goldaccent"></i>
+            </button>
+
+            <!-- زر مكتبة الملفات والكتالوجات (File Hub) الجديد -->
+            <button type="button" id="fileHubBtnCard" onclick="window.openFileHubModal()" class="flex-1 bg-gradient-to-r from-cyanaccent/20 via-blue-500/10 to-cyanaccent/20 border border-cyanaccent/40 rounded-2xl p-3.5 flex items-center justify-between shadow-sm transition">
+                <div class="flex items-center gap-3">
+                    <div class="w-9 h-9 rounded-xl bg-cyanaccent/20 text-cyanaccent flex items-center justify-center">
+                        <i class="fa-solid fa-file-arrow-down"></i>
+                    </div>
+                    <div class="text-right">
+                        <span class="text-xs font-bold text-gray-900 dark:text-gray-100 block">مكتبة الكتالوجات</span>
+                        <span class="text-[10px] font-medium text-gray-600 dark:text-gray-400">ملفات PDF وبروشورات</span>
+                    </div>
                 </div>
-            </div>
-            <i class="fa-solid fa-chevron-left text-xs text-goldaccent"></i>
-        </button>
+                <i class="fa-solid fa-chevron-left text-xs text-cyanaccent"></i>
+            </button>
+        </div>
 
         <div id="linksContainer" class="w-full flex flex-col gap-3 mb-6"></div>
 
@@ -204,6 +220,19 @@
     <footer class="w-full max-w-md text-center py-4 border-t border-gray-300 dark:border-gray-800 text-xs font-medium text-gray-600 dark:text-gray-400 relative z-10 transition-colors duration-300">
         <p>© <span id="year">2026</span> جميع الحقوق محفوظة - شجرة الروابط</p>
     </footer>
+
+    <!-- File Hub Modal (مكتبة الكتالوجات والملفات للزوار) -->
+    <div id="fileHubModal" class="fixed inset-0 bg-black/70 backdrop-blur-md hidden flex items-center justify-center z-[105] p-3">
+        <div class="bg-lightcard dark:bg-cardbg border border-gray-300 dark:border-gray-800 w-full max-w-lg rounded-2xl p-4 shadow-2xl max-h-[92vh] flex flex-col transition-colors duration-300">
+            <div class="flex justify-between items-center border-b border-gray-200 dark:border-gray-800 pb-3 mb-3">
+                <h3 class="text-base font-bold text-cyanaccent flex items-center gap-2">
+                    <i class="fa-solid fa-file-arrow-down"></i> مكتبة الكتالوجات والملفات المتاحة
+                </h3>
+                <button type="button" onclick="window.closeFileHubModal()" class="text-gray-500 hover:text-gray-800 dark:hover:text-white text-xl px-2"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            <div id="fileHubGrid" class="overflow-y-auto flex-grow space-y-3 pr-1"></div>
+        </div>
+    </div>
 
     <!-- Notifications Modal -->
     <div id="notificationsModal" class="fixed inset-0 bg-black/70 backdrop-blur-md hidden flex items-center justify-center z-[115] p-3">
@@ -432,6 +461,35 @@
                             <label class="block text-[11px] text-gray-500">تاريخ ووقت انتهاء العرض (Deadline):</label>
                             <input type="datetime-local" id="adminFlashDealEnd" class="w-full bg-white dark:bg-cardbg border border-gray-200 dark:border-gray-700 rounded-lg p-2 text-gray-900 dark:text-white outline-none font-mono">
                         </div>
+                    </div>
+                </div>
+
+                <!-- 📂 قسم إدارة مكتبة الكتالوجات والملفات (File Hub Admin) الجديد -->
+                <div class="bg-lightbg dark:bg-darkbg rounded-xl border border-gray-300 dark:border-gray-800 overflow-hidden transition-colors">
+                    <button type="button" onclick="window.toggleAccordion('accFileHubAdmin')" class="w-full p-3 flex justify-between items-center font-bold text-gray-800 dark:text-gray-200">
+                        <span class="flex items-center gap-2"><i class="fa-solid fa-file-arrow-down text-cyanaccent"></i> إدارة مكتبة الملفات والكتالوجات (File Hub)</span>
+                        <div class="flex items-center gap-2">
+                            <span class="text-[10px] bg-cyanaccent/20 text-cyanaccent px-2 py-0.5 rounded font-mono">جديد</span>
+                            <i id="icon-accFileHubAdmin" class="fa-solid fa-chevron-down transition-transform"></i>
+                        </div>
+                    </button>
+                    <div id="accFileHubAdmin" class="hidden p-3 pt-0 space-y-3 border-t border-gray-200 dark:border-gray-800 mt-1">
+                        <div class="space-y-2 mt-2">
+                            <h4 id="fileHubFormTitle" class="font-bold text-cyanaccent">إضافة ملف أو كتالوج جديد</h4>
+                            <input type="hidden" id="editingFileHubId">
+                            <input type="text" id="fileHubTitle" placeholder="عنوان الملف (مثال: كتالوج الألوكوبوند 2026)" class="w-full bg-lightcard dark:bg-cardbg border border-gray-300 dark:border-gray-700 rounded-lg p-2 text-gray-900 dark:text-white outline-none">
+                            <input type="url" id="fileHubUrl" placeholder="رابط التحميل أو الملف (رابط مباشر PDF أو رابط خارجي)" class="w-full bg-lightcard dark:bg-cardbg border border-gray-300 dark:border-gray-700 rounded-lg p-2 text-gray-900 dark:text-white outline-none font-mono text-xs">
+                            <textarea id="fileHubDesc" placeholder="وصف موجز للملف أو محتواه..." class="w-full bg-lightcard dark:bg-cardbg border border-gray-300 dark:border-gray-700 rounded-lg p-2 text-gray-900 dark:text-white outline-none h-16 resize-none"></textarea>
+                            <div class="flex items-center gap-2 pt-1 bg-cyanaccent/10 p-2 rounded-lg border border-cyanaccent/30">
+                                <input type="checkbox" id="fileHubEnabled" class="accent-cyanaccent w-4 h-4" checked>
+                                <label for="fileHubEnabled" class="font-bold text-gray-900 dark:text-white text-xs">تفعيل وعرض الملف في المكتبة</label>
+                            </div>
+                            <div class="flex gap-2 pt-1">
+                                <button type="button" onclick="window.saveFileHubItem()" class="flex-1 bg-cyanaccent text-black font-bold py-2 rounded-lg shadow-sm">حفظ الملف</button>
+                                <button type="button" onclick="window.resetFileHubForm()" class="bg-gray-200 dark:bg-gray-800 text-gray-800 dark:text-gray-200 px-3 py-2 rounded-lg font-bold">إلغاء</button>
+                            </div>
+                        </div>
+                        <div id="adminFileHubList" class="space-y-1.5 pt-2 border-t border-gray-300 dark:border-gray-700"></div>
                     </div>
                 </div>
 
@@ -930,6 +988,9 @@
             mapEmbed: "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3238.8!2d37.134!3d36.202!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zMzbCsDEyJzEyLjgiTiAzN8KwMDgnMDIuNCJF!5e0!3m2!1sar!2s!4v1!5m2!1sar!2s",
             contacts: { whatsapp: "+963900000000", showWhatsapp: true, phone: "+963900000000", showPhone: true, email: "info@example.com", showEmail: true },
             analytics: { totalViews: 0 },
+            fileHub: [
+                { id: 'f1', title: 'كتالوج واجهات الألوكوبوند والكلادينج 2026', url: '#', desc: 'ملف PDF تفصيلي يوضح أحدث تصاميم الواجهات والمواصفات الفنية.', enabled: true }
+            ],
             promoCodes: [
                 { id: 'p1', code: 'MAHMOUD10', discount: 'خصم 10%', usesLeft: 5, desc: 'خصم خاص على جميع خدمات التصميم الإعلاني وهويات الشركات.', enabled: true },
                 { id: 'p2', code: 'ALUCOBOND50', discount: 'خصم 50$', usesLeft: 3, desc: 'خصم مباشر عند طلب توريد وتركيب ألوكوبوند للواجهات.', enabled: true }
@@ -989,6 +1050,7 @@
 
                 appData = rootData.users[currentUsername] || rootData.users['mahmoud'];
                 if (!appData.analytics) appData.analytics = { totalViews: 0 };
+                if (!appData.fileHub) appData.fileHub = defaultUserData.fileHub;
                 if (!appData.promoCodes) appData.promoCodes = defaultUserData.promoCodes;
                 else {
                     appData.promoCodes.forEach(p => { if (p.usesLeft === undefined) p.usesLeft = 10; });
@@ -1077,6 +1139,7 @@
             renderTestimonialsSection();
             renderMapSection();
             renderGalleryGrid();
+            renderFileHubGrid();
             updateNotificationBadge();
         }
 
@@ -1111,10 +1174,11 @@
             const topBarEl = document.getElementById('topBarEl');
             const flashDealContainer = document.getElementById('flashDealContainer');
             const galleryBtnCard = document.getElementById('galleryBtnCard');
+            const fileHubBtnCard = document.getElementById('fileHubBtnCard');
             const joinBannerBtn = document.getElementById('joinBannerBtn');
             const mapSectionContainer = document.getElementById('mapSectionContainer');
 
-            [topBarEl, flashDealContainer, galleryBtnCard, joinBannerBtn, mapSectionContainer].forEach(el => {
+            [topBarEl, flashDealContainer, galleryBtnCard, fileHubBtnCard, joinBannerBtn, mapSectionContainer].forEach(el => {
                 if(el) {
                     el.classList.remove('rounded-2xl', 'rounded-full', 'rounded-lg', 'rounded-none', 'glass-card', 'glow-gold-hover', 'glow-subtle');
                     el.classList.add(cardShape);
@@ -1147,6 +1211,116 @@
                     bgImageLayer.classList.add('hidden');
                 }
             }
+        }
+
+        // 📂 إدارة نافذة مكتبة الملفات والكتالوجات (File Hub)
+        window.openFileHubModal = function() { renderFileHubGrid(); document.getElementById('fileHubModal').classList.remove('hidden'); };
+        window.closeFileHubModal = function() { document.getElementById('fileHubModal').classList.add('hidden'); };
+
+        function renderFileHubGrid() {
+            const container = document.getElementById('fileHubGrid');
+            if (!container) return;
+            container.innerHTML = '';
+            const items = (appData.fileHub || []).filter(f => f.enabled !== false);
+            const cardShape = appData.cardShape || 'rounded-2xl';
+            const cardStyle = appData.cardStyle || 'normal';
+
+            if (items.length === 0) {
+                container.innerHTML = '<div class="text-center py-8 text-xs text-gray-500">لا توجد ملفات أو كتالوجات متاحة حالياً.</div>';
+                return;
+            }
+
+            items.forEach(f => {
+                const card = document.createElement('div');
+                card.className = `w-full ${cardStyle === 'glass-card' ? 'glass-card' : 'bg-white dark:bg-cardbg'} border border-gray-300 dark:border-gray-700 ${cardShape} p-3.5 shadow-sm space-y-2 flex flex-col`;
+                card.innerHTML = `
+                    <div class="flex justify-between items-start gap-2">
+                        <div class="flex items-center gap-2.5">
+                            <div class="w-9 h-9 rounded-xl bg-cyanaccent/20 text-cyanaccent flex items-center justify-center shrink-0">
+                                <i class="fa-solid fa-file-pdf"></i>
+                            </div>
+                            <div>
+                                <h4 class="text-xs font-extrabold text-gray-900 dark:text-white">${f.title}</h4>
+                                <span class="text-[10px] text-gray-500">ملف رقمي / كتالوج معتمد</span>
+                            </div>
+                        </div>
+                    </div>
+                    ${f.desc ? `<p class="text-[11px] text-gray-700 dark:text-gray-300 leading-relaxed">${f.desc}</p>` : ''}
+                    <div class="flex justify-end pt-2 border-t border-gray-200 dark:border-gray-800">
+                        <a href="${f.url && f.url !== '#' ? f.url : '#'}" target="_blank" class="bg-cyanaccent text-black px-4 py-1.5 rounded-xl text-[11px] font-extrabold shadow-sm hover:scale-105 transition flex items-center gap-1.5">
+                            <i class="fa-solid fa-download"></i> تحميل أو استعراض الملف
+                        </a>
+                    </div>
+                `;
+                container.appendChild(card);
+            });
+        }
+
+        window.saveFileHubItem = function() {
+            const id = document.getElementById('editingFileHubId').value;
+            const title = document.getElementById('fileHubTitle').value.trim();
+            const url = document.getElementById('fileHubUrl').value.trim() || '#';
+            const desc = document.getElementById('fileHubDesc').value.trim();
+            const enabled = document.getElementById('fileHubEnabled').checked;
+
+            if (!title) { alert('الرجاء إدخال عنوان الملف.'); return; }
+            if (!appData.fileHub) appData.fileHub = [];
+
+            if (id) {
+                const item = appData.fileHub.find(f => f.id === id);
+                if (item) { item.title = title; item.url = url; item.desc = desc; item.enabled = enabled; }
+            } else {
+                appData.fileHub.push({ id: 'fh_' + Date.now(), title, url, desc, enabled });
+            }
+            window.resetFileHubForm();
+            renderAdminFileHubList();
+            renderFileHubGrid();
+        };
+
+        window.resetFileHubForm = function() {
+            document.getElementById('editingFileHubId').value = '';
+            document.getElementById('fileHubTitle').value = '';
+            document.getElementById('fileHubUrl').value = '';
+            document.getElementById('fileHubDesc').value = '';
+            document.getElementById('fileHubEnabled').checked = true;
+            document.getElementById('fileHubFormTitle').textContent = 'إضافة ملف أو كتالوج جديد';
+        };
+
+        window.editFileHubItem = function(id) {
+            const item = (appData.fileHub || []).find(f => f.id === id);
+            if (!item) return;
+            document.getElementById('editingFileHubId').value = item.id;
+            document.getElementById('fileHubTitle').value = item.title;
+            document.getElementById('fileHubUrl').value = item.url || '';
+            document.getElementById('fileHubDesc').value = item.desc || '';
+            document.getElementById('fileHubEnabled').checked = item.enabled !== false;
+            document.getElementById('fileHubFormTitle').textContent = 'تعديل الملف';
+        };
+
+        window.deleteFileHubItem = function(id) {
+            appData.fileHub = (appData.fileHub || []).filter(f => f.id !== id);
+            renderAdminFileHubList();
+            renderFileHubGrid();
+        };
+
+        function renderAdminFileHubList() {
+            const container = document.getElementById('adminFileHubList');
+            if (!container) return;
+            container.innerHTML = '';
+            (appData.fileHub || []).forEach(f => {
+                const statusBadge = f.enabled !== false ? '<span class="text-emerald-500 font-bold">مفعل</span>' : '<span class="text-red-500 font-bold">متوقف</span>';
+                container.innerHTML += `
+                    <div class="bg-white dark:bg-cardbg border border-gray-300 dark:border-gray-700 rounded-xl p-2.5 flex items-center justify-between shadow-sm">
+                        <div>
+                            <div class="font-extrabold text-gray-900 dark:text-white">${f.title} (${statusBadge})</div>
+                            <div class="text-[10px] text-gray-500 truncate max-w-[160px]">${f.desc || f.url}</div>
+                        </div>
+                        <div class="flex items-center gap-1">
+                            <button type="button" onclick="window.editFileHubItem('${f.id}')" class="bg-blue-500/20 text-blue-600 dark:text-blue-400 px-2 py-0.5 rounded text-[10px] font-bold">تعديل</button>
+                            <button type="button" onclick="window.deleteFileHubItem('${f.id}')" class="bg-red-500/20 text-red-600 dark:text-red-400 px-2 py-0.5 rounded text-[10px] font-bold">حذف</button>
+                        </div>
+                    </div>`;
+            });
         }
 
         function renderFlashDealSection() {
@@ -1991,6 +2165,7 @@
             renderAdminSidebarList();
             renderAdminTestimonialsList();
             renderAdminGalleryList();
+            renderAdminFileHubList();
             renderAdminPromoList();
             renderAdminCategories();
             renderAdminCategorySelect();
@@ -2206,6 +2381,7 @@
                 mapEmbed: '',
                 contacts: { whatsapp: req.whatsapp || '', showWhatsapp: true, phone: '', showPhone: false, email: '', showEmail: false },
                 analytics: { totalViews: 0 },
+                fileHub: [],
                 promoCodes: [],
                 categories: [{ name: "الكل", enabled: true }, { name: "عام", enabled: true }],
                 sidebarLinks: [
@@ -2482,7 +2658,7 @@
                             <button type="button" onclick="window.moveLink(${index}, -1)" class="bg-gray-200 dark:bg-gray-700 text-goldaccent px-1.5 py-0.5 rounded text-[10px] font-bold">⬆️</button>
                             <button type="button" onclick="window.moveLink(${index}, 1)" class="bg-gray-200 dark:bg-gray-700 text-goldaccent px-1.5 py-0.5 rounded text-[10px] font-bold">⬇️</button>
                             <button type="button" onclick="window.editLink('${l.id}')" class="bg-blue-500/20 text-blue-600 dark:text-blue-400 px-2 py-0.5 rounded text-[10px] font-bold">تعديل</button>
-                            <button type="button" onclick="window.deleteLink('${l.id}')" class="bg-red-500/20 text-red-600 px-2 py-0.5 rounded text-[10px] font-bold">حذف</button>
+                            <button type="button" onclick="window.deleteLink('${l.id}')" class="bg-red-500/20 text-red-600 dark:text-red-400 px-2 py-0.5 rounded text-[10px] font-bold">حذف</button>
                         </div>
                     </div>`;
             });
