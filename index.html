@@ -54,10 +54,18 @@
 
     <div id="bgImageLayer" class="absolute inset-0 bg-cover bg-center pointer-events-none z-0 hidden"></div>
 
-    <!-- Floating Quick Contact Button -->
-    <a id="floatingWhatsappBtn" href="#" target="_blank" class="fixed bottom-6 left-6 z-50 bg-emerald-500 text-white p-3.5 rounded-full shadow-2xl flex items-center justify-center text-xl hover:scale-110 transition border-2 border-white/20 hidden" title="تواصل معي سريعاً">
-        <i class="fa-brands fa-whatsapp"></i>
-    </a>
+    <!-- Multi-Channel Floating FAB (زر التواصل العائم المتعدد) -->
+    <div id="floatingFabContainer" class="fixed bottom-6 left-6 z-50 hidden">
+        <div id="fabOptionsList" class="absolute bottom-16 left-0 flex flex-col gap-2.5 mb-2 transition-all duration-300 opacity-0 pointer-events-none translate-y-4">
+            <a id="fabWhatsapp" href="#" target="_blank" class="bg-emerald-500 text-white w-11 h-11 rounded-full shadow-xl flex items-center justify-center text-lg hover:scale-110 transition border-2 border-white/20" title="واتساب"><i class="fa-brands fa-whatsapp"></i></a>
+            <a id="fabPhone" href="#" class="bg-cyanaccent text-black w-11 h-11 rounded-full shadow-xl flex items-center justify-center text-base hover:scale-110 transition border-2 border-white/20" title="اتصال هاتفي"><i class="fa-solid fa-phone"></i></a>
+            <a id="fabMessenger" href="#" target="_blank" class="bg-blue-600 text-white w-11 h-11 rounded-full shadow-xl flex items-center justify-center text-base hover:scale-110 transition border-2 border-white/20" title="ماسنجر"><i class="fa-brands fa-facebook-messenger"></i></a>
+            <a id="fabEmail" href="#" class="bg-amber-500 text-black w-11 h-11 rounded-full shadow-xl flex items-center justify-center text-base hover:scale-110 transition border-2 border-white/20" title="بريد إلكتروني"><i class="fa-solid fa-envelope"></i></a>
+        </div>
+        <button type="button" onclick="window.toggleFloatingFab()" class="bg-goldaccent text-black w-14 h-14 rounded-full shadow-2xl flex items-center justify-center text-2xl hover:scale-110 transition border-2 border-white/20" title="قائمة التواصل السريع">
+            <i id="fabMainIcon" class="fa-solid fa-comments transition-transform duration-300"></i>
+        </button>
+    </div>
 
     <!-- Top Bar -->
     <div id="topBarEl" class="w-full max-w-md flex justify-between items-center mb-4 bg-lightcard dark:bg-cardbg p-3.5 rounded-2xl border border-gray-300 dark:border-gray-800 shadow-md relative z-40 transition-colors duration-300">
@@ -184,6 +192,23 @@
         </div>
 
         <div id="linksContainer" class="w-full flex flex-col gap-3 mb-6"></div>
+
+        <!-- Password Prompt Modal for Protected Links -->
+        <div id="linkPasswordModal" class="fixed inset-0 bg-black/70 backdrop-blur-md hidden flex items-center justify-center z-[135] p-4">
+            <div class="bg-lightcard dark:bg-cardbg border border-gray-300 dark:border-gray-800 w-full max-w-xs rounded-2xl p-6 text-center shadow-2xl transition-colors duration-300">
+                <div class="w-12 h-12 bg-goldaccent/10 border border-goldaccent/30 rounded-full flex items-center justify-center mx-auto mb-3 text-goldaccent">
+                    <i class="fa-solid fa-lock text-xl"></i>
+                </div>
+                <h3 class="text-lg font-bold text-gray-900 dark:text-white mb-1">رابط محمي برمز سري</h3>
+                <p id="protectedLinkTitlePrompt" class="text-xs text-goldaccent font-bold mb-3"></p>
+                <p class="text-[11px] text-gray-600 dark:text-gray-400 mb-4">هذا الرابط يتطلب كلمة مرور للمتابعة:</p>
+                <input type="password" id="linkPasswordInput" placeholder="أدخل كلمة المرور" class="w-full bg-lightbg dark:bg-darkbg border border-gray-300 dark:border-gray-700 text-center text-sm text-gray-900 dark:text-white rounded-xl py-2.5 mb-4 outline-none focus:border-goldaccent font-bold">
+                <div class="flex gap-2">
+                    <button type="button" onclick="window.verifyProtectedLinkPassword()" class="flex-1 bg-goldaccent text-black font-extrabold py-2.5 rounded-xl text-xs shadow-sm">فتح الرابط 🔓</button>
+                    <button type="button" onclick="window.closeLinkPasswordModal()" class="flex-1 bg-gray-200 dark:bg-gray-800 text-gray-800 dark:text-gray-200 font-bold py-2.5 rounded-xl text-xs">إلغاء</button>
+                </div>
+            </div>
+        </div>
 
         <div id="promoSectionContainer" class="w-full mb-6 hidden">
             <div class="flex items-center justify-between mb-3 px-1">
@@ -822,20 +847,28 @@
                     </div>
                 </div>
 
-                <!-- Floating Whatsapp Settings -->
+                <!-- Floating Contacts Settings (إعدادات الزر العائم المتعدد) -->
                 <div class="bg-lightbg dark:bg-darkbg rounded-xl border border-gray-300 dark:border-gray-800 p-3 space-y-2">
-                    <h4 class="font-bold text-goldaccent flex items-center gap-2"><i class="fa-solid fa-comments"></i> إعدادات زر "تواصل معي سريعاً" العائم</h4>
+                    <h4 class="font-bold text-goldaccent flex items-center gap-2"><i class="fa-solid fa-comments"></i> إعدادات زر التواصل العائم المتعدد (FAB)</h4>
                     <div class="flex items-center gap-2 pt-1">
                         <input type="checkbox" id="adminShowFloatingBtn" class="accent-goldaccent w-4 h-4" checked>
                         <label for="adminShowFloatingBtn" class="font-bold text-gray-800 dark:text-gray-200">إظهار الزر العائم في الشاشة</label>
                     </div>
                     <div>
-                        <label class="block text-[11px] text-gray-500 mb-1">رقم الواتساب للزر العائم:</label>
+                        <label class="block text-[11px] text-gray-500 mb-1">رقم الواتساب:</label>
                         <input type="text" id="adminFloatingWhatsapp" placeholder="+963900000000" class="w-full bg-lightcard dark:bg-cardbg border border-gray-300 dark:border-gray-700 rounded-lg p-2 text-gray-900 dark:text-white outline-none">
                     </div>
                     <div>
-                        <label class="block text-[11px] text-gray-500 mb-1">رسالة الترحيب التلقائية:</label>
-                        <input type="text" id="adminFloatingMessage" placeholder="مرحباً، أود الاستفسار عن خدماتكم..." class="w-full bg-lightcard dark:bg-cardbg border border-gray-300 dark:border-gray-700 rounded-lg p-2 text-gray-900 dark:text-white outline-none">
+                        <label class="block text-[11px] text-gray-500 mb-1">رقم الاتصال الهاتفي:</label>
+                        <input type="text" id="adminFloatingPhone" placeholder="+963900000000" class="w-full bg-lightcard dark:bg-cardbg border border-gray-300 dark:border-gray-700 rounded-lg p-2 text-gray-900 dark:text-white outline-none">
+                    </div>
+                    <div>
+                        <label class="block text-[11px] text-gray-500 mb-1">رابط ماسنجر فيسبوك:</label>
+                        <input type="url" id="adminFloatingMessenger" placeholder="https://m.me/username" class="w-full bg-lightcard dark:bg-cardbg border border-gray-300 dark:border-gray-700 rounded-lg p-2 text-gray-900 dark:text-white outline-none">
+                    </div>
+                    <div>
+                        <label class="block text-[11px] text-gray-500 mb-1">البريد الإلكتروني:</label>
+                        <input type="email" id="adminFloatingEmail" placeholder="info@example.com" class="w-full bg-lightcard dark:bg-cardbg border border-gray-300 dark:border-gray-700 rounded-lg p-2 text-gray-900 dark:text-white outline-none">
                     </div>
                 </div>
 
@@ -1042,11 +1075,10 @@
                 <!-- Links & Click Count Display Settings -->
                 <div class="bg-lightbg dark:bg-darkbg rounded-xl border border-gray-300 dark:border-gray-800 overflow-hidden transition-colors">
                     <button type="button" onclick="window.toggleAccordion('accLinks')" class="w-full p-3 flex justify-between items-center font-bold text-gray-800 dark:text-gray-200">
-                        <span class="flex items-center gap-2"><i class="fa-solid fa-link text-goldaccent"></i> إدارة الروابط وإحصائيات النقرات</span>
+                        <span class="flex items-center gap-2"><i class="fa-solid fa-link text-goldaccent"></i> إدارة الروابط وحماية كلمة المرور</span>
                         <i id="icon-accLinks" class="fa-solid fa-chevron-down transition-transform"></i>
                     </button>
                     <div id="accLinks" class="hidden p-3 pt-0 space-y-3 border-t border-gray-200 dark:border-gray-800 mt-1">
-                        <!-- خيار إظهار/إخفاء عداد النقرات في الصفحة الرئيسية -->
                         <div class="flex items-center gap-2 pt-2 bg-white dark:bg-cardbg p-2.5 rounded-xl border border-gray-200 dark:border-gray-700 mt-2">
                             <input type="checkbox" id="adminShowClickCounts" class="accent-goldaccent w-4 h-4" checked>
                             <label for="adminShowClickCounts" class="font-extrabold text-gray-800 dark:text-gray-200 text-xs">إظهار عداد النقرات (النقرات: X) تحت عناوين الروابط في الصفحة الرئيسية</label>
@@ -1057,6 +1089,7 @@
                             <input type="hidden" id="editingLinkId">
                             <input type="text" id="linkTitle" placeholder="عنوان الرابط" class="w-full bg-lightcard dark:bg-cardbg border border-gray-300 dark:border-gray-700 rounded-lg p-2 text-gray-900 dark:text-white outline-none">
                             <input type="url" id="linkUrl" placeholder="الرابط https://..." class="w-full bg-lightcard dark:bg-cardbg border border-gray-300 dark:border-gray-700 rounded-lg p-2 text-gray-900 dark:text-white outline-none">
+                            <input type="text" id="linkPassword" placeholder="كلمة المرور للرابط (اتركه فارغاً للرابط العام)" class="w-full bg-lightcard dark:bg-cardbg border border-gray-300 dark:border-gray-700 rounded-lg p-2 text-gray-900 dark:text-white outline-none font-mono text-xs">
                             <div class="flex gap-2">
                                 <select id="linkCategory" class="flex-1 bg-lightcard dark:bg-cardbg border border-gray-300 dark:border-gray-700 rounded-lg p-2 text-gray-900 dark:text-white outline-none"></select>
                                 <input type="text" id="linkIcon" placeholder="أيقونة" class="flex-1 bg-lightcard dark:bg-cardbg border border-gray-300 dark:border-gray-700 rounded-lg p-2 text-gray-900 dark:text-white outline-none">
@@ -1133,7 +1166,7 @@
             showPushNotificationBtn: true,
             showTestimonialsSection: true,
             requireTestimonialApproval: false,
-            showClickCounts: true, // جديد: تفعيل إظهار عدد النقرات افتراضياً
+            showClickCounts: true,
             customColors: { c1: "", o1: 0, c2: "", o2: 0, c3: "", o3: 0, angle: "to bottom right" },
             bgImageUrl: "",
             bgImgOpacity: 0.6,
@@ -1142,7 +1175,9 @@
             liveStatusType: "emerald",
             showFloatingBtn: true,
             floatingWhatsapp: "+963900000000",
-            floatingMessage: "مرحباً محمود، أود الاستفسار عن خدماتك وتصاميمك...",
+            floatingPhone: "+963900000000",
+            floatingMessenger: "https://m.me/username",
+            floatingEmail: "info@example.com",
             showJoinBanner: false,
             showPromoSection: true,
             showFlashDeal: false,
@@ -1194,8 +1229,8 @@
                 }
             ],
             links: [
-                { id: '1', title: 'لمسة فن بلس للخدمات الإعلانية', url: 'https://wa.me/', category: 'إعلان وتصميم', icon: 'fa-solid fa-paint-brush', clicks: 0, enabled: true },
-                { id: '2', title: 'طيبانو للتجارة والبناء والألوكوبوند', url: 'https://wa.me/', category: 'بناء وألوكبوند', icon: 'fa-solid fa-building', clicks: 0, enabled: true }
+                { id: '1', title: 'لمسة فن بلس للخدمات الإعلانية', url: 'https://wa.me/', category: 'إعلان وتصميم', icon: 'fa-solid fa-paint-brush', password: '', clicks: 0, enabled: true },
+                { id: '2', title: 'ملف تسعير المقاولين الحصري (محمي)', url: 'https://wa.me/', category: 'بناء وألوكبوند', icon: 'fa-solid fa-file-shield', password: '123', clicks: 0, enabled: true }
             ]
         };
 
@@ -1207,6 +1242,7 @@
         let currentViewingProjectId = null;
         let flashDealInterval = null;
         let lastKnownNotifCount = 0;
+        let pendingProtectedLink = null;
 
         applyThemeAccent(currentThemeColor, `rgba(${parseInt(currentThemeColor.slice(1,3),16)}, ${parseInt(currentThemeColor.slice(3,5),16)}, ${parseInt(currentThemeColor.slice(5,7),16)}, 0.35)`, `rgba(${parseInt(currentThemeColor.slice(1,3),16)}, ${parseInt(currentThemeColor.slice(3,5),16)}, ${parseInt(currentThemeColor.slice(5,7),16)}, 0.5)`);
 
@@ -1258,7 +1294,9 @@
 
                 if (appData.showFloatingBtn === undefined) appData.showFloatingBtn = true;
                 if (!appData.floatingWhatsapp) appData.floatingWhatsapp = defaultUserData.floatingWhatsapp;
-                if (!appData.floatingMessage) appData.floatingMessage = defaultUserData.floatingMessage;
+                if (!appData.floatingPhone) appData.floatingPhone = defaultUserData.floatingPhone || "+963900000000";
+                if (!appData.floatingMessenger) appData.floatingMessenger = defaultUserData.floatingMessenger || "https://m.me/username";
+                if (!appData.floatingEmail) appData.floatingEmail = defaultUserData.floatingEmail || "info@example.com";
 
                 if (!appData.avatarShape) appData.avatarShape = "rounded-full";
                 if (!appData.avatarGlow) appData.avatarGlow = "glow-gold";
@@ -1269,7 +1307,10 @@
                 if (!appData.customColors) appData.customColors = { c1: "", o1: 0, c2: "", o2: 0, c3: "", o3: 0, angle: "to bottom right" };
                 
                 if (appData.links) {
-                    appData.links.forEach(l => { if (l.clicks === undefined) l.clicks = 0; });
+                    appData.links.forEach(l => { 
+                        if (l.clicks === undefined) l.clicks = 0; 
+                        if (l.password === undefined) l.password = ''; 
+                    });
                 }
 
                 if (appData.categories && appData.categories.length > 0 && typeof appData.categories[0] === 'string') {
@@ -1444,22 +1485,12 @@
             document.documentElement.style.setProperty('--accent-glow-hover', hoverGlowRgba);
         }
 
-        function saveDataToFirebase() {
-            rootData.users[currentUsername] = appData;
-            set(dbRef, rootData).then(() => {
-                alert('تم الحفظ والتحديث على السحابة بنجاح!');
-            }).catch((err) => {
-                alert('خطأ في الاتصال بقاعدة البيانات أو صلاحيات الحفظ: ' + err.message);
-                console.error("Firebase save error:", err);
-            });
-        }
-
         function initApp() {
             initTheme();
             applyDesignCustomizations();
             renderProfile();
             renderLiveStatusBadge();
-            renderFloatingWhatsappBtn();
+            renderFloatingFab();
             renderJoinBannerVisibility();
             renderThemeSwitcherVisibility();
             renderPushNotificationBtnVisibility();
@@ -1747,17 +1778,36 @@
             }
         }
 
-        function renderFloatingWhatsappBtn() {
-            const floatBtn = document.getElementById('floatingWhatsappBtn');
-            if (!floatBtn) return;
-            if (appData.showFloatingBtn === false || !appData.floatingWhatsapp) {
-                floatBtn.classList.add('hidden');
+        window.toggleFloatingFab = function() {
+            const list = document.getElementById('fabOptionsList');
+            const icon = document.getElementById('fabMainIcon');
+            if (list.classList.contains('opacity-0')) {
+                list.classList.remove('opacity-0', 'pointer-events-none', 'translate-y-4');
+                icon.className = 'fa-solid fa-xmark transition-transform duration-300 rotate-90';
+            } else {
+                list.classList.add('opacity-0', 'pointer-events-none', 'translate-y-4');
+                icon.className = 'fa-solid fa-comments transition-transform duration-300 rotate-0';
+            }
+        };
+
+        function renderFloatingFab() {
+            const container = document.getElementById('floatingFabContainer');
+            if (!container) return;
+            if (appData.showFloatingBtn === false) {
+                container.classList.add('hidden');
                 return;
             }
-            const cleanNumber = appData.floatingWhatsapp.replace(/[^0-9]/g, '');
-            const msg = encodeURIComponent(appData.floatingMessage || 'مرحباً، أود الاستفسار عن خدماتكم...');
-            floatBtn.href = `https://wa.me/${cleanNumber}?text=${msg}`;
-            floatBtn.classList.remove('hidden');
+            container.classList.remove('hidden');
+
+            const cleanWhatsapp = (appData.floatingWhatsapp || '+963900000000').replace(/[^0-9]/g, '');
+            const cleanPhone = (appData.floatingPhone || '+963900000000').replace(/[^0-9+]/g, '');
+            const messengerUrl = appData.floatingMessenger || 'https://m.me/username';
+            const emailAddr = appData.floatingEmail || 'info@example.com';
+
+            document.getElementById('fabWhatsapp').href = `https://wa.me/${cleanWhatsapp}?text=` + encodeURIComponent('مرحباً، أود الاستفسار عن خدماتكم...');
+            document.getElementById('fabPhone').href = `tel:${cleanPhone}`;
+            document.getElementById('fabMessenger').href = messengerUrl;
+            document.getElementById('fabEmail').href = `mailto:${emailAddr}`;
         }
 
         function renderJoinBannerVisibility() {
@@ -2032,6 +2082,36 @@
                 link.clicks = (link.clicks || 0) + 1;
                 rootData.users[currentUsername] = appData;
                 set(dbRef, rootData).catch(err => console.error("Click track error:", err));
+            }
+        };
+
+        window.handleLinkClickEvent = function(id, url, password) {
+            if (password && password.trim() !== '') {
+                pendingProtectedLink = { id, url, password: password.trim() };
+                const linkObj = (appData.links || []).find(l => l.id === id);
+                document.getElementById('protectedLinkTitlePrompt').textContent = linkObj ? linkObj.title : '';
+                document.getElementById('linkPasswordInput').value = '';
+                document.getElementById('linkPasswordModal').classList.remove('hidden');
+            } else {
+                window.trackLinkClick(id);
+                window.open(url, '_blank');
+            }
+        };
+
+        window.closeLinkPasswordModal = function() {
+            document.getElementById('linkPasswordModal').classList.add('hidden');
+            pendingProtectedLink = null;
+        };
+
+        window.verifyProtectedLinkPassword = function() {
+            const entered = document.getElementById('linkPasswordInput').value;
+            if (pendingProtectedLink && entered === pendingProtectedLink.password) {
+                const { id, url } = pendingProtectedLink;
+                window.closeLinkPasswordModal();
+                window.trackLinkClick(id);
+                window.open(url, '_blank');
+            } else {
+                alert('كلمة المرور غير صحيحة! يرجى المحاولة مرة أخرى.');
             }
         };
 
@@ -2443,25 +2523,27 @@
             const cardShape = appData.cardShape || 'rounded-2xl';
             const cardStyle = appData.cardStyle || 'normal';
             const cardGlow = appData.cardGlow || 'glow-gold-hover';
-            const showClicks = appData.showClickCounts !== false; // فحص إعداد إظهار/إخفاء عدد النقرات
+            const showClicks = appData.showClickCounts !== false;
 
             filtered.forEach(link => {
-                const a = document.createElement('a');
-                a.href = link.url; a.target = '_blank';
-                a.onclick = () => { window.trackLinkClick(link.id); };
-                a.className = `w-full ${cardStyle === 'glass-card' ? 'glass-card' : 'bg-white dark:bg-cardbg'} border border-gray-300 dark:border-gray-800 ${cardShape} p-3.5 flex items-center justify-between shadow-sm transition ${cardGlow !== 'none' ? cardGlow : ''}`;
-                a.innerHTML = `
+                const isProtected = link.password && link.password.trim() !== '';
+                const div = document.createElement('div');
+                div.className = `w-full ${cardStyle === 'glass-card' ? 'glass-card' : 'bg-white dark:bg-cardbg'} border border-gray-300 dark:border-gray-800 ${cardShape} p-3.5 flex items-center justify-between shadow-sm transition ${cardGlow !== 'none' ? cardGlow : ''} cursor-pointer`;
+                div.onclick = () => { window.handleLinkClickEvent(link.id, link.url, link.password); };
+                
+                div.innerHTML = `
                     <div class="flex items-center gap-3">
-                        <div class="w-9 h-9 rounded-xl bg-gray-100 dark:bg-darkbg border border-gray-200 dark:border-gray-700 flex items-center justify-center text-goldaccent">
+                        <div class="w-9 h-9 rounded-xl bg-gray-100 dark:bg-darkbg border border-gray-200 dark:border-gray-700 flex items-center justify-center text-goldaccent relative">
                             <i class="${link.icon || 'fa-solid fa-link'}"></i>
+                            ${isProtected ? '<span class="absolute -top-1 -right-1 bg-amber-500 text-black text-[8px] font-bold w-3.5 h-3.5 rounded-full flex items-center justify-center" title="محمي برمز سري">🔒</span>' : ''}
                         </div>
                         <div>
-                            <span class="text-xs font-extrabold text-gray-900 dark:text-gray-100 block">${link.title}</span>
+                            <span class="text-xs font-extrabold text-gray-900 dark:text-gray-100 block">${link.title} ${isProtected ? '<span class="text-[9px] text-amber-500 font-normal">(محمي)</span>' : ''}</span>
                             ${showClicks ? `<span class="text-[9px] text-gray-500 font-medium">النقرات: ${link.clicks || 0}</span>` : ''}
                         </div>
                     </div>
                     <i class="fa-solid fa-chevron-left text-xs text-gray-400">`;
-                container.appendChild(a);
+                container.appendChild(div);
             });
         }
 
@@ -2500,7 +2582,7 @@
             document.getElementById('adminShowPushNotificationBtn').checked = appData.showPushNotificationBtn !== false;
             document.getElementById('adminShowTestimonials').checked = appData.showTestimonialsSection !== false;
             document.getElementById('adminRequireTestimonialApproval').checked = appData.requireTestimonialApproval === true;
-            document.getElementById('adminShowClickCounts').checked = appData.showClickCounts !== false; // تعبئة حالة خيار عداد النقرات
+            document.getElementById('adminShowClickCounts').checked = appData.showClickCounts !== false;
             document.getElementById('adminAvatarShape').value = appData.avatarShape || 'rounded-full';
             document.getElementById('adminAvatarGlow').value = appData.avatarGlow || 'glow-gold';
             document.getElementById('adminCardShape').value = appData.cardShape || 'rounded-2xl';
@@ -2520,7 +2602,9 @@
 
             document.getElementById('adminShowFloatingBtn').checked = appData.showFloatingBtn !== false;
             document.getElementById('adminFloatingWhatsapp').value = appData.floatingWhatsapp || '';
-            document.getElementById('adminFloatingMessage').value = appData.floatingMessage || '';
+            document.getElementById('adminFloatingPhone').value = appData.floatingPhone || '';
+            document.getElementById('adminFloatingMessenger').value = appData.floatingMessenger || '';
+            document.getElementById('adminFloatingEmail').value = appData.floatingEmail || '';
             
             if (appData.customColors) {
                 document.getElementById('adminColor1').value = appData.customColors.c1 || '#0f1117';
@@ -2797,7 +2881,9 @@
                 liveStatusType: 'emerald',
                 showFloatingBtn: true,
                 floatingWhatsapp: req.whatsapp || '',
-                floatingMessage: 'مرحباً، أود الاستفسار عن خدماتكم...',
+                floatingPhone: req.whatsapp || '',
+                floatingMessenger: 'https://m.me/username',
+                floatingEmail: 'info@example.com',
                 showJoinBanner: false,
                 showPromoSection: true,
                 showFlashDeal: false,
@@ -3087,6 +3173,7 @@
             const id = document.getElementById('editingLinkId').value;
             const title = document.getElementById('linkTitle').value.trim();
             const url = document.getElementById('linkUrl').value.trim();
+            const password = document.getElementById('linkPassword').value.trim();
             const category = document.getElementById('linkCategory').value;
             const icon = document.getElementById('linkIcon').value.trim() || 'fa-solid fa-link';
             const enabled = document.getElementById('linkEnabled').checked;
@@ -3094,9 +3181,9 @@
             if(!appData.links) appData.links = [];
             if(id) {
                 const l = appData.links.find(x => x.id === id);
-                if(l) { l.title = title; l.url = url; l.category = category; l.icon = icon; l.enabled = enabled; }
+                if(l) { l.title = title; l.url = url; l.password = password; l.category = category; l.icon = icon; l.enabled = enabled; }
             } else {
-                appData.links.push({ id: Date.now().toString(), title, url, category, icon, clicks: 0, enabled });
+                appData.links.push({ id: Date.now().toString(), title, url, password, category, icon, clicks: 0, enabled });
             }
             window.resetLinkForm(); renderAdminLinksList(); renderLinks();
         };
@@ -3105,6 +3192,7 @@
             document.getElementById('editingLinkId').value = '';
             document.getElementById('linkTitle').value = '';
             document.getElementById('linkUrl').value = '';
+            document.getElementById('linkPassword').value = '';
             document.getElementById('linkIcon').value = '';
             document.getElementById('linkEnabled').checked = true;
             document.getElementById('linkFormTitle').textContent = 'إضافة رابط جديد';
@@ -3116,6 +3204,7 @@
             document.getElementById('editingLinkId').value = l.id;
             document.getElementById('linkTitle').value = l.title;
             document.getElementById('linkUrl').value = l.url;
+            document.getElementById('linkPassword').value = l.password || '';
             document.getElementById('linkCategory').value = l.category;
             document.getElementById('linkIcon').value = l.icon;
             document.getElementById('linkEnabled').checked = l.enabled !== false;
@@ -3140,10 +3229,11 @@
             if(!container) return; container.innerHTML = '';
             (appData.links || []).forEach((l, index) => {
                 const statusBadge = l.enabled !== false ? '<span class="text-emerald-500 font-bold">مفعل</span>' : '<span class="text-red-500 font-bold">متوقف</span>';
+                const lockBadge = l.password ? '<span class="text-amber-500 font-bold">🔒 محمي</span>' : '';
                 container.innerHTML += `
                     <div class="bg-white dark:bg-cardbg border border-gray-300 dark:border-gray-700 rounded-xl p-2.5 flex items-center justify-between shadow-sm">
                         <div>
-                            <div class="font-extrabold text-gray-900 dark:text-white"><i class="${l.icon}"></i> ${l.title} (${statusBadge}) - <span class="text-goldaccent">النقرات: ${l.clicks || 0}</span></div>
+                            <div class="font-extrabold text-gray-900 dark:text-white"><i class="${l.icon}"></i> ${l.title} (${statusBadge}) ${lockBadge} - <span class="text-goldaccent">النقرات: ${l.clicks || 0}</span></div>
                             <div class="text-[10px] font-semibold text-gray-500">${l.category}</div>
                         </div>
                         <div class="flex items-center gap-1">
@@ -3167,6 +3257,16 @@
             document.body.appendChild(dl); dl.click(); dl.remove();
         };
 
+        function saveDataToFirebase() {
+            rootData.users[currentUsername] = appData;
+            set(dbRef, rootData).then(() => {
+                alert('تم الحفظ والتحديث على السحابة بنجاح!');
+            }).catch((err) => {
+                alert('خطأ في الاتصال بقاعدة البيانات أو صلاحيات الحفظ: ' + err.message);
+                console.error("Firebase save error:", err);
+            });
+        }
+
         window.saveAllChanges = function() {
             appData.displayName = document.getElementById('editDisplayName').value.trim() || appData.displayName;
             appData.bio = document.getElementById('editBio').value.trim();
@@ -3174,7 +3274,7 @@
             appData.showPushNotificationBtn = document.getElementById('adminShowPushNotificationBtn').checked;
             appData.showTestimonialsSection = document.getElementById('adminShowTestimonials').checked;
             appData.requireTestimonialApproval = document.getElementById('adminRequireTestimonialApproval').checked;
-            appData.showClickCounts = document.getElementById('adminShowClickCounts').checked; // حفظ حالة إعداد إظهار عدد النقرات
+            appData.showClickCounts = document.getElementById('adminShowClickCounts').checked;
             appData.avatarShape = document.getElementById('adminAvatarShape').value;
             appData.avatarGlow = document.getElementById('adminAvatarGlow').value;
             appData.cardShape = document.getElementById('adminCardShape').value;
@@ -3194,7 +3294,9 @@
 
             appData.showFloatingBtn = document.getElementById('adminShowFloatingBtn').checked;
             appData.floatingWhatsapp = document.getElementById('adminFloatingWhatsapp').value.trim();
-            appData.floatingMessage = document.getElementById('adminFloatingMessage').value.trim();
+            appData.floatingPhone = document.getElementById('adminFloatingPhone').value.trim();
+            appData.floatingMessenger = document.getElementById('adminFloatingMessenger').value.trim();
+            appData.floatingEmail = document.getElementById('adminFloatingEmail').value.trim();
 
             appData.customColors = {
                 c1: document.getElementById('adminColor1').value,
