@@ -68,7 +68,6 @@
             <span id="topBarName" class="text-xs font-bold text-gray-900 dark:text-gray-100 truncate max-w-[130px]">جاري التحميل...</span>
         </div>
         <div class="flex items-center gap-2">
-            <!-- زر تبديل ألوان الثيم المخصص (يظهر فقط إذا كان مفعلاً من الأدمن) -->
             <button type="button" id="themeSwitcherTopBtn" onclick="window.openThemeSwitcherModal()" class="w-9 h-9 rounded-xl bg-gray-100 dark:bg-darkbg border border-gray-300 dark:border-gray-700 text-goldaccent flex items-center justify-center transition shadow-sm hidden" title="تخصيص لون الثيم">
                 <i class="fa-solid fa-palette"></i>
             </button>
@@ -193,12 +192,15 @@
             <div id="promoCodesContainer" class="w-full grid grid-cols-1 gap-3"></div>
         </div>
 
+        <!-- Testimonials & Live Rating Section -->
         <div id="testimonialsSectionContainer" class="w-full mb-6 hidden">
             <div class="flex items-center justify-between mb-3 px-1">
                 <span class="text-xs font-extrabold text-gray-900 dark:text-white flex items-center gap-1.5">
                     <i class="fa-solid fa-star text-goldaccent"></i> آراء ومراجعات العملاء
                 </span>
-                <span class="text-[10px] font-bold text-gray-500">تقييمات معتمدة ⭐</span>
+                <button type="button" onclick="window.openAddTestimonialModal()" class="text-[10px] bg-goldaccent/10 border border-goldaccent/30 text-goldaccent font-bold px-2.5 py-1 rounded-lg flex items-center gap-1 hover:bg-goldaccent/20 transition">
+                    <i class="fa-solid fa-plus"></i> أضف تقييمك ⭐
+                </button>
             </div>
             <div id="testimonialsContainer" class="w-full flex flex-col gap-3"></div>
         </div>
@@ -226,6 +228,37 @@
     <footer class="w-full max-w-md text-center py-4 border-t border-gray-300 dark:border-gray-800 text-xs font-medium text-gray-600 dark:text-gray-400 relative z-10 transition-colors duration-300">
         <p>© <span id="year">2026</span> جميع الحقوق محفوظة - شجرة الروابط</p>
     </footer>
+
+    <!-- Add Live Testimonial Modal (Direct Visitor Rating) -->
+    <div id="addTestimonialModal" class="fixed inset-0 bg-black/70 backdrop-blur-md hidden flex items-center justify-center z-[125] p-3">
+        <div class="bg-lightcard dark:bg-cardbg border border-gray-300 dark:border-gray-800 w-full max-w-sm rounded-2xl p-5 shadow-2xl flex flex-col transition-colors duration-300 space-y-3">
+            <div class="flex justify-between items-center border-b border-gray-200 dark:border-gray-800 pb-3">
+                <h3 class="text-base font-bold text-goldaccent flex items-center gap-2">
+                    <i class="fa-solid fa-star"></i> أضف تقييمك ورأيك الكريم
+                </h3>
+                <button type="button" onclick="window.closeAddTestimonialModal()" class="text-gray-500 hover:text-gray-800 dark:hover:text-white text-xl px-2"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            <div class="space-y-2.5 text-xs">
+                <input type="text" id="visitorClientName" placeholder="اسمك الكريم (أو لقبك)" class="w-full bg-lightbg dark:bg-darkbg border border-gray-300 dark:border-gray-700 rounded-xl p-2.5 text-gray-900 dark:text-white outline-none font-medium">
+                <input type="text" id="visitorClientRole" placeholder="صفاتك أو عملك (مثال: زائر / عميل سابق)" class="w-full bg-lightbg dark:bg-darkbg border border-gray-300 dark:border-gray-700 rounded-xl p-2.5 text-gray-900 dark:text-white outline-none font-medium">
+                
+                <div class="space-y-1">
+                    <label class="block font-bold text-gray-700 dark:text-gray-300">التقييم بالنجوم:</label>
+                    <select id="visitorRating" class="w-full bg-lightbg dark:bg-darkbg border border-gray-300 dark:border-gray-700 rounded-xl p-2.5 text-gray-900 dark:text-white outline-none font-bold">
+                        <option value="5">⭐⭐⭐⭐⭐ (5/5 ممتاز جداً)</option>
+                        <option value="4">⭐⭐⭐⭐ (4/5 جيد جداً)</option>
+                        <option value="3">⭐⭐⭐ (3/5 جيد)</option>
+                        <option value="2">⭐⭐ (2/5 مقبول)</option>
+                        <option value="1">⭐ (1/5 ضعيف)</option>
+                    </select>
+                </div>
+
+                <textarea id="visitorComment" placeholder="اكتب رأيك أو تجربتك معنا هنا..." class="w-full bg-lightbg dark:bg-darkbg border border-gray-300 dark:border-gray-700 rounded-xl p-2.5 text-gray-900 dark:text-white outline-none h-24 resize-none font-medium"></textarea>
+                
+                <button type="button" onclick="window.submitVisitorTestimonial()" class="w-full bg-goldaccent text-black font-extrabold py-3 rounded-xl mt-1 shadow-sm">إرسال التقييم 🚀</button>
+            </div>
+        </div>
+    </div>
 
     <!-- Theme Switcher Modal -->
     <div id="themeSwitcherModal" class="fixed inset-0 bg-black/70 backdrop-blur-md hidden flex items-center justify-center z-[120] p-3">
@@ -440,6 +473,21 @@
                 <button type="button" onclick="window.closeAdminModal()" class="text-gray-500 hover:text-gray-800 dark:hover:text-white text-xl px-2"><i class="fa-solid fa-xmark"></i></button>
             </div>
             <div class="overflow-y-auto flex-grow pr-1 space-y-3 text-xs">
+
+                <!-- ⭐ قسم إدارة ومراجعة التقييمات وإخفائها/إظهارها وموافقة مسبقة -->
+                <div class="bg-lightbg dark:bg-darkbg rounded-xl border border-gray-300 dark:border-gray-800 p-3 space-y-2">
+                    <h4 class="font-bold text-goldaccent flex items-center gap-2"><i class="fa-solid fa-star"></i> إدارة قسم آراء ومراجعات الزوار</h4>
+                    <div class="space-y-2 pt-1">
+                        <div class="flex items-center gap-2 bg-white dark:bg-cardbg p-2.5 rounded-xl border border-gray-200 dark:border-gray-700">
+                            <input type="checkbox" id="adminShowTestimonials" class="accent-goldaccent w-4 h-4" checked>
+                            <label for="adminShowTestimonials" class="font-extrabold text-gray-800 dark:text-gray-200">إظهار قسم آراء ومراجعات العملاء في الصفحة الرئيسية</label>
+                        </div>
+                        <div class="flex items-center gap-2 bg-white dark:bg-cardbg p-2.5 rounded-xl border border-gray-200 dark:border-gray-700">
+                            <input type="checkbox" id="adminRequireTestimonialApproval" class="accent-goldaccent w-4 h-4">
+                            <label for="adminRequireTestimonialApproval" class="font-extrabold text-gray-800 dark:text-gray-200">الموافقة المسبقة مطلوبة لعرض آراء العملاء في الصفحة (يتطلب تفعيل التقييم يدوياً)</label>
+                        </div>
+                    </div>
+                </div>
 
                 <!-- 🎨 قسم إدارة ألوان الثيم المخصصة وإلغاء تفعيلها (Theme Color Settings) -->
                 <div class="bg-lightbg dark:bg-darkbg rounded-xl border border-gray-300 dark:border-gray-800 p-3 space-y-2">
@@ -731,7 +779,7 @@
                     </div>
                     <div>
                         <label class="block text-[11px] text-gray-500 mb-1">نص الحالة (مثل: متاح للعمل الحر):</label>
-                        <input type="text" id="adminLiveStatusText" placeholder="متاح للعمل الحر والطلبات" class="w-full bg-lightcard dark:bg-cardbg border border-gray-300 dark:border-gray-700 rounded-lg p-2 text-gray-900 dark:text-white outline-none">
+                        <input type="text" id="adminLiveStatusText" placeholder="متاح للعمل الحر واستقبال الطلبات" class="w-full bg-lightcard dark:bg-cardbg border border-gray-300 dark:border-gray-700 rounded-lg p-2 text-gray-900 dark:text-white outline-none">
                     </div>
                     <div>
                         <label class="block text-[11px] text-gray-500 mb-1">نوع الحالة واللون:</label>
@@ -989,7 +1037,7 @@
         </div>
     </div>
 
-    <!-- Script Engine with Firebase & Theme Color Accent Switcher Controls -->
+    <!-- Script Engine with Firebase & Live Visitor Rating Controls -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/13.2.0/firebase-app.js";
         import { getDatabase, ref, set, onValue } from "https://www.gstatic.com/firebasejs/13.2.0/firebase-database.js";
@@ -1022,6 +1070,8 @@
             cardGlow: "glow-gold-hover",
             cardStyle: "normal",
             showThemeSwitcher: true,
+            showTestimonialsSection: true,
+            requireTestimonialApproval: false,
             customColors: { c1: "", o1: 0, c2: "", o2: 0, c3: "", o3: 0, angle: "to bottom right" },
             bgImageUrl: "",
             bgImgOpacity: 0.6,
@@ -1105,6 +1155,8 @@
 
                 appData = rootData.users[currentUsername] || rootData.users['mahmoud'];
                 if (appData.showThemeSwitcher === undefined) appData.showThemeSwitcher = true;
+                if (appData.showTestimonialsSection === undefined) appData.showTestimonialsSection = true;
+                if (appData.requireTestimonialApproval === undefined) appData.requireTestimonialApproval = false;
                 if (!appData.analytics) appData.analytics = { totalViews: 0 };
                 if (!appData.fileHub) appData.fileHub = defaultUserData.fileHub;
                 if (!appData.promoCodes) appData.promoCodes = defaultUserData.promoCodes;
@@ -1175,6 +1227,54 @@
         };
         window.closeThemeSwitcherModal = function() {
             document.getElementById('themeSwitcherModal').classList.add('hidden');
+        };
+
+        window.openAddTestimonialModal = function() {
+            document.getElementById('addTestimonialModal').classList.remove('hidden');
+        };
+        window.closeAddTestimonialModal = function() {
+            document.getElementById('addTestimonialModal').classList.add('hidden');
+        };
+
+        window.submitVisitorTestimonial = function() {
+            const clientName = document.getElementById('visitorClientName').value.trim();
+            const clientRole = document.getElementById('visitorClientRole').value.trim() || 'زائر الموقع';
+            const rating = parseInt(document.getElementById('visitorRating').value) || 5;
+            const comment = document.getElementById('visitorComment').value.trim();
+
+            if (!clientName || !comment) {
+                alert('الرجاء إدخال اسمك الكريم وكتابة تعليقك.');
+                return;
+            }
+
+            if (!appData.testimonials) appData.testimonials = [];
+
+            // إذا كان خيار الموافقة المسبقة مفعلاً، يكون التقييم غير مفعل (enabled: false) بانتظار موافقة الأدمن
+            const needsApproval = appData.requireTestimonialApproval === true;
+
+            appData.testimonials.unshift({
+                id: 't_' + Date.now(),
+                clientName,
+                clientRole,
+                comment,
+                rating,
+                enabled: !needsApproval
+            });
+
+            rootData.users[currentUsername] = appData;
+            set(dbRef, rootData).then(() => {
+                if (needsApproval) {
+                    alert('شكراً لك! تم إرسال تقييمك بنجاح وهو بانتظار مراجعة وموافقة الإدارة لعرضه.');
+                } else {
+                    alert('شكراً لك! تم إضافة تقييمك وعرضه في الصفحة بنجاح.');
+                }
+                document.getElementById('visitorClientName').value = '';
+                document.getElementById('visitorClientRole').value = '';
+                document.getElementById('visitorComment').value = '';
+                window.closeAddTestimonialModal();
+                renderTestimonialsSection();
+                renderAdminTestimonialsList();
+            }).catch(err => alert('حدث خطأ أثناء حفظ التقييم: ' + err.message));
         };
 
         window.setThemeAccent = function(colorHex, name, glowRgba, hoverGlowRgba) {
@@ -1670,6 +1770,11 @@
             const sectionContainer = document.getElementById('testimonialsSectionContainer');
             const container = document.getElementById('testimonialsContainer');
             if (!sectionContainer || !container) return;
+
+            if (appData.showTestimonialsSection === false) {
+                sectionContainer.classList.add('hidden');
+                return;
+            }
 
             const items = (appData.testimonials || []).filter(t => t.enabled !== false);
             if (items.length === 0) {
@@ -2174,6 +2279,8 @@
             document.getElementById('editAvatarUrl').value = appData.image || "";
             
             document.getElementById('adminShowThemeSwitcher').checked = appData.showThemeSwitcher !== false;
+            document.getElementById('adminShowTestimonials').checked = appData.showTestimonialsSection !== false;
+            document.getElementById('adminRequireTestimonialApproval').checked = appData.requireTestimonialApproval === true;
             document.getElementById('adminAvatarShape').value = appData.avatarShape || 'rounded-full';
             document.getElementById('adminAvatarGlow').value = appData.avatarGlow || 'glow-gold';
             document.getElementById('adminCardShape').value = appData.cardShape || 'rounded-2xl';
@@ -2334,7 +2441,7 @@
             const container = document.getElementById('adminTestimonialsList');
             if(!container) return; container.innerHTML = '';
             (appData.testimonials || []).forEach((t) => {
-                const statusBadge = t.enabled !== false ? '<span class="text-emerald-500 font-bold">مفعل</span>' : '<span class="text-red-500 font-bold">متوقف</span>';
+                const statusBadge = t.enabled !== false ? '<span class="text-emerald-500 font-bold">مفعل</span>' : '<span class="text-amber-500 font-bold">بانتظار الموافقة</span>';
                 container.innerHTML += `
                     <div class="bg-white dark:bg-cardbg border border-gray-300 dark:border-gray-700 rounded-xl p-2.5 flex items-center justify-between shadow-sm">
                         <div>
@@ -2459,6 +2566,8 @@
                 cardGlow: 'glow-gold-hover',
                 cardStyle: 'normal',
                 showThemeSwitcher: true,
+                showTestimonialsSection: true,
+                requireTestimonialApproval: false,
                 showLiveStatus: true,
                 liveStatusText: 'متاح للعمل الحر 🟢',
                 liveStatusType: 'emerald',
@@ -2611,7 +2720,7 @@
                             <button type="button" onclick="window.moveGalleryItem(${index}, -1)" class="bg-gray-200 dark:bg-gray-700 text-goldaccent px-1.5 py-0.5 rounded text-[10px] font-bold">⬆️</button>
                             <button type="button" onclick="window.moveGalleryItem(${index}, 1)" class="bg-gray-200 dark:bg-gray-700 text-goldaccent px-1.5 py-0.5 rounded text-[10px] font-bold">⬇️</button>
                             <button type="button" onclick="window.editGalleryItem('${g.id}')" class="bg-blue-500/20 text-blue-600 dark:text-blue-400 px-2 py-0.5 rounded text-[10px] font-bold">تعديل</button>
-                            <button type="button" onclick="window.deleteGalleryItem('${g.id}')" class="bg-red-500/20 text-red-600 dark:text-red-400 px-2 py-0.5 rounded text-[10px] font-bold">حذف</button>
+                            <button type="button" onclick="window.deleteGalleryItem('${g.id}')" class="bg-red-500/20 text-red-600 px-2 py-0.5 rounded text-[10px] font-bold">حذف</button>
                         </div>
                     </div>`;
             });
@@ -2755,7 +2864,7 @@
                             <button type="button" onclick="window.moveLink(${index}, -1)" class="bg-gray-200 dark:bg-gray-700 text-goldaccent px-1.5 py-0.5 rounded text-[10px] font-bold">⬆️</button>
                             <button type="button" onclick="window.moveLink(${index}, 1)" class="bg-gray-200 dark:bg-gray-700 text-goldaccent px-1.5 py-0.5 rounded text-[10px] font-bold">⬇️</button>
                             <button type="button" onclick="window.editLink('${l.id}')" class="bg-blue-500/20 text-blue-600 dark:text-blue-400 px-2 py-0.5 rounded text-[10px] font-bold">تعديل</button>
-                            <button type="button" onclick="window.deleteLink('${l.id}')" class="bg-red-500/20 text-red-600 dark:text-red-400 px-2 py-0.5 rounded text-[10px] font-bold">حذف</button>
+                            <button type="button" onclick="window.deleteLink('${l.id}')" class="bg-red-500/20 text-red-600 px-2 py-0.5 rounded text-[10px] font-bold">حذف</button>
                         </div>
                     </div>`;
             });
@@ -2776,6 +2885,8 @@
             appData.displayName = document.getElementById('editDisplayName').value.trim() || appData.displayName;
             appData.bio = document.getElementById('editBio').value.trim();
             appData.showThemeSwitcher = document.getElementById('adminShowThemeSwitcher').checked;
+            appData.showTestimonialsSection = document.getElementById('adminShowTestimonials').checked;
+            appData.requireTestimonialApproval = document.getElementById('adminRequireTestimonialApproval').checked;
             appData.avatarShape = document.getElementById('adminAvatarShape').value;
             appData.avatarGlow = document.getElementById('adminAvatarGlow').value;
             appData.cardShape = document.getElementById('adminCardShape').value;
