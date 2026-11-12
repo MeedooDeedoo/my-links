@@ -7,6 +7,10 @@
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
+        // إعداد متغيرات الألوان الديناميكية للثيم المخصص
+        let currentThemeColor = localStorage.getItem('theme_accent_color') || '#D4AF37';
+        let currentThemeName = localStorage.getItem('theme_accent_name') || 'gold';
+
         tailwind.config = {
             darkMode: 'class',
             theme: {
@@ -16,7 +20,7 @@
                         cardbg: '#1A1D26',
                         lightbg: '#F1F5F9',
                         lightcard: '#FFFFFF',
-                        goldaccent: '#D4AF37',
+                        goldaccent: 'var(--accent-color, #D4AF37)',
                         cyanaccent: '#00B4D8'
                     },
                     fontFamily: {
@@ -32,11 +36,16 @@
     <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800&display=swap" rel="stylesheet">
     
     <style>
+        :root {
+            --accent-color: #D4AF37;
+            --accent-glow: rgba(212, 175, 55, 0.35);
+            --accent-glow-hover: rgba(212, 175, 55, 0.5);
+        }
         body { font-family: 'Tajawal', sans-serif; -webkit-tap-highlight-color: transparent; }
-        .glow-gold { box-shadow: 0 0 20px rgba(212, 175, 55, 0.35); }
+        .glow-gold { box-shadow: 0 0 20px var(--accent-glow, rgba(212, 175, 55, 0.35)); }
         .glow-cyan { box-shadow: 0 0 20px rgba(0, 180, 216, 0.35); }
         .glow-subtle { box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15); }
-        .glow-gold-hover:hover { box-shadow: 0 0 25px rgba(212, 175, 55, 0.5); }
+        .glow-gold-hover:hover { box-shadow: 0 0 25px var(--accent-glow-hover, rgba(212, 175, 55, 0.5)); }
         button, select, input, a, label, textarea { touch-action: manipulation; cursor: pointer; }
         .glass-card { background: rgba(26, 29, 38, 0.75) !important; backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); }
         html.light .glass-card { background: rgba(255, 255, 255, 0.8) !important; }
@@ -60,6 +69,10 @@
             <span id="topBarName" class="text-xs font-bold text-gray-900 dark:text-gray-100 truncate max-w-[130px]">جاري التحميل...</span>
         </div>
         <div class="flex items-center gap-2">
+            <!-- 🎨 زر فتح نافذة تبديل لون الثيم المخصص (Theme Accent Switcher) -->
+            <button type="button" onclick="window.openThemeSwitcherModal()" class="w-9 h-9 rounded-xl bg-gray-100 dark:bg-darkbg border border-gray-300 dark:border-gray-700 text-goldaccent flex items-center justify-center transition shadow-sm" title="تخصيص لون الثيم">
+                <i class="fa-solid fa-palette"></i>
+            </button>
             <button type="button" onclick="window.openNotificationsModal()" class="w-9 h-9 rounded-xl bg-gray-100 dark:bg-darkbg border border-gray-300 dark:border-gray-700 text-goldaccent flex items-center justify-center transition shadow-sm relative" title="الإشعارات">
                 <i class="fa-solid fa-bell"></i>
                 <span id="notificationBadge" class="absolute -top-1 -right-1 bg-red-500 text-white text-[9px] font-bold w-4 h-4 rounded-full flex items-center justify-center hidden">0</span>
@@ -220,6 +233,43 @@
     <footer class="w-full max-w-md text-center py-4 border-t border-gray-300 dark:border-gray-800 text-xs font-medium text-gray-600 dark:text-gray-400 relative z-10 transition-colors duration-300">
         <p>© <span id="year">2026</span> جميع الحقوق محفوظة - شجرة الروابط</p>
     </footer>
+
+    <!-- 🎨 نافذة اختيار ألوان الثيم المخصصة (Theme Color Accent Switcher Modal) -->
+    <div id="themeSwitcherModal" class="fixed inset-0 bg-black/70 backdrop-blur-md hidden flex items-center justify-center z-[120] p-3">
+        <div class="bg-lightcard dark:bg-cardbg border border-gray-300 dark:border-gray-800 w-full max-w-sm rounded-2xl p-5 shadow-2xl flex flex-col transition-colors duration-300 space-y-4">
+            <div class="flex justify-between items-center border-b border-gray-200 dark:border-gray-800 pb-3">
+                <h3 class="text-base font-bold text-goldaccent flex items-center gap-2">
+                    <i class="fa-solid fa-palette"></i> اختر لون الثيم المفضل (Accent Color)
+                </h3>
+                <button type="button" onclick="window.closeThemeSwitcherModal()" class="text-gray-500 hover:text-gray-800 dark:hover:text-white text-xl px-2"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            <p class="text-xs text-gray-600 dark:text-gray-400">اختر اللون المفضل لتخصيص أيقونات وأزرار وتوهجات المنصة فوراً:</p>
+            <div class="grid grid-cols-2 gap-2.5">
+                <button type="button" onclick="window.setThemeAccent('#D4AF37', 'gold', 'rgba(212, 175, 55, 0.35)', 'rgba(212, 175, 55, 0.5)')" class="p-3 rounded-xl border border-gray-300 dark:border-gray-700 bg-amber-500/10 text-amber-500 font-bold flex items-center gap-2 transition hover:scale-105">
+                    <span class="w-4 h-4 rounded-full bg-[#D4AF37] inline-block"></span> ذهبي فاخر 👑
+                </button>
+                <button type="button" onclick="window.setThemeAccent('#00B4D8', 'cyan', 'rgba(0, 180, 216, 0.35)', 'rgba(0, 180, 216, 0.5)')" class="p-3 rounded-xl border border-gray-300 dark:border-gray-700 bg-cyan-500/10 text-cyan-500 font-bold flex items-center gap-2 transition hover:scale-105">
+                    <span class="w-4 h-4 rounded-full bg-[#00B4D8] inline-block"></span> سماوي ساطع 🌐
+                </button>
+                <button type="button" onclick="window.setThemeAccent('#10B981', 'emerald', 'rgba(16, 185, 129, 0.35)', 'rgba(16, 185, 129, 0.5)')" class="p-3 rounded-xl border border-gray-300 dark:border-gray-700 bg-emerald-500/10 text-emerald-500 font-bold flex items-center gap-2 transition hover:scale-105">
+                    <span class="w-4 h-4 rounded-full bg-[#10B981] inline-block"></span> أخضر زمردي 🌿
+                </button>
+                <button type="button" onclick="window.setThemeAccent('#EC4899', 'rose', 'rgba(236, 72, 153, 0.35)', 'rgba(236, 72, 153, 0.5)')" class="p-3 rounded-xl border border-gray-300 dark:border-gray-700 bg-rose-500/10 text-rose-500 font-bold flex items-center gap-2 transition hover:scale-105">
+                    <span class="w-4 h-4 rounded-full bg-[#EC4899] inline-block"></span> وردي أنيق 💖
+                </button>
+                <button type="button" onclick="window.setThemeAccent('#8B5CF6', 'purple', 'rgba(139, 92, 246, 0.35)', 'rgba(139, 92, 246, 0.5)')" class="p-3 rounded-xl border border-gray-300 dark:border-gray-700 bg-purple-500/10 text-purple-500 font-bold flex items-center gap-2 transition hover:scale-105">
+                    <span class="w-4 h-4 rounded-full bg-[#8B5CF6] inline-block"></span> بنفسجي ملكي 🔮
+                </button>
+                <button type="button" onclick="window.setThemeAccent('#F97316', 'orange', 'rgba(249, 115, 22, 0.35)', 'rgba(249, 115, 22, 0.5)')" class="p-3 rounded-xl border border-gray-300 dark:border-gray-700 bg-orange-500/10 text-orange-500 font-bold flex items-center gap-2 transition hover:scale-105">
+                    <span class="w-4 h-4 rounded-full bg-[#F97316] inline-block"></span> برتقالي حيوي ⚡
+                </button>
+            </div>
+            <div class="pt-2 border-t border-gray-200 dark:border-gray-800 flex items-center gap-2">
+                <label class="text-xs font-bold text-gray-700 dark:text-gray-300">أو حدد لوناً مخصصاً:</label>
+                <input type="color" id="customColorPicker" value="#D4AF37" onchange="window.setCustomThemeAccent(this.value)" class="w-10 h-8 rounded cursor-pointer bg-transparent">
+            </div>
+        </div>
+    </div>
 
     <!-- File Hub Modal (مكتبة الكتالوجات والملفات للزوار) -->
     <div id="fileHubModal" class="fixed inset-0 bg-black/70 backdrop-blur-md hidden flex items-center justify-center z-[105] p-3">
@@ -937,7 +987,7 @@
         </div>
     </div>
 
-    <!-- Script Engine with Firebase & Flash Deal Countdown Timer -->
+    <!-- Script Engine with Firebase & Theme Color Accent Switcher -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/13.2.0/firebase-app.js";
         import { getDatabase, ref, set, onValue } from "https://www.gstatic.com/firebasejs/13.2.0/firebase-database.js";
@@ -1034,6 +1084,9 @@
         let currentViewingProjectId = null;
         let flashDealInterval = null;
 
+        // تطبيق لون الثيم المحفوظ عند بدء التحميل
+        applyThemeAccent(currentThemeColor, `rgba(${parseInt(currentThemeColor.slice(1,3),16)}, ${parseInt(currentThemeColor.slice(3,5),16)}, ${parseInt(currentThemeColor.slice(5,7),16)}, 0.35)`, `rgba(${parseInt(currentThemeColor.slice(1,3),16)}, ${parseInt(currentThemeColor.slice(3,5),16)}, ${parseInt(currentThemeColor.slice(5,7),16)}, 0.5)`);
+
         const dbRef = ref(db, 'platformData');
         onValue(dbRef, (snapshot) => {
             const data = snapshot.val();
@@ -1113,6 +1166,36 @@
             console.error("Firebase read error:", error);
             initApp();
         });
+
+        // 🎨 دوال إدارة ميزة تبديل ألوان الثيم (Theme Color Accent Switcher)
+        window.openThemeSwitcherModal = function() {
+            document.getElementById('themeSwitcherModal').classList.remove('hidden');
+        };
+        window.closeThemeSwitcherModal = function() {
+            document.getElementById('themeSwitcherModal').classList.add('hidden');
+        };
+
+        window.setThemeAccent = function(colorHex, name, glowRgba, hoverGlowRgba) {
+            currentThemeColor = colorHex;
+            currentThemeName = name;
+            localStorage.setItem('theme_accent_color', colorHex);
+            localStorage.setItem('theme_accent_name', name);
+            applyThemeAccent(colorHex, glowRgba, hoverGlowRgba);
+            window.closeThemeSwitcherModal();
+        };
+
+        window.setCustomThemeAccent = function(colorHex) {
+            let r = parseInt(colorHex.slice(1,3), 16);
+            let g = parseInt(colorHex.slice(3,5), 16);
+            let b = parseInt(colorHex.slice(5,7), 16);
+            window.setThemeAccent(colorHex, 'custom', `rgba(${r}, ${g}, ${b}, 0.35)`, `rgba(${r}, ${g}, ${b}, 0.5)`);
+        };
+
+        function applyThemeAccent(colorHex, glowRgba, hoverGlowRgba) {
+            document.documentElement.style.setProperty('--accent-color', colorHex);
+            document.documentElement.style.setProperty('--accent-glow', glowRgba);
+            document.documentElement.style.setProperty('--accent-glow-hover', hoverGlowRgba);
+        }
 
         function saveDataToFirebase() {
             rootData.users[currentUsername] = appData;
