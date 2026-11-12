@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>منصة شجرة الروابط الاحترافية - متعددة الأعضاء مع نظام الإشعارات</title>
+    <title>منصة شجرة الروابط الاحترافية - متعددة الأعضاء مع نظام الإشعارات الفورية</title>
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
@@ -36,30 +36,22 @@
             font-family: 'Tajawal', sans-serif;
             -webkit-tap-highlight-color: transparent;
         }
-        
         .glow-gold { box-shadow: 0 0 20px rgba(212, 175, 55, 0.35); }
         .glow-cyan { box-shadow: 0 0 20px rgba(0, 180, 216, 0.35); }
         .glow-subtle { box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15); }
         .glow-gold-hover:hover { box-shadow: 0 0 25px rgba(212, 175, 55, 0.5); }
-        
-        button, select, input, a, label, textarea {
-            touch-action: manipulation;
-            cursor: pointer;
-        }
-
+        button, select, input, a, label, textarea { touch-action: manipulation; cursor: pointer; }
         .glass-card {
             background: rgba(26, 29, 38, 0.75) !important;
             backdrop-filter: blur(12px);
             -webkit-backdrop-filter: blur(12px);
         }
-        html.light .glass-card {
-            background: rgba(255, 255, 255, 0.8) !important;
-        }
+        html.light .glass-card { background: rgba(255, 255, 255, 0.8) !important; }
     </style>
 </head>
 <body id="pageBody" class="min-h-screen flex flex-col items-center justify-between p-4 pb-12 bg-lightbg dark:bg-darkbg text-gray-900 dark:text-gray-100 transition-colors duration-300 relative">
 
-    <!-- Background Image Overlay Container -->
+    <!-- Background Image Layer -->
     <div id="bgImageLayer" class="absolute inset-0 bg-cover bg-center pointer-events-none z-0 hidden"></div>
 
     <!-- Top Bar -->
@@ -71,7 +63,7 @@
             <span id="topBarName" class="text-xs font-bold text-gray-900 dark:text-gray-100 truncate max-w-[130px]">جاري التحميل...</span>
         </div>
         <div class="flex items-center gap-2">
-            <!-- زر الإشعارات الجديد -->
+            <!-- زر الإشعارات مع عداد التنبيهات الفوري -->
             <button type="button" onclick="window.openNotificationsModal()" class="w-9 h-9 rounded-xl bg-gray-100 dark:bg-darkbg border border-gray-300 dark:border-gray-700 text-goldaccent flex items-center justify-center transition shadow-sm relative" title="الإشعارات">
                 <i class="fa-solid fa-bell"></i>
                 <span id="notificationBadge" class="absolute -top-1 -right-1 bg-red-500 text-white text-[9px] font-bold w-4 h-4 rounded-full flex items-center justify-center hidden">0</span>
@@ -91,15 +83,12 @@
             </h3>
             <button type="button" onclick="window.toggleSidebar()" class="text-gray-500 hover:text-gray-800 dark:hover:text-white text-lg"><i class="fa-solid fa-xmark"></i></button>
         </div>
-        
         <div id="sidebarLinksContainer" class="flex-grow space-y-2 text-xs overflow-y-auto"></div>
-
         <div class="pt-3 border-t border-gray-200 dark:border-gray-800 mt-2">
             <button type="button" onclick="window.openFeedbackModal()" class="w-full bg-goldaccent/10 border border-goldaccent/30 text-goldaccent font-bold py-2.5 rounded-xl flex items-center justify-center gap-2 transition hover:bg-goldaccent/20">
                 <i class="fa-solid fa-comment-dots"></i> إرسال ملاحظة للإدارة
             </button>
         </div>
-
         <div class="border-t border-gray-200 dark:border-gray-800 pt-3 text-center text-[10px] text-gray-500 dark:text-gray-400 mt-2">
             شجرة الروابط الاحترافية © 2026
         </div>
@@ -107,8 +96,6 @@
 
     <!-- Main Profile Card Container -->
     <div class="w-full max-w-md flex flex-col items-center flex-grow relative z-10">
-        
-        <!-- Profile Header -->
         <div class="text-center w-full mb-6">
             <div class="relative w-24 h-24 mx-auto mb-3">
                 <div id="avatarContainer" class="w-full h-full rounded-full border-2 border-goldaccent overflow-hidden bg-lightcard dark:bg-darkbg flex items-center justify-center shadow-md transition-colors duration-300">
@@ -116,20 +103,16 @@
                     <img id="profileImage" src="" alt="Profile" class="w-full h-full object-cover hidden">
                 </div>
             </div>
-            
             <h1 id="displayName" class="text-xl font-extrabold text-gray-900 dark:text-white flex items-center justify-center gap-2">
                 <span>جاري التحميل...</span>
                 <i class="fa-solid fa-circle-check text-goldaccent text-base"></i>
             </h1>
             <p id="displayBio" class="text-xs font-medium text-gray-600 dark:text-gray-400 mt-1.5 px-4 leading-relaxed">...</p>
-            
             <div id="contactButtons" class="flex justify-center gap-3 mt-4"></div>
         </div>
 
-        <!-- Filter Tabs -->
         <div id="categoryTabs" class="w-full flex gap-2 overflow-x-auto pb-2 mb-4 text-xs"></div>
 
-        <!-- Gallery Preview Card Button -->
         <button type="button" id="galleryBtnCard" onclick="window.openGalleryModal()" class="w-full mb-4 bg-gradient-to-r from-goldaccent/20 via-yellow-500/10 to-goldaccent/20 border border-goldaccent/40 rounded-2xl p-3.5 flex items-center justify-between shadow-sm transition">
             <div class="flex items-center gap-3">
                 <div class="w-9 h-9 rounded-xl bg-goldaccent/20 text-goldaccent flex items-center justify-center">
@@ -143,10 +126,8 @@
             <i class="fa-solid fa-chevron-left text-xs text-goldaccent"></i>
         </button>
 
-        <!-- Links Container -->
         <div id="linksContainer" class="w-full flex flex-col gap-3 mb-6"></div>
 
-        <!-- Google Maps Section -->
         <div id="mapSectionContainer" class="w-full bg-lightcard dark:bg-cardbg border border-gray-300 dark:border-gray-800 rounded-2xl p-3.5 shadow-sm mb-6 hidden">
             <div class="flex items-center justify-between mb-2 px-1">
                 <span class="text-xs font-extrabold text-gray-900 dark:text-white flex items-center gap-1.5">
@@ -161,7 +142,6 @@
             </div>
         </div>
 
-        <!-- Join Platform Button Banner -->
         <button type="button" id="joinBannerBtn" onclick="window.openJoinModal()" class="w-full bg-gradient-to-r from-cyanaccent/20 via-blue-500/10 to-cyanaccent/20 border border-cyanaccent/40 rounded-2xl p-3 flex items-center justify-center gap-2 text-cyanaccent font-extrabold text-xs shadow-md transition hover:scale-[1.01]">
             <i class="fa-solid fa-user-plus"></i> انضم إلينا وأنشئ صفحتك الخاصة مجاناً
         </button>
@@ -172,18 +152,17 @@
         <p>© <span id="year">2026</span> جميع الحقوق محفوظة - شجرة الروابط</p>
     </footer>
 
-    <!-- Modals -->
     <!-- Notifications Modal -->
     <div id="notificationsModal" class="fixed inset-0 bg-black/70 backdrop-blur-md hidden flex items-center justify-center z-[115] p-3">
         <div class="bg-lightcard dark:bg-cardbg border border-gray-300 dark:border-gray-800 w-full max-w-md rounded-2xl p-5 shadow-2xl max-h-[92vh] flex flex-col transition-colors duration-300">
             <div class="flex justify-between items-center border-b border-gray-200 dark:border-gray-800 pb-3 mb-3">
                 <h3 class="text-base font-bold text-goldaccent flex items-center gap-2">
-                    <i class="fa-solid fa-bell"></i> مركز الإشعارات والتنبيهات
+                    <i class="fa-solid fa-bell"></i> مركز الإشعارات والتنبيهات الفورية
                 </h3>
                 <button type="button" onclick="window.closeNotificationsModal()" class="text-gray-500 hover:text-gray-800 dark:hover:text-white text-xl px-2"><i class="fa-solid fa-xmark"></i></button>
             </div>
             <div class="flex justify-between items-center mb-2">
-                <span class="text-[11px] text-gray-500">التنبيهات الواردة لصفحتك:</span>
+                <span class="text-[11px] text-gray-500">التنبيهات والمشاريع الجديدة:</span>
                 <button type="button" onclick="window.markAllNotificationsRead()" class="text-[10px] bg-goldaccent/10 text-goldaccent border border-goldaccent/30 px-2 py-1 rounded-lg font-bold">تحديد الكل مقروء</button>
             </div>
             <div id="notificationsListContainer" class="overflow-y-auto flex-grow space-y-2.5 pr-1"></div>
@@ -195,15 +174,15 @@
         <div class="bg-lightcard dark:bg-cardbg border border-gray-300 dark:border-gray-800 w-full max-w-md rounded-2xl p-5 shadow-2xl max-h-[92vh] flex flex-col transition-colors duration-300">
             <div class="flex justify-between items-center border-b border-gray-200 dark:border-gray-800 pb-3 mb-3">
                 <h3 class="text-base font-bold text-goldaccent flex items-center gap-2">
-                    <i class="fa-solid fa-comment-dots"></i> إرسال ملاحظة أو رسالة للإدارة
+                    <i class="fa-solid fa-comment-dots"></i> إرسال ملاحظة للإدارة
                 </h3>
                 <button type="button" onclick="window.closeFeedbackModal()" class="text-gray-500 hover:text-gray-800 dark:hover:text-white text-xl px-2"><i class="fa-solid fa-xmark"></i></button>
             </div>
             <div class="overflow-y-auto flex-grow space-y-3 text-xs">
-                <input type="text" id="feedbackSenderName" placeholder="اسمك أو اسم العضو (اختياري)" class="w-full bg-lightbg dark:bg-darkbg border border-gray-300 dark:border-gray-700 rounded-xl p-2.5 text-gray-900 dark:text-white outline-none font-medium">
-                <input type="text" id="feedbackSenderContact" placeholder="رقم الواتساب أو وسيلة التواصل (اختياري)" class="w-full bg-lightbg dark:bg-darkbg border border-gray-300 dark:border-gray-700 rounded-xl p-2.5 text-gray-900 dark:text-white outline-none font-medium">
-                <textarea id="feedbackMessage" placeholder="اكتب ملاحظتك هنا بالتفصيل..." class="w-full bg-lightbg dark:bg-darkbg border border-gray-300 dark:border-gray-700 rounded-xl p-2.5 text-gray-900 dark:text-white outline-none h-28 resize-none font-medium"></textarea>
-                <button type="button" onclick="window.submitFeedback()" class="w-full bg-goldaccent text-black font-extrabold py-3 rounded-xl mt-2 shadow-sm">إرسال الملاحظة للإدارة</button>
+                <input type="text" id="feedbackSenderName" placeholder="اسمك الكريم" class="w-full bg-lightbg dark:bg-darkbg border border-gray-300 dark:border-gray-700 rounded-xl p-2.5 text-gray-900 dark:text-white outline-none font-medium">
+                <input type="text" id="feedbackSenderContact" placeholder="رقم الواتساب للتواصل" class="w-full bg-lightbg dark:bg-darkbg border border-gray-300 dark:border-gray-700 rounded-xl p-2.5 text-gray-900 dark:text-white outline-none font-medium">
+                <textarea id="feedbackMessage" placeholder="اكتب ملاحظتك هنا..." class="w-full bg-lightbg dark:bg-darkbg border border-gray-300 dark:border-gray-700 rounded-xl p-2.5 text-gray-900 dark:text-white outline-none h-28 resize-none font-medium"></textarea>
+                <button type="button" onclick="window.submitFeedback()" class="w-full bg-goldaccent text-black font-extrabold py-3 rounded-xl mt-2 shadow-sm">إرسال الملاحظة</button>
             </div>
         </div>
     </div>
@@ -213,17 +192,17 @@
         <div class="bg-lightcard dark:bg-cardbg border border-gray-300 dark:border-gray-800 w-full max-w-md rounded-2xl p-5 shadow-2xl max-h-[92vh] flex flex-col transition-colors duration-300">
             <div class="flex justify-between items-center border-b border-gray-200 dark:border-gray-800 pb-3 mb-3">
                 <h3 class="text-base font-bold text-cyanaccent flex items-center gap-2">
-                    <i class="fa-solid fa-user-plus"></i> انضم إلى منصة شجرة الروابط
+                    <i class="fa-solid fa-user-plus"></i> انضم إلينا
                 </h3>
                 <button type="button" onclick="window.closeJoinModal()" class="text-gray-500 hover:text-gray-800 dark:hover:text-white text-xl px-2"><i class="fa-solid fa-xmark"></i></button>
             </div>
             <div class="overflow-y-auto flex-grow space-y-3 text-xs">
                 <input type="text" id="joinUsername" placeholder="معرف الصفحة بالإنجليزية (مثال: ahmad)" class="w-full bg-lightbg dark:bg-darkbg border border-gray-300 dark:border-gray-700 rounded-xl p-2.5 text-gray-900 dark:text-white outline-none font-medium">
-                <input type="text" id="joinDisplayName" placeholder="اسمك الكامل أو اسم نشاطك" class="w-full bg-lightbg dark:bg-darkbg border border-gray-300 dark:border-gray-700 rounded-xl p-2.5 text-gray-900 dark:text-white outline-none font-medium">
-                <textarea id="joinBio" placeholder="نبذة مختصرة عن خدماتك..." class="w-full bg-lightbg dark:bg-darkbg border border-gray-300 dark:border-gray-700 rounded-xl p-2.5 text-gray-900 dark:text-white outline-none h-20 resize-none font-medium"></textarea>
-                <input type="url" id="joinAvatar" placeholder="رابط صورتك الشخصية من ImgBB (اختياري)" class="w-full bg-lightbg dark:bg-darkbg border border-gray-300 dark:border-gray-700 rounded-xl p-2.5 text-gray-900 dark:text-white outline-none font-medium">
-                <input type="text" id="joinWhatsapp" placeholder="رقم الواتساب للتواصل (مع رمز الدولة)" class="w-full bg-lightbg dark:bg-darkbg border border-gray-300 dark:border-gray-700 rounded-xl p-2.5 text-gray-900 dark:text-white outline-none font-medium">
-                <button type="button" onclick="window.submitJoinRequest()" class="w-full bg-cyanaccent text-black font-extrabold py-3 rounded-xl mt-2 shadow-sm">إرسال طلب الانضمام للإدارة</button>
+                <input type="text" id="joinDisplayName" placeholder="اسمك الكامل أو نشاطك" class="w-full bg-lightbg dark:bg-darkbg border border-gray-300 dark:border-gray-700 rounded-xl p-2.5 text-gray-900 dark:text-white outline-none font-medium">
+                <textarea id="joinBio" placeholder="نبذة مختصرة..." class="w-full bg-lightbg dark:bg-darkbg border border-gray-300 dark:border-gray-700 rounded-xl p-2.5 text-gray-900 dark:text-white outline-none h-20 resize-none font-medium"></textarea>
+                <input type="url" id="joinAvatar" placeholder="رابط صورتك الشخصية" class="w-full bg-lightbg dark:bg-darkbg border border-gray-300 dark:border-gray-700 rounded-xl p-2.5 text-gray-900 dark:text-white outline-none font-medium">
+                <input type="text" id="joinWhatsapp" placeholder="رقم الواتساب مع رمز الدولة" class="w-full bg-lightbg dark:bg-darkbg border border-gray-300 dark:border-gray-700 rounded-xl p-2.5 text-gray-900 dark:text-white outline-none font-medium">
+                <button type="button" onclick="window.submitJoinRequest()" class="w-full bg-cyanaccent text-black font-extrabold py-3 rounded-xl mt-2 shadow-sm">إرسال طلب الانضمام</button>
             </div>
         </div>
     </div>
@@ -337,26 +316,26 @@
             </div>
             <div class="overflow-y-auto flex-grow pr-1 space-y-3 text-xs">
 
-                <!-- Send Notification / Broadcast Section -->
+                <!-- قسم إرسال الإشعارات الفورية الجماعية -->
                 <div class="bg-lightbg dark:bg-darkbg rounded-xl border border-gray-300 dark:border-gray-800 overflow-hidden transition-colors">
                     <button type="button" onclick="window.toggleAccordion('accBroadcast')" class="w-full p-3 flex justify-between items-center font-bold text-gray-800 dark:text-gray-200">
-                        <span class="flex items-center gap-2"><i class="fa-solid fa-paper-plane text-goldaccent"></i> إرسال إشعار جماعي أو فردي للأعضاء</span>
+                        <span class="flex items-center gap-2"><i class="fa-solid fa-paper-plane text-goldaccent"></i> إرسال إشعار فوري لجميع الهواتف</span>
                         <i id="icon-accBroadcast" class="fa-solid fa-chevron-down transition-transform"></i>
                     </button>
                     <div id="accBroadcast" class="hidden p-3 pt-0 space-y-3 border-t border-gray-200 dark:border-gray-800 mt-1">
                         <div class="space-y-2 mt-2">
                             <label class="block font-bold text-gray-800 dark:text-gray-200">إرسال إلى:</label>
                             <select id="broadcastTargetUser" class="w-full bg-lightcard dark:bg-cardbg border border-gray-300 dark:border-gray-700 rounded-lg p-2 text-gray-900 dark:text-white outline-none">
-                                <option value="all">جميع الأعضاء في المنصة (Broadcast)</option>
+                                <option value="all">جميع الزوار والأعضاء (إشعار شامل لكل الهواتف)</option>
                             </select>
-                            <input type="text" id="broadcastTitle" placeholder="عنوان الإشعار (مثال: تحديث هام في النظام)" class="w-full bg-lightcard dark:bg-cardbg border border-gray-300 dark:border-gray-700 rounded-lg p-2 text-gray-900 dark:text-white outline-none">
-                            <textarea id="broadcastMessage" placeholder="نص الرسالة أو الإشعار..." class="w-full bg-lightcard dark:bg-cardbg border border-gray-300 dark:border-gray-700 rounded-lg p-2 text-gray-900 dark:text-white outline-none h-20 resize-none"></textarea>
-                            <button type="button" onclick="window.sendPlatformNotification()" class="w-full bg-goldaccent text-black font-bold py-2 rounded-lg shadow-sm">إرسال الإشعار الآن</button>
+                            <input type="text" id="broadcastTitle" placeholder="عنوان الإشعار (مثال: مشروع جديد مضاف الآن! 🔥)" class="w-full bg-lightcard dark:bg-cardbg border border-gray-300 dark:border-gray-700 rounded-lg p-2 text-gray-900 dark:text-white outline-none">
+                            <textarea id="broadcastMessage" placeholder="نص تفاصيل الإشعار الذي سيظهر في لوحة إشعارات الهواتف..." class="w-full bg-lightcard dark:bg-cardbg border border-gray-300 dark:border-gray-700 rounded-lg p-2 text-gray-900 dark:text-white outline-none h-20 resize-none"></textarea>
+                            <button type="button" onclick="window.sendPlatformNotification()" class="w-full bg-goldaccent text-black font-bold py-2 rounded-lg shadow-sm">إرسال الإشعار الفوري الآن 🚀</button>
                         </div>
                     </div>
                 </div>
 
-                <!-- Advanced Design & Style Customization Section (Accordion Foldable) -->
+                <!-- إعدادات التصميم -->
                 <div class="bg-lightbg dark:bg-darkbg rounded-xl border border-gray-300 dark:border-gray-800 overflow-hidden transition-colors">
                     <button type="button" onclick="window.toggleAccordion('accDesignAdmin')" class="w-full p-3 flex justify-between items-center font-bold text-gray-800 dark:text-gray-200">
                         <span class="flex items-center gap-2"><i class="fa-solid fa-palette text-goldaccent"></i> إعدادات التصميم والتخصيص البصري</span>
@@ -368,7 +347,7 @@
                     <div id="accDesignAdmin" class="hidden p-3 pt-0 space-y-3 border-t border-gray-200 dark:border-gray-800 mt-1">
                         <div class="flex justify-between items-center pt-2">
                             <span class="text-[11px] text-gray-500">إدارة مظهر الصفحة بالكامل</span>
-                            <button type="button" onclick="window.resetDesignDefaults()" class="bg-red-500/10 text-red-500 border border-red-500/30 px-2.5 py-1 rounded-lg text-[10px] font-bold hover:bg-red-500/20 transition">استعادة التصميم الأساسي</button>
+                            <button type="button" onclick="window.resetDesignDefaults()" class="bg-red-500/10 text-red-500 border border-red-500/30 px-2.5 py-1 rounded-lg text-[10px] font-bold hover:bg-red-500/20 transition">استعادة التصميم الأساسي (شفافية 0)</button>
                         </div>
                         
                         <div>
@@ -418,9 +397,9 @@
                             </select>
                         </div>
 
-                        <!-- اختيار تدرج الألوان المخصص مع درجة الشفافية -->
+                        <!-- تدرج الألوان مع الشفافية 0 افتراضياً -->
                         <div class="bg-white dark:bg-cardbg p-3 rounded-xl border border-gray-300 dark:border-gray-700 space-y-3">
-                            <label class="block font-bold text-gray-800 dark:text-gray-200">تدرج الألوان المخصص (مع إمكانية تحديد الشفافية):</label>
+                            <label class="block font-bold text-gray-800 dark:text-gray-200">تدرج الألوان المخصص (الشفافية 0 افتراضياً):</label>
                             <div class="grid grid-cols-3 gap-2">
                                 <div class="space-y-1">
                                     <span class="text-[10px] text-gray-500 block">اللون 1</span>
@@ -449,12 +428,11 @@
                             </div>
                         </div>
 
-                        <!-- خلفية الصورة مع شفافيتها -->
                         <div class="bg-white dark:bg-cardbg p-3 rounded-xl border border-gray-300 dark:border-gray-700 space-y-2">
                             <label class="block font-bold text-gray-800 dark:text-gray-200">صورة خلفية الصفحة المخصصة:</label>
                             <input type="url" id="adminBgImageUrl" placeholder="https://example.com/bg.jpg" class="w-full bg-lightbg dark:bg-darkbg border border-gray-300 dark:border-gray-700 rounded-lg p-2 text-gray-900 dark:text-white outline-none">
                             <div class="flex items-center justify-between pt-1">
-                                <span class="text-[10px] text-gray-500">درجة شفافية الخلفية (العتامة):</span>
+                                <span class="text-[10px] text-gray-500">درجة شفافية الخلفية:</span>
                                 <span id="adminBgImgOpacityVal" class="text-[10px] font-bold text-goldaccent">0.6</span>
                             </div>
                             <input type="range" id="adminBgImgOpacity" min="0.1" max="1" step="0.05" value="0.6" class="w-full accent-goldaccent">
@@ -462,7 +440,7 @@
                     </div>
                 </div>
 
-                <!-- Map Management Section -->
+                <!-- إعدادات الخريطة -->
                 <div class="bg-lightbg dark:bg-darkbg rounded-xl border border-gray-300 dark:border-gray-800 p-3 space-y-2">
                     <h4 class="font-bold text-goldaccent flex items-center gap-2"><i class="fa-solid fa-map-location-dot"></i> إعدادات الخريطة الجغرافية</h4>
                     <div class="flex items-center gap-2">
@@ -473,7 +451,7 @@
                     <textarea id="adminMapEmbed" placeholder="كود التضمين iframe src لخرائط جوجل" class="w-full bg-lightcard dark:bg-cardbg border border-gray-300 dark:border-gray-700 rounded-lg p-2 text-gray-900 dark:text-white outline-none h-16 text-[11px] font-mono"></textarea>
                 </div>
 
-                <!-- Feedback -->
+                <!-- الملاحظات -->
                 <div class="bg-lightbg dark:bg-darkbg rounded-xl border border-gray-300 dark:border-gray-800 overflow-hidden transition-colors">
                     <button type="button" onclick="window.toggleAccordion('accFeedback')" class="w-full p-3 flex justify-between items-center font-bold text-gray-800 dark:text-gray-200">
                         <span class="flex items-center gap-2"><i class="fa-solid fa-comment-dots text-goldaccent"></i> ملاحظات ورسائل الأعضاء</span>
@@ -484,7 +462,7 @@
                     </div>
                 </div>
 
-                <!-- Join Requests -->
+                <!-- طلبات الأعضاء -->
                 <div class="bg-lightbg dark:bg-darkbg rounded-xl border border-gray-300 dark:border-gray-800 overflow-hidden transition-colors">
                     <button type="button" onclick="window.toggleAccordion('accJoinRequests')" class="w-full p-3 flex justify-between items-center font-bold text-gray-800 dark:text-gray-200">
                         <span class="flex items-center gap-2"><i class="fa-solid fa-users-gear text-cyanaccent"></i> طلبات الأعضاء والأعضاء المقبولين</span>
@@ -498,7 +476,7 @@
                     </div>
                 </div>
 
-                <!-- Profile -->
+                <!-- الملف الشخصي -->
                 <div class="bg-lightbg dark:bg-darkbg rounded-xl border border-gray-300 dark:border-gray-800 overflow-hidden transition-colors">
                     <button type="button" onclick="window.toggleAccordion('accProfile')" class="w-full p-3 flex justify-between items-center font-bold text-gray-800 dark:text-gray-200">
                         <span class="flex items-center gap-2"><i class="fa-solid fa-user-pen text-goldaccent"></i> الملف الشخصي والصورة للرئيسي</span>
@@ -514,7 +492,7 @@
                     </div>
                 </div>
 
-                <!-- Contacts -->
+                <!-- معلومات الاتصال -->
                 <div class="bg-lightbg dark:bg-darkbg rounded-xl border border-gray-300 dark:border-gray-800 overflow-hidden transition-colors">
                     <button type="button" onclick="window.toggleAccordion('accContacts')" class="w-full p-3 flex justify-between items-center font-bold text-gray-800 dark:text-gray-200">
                         <span class="flex items-center gap-2"><i class="fa-solid fa-address-book text-goldaccent"></i> معلومات الاتصال</span>
@@ -527,10 +505,10 @@
                     </div>
                 </div>
 
-                <!-- Sidebar Admin -->
+                <!-- إدارة القائمة الجانبية -->
                 <div class="bg-lightbg dark:bg-darkbg rounded-xl border border-gray-300 dark:border-gray-800 overflow-hidden transition-colors">
                     <button type="button" onclick="window.toggleAccordion('accSidebarAdmin')" class="w-full p-3 flex justify-between items-center font-bold text-gray-800 dark:text-gray-200">
-                        <span class="flex items-center gap-2"><i class="fa-solid fa-compass text-goldaccent"></i> إدارة القائمة الجانبية (تشغيل/إيقاف وترتيب)</span>
+                        <span class="flex items-center gap-2"><i class="fa-solid fa-compass text-goldaccent"></i> إدارة القائمة الجانبية</span>
                         <i id="icon-accSidebarAdmin" class="fa-solid fa-chevron-down transition-transform"></i>
                     </button>
                     <div id="accSidebarAdmin" class="hidden p-3 pt-0 space-y-3 border-t border-gray-200 dark:border-gray-800 mt-1">
@@ -540,12 +518,12 @@
                             <input type="text" id="sidebarTitle" placeholder="عنوان العنصر" class="w-full bg-lightcard dark:bg-cardbg border border-gray-300 dark:border-gray-700 rounded-lg p-2 text-gray-900 dark:text-white outline-none">
                             <input type="text" id="sidebarUrl" placeholder="الرابط #" class="w-full bg-lightcard dark:bg-cardbg border border-gray-300 dark:border-gray-700 rounded-lg p-2 text-gray-900 dark:text-white outline-none">
                             <div class="flex gap-2">
-                                <input type="text" id="sidebarIcon" placeholder="أيقونة fa-solid fa-lock" class="flex-1 bg-lightcard dark:bg-cardbg border border-gray-300 dark:border-gray-700 rounded-lg p-2 text-gray-900 dark:text-white outline-none">
-                                <input type="text" id="sidebarAction" placeholder="إجراء openPin" class="flex-1 bg-lightcard dark:bg-cardbg border border-gray-300 dark:border-gray-700 rounded-lg p-2 text-gray-900 dark:text-white outline-none">
+                                <input type="text" id="sidebarIcon" placeholder="أيقونة" class="flex-1 bg-lightcard dark:bg-cardbg border border-gray-300 dark:border-gray-700 rounded-lg p-2 text-gray-900 dark:text-white outline-none">
+                                <input type="text" id="sidebarAction" placeholder="إجراء" class="flex-1 bg-lightcard dark:bg-cardbg border border-gray-300 dark:border-gray-700 rounded-lg p-2 text-gray-900 dark:text-white outline-none">
                             </div>
                             <div class="flex items-center gap-2 pt-1 bg-goldaccent/10 p-2 rounded-lg border border-goldaccent/30">
                                 <input type="checkbox" id="sidebarEnabled" class="accent-goldaccent w-4 h-4" checked>
-                                <label for="sidebarEnabled" class="font-bold text-gray-900 dark:text-white text-xs">تفعيل وعرض العنصر في القائمة الجانبية</label>
+                                <label for="sidebarEnabled" class="font-bold text-gray-900 dark:text-white text-xs">تفعيل وعرض العنصر</label>
                             </div>
                             <div class="flex gap-2 pt-1">
                                 <button type="button" onclick="window.saveSidebarItem()" class="flex-1 bg-goldaccent text-black font-bold py-2 rounded-lg">حفظ</button>
@@ -556,27 +534,27 @@
                     </div>
                 </div>
 
-                <!-- Gallery Admin -->
+                <!-- إدارة المشاريع (مع إرسال إشعار تلقائي عند النشر) -->
                 <div class="bg-lightbg dark:bg-darkbg rounded-xl border border-gray-300 dark:border-gray-800 overflow-hidden transition-colors">
                     <button type="button" onclick="window.toggleAccordion('accGalleryAdmin')" class="w-full p-3 flex justify-between items-center font-bold text-gray-800 dark:text-gray-200">
-                        <span class="flex items-center gap-2"><i class="fa-solid fa-images text-goldaccent"></i> إدارة المشاريع (تشغيل/إيقاف وترتيب)</span>
+                        <span class="flex items-center gap-2"><i class="fa-solid fa-images text-goldaccent"></i> إدارة المشاريع والأعمال</span>
                         <i id="icon-accGalleryAdmin" class="fa-solid fa-chevron-down transition-transform"></i>
                     </button>
                     <div id="accGalleryAdmin" class="hidden p-3 pt-0 space-y-3 border-t border-gray-200 dark:border-gray-800 mt-1">
                         <div class="space-y-2 mt-2">
-                            <h4 id="galleryFormTitle" class="font-bold text-goldaccent">إضافة مشروع</h4>
+                            <h4 id="galleryFormTitle" class="font-bold text-goldaccent">إضافة مشروع جديد (يرسل إشعاراً فورياً للزوار)</h4>
                             <input type="hidden" id="editingGalleryId">
                             <input type="text" id="galleryTitle" placeholder="عنوان المشروع" class="w-full bg-lightcard dark:bg-cardbg border border-gray-300 dark:border-gray-700 rounded-lg p-2 text-gray-900 dark:text-white outline-none">
                             <input type="text" id="galleryCategory" placeholder="الفئة" class="w-full bg-lightcard dark:bg-cardbg border border-gray-300 dark:border-gray-700 rounded-lg p-2 text-gray-900 dark:text-white outline-none">
-                            <textarea id="galleryDesc" placeholder="التفاصيل..." class="w-full bg-lightcard dark:bg-cardbg border border-gray-300 dark:border-gray-700 rounded-lg p-2 text-gray-900 dark:text-white outline-none h-16 resize-none"></textarea>
-                            <input type="url" id="galleryCoverUrl" placeholder="رابط الغلاف" class="w-full bg-lightcard dark:bg-cardbg border border-gray-300 dark:border-gray-700 rounded-lg p-2 text-gray-900 dark:text-white outline-none">
+                            <textarea id="galleryDesc" placeholder="تفاصيل المشروع..." class="w-full bg-lightcard dark:bg-cardbg border border-gray-300 dark:border-gray-700 rounded-lg p-2 text-gray-900 dark:text-white outline-none h-16 resize-none"></textarea>
+                            <input type="url" id="galleryCoverUrl" placeholder="رابط الغلاف أو الصورة" class="w-full bg-lightcard dark:bg-cardbg border border-gray-300 dark:border-gray-700 rounded-lg p-2 text-gray-900 dark:text-white outline-none">
                             <textarea id="galleryExtraUrls" placeholder="روابط إضافية..." class="w-full bg-lightcard dark:bg-cardbg border border-gray-300 dark:border-gray-700 rounded-lg p-2 text-gray-900 dark:text-white outline-none h-16 text-[11px] font-mono"></textarea>
                             <div class="flex items-center gap-2 pt-1 bg-goldaccent/10 p-2 rounded-lg border border-goldaccent/30">
                                 <input type="checkbox" id="galleryEnabled" class="accent-goldaccent w-4 h-4" checked>
                                 <label for="galleryEnabled" class="font-bold text-gray-900 dark:text-white text-xs">تفعيل وعرض المشروع في المعرض</label>
                             </div>
                             <div class="flex gap-2 pt-1">
-                                <button type="button" onclick="window.saveGalleryItem()" class="flex-1 bg-goldaccent text-black font-bold py-2 rounded-lg">حفظ</button>
+                                <button type="button" onclick="window.saveGalleryItem()" class="flex-1 bg-goldaccent text-black font-bold py-2 rounded-lg">حفظ ونشر المشروع</button>
                                 <button type="button" onclick="window.resetGalleryForm()" class="bg-gray-200 dark:bg-gray-800 text-gray-800 dark:text-gray-200 px-3 py-2 rounded-lg font-bold">إلغاء</button>
                             </div>
                         </div>
@@ -584,10 +562,10 @@
                     </div>
                 </div>
 
-                <!-- Categories -->
+                <!-- الفئات -->
                 <div class="bg-lightbg dark:bg-darkbg rounded-xl border border-gray-300 dark:border-gray-800 overflow-hidden transition-colors">
                     <button type="button" onclick="window.toggleAccordion('accCategories')" class="w-full p-3 flex justify-between items-center font-bold text-gray-800 dark:text-gray-200">
-                        <span class="flex items-center gap-2"><i class="fa-solid fa-folder-tree text-goldaccent"></i> إدارة الفئات (تشغيل/إيقاف وترتيب)</span>
+                        <span class="flex items-center gap-2"><i class="fa-solid fa-folder-tree text-goldaccent"></i> إدارة الفئات</span>
                         <i id="icon-accCategories" class="fa-solid fa-chevron-down transition-transform"></i>
                     </button>
                     <div id="accCategories" class="hidden p-3 pt-0 space-y-3 border-t border-gray-200 dark:border-gray-800 mt-1">
@@ -602,10 +580,10 @@
                     </div>
                 </div>
 
-                <!-- Links Management -->
+                <!-- الروابط -->
                 <div class="bg-lightbg dark:bg-darkbg rounded-xl border border-gray-300 dark:border-gray-800 overflow-hidden transition-colors">
                     <button type="button" onclick="window.toggleAccordion('accLinks')" class="w-full p-3 flex justify-between items-center font-bold text-gray-800 dark:text-gray-200">
-                        <span class="flex items-center gap-2"><i class="fa-solid fa-link text-goldaccent"></i> إدارة الروابط (تشغيل/إيقاف وترتيب)</span>
+                        <span class="flex items-center gap-2"><i class="fa-solid fa-link text-goldaccent"></i> إدارة الروابط</span>
                         <i id="icon-accLinks" class="fa-solid fa-chevron-down transition-transform"></i>
                     </button>
                     <div id="accLinks" class="hidden p-3 pt-0 space-y-3 border-t border-gray-200 dark:border-gray-800 mt-1">
@@ -620,7 +598,7 @@
                             </div>
                             <div class="flex items-center gap-2 pt-1 bg-goldaccent/10 p-2 rounded-lg border border-goldaccent/30">
                                 <input type="checkbox" id="linkEnabled" class="accent-goldaccent w-4 h-4" checked>
-                                <label for="linkEnabled" class="font-bold text-gray-900 dark:text-white text-xs">تفعيل وعرض الرابط في الصفحة الرئيسية</label>
+                                <label for="linkEnabled" class="font-bold text-gray-900 dark:text-white text-xs">تفعيل وعرض الرابط</label>
                             </div>
                             <div class="flex gap-2 pt-1">
                                 <button type="button" onclick="window.saveLink()" class="flex-1 bg-goldaccent text-black font-bold py-2 rounded-lg">حفظ</button>
@@ -631,7 +609,7 @@
                     </div>
                 </div>
 
-                <!-- Security -->
+                <!-- الأمان -->
                 <div class="bg-lightbg dark:bg-darkbg rounded-xl border border-gray-300 dark:border-gray-800 overflow-hidden transition-colors">
                     <button type="button" onclick="window.toggleAccordion('accSecurity')" class="w-full p-3 flex justify-between items-center font-bold text-gray-800 dark:text-gray-200">
                         <span class="flex items-center gap-2"><i class="fa-solid fa-key text-goldaccent"></i> تغيير رمز PIN</span>
@@ -665,7 +643,6 @@
             </div>
             <div class="overflow-y-auto flex-grow pr-1 space-y-3 text-xs">
 
-                <!-- Advanced Design Customization for Member (Accordion Foldable) -->
                 <div class="bg-lightbg dark:bg-darkbg rounded-xl border border-gray-300 dark:border-gray-800 overflow-hidden transition-colors">
                     <button type="button" onclick="window.toggleAccordion('accDesignMember')" class="w-full p-3 flex justify-between items-center font-bold text-gray-800 dark:text-gray-200">
                         <span class="flex items-center gap-2"><i class="fa-solid fa-palette text-cyanaccent"></i> إعدادات التصميم لصفحتك</span>
@@ -677,7 +654,7 @@
                     <div id="accDesignMember" class="hidden p-3 pt-0 space-y-2 border-t border-gray-200 dark:border-gray-800 mt-1">
                         <div class="flex justify-between items-center pt-2">
                             <span class="text-[11px] text-gray-500">تخصيص مظهر صفحتك المستقلة</span>
-                            <button type="button" onclick="window.resetMemberDesignDefaults()" class="bg-red-500/10 text-red-500 border border-red-500/30 px-2.5 py-1 rounded-lg text-[10px] font-bold">استعادة الافتراضي</button>
+                            <button type="button" onclick="window.resetMemberDesignDefaults()" class="bg-red-500/10 text-red-500 border border-red-500/30 px-2.5 py-1 rounded-lg text-[10px] font-bold">استعادة الافتراضي (شفافية 0)</button>
                         </div>
                         <div>
                             <label class="block font-bold text-gray-800 dark:text-gray-200 mb-1">شكل صورتك الشخصية:</label>
@@ -722,9 +699,8 @@
                             </select>
                         </div>
 
-                        <!-- اختيار تدرج الألوان المخصص للعضو مع الشفافية -->
                         <div class="bg-white dark:bg-cardbg p-3 rounded-xl border border-gray-300 dark:border-gray-700 space-y-3">
-                            <label class="block font-bold text-gray-800 dark:text-gray-200">تدرج الألوان المخصص (مع إمكانية تحديد الشفافية):</label>
+                            <label class="block font-bold text-gray-800 dark:text-gray-200">تدرج الألوان المخصص (الشفافية 0 افتراضياً):</label>
                             <div class="grid grid-cols-3 gap-2">
                                 <div class="space-y-1">
                                     <span class="text-[10px] text-gray-500 block">اللون 1</span>
@@ -753,12 +729,11 @@
                             </div>
                         </div>
 
-                        <!-- خلفية الصورة مع شفافيتها للعضو -->
                         <div class="bg-white dark:bg-cardbg p-3 rounded-xl border border-gray-300 dark:border-gray-700 space-y-2">
                             <label class="block font-bold text-gray-800 dark:text-gray-200">صورة خلفية صفحتك المخصصة:</label>
                             <input type="url" id="memberBgImageUrl" placeholder="https://example.com/bg.jpg" class="w-full bg-lightcard dark:bg-cardbg border border-gray-300 dark:border-gray-700 rounded-lg p-2 text-gray-900 dark:text-white outline-none">
                             <div class="flex items-center justify-between pt-1">
-                                <span class="text-[10px] text-gray-500">درجة شفافية الخلفية (العتامة):</span>
+                                <span class="text-[10px] text-gray-500">درجة شفافية الخلفية:</span>
                                 <span id="memberBgImgOpacityVal" class="text-[10px] font-bold text-cyanaccent">0.6</span>
                             </div>
                             <input type="range" id="memberBgImgOpacity" min="0.1" max="1" step="0.05" value="0.6" class="w-full accent-cyanaccent">
@@ -766,7 +741,6 @@
                     </div>
                 </div>
 
-                <!-- Map Management for Member -->
                 <div class="bg-lightbg dark:bg-darkbg rounded-xl border border-gray-300 dark:border-gray-800 p-3 space-y-2">
                     <h4 class="font-bold text-cyanaccent flex items-center gap-2"><i class="fa-solid fa-map-location-dot"></i> إعدادات الخريطة الجغرافية لصفحتك</h4>
                     <div class="flex items-center gap-2">
@@ -777,7 +751,6 @@
                     <textarea id="memberMapEmbed" placeholder="كود التضمين iframe src لخرائط جوجل" class="w-full bg-lightcard dark:bg-cardbg border border-gray-300 dark:border-gray-700 rounded-lg p-2 text-gray-900 dark:text-white outline-none h-16 text-[11px] font-mono"></textarea>
                 </div>
 
-                <!-- Profile Edit -->
                 <div class="bg-lightbg dark:bg-darkbg rounded-xl border border-gray-300 dark:border-gray-800 p-3 space-y-2">
                     <h4 class="font-bold text-cyanaccent">تعديل معلومات صفحتك والصورة وكلمة المرور</h4>
                     <input type="text" id="memberEditName" placeholder="اسمك الظاهر" class="w-full bg-lightcard dark:bg-cardbg border border-gray-300 dark:border-gray-700 rounded-lg p-2 text-gray-900 dark:text-white outline-none">
@@ -790,7 +763,6 @@
                     </div>
                 </div>
 
-                <!-- Contacts -->
                 <div class="bg-lightbg dark:bg-darkbg rounded-xl border border-gray-300 dark:border-gray-800 p-3 space-y-2">
                     <h4 class="font-bold text-cyanaccent"><i class="fa-solid fa-address-book"></i> معلومات الاتصال</h4>
                     <div class="flex items-center gap-2 mt-1"><input type="checkbox" id="memberShowWhatsapp" class="accent-cyanaccent"><input type="text" id="memberEditWhatsapp" placeholder="واتساب" class="flex-1 bg-lightcard dark:bg-cardbg border border-gray-300 dark:border-gray-700 rounded-lg p-2 text-gray-900 dark:text-white outline-none"></div>
@@ -798,9 +770,8 @@
                     <div class="flex items-center gap-2"><input type="checkbox" id="memberShowEmail" class="accent-cyanaccent"><input type="email" id="memberEditEmail" placeholder="إيميل" class="flex-1 bg-lightcard dark:bg-cardbg border border-gray-300 dark:border-gray-700 rounded-lg p-2 text-gray-900 dark:text-white outline-none"></div>
                 </div>
 
-                <!-- Gallery -->
                 <div class="bg-lightbg dark:bg-darkbg rounded-xl border border-gray-300 dark:border-gray-800 p-3 space-y-2">
-                    <h4 id="memberGalleryFormTitle" class="font-bold text-cyanaccent">إدارة المشاريع (تشغيل/إيقاف وترتيب)</h4>
+                    <h4 id="memberGalleryFormTitle" class="font-bold text-cyanaccent">إدارة المشاريع</h4>
                     <input type="hidden" id="memberEditingGalleryId">
                     <input type="text" id="memberGalleryTitle" placeholder="عنوان المشروع" class="w-full bg-lightcard dark:bg-cardbg border border-gray-300 dark:border-gray-700 rounded-lg p-2 text-gray-900 dark:text-white outline-none">
                     <input type="text" id="memberGalleryCategory" placeholder="الفئة" class="w-full bg-lightcard dark:bg-cardbg border border-gray-300 dark:border-gray-700 rounded-lg p-2 text-gray-900 dark:text-white outline-none">
@@ -818,16 +789,15 @@
                     <div id="memberGalleryList" class="space-y-1.5 pt-2 border-t border-gray-200 dark:border-gray-700"></div>
                 </div>
 
-                <!-- Links -->
                 <div class="bg-lightbg dark:bg-darkbg rounded-xl border border-gray-300 dark:border-gray-800 p-3 space-y-2">
-                    <h4 id="memberLinkFormTitle" class="font-bold text-cyanaccent">إدارة الروابط (تشغيل/إيقاف وترتيب)</h4>
+                    <h4 id="memberLinkFormTitle" class="font-bold text-cyanaccent">إدارة الروابط</h4>
                     <input type="hidden" id="memberEditingLinkId">
                     <input type="text" id="memberLinkTitle" placeholder="عنوان الرابط" class="w-full bg-lightcard dark:bg-cardbg border border-gray-300 dark:border-gray-700 rounded-lg p-2 text-gray-900 dark:text-white outline-none">
                     <input type="url" id="memberLinkUrl" placeholder="الرابط https://..." class="w-full bg-lightcard dark:bg-cardbg border border-gray-300 dark:border-gray-700 rounded-lg p-2 text-gray-900 dark:text-white outline-none">
                     <input type="text" id="memberLinkIcon" placeholder="أيقونة" class="w-full bg-lightcard dark:bg-cardbg border border-gray-300 dark:border-gray-700 rounded-lg p-2 text-gray-900 dark:text-white outline-none">
                     <div class="flex items-center gap-2 pt-1 bg-cyanaccent/10 p-2 rounded-lg border border-cyanaccent/30">
                         <input type="checkbox" id="memberLinkEnabled" class="accent-cyanaccent w-4 h-4" checked>
-                        <label for="memberLinkEnabled" class="font-bold text-gray-900 dark:text-white text-xs">تفعيل وعرض الرابط في الصفحة</label>
+                        <label for="memberLinkEnabled" class="font-bold text-gray-900 dark:text-white text-xs">تفعيل وعرض الرابط</label>
                     </div>
                     <div class="flex gap-2 pt-1">
                         <button type="button" onclick="window.saveMemberLinkItem()" class="flex-1 bg-cyanaccent text-black font-bold py-2 rounded-lg">حفظ الرابط</button>
@@ -844,7 +814,7 @@
         </div>
     </div>
 
-    <!-- Script Engine with Firebase -->
+    <!-- Script Engine with Firebase & Instant Notifications -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/13.2.0/firebase-app.js";
         import { getDatabase, ref, set, onValue } from "https://www.gstatic.com/firebasejs/13.2.0/firebase-database.js";
@@ -1053,7 +1023,7 @@
             }
         }
 
-        // نظام الإشعارات الوظائف الأساسية
+        // نظام مركز الإشعارات الفورية
         window.openNotificationsModal = function() {
             renderNotificationsList();
             document.getElementById('notificationsModal').classList.remove('hidden');
@@ -1092,7 +1062,7 @@
             });
 
             if (keys.length === 0) {
-                container.innerHTML = '<div class="text-center py-8 text-xs text-gray-500">لا توجد إشعارات حالياً.</div>';
+                container.innerHTML = '<div class="text-center py-8 text-xs text-gray-500">لا توجد إشعارات أو مشاريع جديدة حالياً.</div>';
                 return;
             }
 
@@ -1107,7 +1077,7 @@
                         </div>
                         <p class="text-xs text-gray-800 dark:text-gray-200 leading-relaxed">${n.message}</p>
                         <div class="flex justify-between items-center pt-2 border-t border-gray-200 dark:border-gray-800 mt-1">
-                            <span class="text-[10px] text-gray-400">من: ${n.sender || 'الإدارة'}</span>
+                            <span class="text-[10px] text-gray-400">بواسطة: ${n.sender || 'الإدارة'}</span>
                             <div class="flex gap-2">
                                 ${!n.read ? `<button type="button" onclick="window.markNotificationRead('${id}')" class="text-[10px] bg-emerald-500/20 text-emerald-600 px-2 py-0.5 rounded font-bold">تحديد مقروء</button>` : ''}
                                 <button type="button" onclick="window.deleteNotification('${id}')" class="text-[10px] bg-red-500/20 text-red-600 px-2 py-0.5 rounded font-bold">حذف</button>
@@ -1172,7 +1142,7 @@
                 createdAt: Date.now()
             };
             set(dbRef, rootData).then(() => {
-                alert('تم إرسال الإشعار بنجاح!');
+                alert('تم إرسال الإشعار الفوري بنجاح ووصل لجميع الهواتف المتصلة!');
                 document.getElementById('broadcastTitle').value = '';
                 document.getElementById('broadcastMessage').value = '';
             });
@@ -1620,7 +1590,7 @@
             document.getElementById('memberLinkUrl').value = '';
             document.getElementById('memberLinkIcon').value = '';
             document.getElementById('memberLinkEnabled').checked = true;
-            document.getElementById('memberLinkFormTitle').textContent = 'إدارة الروابط (تشغيل/إيقاف وترتيب)';
+            document.getElementById('memberLinkFormTitle').textContent = 'إدارة الروابط';
         };
 
         window.editMemberLinkItem = function(id) {
@@ -1702,7 +1672,7 @@
             document.getElementById('memberGalleryCoverUrl').value = '';
             document.getElementById('memberGalleryExtraUrls').value = '';
             document.getElementById('memberGalleryEnabled').checked = true;
-            document.getElementById('memberGalleryFormTitle').textContent = 'إدارة المشاريع (تشغيل/إيقاف وترتيب)';
+            document.getElementById('memberGalleryFormTitle').textContent = 'إدارة المشاريع';
         };
 
         window.editMemberGalleryItem = function(id) {
@@ -1838,10 +1808,9 @@
                 document.getElementById('editEmail').value = appData.contacts.email || '';
             }
 
-            // تحديث قائمة الأعضاء في select الإرسال الجماعي للإشعارات
             const broadcastSelect = document.getElementById('broadcastTargetUser');
             if (broadcastSelect) {
-                broadcastSelect.innerHTML = '<option value="all">جميع الأعضاء في المنصة (Broadcast)</option>';
+                broadcastSelect.innerHTML = '<option value="all">جميع الزوار والأعضاء (إشعار شامل لكل الهواتف)</option>';
                 Object.keys(rootData.users || {}).forEach(u => {
                     broadcastSelect.innerHTML += `<option value="${u}">عضو: ${rootData.users[u].displayName} (${u})</option>`;
                 });
@@ -2010,6 +1979,7 @@
             });
         }
 
+        // حفظ المشروع الجديد مع إرسال إشعار تلقائي لكل الهواتف المتصلة
         window.saveGalleryItem = function() {
             const id = document.getElementById('editingGalleryId').value;
             const title = document.getElementById('galleryTitle').value.trim();
@@ -2021,13 +1991,34 @@
 
             if (!title || !coverUrl) { alert('أدخل العنوان والغلاف'); return; }
             if (!appData.gallery) appData.gallery = [];
+
+            let isNew = !id;
             if (id) {
                 const item = appData.gallery.find(g => g.id === id);
                 if (item) { item.title = title; item.category = category; item.desc = desc; item.coverUrl = coverUrl; item.extraUrls = extraUrls; item.enabled = enabled; }
             } else {
-                appData.gallery.push({ id: 'g_' + Date.now(), title, category, desc, coverUrl, extraUrls, enabled });
+                const newId = 'g_' + Date.now();
+                appData.gallery.push({ id: newId, title, category, desc, coverUrl, extraUrls, enabled });
+
+                // إرسال إشعار فوري تلقائي لكل الهواتف عند إضافة مشروع جديد
+                if (!rootData.notifications) rootData.notifications = {};
+                const notifId = 'notif_' + Date.now();
+                rootData.notifications[notifId] = {
+                    id: notifId,
+                    target: 'all',
+                    title: '🔥 مشروع جديد تمت إضافته!',
+                    message: `تم إضافة مشروع جديد بعنوان: "${title}" في قسم (${category}). اضغط لرؤية التفاصيل.`,
+                    sender: appData.displayName || 'الإدارة',
+                    read: false,
+                    createdAt: Date.now()
+                };
             }
-            window.resetGalleryForm(); renderAdminGalleryList(); renderGalleryGrid();
+
+            window.resetGalleryForm();
+            saveDataToFirebase();
+            renderAdminGalleryList();
+            renderGalleryGrid();
+            alert(isNew ? 'تم نشر المشروع وإرسال إشعار فوري لجميع الهواتف بنجاح! 🔔' : 'تم تحديث المشروع بنجاح!');
         };
 
         window.resetGalleryForm = function() {
@@ -2038,7 +2029,7 @@
             document.getElementById('galleryCoverUrl').value = '';
             document.getElementById('galleryExtraUrls').value = '';
             document.getElementById('galleryEnabled').checked = true;
-            document.getElementById('galleryFormTitle').textContent = 'إضافة مشروع';
+            document.getElementById('galleryFormTitle').textContent = 'إضافة مشروع جديد (يرسل إشعاراً فورياً للزوار)';
         };
 
         window.editGalleryItem = function(id) {
