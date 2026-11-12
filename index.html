@@ -1346,7 +1346,6 @@
         };
 
         window.openAddTestimonialModal = function() {
-            // Check if user already submitted a review for this page
             const hasReviewed = localStorage.getItem('has_reviewed_' + currentUsername);
             if (hasReviewed === 'true') {
                 alert('عذراً، لقد قمت بإرسال تقييم مسبقاً! يحق لك تقييم واحد فقط لكل صفحة.');
@@ -1367,7 +1366,6 @@
         };
 
         window.submitVisitorTestimonial = function() {
-            // Double check rule in submit
             const hasReviewed = localStorage.getItem('has_reviewed_' + currentUsername);
             if (hasReviewed === 'true') {
                 alert('عذراً، لقد قمت بإرسال تقييم مسبقاً! يحق لك تقييم واحد فقط.');
@@ -1400,7 +1398,6 @@
 
             rootData.users[currentUsername] = appData;
             set(dbRef, rootData).then(() => {
-                // Mark as reviewed in localStorage
                 localStorage.setItem('has_reviewed_' + currentUsername, 'true');
 
                 if (needsApproval) {
@@ -1930,7 +1927,6 @@
                 return;
             }
 
-            // Check if already reviewed and update main button state if needed
             const hasReviewed = localStorage.getItem('has_reviewed_' + currentUsername);
             if (addBtn) {
                 if (hasReviewed === 'true') {
@@ -1958,7 +1954,6 @@
                 if (showAllBtn) showAllBtn.classList.add('hidden');
             }
 
-            // Render max 3 items on home page
             const homeItems = items.slice(0, 3);
             const cardShape = appData.cardShape || 'rounded-2xl';
             const cardStyle = appData.cardStyle || 'normal';
@@ -2382,10 +2377,12 @@
             cContainer.innerHTML = '';
             if (appData.contacts) {
                 if (appData.contacts.showWhatsapp && appData.contacts.whatsapp) {
-                    cContainer.innerHTML += `<a href="https://wa.me/${appData.contacts.whatsapp.replace(/[^0-9]/g, '')}" target="_blank" class="w-9 h-9 rounded-full bg-emerald-500/10 border border-emerald-500/30 text-emerald-600 dark:text-emerald-400 flex items-center justify-center font-bold" title="واتساب"><i class="fa-brands fa-whatsapp"></i></a>`;
+                    const cleanWhatsapp = appData.contacts.whatsapp.replace(/[^0-9]/g, '');
+                    cContainer.innerHTML += `<a href="https://wa.me/${cleanWhatsapp}" target="_blank" class="w-9 h-9 rounded-full bg-emerald-500/10 border border-emerald-500/30 text-emerald-600 dark:text-emerald-400 flex items-center justify-center font-bold" title="واتساب"><i class="fa-brands fa-whatsapp"></i></a>`;
                 }
                 if (appData.contacts.showPhone && appData.contacts.phone) {
-                    cContainer.innerHTML += `<a href="tel:${appData.contacts.phone}" class="w-9 h-9 rounded-full bg-cyanaccent/10 border border-cyanaccent/30 text-cyanaccent flex items-center justify-center font-bold" title="اتصال"><i class="fa-solid fa-phone"></i></a>`;
+                    const cleanPhone = appData.contacts.phone.replace(/[^0-9+]/g, '');
+                    cContainer.innerHTML += `<a href="tel:${cleanPhone}" class="w-9 h-9 rounded-full bg-cyanaccent/10 border border-cyanaccent/30 text-cyanaccent flex items-center justify-center font-bold" title="اتصال"><i class="fa-solid fa-phone"></i></a>`;
                 }
                 if (appData.contacts.showEmail && appData.contacts.email) {
                     cContainer.innerHTML += `<a href="mailto:${appData.contacts.email}" class="w-9 h-9 rounded-full bg-goldaccent/10 border border-goldaccent/30 text-goldaccent flex items-center justify-center font-bold" title="إيميل"><i class="fa-solid fa-envelope"></i></a>`;
