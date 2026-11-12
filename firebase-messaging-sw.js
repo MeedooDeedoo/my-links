@@ -1,5 +1,5 @@
-importScripts('https://www.gstatic.com/firebasejs/11.0.1/firebase-app-compat.js');
-importScripts('https://www.gstatic.com/firebasejs/11.0.1/firebase-messaging-compat.js');
+importScripts('https://www.gstatic.com/firebasejs/13.2.0/firebase-app-compat.js');
+importScripts('https://www.gstatic.com/firebasejs/13.2.0/firebase-messaging-compat.js');
 
 firebase.initializeApp({
     apiKey: "AIzaSyDDgTZjnufv21Hn_sb0YicHZg17n91lrfA",
@@ -13,12 +13,16 @@ firebase.initializeApp({
 
 const messaging = firebase.messaging();
 
+// استقبال الإشعارات في الخلفية وعندما يكون التطبيق مغلقاً
 messaging.onBackgroundMessage((payload) => {
-    console.log('[firebase-messaging-sw.js] Received background message ', payload);
-    const notificationTitle = payload.notification.title;
+    console.log('[firebase-messaging-sw.js] Received background message: ', payload);
+    
+    const notificationTitle = payload.notification?.title || 'تنبيه جديد من المنصة';
     const notificationOptions = {
-        body: payload.notification.body,
-        icon: payload.notification.icon || '/icon.png'
+        body: payload.notification?.body || 'يوجد تحديث أو مشروع جديد تم إضافته.',
+        icon: payload.notification?.icon || '/icon.png',
+        badge: '/icon.png',
+        data: payload.data
     };
 
     self.registration.showNotification(notificationTitle, notificationOptions);
