@@ -215,7 +215,7 @@
                 <span class="text-xs font-extrabold text-gray-900 dark:text-white flex items-center gap-1.5">
                     <i class="fa-solid fa-tags text-goldaccent"></i> كوبونات العروض والخصومات
                 </span>
-                <span class="text-[10px] font-bold text-goldaccent">نسخ الرمز ينقص من الرصيد 🏷️</span>
+                <span id="promoSectionHeaderNote" class="text-[10px] font-bold text-goldaccent">مسموح بنسخ كوبون واحد فقط لكل جهاز 🏷️</span>
             </div>
             <div id="promoCodesContainer" class="w-full grid grid-cols-1 gap-3"></div>
         </div>
@@ -1823,6 +1823,7 @@
         function renderPromoSection() {
             const sectionContainer = document.getElementById('promoSectionContainer');
             const container = document.getElementById('promoCodesContainer');
+            const headerNote = document.getElementById('promoSectionHeaderNote');
             if (!sectionContainer || !container) return;
 
             if (appData.showPromoSection === false) {
@@ -1830,7 +1831,7 @@
                 return;
             }
 
-            const items = (appData.promoCodes || []).filter(p => p.enabled !== false && (p.usesLeft === undefined || p.usesLeft > 0));
+            const items = (appData.promoCodes || []).filter(p => p.enabled !== false);
             if (items.length === 0) {
                 sectionContainer.classList.add('hidden');
                 return;
@@ -1839,11 +1840,30 @@
             sectionContainer.classList.remove('hidden');
             container.innerHTML = '';
 
+            const userAlreadyCopiedCoupon = localStorage.getItem('user_copied_coupon_' + currentUsername);
+            if (headerNote) {
+                headerNote.textContent = userAlreadyCopiedCoupon 
+                    ? 'لقد قمت بنسخ الكوبون المخصص لك مسبقاً ✅' 
+                    : 'مسموح بنسخ كوبون واحد فقط لكل جهاز 🏷️';
+            }
+
             const cardShape = appData.cardShape || 'rounded-2xl';
             const cardStyle = appData.cardStyle || 'normal';
 
             items.forEach(p => {
+                let buttonHTML = '';
                 const uses = p.usesLeft !== undefined ? p.usesLeft : 10;
+
+                if (userAlreadyCopiedCoupon) {
+                    if (userAlreadyCopiedCoupon === p.code) {
+                        buttonHTML = `<span class="bg-emerald-500/20 text-emerald-500 px-3 py-1 rounded-lg text-[11px] font-extrabold border border-emerald-500/30">الكوبون الخاص بك المحفوظ ✅</span>`;
+                    } else {
+                        buttonHTML = `<span class="text-[10px] text-gray-400 font-bold">عذراً، قمت بنسخ كوبون آخر مسبقاً</span>`;
+                    }
+                } else {
+                    buttonHTML = `<button type="button" onclick="window.copyPromoCodeAndLock('${p.id}', '${p.code}')" class="bg-goldaccent text-black px-3 py-1 rounded-lg text-[11px] font-extrabold shadow-sm hover:scale-105 transition"><i class="fa-solid fa-copy ml-1"></i> نسخ الرمز والاستخدام</button>`;
+                }
+
                 const card = document.createElement('div');
                 card.className = `w-full ${cardStyle === 'glass-card' ? 'glass-card' : 'bg-white dark:bg-cardbg'} border border-goldaccent/30 ${cardShape} p-3.5 shadow-sm space-y-2 relative overflow-hidden`;
                 card.innerHTML = `
@@ -1856,10 +1876,8 @@
                     </div>
                     <p class="text-xs text-gray-700 dark:text-gray-300 leading-relaxed">${p.desc}</p>
                     <div class="flex justify-between items-center pt-2 border-t border-gray-200 dark:border-gray-800 mt-1">
-                        <span class="text-[10px] text-gray-400">نسخ الكود سينقص رصيد الاستخدام تلقائياً</span>
-                        <button type="button" onclick="window.copyPromoCodeAndDecrement('${p.id}')" class="bg-goldaccent text-black px-3 py-1 rounded-lg text-[11px] font-extrabold shadow-sm hover:scale-105 transition">
-                            <i class="fa-solid fa-copy ml-1"></i> نسخ الرمز والاستخدام
-                        </button>
+                        <span class="text-[10px] text-gray-400">مسموح بنسخ كود واحد فقط لكل جهاز</span>
+                        ${buttonHTML}
                     </div>
                 `;
                 container.appendChild(card);
@@ -1875,7 +1893,14 @@
             document.getElementById('promoCodeVal').value = code;
         };
 
-        window.copyPromoCodeAndDecrement = function(id) {
+        window.copyPromoCodeAndLock = function(id, code) {
+            const alreadyCopied = localStorage.getItem('user_copied_coupon_' + currentUsername);
+            if (alreadyCopied) {
+                alert('عذراً، لا يمكنك نسخ كوبون آخر! لقد قمت بنسخ كوبون مسبقاً من هذا الجهاز.');
+                renderPromoSection();
+                return;
+            }
+
             const promo = (appData.promoCodes || []).find(p => p.id === id);
             if (!promo) return;
 
@@ -1889,15 +1914,18 @@
                 promo.usesLeft -= 1;
             }
 
+            // قفل الجهاز بحيث لا يمكنه نسخ أي كوبون آخر نهائياً
+            localStorage.setItem('user_copied_coupon_' + currentUsername, code);
+
             rootData.users[currentUsername] = appData;
             set(dbRef, rootData).then(() => {
-                navigator.clipboard.writeText(promo.code).then(() => {
-                    alert(`تم نسخ كود الخصم (${promo.code}) بنجاح!\nالمتبقي من مرات الاستخدام: ${promo.usesLeft}`);
+                navigator.clipboard.writeText(code).then(() => {
+                    alert(`تم نسخ كود الخصم (${code}) بنجاح!\nملاحظة: تم قفل إمكانية نسخ كوبونات أخرى من هذا الجهاز.`);
                     renderPromoSection();
                     renderAdminPromoList();
                 });
             }).catch(err => {
-                console.error("Promo decrement error:", err);
+                console.error("Promo lock error:", err);
             });
         };
 
@@ -3240,7 +3268,7 @@
                             <button type="button" onclick="window.moveLink(${index}, -1)" class="bg-gray-200 dark:bg-gray-700 text-goldaccent px-1.5 py-0.5 rounded text-[10px] font-bold">⬆️</button>
                             <button type="button" onclick="window.moveLink(${index}, 1)" class="bg-gray-200 dark:bg-gray-700 text-goldaccent px-1.5 py-0.5 rounded text-[10px] font-bold">⬇️</button>
                             <button type="button" onclick="window.editLink('${l.id}')" class="bg-blue-500/20 text-blue-600 dark:text-blue-400 px-2 py-0.5 rounded text-[10px] font-bold">تعديل</button>
-                            <button type="button" onclick="window.deleteLink('${l.id}')" class="bg-red-500/20 text-red-600 dark:text-red-400 px-2 py-0.5 rounded text-[10px] font-bold">حذف</button>
+                            <button type="button" onclick="window.deleteLink('${l.id}')" class="bg-red-500/20 text-red-600 px-2 py-0.5 rounded text-[10px] font-bold">حذف</button>
                         </div>
                     </div>`;
             });
