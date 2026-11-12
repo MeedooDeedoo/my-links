@@ -383,7 +383,7 @@
                     </div>
                 </div>
 
-                <!-- 🏷️ قسم إدارة الكوبونات والخصومات الترويجية (مع عدد المرات المتاح) -->
+                <!-- 🏷️ قسم إدارة الكوبونات والخصومات الترويجية (مع زر التوليد الآلي) -->
                 <div class="bg-lightbg dark:bg-darkbg rounded-xl border border-gray-300 dark:border-gray-800 overflow-hidden transition-colors">
                     <button type="button" onclick="window.toggleAccordion('accPromoAdmin')" class="w-full p-3 flex justify-between items-center font-bold text-gray-800 dark:text-gray-200">
                         <span class="flex items-center gap-2"><i class="fa-solid fa-tags text-goldaccent"></i> إدارة الكوبونات وعدد مرات الاستخدام</span>
@@ -401,7 +401,15 @@
                         <div class="space-y-2 pt-2 border-t border-gray-200 dark:border-gray-700">
                             <h4 id="promoFormTitle" class="font-bold text-goldaccent">إضافة كوبون خصم جديد برصيد مرات محدد</h4>
                             <input type="hidden" id="editingPromoId">
-                            <input type="text" id="promoCodeVal" placeholder="رمز الكوبون (مثال: MAHMOUD10)" class="w-full bg-lightcard dark:bg-cardbg border border-gray-300 dark:border-gray-700 rounded-lg p-2 text-gray-900 dark:text-white outline-none uppercase font-mono font-bold">
+                            
+                            <!-- حقل رمز الكوبون مع زر التوليد السريع -->
+                            <div class="flex gap-2">
+                                <input type="text" id="promoCodeVal" placeholder="رمز الكوبون (مثال: MAHMOUD10)" class="w-full bg-lightcard dark:bg-cardbg border border-gray-300 dark:border-gray-700 rounded-lg p-2 text-gray-900 dark:text-white outline-none uppercase font-mono font-bold">
+                                <button type="button" onclick="window.generateRandomPromoCode()" class="bg-cyanaccent/20 border border-cyanaccent/40 text-cyanaccent px-3 py-2 rounded-lg text-xs font-extrabold whitespace-nowrap shadow-sm hover:bg-cyanaccent/30 transition flex items-center gap-1.5" title="توليد كود عشوائي تلقائياً">
+                                    <i class="fa-solid fa-wand-magic-sparkles"></i> توليد عشوائي
+                                </button>
+                            </div>
+
                             <input type="text" id="promoDiscountVal" placeholder="قيمة الخصم (مثال: خصم 10% أو 50$)" class="w-full bg-lightcard dark:bg-cardbg border border-gray-300 dark:border-gray-700 rounded-lg p-2 text-gray-900 dark:text-white outline-none">
                             <div class="space-y-1">
                                 <label class="block text-[11px] text-gray-500">عدد مرات الاستخدام المتاحة (مثال: 5 مرات):</label>
@@ -1069,7 +1077,7 @@
         </div>
     </div>
 
-    <!-- Script Engine with Firebase & Promo Codes Usage Limit -->
+    <!-- Script Engine with Firebase & Promo Code Generator -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/13.2.0/firebase-app.js";
         import { getDatabase, ref, set, onValue } from "https://www.gstatic.com/firebasejs/13.2.0/firebase-database.js";
@@ -1394,7 +1402,6 @@
                 return;
             }
 
-            // عرض الكوبونات المفعلة والتي يتبقى لها رصيد استخدام (> 0)
             const items = (appData.promoCodes || []).filter(p => p.enabled !== false && (p.usesLeft === undefined || p.usesLeft > 0));
             if (items.length === 0) {
                 sectionContainer.classList.add('hidden');
@@ -1431,6 +1438,16 @@
             });
         }
 
+        // دالة توليد كود كوبون عشوائي واحترافي
+        window.generateRandomPromoCode = function() {
+            const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+            let code = 'PROMO';
+            for (let i = 0; i < 4; i++) {
+                code += chars.charAt(Math.floor(Math.random() * chars.length));
+            }
+            document.getElementById('promoCodeVal').value = code;
+        };
+
         window.copyPromoCodeAndDecrement = function(id) {
             const promo = (appData.promoCodes || []).find(p => p.id === id);
             if (!promo) return;
@@ -1441,12 +1458,10 @@
                 return;
             }
 
-            // خصم مرة واحدة من المتاح
             if (promo.usesLeft !== undefined) {
                 promo.usesLeft -= 1;
             }
 
-            // حفظ التحديثات مباشرة على قاعدة البيانات لكي تنعكس فوراً
             rootData.users[currentUsername] = appData;
             set(dbRef, rootData).then(() => {
                 navigator.clipboard.writeText(promo.code).then(() => {
@@ -1485,7 +1500,7 @@
             document.getElementById('editingPromoId').value = '';
             document.getElementById('promoCodeVal').value = '';
             document.getElementById('promoDiscountVal').value = '';
-            document.getElementById('promousesVal') ? document.getElementById('promoUsesVal').value = '10' : null;
+            document.getElementById('promoUsesVal').value = '10';
             document.getElementById('promoDescVal').value = '';
             document.getElementById('promoEnabled').checked = true;
             document.getElementById('promoFormTitle').textContent = 'إضافة كوبون خصم جديد برصيد مرات محدد';
