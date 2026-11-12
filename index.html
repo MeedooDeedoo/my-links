@@ -425,17 +425,17 @@
                                 <div class="space-y-1">
                                     <span class="text-[10px] text-gray-500 block">اللون 1</span>
                                     <input type="color" id="adminColor1" value="#0f1117" class="w-full h-8 rounded cursor-pointer bg-transparent">
-                                    <input type="range" id="adminOpacity1" min="0" max="1" step="0.05" value="1" class="w-full accent-goldaccent" title="شفافية اللون 1">
+                                    <input type="range" id="adminOpacity1" min="0" max="1" step="0.05" value="0" class="w-full accent-goldaccent" title="شفافية اللون 1">
                                 </div>
                                 <div class="space-y-1">
                                     <span class="text-[10px] text-gray-500 block">اللون 2</span>
                                     <input type="color" id="adminColor2" value="#1a1d26" class="w-full h-8 rounded cursor-pointer bg-transparent">
-                                    <input type="range" id="adminOpacity2" min="0" max="1" step="0.05" value="1" class="w-full accent-goldaccent" title="شفافية اللون 2">
+                                    <input type="range" id="adminOpacity2" min="0" max="1" step="0.05" value="0" class="w-full accent-goldaccent" title="شفافية اللون 2">
                                 </div>
                                 <div class="space-y-1">
                                     <span class="text-[10px] text-gray-500 block">اللون 3</span>
                                     <input type="color" id="adminColor3" value="#0f1117" class="w-full h-8 rounded cursor-pointer bg-transparent">
-                                    <input type="range" id="adminOpacity3" min="0" max="1" step="0.05" value="1" class="w-full accent-goldaccent" title="شفافية اللون 3">
+                                    <input type="range" id="adminOpacity3" min="0" max="1" step="0.05" value="0" class="w-full accent-goldaccent" title="شفافية اللون 3">
                                 </div>
                             </div>
                             <div class="flex items-center justify-between pt-1">
@@ -729,17 +729,17 @@
                                 <div class="space-y-1">
                                     <span class="text-[10px] text-gray-500 block">اللون 1</span>
                                     <input type="color" id="memberColor1" value="#0f1117" class="w-full h-8 rounded cursor-pointer bg-transparent">
-                                    <input type="range" id="memberOpacity1" min="0" max="1" step="0.05" value="1" class="w-full accent-cyanaccent" title="شفافية اللون 1">
+                                    <input type="range" id="memberOpacity1" min="0" max="1" step="0.05" value="0" class="w-full accent-cyanaccent" title="شفافية اللون 1">
                                 </div>
                                 <div class="space-y-1">
                                     <span class="text-[10px] text-gray-500 block">اللون 2</span>
                                     <input type="color" id="memberColor2" value="#1a1d26" class="w-full h-8 rounded cursor-pointer bg-transparent">
-                                    <input type="range" id="memberOpacity2" min="0" max="1" step="0.05" value="1" class="w-full accent-cyanaccent" title="شفافية اللون 2">
+                                    <input type="range" id="memberOpacity2" min="0" max="1" step="0.05" value="0" class="w-full accent-cyanaccent" title="شفافية اللون 2">
                                 </div>
                                 <div class="space-y-1">
                                     <span class="text-[10px] text-gray-500 block">اللون 3</span>
                                     <input type="color" id="memberColor3" value="#0f1117" class="w-full h-8 rounded cursor-pointer bg-transparent">
-                                    <input type="range" id="memberOpacity3" min="0" max="1" step="0.05" value="1" class="w-full accent-cyanaccent" title="شفافية اللون 3">
+                                    <input type="range" id="memberOpacity3" min="0" max="1" step="0.05" value="0" class="w-full accent-cyanaccent" title="شفافية اللون 3">
                                 </div>
                             </div>
                             <div class="flex items-center justify-between pt-1">
@@ -876,7 +876,7 @@
             cardShape: "rounded-2xl",
             cardGlow: "glow-gold-hover",
             cardStyle: "normal",
-            customColors: { c1: "", o1: 1, c2: "", o2: 1, c3: "", o3: 1, angle: "to bottom right" },
+            customColors: { c1: "", o1: 0, c2: "", o2: 0, c3: "", o3: 0, angle: "to bottom right" },
             bgImageUrl: "",
             bgImgOpacity: 0.6,
             showMap: true,
@@ -942,7 +942,7 @@
                 if (!appData.cardGlow) appData.cardGlow = "glow-gold-hover";
                 if (!appData.cardStyle) appData.cardStyle = "normal";
                 if (appData.bgImgOpacity === undefined) appData.bgImgOpacity = 0.6;
-                if (!appData.customColors) appData.customColors = { c1: "", o1: 1, c2: "", o2: 1, c3: "", o3: 1, angle: "to bottom right" };
+                if (!appData.customColors) appData.customColors = { c1: "", o1: 0, c2: "", o2: 0, c3: "", o3: 0, angle: "to bottom right" };
                 
                 if (appData.categories && appData.categories.length > 0 && typeof appData.categories[0] === 'string') {
                     appData.categories = appData.categories.map(c => ({ name: c, enabled: true }));
@@ -1034,9 +1034,9 @@
                 pageBody.className = `min-h-screen flex flex-col items-center justify-between p-4 pb-12 text-gray-900 dark:text-gray-100 transition-colors duration-300 bg-lightbg dark:bg-darkbg relative`;
                 
                 if (appData.customColors && (appData.customColors.c1 || appData.customColors.c2 || appData.customColors.c3)) {
-                    let rgba1 = appData.customColors.c1 ? hexToRgba(appData.customColors.c1, appData.customColors.o1 ?? 1) : 'transparent';
-                    let rgba2 = appData.customColors.c2 ? hexToRgba(appData.customColors.c2, appData.customColors.o2 ?? 1) : 'transparent';
-                    let rgba3 = appData.customColors.c3 ? hexToRgba(appData.customColors.c3, appData.customColors.o3 ?? 1) : 'transparent';
+                    let rgba1 = appData.customColors.c1 ? hexToRgba(appData.customColors.c1, appData.customColors.o1 ?? 0) : 'transparent';
+                    let rgba2 = appData.customColors.c2 ? hexToRgba(appData.customColors.c2, appData.customColors.o2 ?? 0) : 'transparent';
+                    let rgba3 = appData.customColors.c3 ? hexToRgba(appData.customColors.c3, appData.customColors.o3 ?? 0) : 'transparent';
                     let angle = appData.customColors.angle || 'to bottom right';
                     pageBody.style.backgroundImage = `linear-gradient(${angle}, ${rgba1}, ${rgba2}, ${rgba3})`;
                 } else {
@@ -1185,15 +1185,15 @@
             document.getElementById('adminCardGlow').value = 'glow-gold-hover';
             document.getElementById('adminCardStyle').value = 'normal';
             document.getElementById('adminColor1').value = '';
-            document.getElementById('adminOpacity1').value = '1';
+            document.getElementById('adminOpacity1').value = '0';
             document.getElementById('adminColor2').value = '';
-            document.getElementById('adminOpacity2').value = '1';
+            document.getElementById('adminOpacity2').value = '0';
             document.getElementById('adminColor3').value = '';
-            document.getElementById('adminOpacity3').value = '1';
+            document.getElementById('adminOpacity3').value = '0';
             document.getElementById('adminBgImageUrl').value = '';
             document.getElementById('adminBgImgOpacity').value = '0.6';
             document.getElementById('adminBgImgOpacityVal').textContent = '0.6';
-            alert('تم استعادة التصميم الافتراضي السادة بنجاح.');
+            alert('تم استعادة التصميم الأساسي مع جعل الشفافية 0 بنجاح.');
         };
 
         window.resetMemberDesignDefaults = function() {
@@ -1203,15 +1203,15 @@
             document.getElementById('memberCardGlow').value = 'glow-gold-hover';
             document.getElementById('memberCardStyle').value = 'normal';
             document.getElementById('memberColor1').value = '';
-            document.getElementById('memberOpacity1').value = '1';
+            document.getElementById('memberOpacity1').value = '0';
             document.getElementById('memberColor2').value = '';
-            document.getElementById('memberOpacity2').value = '1';
+            document.getElementById('memberOpacity2').value = '0';
             document.getElementById('memberColor3').value = '';
-            document.getElementById('memberOpacity3').value = '1';
+            document.getElementById('memberOpacity3').value = '0';
             document.getElementById('memberBgImageUrl').value = '';
             document.getElementById('memberBgImgOpacity').value = '0.6';
             document.getElementById('memberBgImgOpacityVal').textContent = '0.6';
-            alert('تم استعادة الإعدادات الافتراضية بنجاح.');
+            alert('تم استعادة الإعدادات الافتراضية مع جعل الشفافية 0 بنجاح.');
         };
 
         window.toggleTheme = function() {
@@ -1540,11 +1540,11 @@
             
             if (appData.customColors) {
                 document.getElementById('memberColor1').value = appData.customColors.c1 || '#0f1117';
-                document.getElementById('memberOpacity1').value = appData.customColors.o1 ?? 1;
+                document.getElementById('memberOpacity1').value = appData.customColors.o1 ?? 0;
                 document.getElementById('memberColor2').value = appData.customColors.c2 || '#1a1d26';
-                document.getElementById('memberOpacity2').value = appData.customColors.o2 ?? 1;
+                document.getElementById('memberOpacity2').value = appData.customColors.o2 ?? 0;
                 document.getElementById('memberColor3').value = appData.customColors.c3 || '#0f1117';
-                document.getElementById('memberOpacity3').value = appData.customColors.o3 ?? 1;
+                document.getElementById('memberOpacity3').value = appData.customColors.o3 ?? 0;
                 document.getElementById('memberGradientAngle').value = appData.customColors.angle || 'to bottom right';
             }
             document.getElementById('memberBgImageUrl').value = appData.bgImageUrl || '';
@@ -1813,11 +1813,11 @@
             
             if (appData.customColors) {
                 document.getElementById('adminColor1').value = appData.customColors.c1 || '#0f1117';
-                document.getElementById('adminOpacity1').value = appData.customColors.o1 ?? 1;
+                document.getElementById('adminOpacity1').value = appData.customColors.o1 ?? 0;
                 document.getElementById('adminColor2').value = appData.customColors.c2 || '#1a1d26';
-                document.getElementById('adminOpacity2').value = appData.customColors.o2 ?? 1;
+                document.getElementById('adminOpacity2').value = appData.customColors.o2 ?? 0;
                 document.getElementById('adminColor3').value = appData.customColors.c3 || '#0f1117';
-                document.getElementById('adminOpacity3').value = appData.customColors.o3 ?? 1;
+                document.getElementById('adminOpacity3').value = appData.customColors.o3 ?? 0;
                 document.getElementById('adminGradientAngle').value = appData.customColors.angle || 'to bottom right';
             }
             document.getElementById('adminBgImageUrl').value = appData.bgImageUrl || '';
@@ -1966,7 +1966,7 @@
                 cardShape: 'rounded-2xl',
                 cardGlow: 'glow-gold-hover',
                 cardStyle: 'normal',
-                customColors: { c1: "", o1: 1, c2: "", o2: 1, c3: "", o3: 1, angle: "to bottom right" },
+                customColors: { c1: "", o1: 0, c2: "", o2: 0, c3: "", o3: 0, angle: "to bottom right" },
                 bgImageUrl: '',
                 bgImgOpacity: 0.6,
                 showMap: true,
@@ -2223,7 +2223,7 @@
                             <button type="button" onclick="window.moveLink(${index}, -1)" class="bg-gray-200 dark:bg-gray-700 text-goldaccent px-1.5 py-0.5 rounded text-[10px] font-bold">⬆️</button>
                             <button type="button" onclick="window.moveLink(${index}, 1)" class="bg-gray-200 dark:bg-gray-700 text-goldaccent px-1.5 py-0.5 rounded text-[10px] font-bold">⬇️</button>
                             <button type="button" onclick="window.editLink('${l.id}')" class="bg-blue-500/20 text-blue-600 dark:text-blue-400 px-2 py-0.5 rounded text-[10px] font-bold">تعديل</button>
-                            <button type="button" onclick="window.deleteLink('${l.id}')" class="bg-red-500/20 text-red-600 dark:text-red-400 px-2 py-0.5 rounded text-[10px] font-bold">حذف</button>
+                            <button type="button" onclick="window.deleteLink('${l.id}')" class="bg-red-500/20 text-red-600 px-2 py-0.5 rounded text-[10px] font-bold">حذف</button>
                         </div>
                     </div>`;
             });
@@ -2267,7 +2267,7 @@
             
             const avatarUrlInputVal = document.getElementById('editAvatarUrl').value.trim();
             if (tempImageBase64 !== "") appData.image = tempImageBase64;
-            else if (avatarUrlInputVal !== "") appData.image = avatarUrlUrlInputVal;
+            else if (avatarUrlInputVal !== "") appData.image = avatarUrlInputVal;
 
             if (!appData.contacts) appData.contacts = {};
             appData.contacts.showWhatsapp = document.getElementById('showWhatsapp').checked;
