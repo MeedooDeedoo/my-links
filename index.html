@@ -955,7 +955,10 @@
                             <h4 id="galleryFormTitle" class="font-bold text-goldaccent">إضافة مشروع جديد (يرسل إشعاراً فورياً للزوار)</h4>
                             <input type="hidden" id="editingGalleryId">
                             <input type="text" id="galleryTitle" placeholder="عنوان المشروع" class="w-full bg-lightcard dark:bg-cardbg border border-gray-300 dark:border-gray-700 rounded-lg p-2 text-gray-900 dark:text-white outline-none">
-                            <input type="text" id="galleryCategory" placeholder="الفئة" class="w-full bg-lightcard dark:bg-cardbg border border-gray-300 dark:border-gray-700 rounded-lg p-2 text-gray-900 dark:text-white outline-none">
+                            <div class="space-y-1">
+                                <label class="block text-[11px] text-gray-500">اختر فئة المشروع:</label>
+                                <select id="galleryCategory" class="w-full bg-lightcard dark:bg-cardbg border border-gray-300 dark:border-gray-700 rounded-lg p-2 text-gray-900 dark:text-white outline-none text-xs font-bold"></select>
+                            </div>
                             <textarea id="galleryDesc" placeholder="تفاصيل المشروع..." class="w-full bg-lightcard dark:bg-cardbg border border-gray-300 dark:border-gray-700 rounded-lg p-2 text-gray-900 dark:text-white outline-none h-16 resize-none"></textarea>
                             <input type="url" id="galleryCoverUrl" placeholder="رابط الغلاف أو الصورة" class="w-full bg-lightcard dark:bg-cardbg border border-gray-300 dark:border-gray-700 rounded-lg p-2 text-gray-900 dark:text-white outline-none">
                             <textarea id="galleryExtraUrls" placeholder="روابط إضافية..." class="w-full bg-lightcard dark:bg-cardbg border border-gray-300 dark:border-gray-700 rounded-lg p-2 text-gray-900 dark:text-white outline-none h-16 text-[11px] font-mono"></textarea>
@@ -972,15 +975,36 @@
                     </div>
                 </div>
 
+                <!-- Gallery Categories Admin -->
+                <div class="bg-lightbg dark:bg-darkbg rounded-xl border border-gray-300 dark:border-gray-800 overflow-hidden transition-colors">
+                    <button type="button" onclick="window.toggleAccordion('accGalleryCategories')" class="w-full p-3 flex justify-between items-center font-bold text-gray-800 dark:text-gray-200">
+                        <span class="flex items-center gap-2"><i class="fa-solid fa-folder-tree text-goldaccent"></i> إدارة فئات معرض المشاريع (مستقلة)</span>
+                        <div class="flex items-center gap-2">
+                            <span class="text-[10px] bg-goldaccent/20 text-goldaccent px-2 py-0.5 rounded font-mono">جديد</span>
+                            <i id="icon-accGalleryCategories" class="fa-solid fa-chevron-down transition-transform"></i>
+                        </div>
+                    </button>
+                    <div id="accGalleryCategories" class="hidden p-3 pt-0 space-y-3 border-t border-gray-200 dark:border-gray-800 mt-1">
+                        <div class="space-y-2 mt-2">
+                            <h4 class="font-bold text-goldaccent">إضافة فئة جديدة لمعرض المشاريع</h4>
+                            <div class="flex gap-2">
+                                <input type="text" id="newGalleryCategoryInput" placeholder="اسم فئة المعرض (مثل: تصميم جرافيك، واجهات ألوكوبوند)..." class="flex-1 bg-lightcard dark:bg-cardbg border border-gray-300 dark:border-gray-700 rounded-lg p-2 text-gray-900 dark:text-white outline-none">
+                                <button type="button" onclick="window.addGalleryCategory()" class="bg-goldaccent text-black font-extrabold px-4 py-2 rounded-lg shadow-sm">إضافة</button>
+                            </div>
+                        </div>
+                        <div id="adminGalleryCategoriesList" class="space-y-1.5 pt-2 border-t border-gray-300 dark:border-gray-700"></div>
+                    </div>
+                </div>
+
                 <!-- Categories -->
                 <div class="bg-lightbg dark:bg-darkbg rounded-xl border border-gray-300 dark:border-gray-800 overflow-hidden transition-colors">
                     <button type="button" onclick="window.toggleAccordion('accCategories')" class="w-full p-3 flex justify-between items-center font-bold text-gray-800 dark:text-gray-200">
-                        <span class="flex items-center gap-2"><i class="fa-solid fa-folder-tree text-goldaccent"></i> إدارة الفئات</span>
+                        <span class="flex items-center gap-2"><i class="fa-solid fa-folder-tree text-goldaccent"></i> إدارة فئات الروابط الرئيسية</span>
                         <i id="icon-accCategories" class="fa-solid fa-chevron-down transition-transform"></i>
                     </button>
                     <div id="accCategories" class="hidden p-3 pt-0 space-y-3 border-t border-gray-200 dark:border-gray-800 mt-1">
                         <div class="space-y-2 mt-2">
-                            <h4 class="font-bold text-goldaccent">إضافة فئة جديدة</h4>
+                            <h4 class="font-bold text-goldaccent">إضافة فئة جديدة للروابط</h4>
                             <div class="flex gap-2">
                                 <input type="text" id="newCategoryInput" placeholder="اسم الفئة..." class="flex-1 bg-lightcard dark:bg-cardbg border border-gray-300 dark:border-gray-700 rounded-lg p-2 text-gray-900 dark:text-white outline-none">
                                 <button type="button" onclick="window.addCategory()" class="bg-goldaccent text-black font-extrabold px-4 py-2 rounded-lg shadow-sm">إضافة</button>
@@ -1042,7 +1066,7 @@
         </div>
     </div>
 
-    <!-- Script Engine with Firebase & Web Push Notifications -->
+    <!-- Script Engine with Firebase & Independent Gallery Categories -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/13.2.0/firebase-app.js";
         import { getDatabase, ref, set, onValue } from "https://www.gstatic.com/firebasejs/13.2.0/firebase-database.js";
@@ -1108,6 +1132,12 @@
                 { name: "إعلان وتصميم", enabled: true },
                 { name: "بناء وألوكبوند", enabled: true }
             ],
+            galleryCategories: [
+                { name: "الكل", enabled: true },
+                { name: "واجهات ألوكوبوند", enabled: true },
+                { name: "تصاميم جرافيك وكروت", enabled: true },
+                { name: "ساعات مخصصة وليزر", enabled: true }
+            ],
             sidebarLinks: [
                 { id: 'sb1', title: 'لوحة الإدارة الرئيسية', url: '#', icon: 'fa-solid fa-lock', action: 'openPin', enabled: true },
                 { id: 'sb2', title: 'لوحة تحكم العضو', url: '#', icon: 'fa-solid fa-user-gear', action: 'openMemberPanel', enabled: true },
@@ -1121,7 +1151,7 @@
                 { 
                     id: 'g1', 
                     title: 'واجهة معمل الألوكوبوند النموذجي', 
-                    category: 'بناء وألوكبوند', 
+                    category: 'واجهات ألوكوبوند', 
                     desc: 'تنفيذ وتكسية واجهات معمل بالكامل بمادة الألوكوبوند المقاوم للعوامل الجوية.',
                     coverUrl: 'https://i.ibb.co/6y4g8qf/sample.jpg', 
                     extraUrls: ['https://i.ibb.co/6y4g8qf/sample.jpg'],
@@ -1166,9 +1196,15 @@
                 if (!appData.analytics) appData.analytics = { totalViews: 0 };
                 if (!appData.fileHub) appData.fileHub = defaultUserData.fileHub;
                 if (!appData.promoCodes) appData.promoCodes = defaultUserData.promoCodes;
-                else {
-                    appData.promoCodes.forEach(p => { if (p.usesLeft === undefined) p.usesLeft = 10; });
+                if (!appData.galleryCategories) {
+                    appData.galleryCategories = [
+                        { name: "الكل", enabled: true },
+                        { name: "واجهات ألوكوبوند", enabled: true },
+                        { name: "تصاميم جرافيك وكروت", enabled: true },
+                        { name: "ساعات مخصصة وليزر", enabled: true }
+                    ];
                 }
+
                 if (appData.showPromoSection === undefined) appData.showPromoSection = true;
                 if (appData.showFlashDeal === undefined) appData.showFlashDeal = false;
                 if (!appData.flashDealTitle) appData.flashDealTitle = defaultUserData.flashDealTitle;
@@ -1202,6 +1238,9 @@
                 if (appData.categories && appData.categories.length > 0 && typeof appData.categories[0] === 'string') {
                     appData.categories = appData.categories.map(c => ({ name: c, enabled: true }));
                 }
+                if (appData.galleryCategories && appData.galleryCategories.length > 0 && typeof appData.galleryCategories[0] === 'string') {
+                    appData.galleryCategories = appData.galleryCategories.map(c => ({ name: c, enabled: true }));
+                }
 
                 checkAndTriggerPushNotifications();
             } else {
@@ -1230,7 +1269,6 @@
             initApp();
         });
 
-        // Web Push Notifications Logic
         window.requestPushPermission = function() {
             if (!("Notification" in window)) {
                 alert("متصفحك الحالي لا يدعم إشعارات سطح المكتب والفورية.");
@@ -2144,8 +2182,8 @@
             grid.innerHTML = ''; filters.innerHTML = '';
             
             const galleryItems = (appData.gallery || []).filter(item => item.enabled !== false);
-            const activeCatsList = (appData.categories || []).filter(c => c.enabled !== false).map(c => c.name);
-            const cats = ["الكل", ...activeCatsList.filter(c => c !== "الكل")];
+            const activeGalleryCats = (appData.galleryCategories || []).filter(c => c.enabled !== false).map(c => c.name);
+            const cats = ["الكل", ...activeGalleryCats.filter(c => c !== "الكل")];
 
             cats.forEach(cat => {
                 const btn = document.createElement('button');
@@ -2420,6 +2458,8 @@
             renderAdminPromoList();
             renderAdminCategories();
             renderAdminCategorySelect();
+            renderAdminGalleryCategories();
+            renderGalleryCategorySelect();
             renderAdminLinksList();
         }
 
@@ -2638,6 +2678,7 @@
                 fileHub: [],
                 promoCodes: [],
                 categories: [{ name: "الكل", enabled: true }, { name: "عام", enabled: true }],
+                galleryCategories: [{ name: "الكل", enabled: true }, { name: "عام", enabled: true }],
                 sidebarLinks: [
                     { id: 'sb1', title: 'لوحة تحكم العضو', url: '#', icon: 'fa-solid fa-user-gear', action: 'openMemberPanel', enabled: true },
                     { id: 'sb2', title: 'انضم إلينا كعضو', url: '#', icon: 'fa-solid fa-user-plus', action: 'openJoin', enabled: true }
@@ -2684,7 +2725,7 @@
         window.saveGalleryItem = function() {
             const id = document.getElementById('editingGalleryId').value;
             const title = document.getElementById('galleryTitle').value.trim();
-            const category = document.getElementById('galleryCategory').value.trim() || 'عام';
+            const category = document.getElementById('galleryCategory').value;
             const desc = document.getElementById('galleryDesc').value.trim();
             const coverUrl = document.getElementById('galleryCoverUrl').value.trim();
             const extraUrls = document.getElementById('galleryExtraUrls').value.trim().split(/[\n,]+/).map(s => s.trim()).filter(Boolean);
@@ -2722,7 +2763,6 @@
         window.resetGalleryForm = function() {
             document.getElementById('editingGalleryId').value = '';
             document.getElementById('galleryTitle').value = '';
-            document.getElementById('galleryCategory').value = '';
             document.getElementById('galleryDesc').value = '';
             document.getElementById('galleryCoverUrl').value = '';
             document.getElementById('galleryExtraUrls').value = '';
@@ -2841,6 +2881,69 @@
             const s = document.getElementById('linkCategory');
             if(!s) return; s.innerHTML = '';
             (appData.categories || []).filter(c => c.enabled !== false).forEach(catObj => { 
+                s.innerHTML += `<option value="${catObj.name}">${catObj.name}</option>`; 
+            });
+        }
+
+        // Gallery Categories Management Functions
+        window.addGalleryCategory = function() {
+            const val = document.getElementById('newGalleryCategoryInput').value.trim();
+            if(val && !appData.galleryCategories.some(c => c.name === val)) {
+                appData.galleryCategories.push({ name: val, enabled: true });
+                document.getElementById('newGalleryCategoryInput').value = '';
+                renderAdminGalleryCategories(); renderGalleryCategorySelect(); renderGalleryGrid();
+            }
+        };
+
+        window.toggleGalleryCategoryStatus = function(index) {
+            if (appData.galleryCategories[index]) {
+                appData.galleryCategories[index].enabled = !appData.galleryCategories[index].enabled;
+                renderAdminGalleryCategories(); renderGalleryCategorySelect(); renderGalleryGrid();
+            }
+        };
+
+        window.deleteGalleryCategory = function(index) {
+            if (appData.galleryCategories[index] && appData.galleryCategories[index].name === 'الكل') return;
+            appData.galleryCategories.splice(index, 1);
+            renderAdminGalleryCategories(); renderGalleryCategorySelect(); renderGalleryGrid();
+        };
+
+        window.moveGalleryCategory = function(index, direction) {
+            const cats = appData.galleryCategories || [];
+            const newIndex = index + direction;
+            if (newIndex < 0 || newIndex >= cats.length) return;
+            const temp = cats[index]; cats[index] = cats[newIndex]; cats[newIndex] = temp;
+            renderAdminGalleryCategories(); renderGalleryCategorySelect(); renderGalleryGrid();
+        };
+
+        function renderAdminGalleryCategories() {
+            const c = document.getElementById('adminGalleryCategoriesList');
+            if(!c) return; c.innerHTML = '';
+            (appData.galleryCategories || []).forEach((catObj, index) => {
+                const catName = catObj.name;
+                const isEnabled = catObj.enabled !== false;
+                const statusBadge = isEnabled ? '<span class="text-emerald-500 font-bold">مفعل</span>' : '<span class="text-red-500 font-bold">متوقف</span>';
+                
+                c.innerHTML += `
+                    <div class="bg-white dark:bg-cardbg border border-gray-300 dark:border-gray-700 px-3 py-2 rounded-xl flex items-center justify-between text-gray-900 dark:text-white font-bold text-xs shadow-sm">
+                        <div class="flex items-center gap-2">
+                            <span>${catName}</span>
+                            <span class="text-[10px]">(${statusBadge})</span>
+                        </div>
+                        <div class="flex items-center gap-1">
+                            <button type="button" onclick="window.moveGalleryCategory(${index}, -1)" class="bg-gray-200 dark:bg-gray-700 text-goldaccent px-1.5 py-0.5 rounded text-[10px] font-bold" title="صعود">⬆️</button>
+                            <button type="button" onclick="window.moveGalleryCategory(${index}, 1)" class="bg-gray-200 dark:bg-gray-700 text-goldaccent px-1.5 py-0.5 rounded text-[10px] font-bold" title="نزول">⬇️</button>
+                            <button type="button" onclick="window.toggleGalleryCategoryStatus(${index})" class="bg-amber-500/20 text-amber-600 dark:text-amber-400 px-2 py-0.5 rounded text-[10px] font-bold">${isEnabled ? 'إيقاف' : 'تفعيل'}</button>
+                            ${catName !== 'الكل' ? `<button type="button" onclick="window.deleteGalleryCategory(${index})" class="bg-red-500/20 text-red-600 px-2 py-0.5 rounded text-[10px] font-bold">حذف</button>` : ''}
+                        </div>
+                    </div>`;
+            });
+        }
+
+        function renderGalleryCategorySelect() {
+            const s = document.getElementById('galleryCategory');
+            if(!s) return; s.innerHTML = '';
+            (appData.galleryCategories || []).filter(c => c.enabled !== false && c.name !== 'الكل').forEach(catObj => { 
                 s.innerHTML += `<option value="${catObj.name}">${catObj.name}</option>`; 
             });
         }
