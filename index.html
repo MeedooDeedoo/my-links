@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>منصة شجرة الروابط الاحترافية - مع الزر العائم</title>
+    <title>منصة شجرة الروابط الاحترافية - مع آراء العملاء</title>
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
@@ -134,6 +134,17 @@
         </button>
 
         <div id="linksContainer" class="w-full flex flex-col gap-3 mb-6"></div>
+
+        <!-- قسم آراء ومراجعات العملاء (Testimonials Section) -->
+        <div id="testimonialsSectionContainer" class="w-full mb-6 hidden">
+            <div class="flex items-center justify-between mb-3 px-1">
+                <span class="text-xs font-extrabold text-gray-900 dark:text-white flex items-center gap-1.5">
+                    <i class="fa-solid fa-star text-goldaccent"></i> آراء ومراجعات العملاء
+                </span>
+                <span class="text-[10px] font-bold text-gray-500">تقييمات معتمدة ⭐</span>
+            </div>
+            <div id="testimonialsContainer" class="w-full flex flex-col gap-3"></div>
+        </div>
 
         <div id="mapSectionContainer" class="w-full bg-lightcard dark:bg-cardbg border border-gray-300 dark:border-gray-800 rounded-2xl p-3.5 shadow-sm mb-6 hidden">
             <div class="flex items-center justify-between mb-2 px-1">
@@ -579,6 +590,42 @@
                     </div>
                 </div>
 
+                <!-- إدارة آراء ومراجعات العملاء (Testimonials Admin) -->
+                <div class="bg-lightbg dark:bg-darkbg rounded-xl border border-gray-300 dark:border-gray-800 overflow-hidden transition-colors">
+                    <button type="button" onclick="window.toggleAccordion('accTestimonialsAdmin')" class="w-full p-3 flex justify-between items-center font-bold text-gray-800 dark:text-gray-200">
+                        <span class="flex items-center gap-2"><i class="fa-solid fa-star text-goldaccent"></i> إدارة آراء ومراجعات العملاء</span>
+                        <i id="icon-accTestimonialsAdmin" class="fa-solid fa-chevron-down transition-transform"></i>
+                    </button>
+                    <div id="accTestimonialsAdmin" class="hidden p-3 pt-0 space-y-3 border-t border-gray-200 dark:border-gray-800 mt-1">
+                        <div class="space-y-2 mt-2">
+                            <h4 id="testimonialFormTitle" class="font-bold text-goldaccent">إضافة رأي عميل جديد</h4>
+                            <input type="hidden" id="editingTestimonialId">
+                            <input type="text" id="testimonialClientName" placeholder="اسم العميل (مثل: المهندس أحمد)" class="w-full bg-lightcard dark:bg-cardbg border border-gray-300 dark:border-gray-700 rounded-lg p-2 text-gray-900 dark:text-white outline-none">
+                            <input type="text" id="testimonialClientRole" placeholder="صفته أو نشاطه (مثل: مقاول بناء)" class="w-full bg-lightcard dark:bg-cardbg border border-gray-300 dark:border-gray-700 rounded-lg p-2 text-gray-900 dark:text-white outline-none">
+                            <textarea id="testimonialComment" placeholder="نص رأي العميل أو تقييمه للخدمة..." class="w-full bg-lightcard dark:bg-cardbg border border-gray-300 dark:border-gray-700 rounded-lg p-2 text-gray-900 dark:text-white outline-none h-16 resize-none"></textarea>
+                            <div class="flex items-center justify-between">
+                                <span class="text-[11px] text-gray-500">التقييم بالنجوم (1 إلى 5):</span>
+                                <select id="testimonialRating" class="bg-lightcard dark:bg-cardbg border border-gray-300 dark:border-gray-700 rounded-lg p-2 text-gray-900 dark:text-white outline-none text-xs">
+                                    <option value="5">⭐⭐⭐⭐⭐ (5 نجوم)</option>
+                                    <option value="4">⭐⭐⭐⭐ (4 نجوم)</option>
+                                    <option value="3">⭐⭐⭐ (3 نجوم)</option>
+                                    <option value="2">⭐⭐ (نجمتان)</option>
+                                    <option value="1">⭐ (نجمة واحدة)</option>
+                                </select>
+                            </div>
+                            <div class="flex items-center gap-2 pt-1 bg-goldaccent/10 p-2 rounded-lg border border-goldaccent/30">
+                                <input type="checkbox" id="testimonialEnabled" class="accent-goldaccent w-4 h-4" checked>
+                                <label for="testimonialEnabled" class="font-bold text-gray-900 dark:text-white text-xs">تفعيل وعرض التقييم في الصفحة</label>
+                            </div>
+                            <div class="flex gap-2 pt-1">
+                                <button type="button" onclick="window.saveTestimonialItem()" class="flex-1 bg-goldaccent text-black font-bold py-2 rounded-lg">حفظ التقييم</button>
+                                <button type="button" onclick="window.resetTestimonialForm()" class="bg-gray-200 dark:bg-gray-800 text-gray-800 dark:text-gray-200 px-3 py-2 rounded-lg font-bold">إلغاء</button>
+                            </div>
+                        </div>
+                        <div id="adminTestimonialsList" class="space-y-1.5 pt-2 border-t border-gray-300 dark:border-gray-700"></div>
+                    </div>
+                </div>
+
                 <!-- إدارة المشاريع -->
                 <div class="bg-lightbg dark:bg-darkbg rounded-xl border border-gray-300 dark:border-gray-800 overflow-hidden transition-colors">
                     <button type="button" onclick="window.toggleAccordion('accGalleryAdmin')" class="w-full p-3 flex justify-between items-center font-bold text-gray-800 dark:text-gray-200">
@@ -835,6 +882,34 @@
                     <textarea id="memberMapEmbed" placeholder="كود التضمين iframe src لخرائط جوجل" class="w-full bg-lightcard dark:bg-cardbg border border-gray-300 dark:border-gray-700 rounded-lg p-2 text-gray-900 dark:text-white outline-none h-16 text-[11px] font-mono"></textarea>
                 </div>
 
+                <!-- إدارة آراء العملاء للعضو الفرعي -->
+                <div class="bg-lightbg dark:bg-darkbg rounded-xl border border-gray-300 dark:border-gray-800 p-3 space-y-2">
+                    <h4 id="memberTestimonialFormTitle" class="font-bold text-cyanaccent flex items-center gap-2"><i class="fa-solid fa-star"></i> إدارة آراء ومراجعات العملاء لصفحتك</h4>
+                    <input type="hidden" id="memberEditingTestimonialId">
+                    <input type="text" id="memberTestimonialClientName" placeholder="اسم العميل" class="w-full bg-lightcard dark:bg-cardbg border border-gray-300 dark:border-gray-700 rounded-lg p-2 text-gray-900 dark:text-white outline-none">
+                    <input type="text" id="memberTestimonialClientRole" placeholder="صفته أو نشاطه" class="w-full bg-lightcard dark:bg-cardbg border border-gray-300 dark:border-gray-700 rounded-lg p-2 text-gray-900 dark:text-white outline-none">
+                    <textarea id="memberTestimonialComment" placeholder="نص رأي العميل..." class="w-full bg-lightcard dark:bg-cardbg border border-gray-300 dark:border-gray-700 rounded-lg p-2 text-gray-900 dark:text-white outline-none h-16 resize-none"></textarea>
+                    <div class="flex items-center justify-between">
+                        <span class="text-[11px] text-gray-500">التقييم بالنجوم:</span>
+                        <select id="memberTestimonialRating" class="bg-lightcard dark:bg-cardbg border border-gray-300 dark:border-gray-700 rounded-lg p-2 text-gray-900 dark:text-white outline-none text-xs">
+                            <option value="5">⭐⭐⭐⭐⭐ (5 نجوم)</option>
+                            <option value="4">⭐⭐⭐⭐ (4 نجوم)</option>
+                            <option value="3">⭐⭐⭐ (3 نجوم)</option>
+                            <option value="2">⭐⭐ (نجمتان)</option>
+                            <option value="1">⭐ (نجمة واحدة)</option>
+                        </select>
+                    </div>
+                    <div class="flex items-center gap-2 pt-1 bg-cyanaccent/10 p-2 rounded-lg border border-cyanaccent/30">
+                        <input type="checkbox" id="memberTestimonialEnabled" class="accent-cyanaccent w-4 h-4" checked>
+                        <label for="memberTestimonialEnabled" class="font-bold text-gray-900 dark:text-white text-xs">تفعيل وعرض التقييم</label>
+                    </div>
+                    <div class="flex gap-2 pt-1">
+                        <button type="button" onclick="window.saveMemberTestimonialItem()" class="flex-1 bg-cyanaccent text-black font-bold py-2 rounded-lg">حفظ التقييم</button>
+                        <button type="button" onclick="window.resetMemberTestimonialForm()" class="bg-gray-200 dark:bg-gray-800 text-gray-800 dark:text-gray-200 px-3 py-2 rounded-lg font-bold">إلغاء</button>
+                    </div>
+                    <div id="memberTestimonialsList" class="space-y-1.5 pt-2 border-t border-gray-200 dark:border-gray-700"></div>
+                </div>
+
                 <div class="bg-lightbg dark:bg-darkbg rounded-xl border border-gray-300 dark:border-gray-800 p-3 space-y-2">
                     <h4 class="font-bold text-cyanaccent">تعديل معلومات صفحتك والصورة وكلمة المرور</h4>
                     <input type="text" id="memberEditName" placeholder="اسمك الظاهر" class="w-full bg-lightcard dark:bg-cardbg border border-gray-300 dark:border-gray-700 rounded-lg p-2 text-gray-900 dark:text-white outline-none">
@@ -898,7 +973,7 @@
         </div>
     </div>
 
-    <!-- Script Engine with Firebase, Click Analytics, Live Status & Floating Contact Button -->
+    <!-- Script Engine with Firebase, Testimonials Section & All Features -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/13.2.0/firebase-app.js";
         import { getDatabase, ref, set, onValue } from "https://www.gstatic.com/firebasejs/13.2.0/firebase-database.js";
@@ -953,6 +1028,10 @@
                 { id: 'sb2', title: 'لوحة تحكم العضو', url: '#', icon: 'fa-solid fa-user-gear', action: 'openMemberPanel', enabled: true },
                 { id: 'sb3', title: 'انضم إلينا كعضو', url: '#', icon: 'fa-solid fa-user-plus', action: 'openJoin', enabled: true }
             ],
+            testimonials: [
+                { id: 't1', clientName: 'أبو محمد الحلبي', clientRole: 'مقاول بناء وتعهدات', comment: 'خدمة احترافية جداً ودقة عالية في تنفيذ واجهات الألوكوبوند والتصاميم الهندسية. أنصح بالتعامل معه بشدة!', rating: 5, enabled: true },
+                { id: 't2', clientName: 'سامر الاحمد', clientRole: 'صاحب شركة تجارية', comment: 'تصاميم إعلانية رائعة ومبتكرة ساعدت في إبراز علامتنا التجارية بشكل ممتاز. شكراً لجهودك.', rating: 5, enabled: true }
+            ],
             gallery: [
                 { 
                     id: 'g1', 
@@ -995,6 +1074,7 @@
                 appData = rootData.users[currentUsername] || rootData.users['mahmoud'];
                 if (!appData.sidebarLinks) appData.sidebarLinks = defaultUserData.sidebarLinks;
                 if (!appData.contacts) appData.contacts = defaultUserData.contacts;
+                if (!appData.testimonials) appData.testimonials = defaultUserData.testimonials;
                 if (appData.showMap === undefined) appData.showMap = true;
                 if (appData.showLiveStatus === undefined) appData.showLiveStatus = true;
                 if (!appData.liveStatusText) appData.liveStatusText = defaultUserData.liveStatusText;
@@ -1054,6 +1134,7 @@
             renderSidebarMenu();
             renderCategories();
             renderLinks();
+            renderTestimonialsSection();
             renderMapSection();
             renderGalleryGrid();
             updateNotificationBadge();
@@ -1171,6 +1252,46 @@
             const msg = encodeURIComponent(appData.floatingMessage || 'مرحباً، أود الاستفسار عن خدماتكم...');
             floatBtn.href = `https://wa.me/${cleanNumber}?text=${msg}`;
             floatBtn.classList.remove('hidden');
+        }
+
+        // عرض قسم آراء ومراجعات العملاء
+        function renderTestimonialsSection() {
+            const sectionContainer = document.getElementById('testimonialsSectionContainer');
+            const container = document.getElementById('testimonialsContainer');
+            if (!sectionContainer || !container) return;
+
+            const items = (appData.testimonials || []).filter(t => t.enabled !== false);
+            if (items.length === 0) {
+                sectionContainer.classList.add('hidden');
+                return;
+            }
+            sectionContainer.classList.remove('hidden');
+            container.innerHTML = '';
+
+            const cardShape = appData.cardShape || 'rounded-2xl';
+            const cardStyle = appData.cardStyle || 'normal';
+
+            items.forEach(t => {
+                let starsHTML = '';
+                const ratingCount = parseInt(t.rating) || 5;
+                for(let i=0; i<5; i++) {
+                    starsHTML += `<i class="fa-solid fa-star text-[10px] ${i < ratingCount ? 'text-goldaccent' : 'text-gray-300 dark:text-gray-700'}"></i>`;
+                }
+
+                const card = document.createElement('div');
+                card.className = `w-full ${cardStyle === 'glass-card' ? 'glass-card' : 'bg-white dark:bg-cardbg'} border border-gray-300 dark:border-gray-800 ${cardShape} p-3.5 shadow-sm space-y-2`;
+                card.innerHTML = `
+                    <div class="flex justify-between items-center">
+                        <div>
+                            <span class="text-xs font-extrabold text-gray-900 dark:text-white block">${t.clientName}</span>
+                            <span class="text-[10px] text-gray-500">${t.clientRole || ''}</span>
+                        </div>
+                        <div class="flex gap-0.5">${starsHTML}</div>
+                    </div>
+                    <p class="text-xs text-gray-700 dark:text-gray-300 leading-relaxed italic">"${t.comment}"</p>
+                `;
+                container.appendChild(card);
+            });
         }
 
         window.trackLinkClick = function(id) {
@@ -1623,7 +1744,7 @@
                             <span class="text-[9px] text-gray-500 font-medium">النقرات: ${link.clicks || 0}</span>
                         </div>
                     </div>
-                    <i class="fa-solid fa-chevron-left text-xs text-gray-400"></i>`;
+                    <i class="fa-solid fa-chevron-left text-xs text-gray-400">`;
                 container.appendChild(a);
             });
         }
@@ -1717,8 +1838,10 @@
             memberTempImageBase64 = appData.image || '';
             window.resetMemberLinkForm();
             window.resetMemberGalleryForm();
+            window.resetMemberTestimonialForm();
             renderMemberLinksList();
             renderMemberGalleryList();
+            renderMemberTestimonialsList();
         }
 
         document.getElementById('memberBgImgOpacity').addEventListener('input', (e) => {
@@ -1740,6 +1863,76 @@
                 reader.readAsDataURL(file);
             }
         };
+
+        // إدارة آراء العملاء للعضو الفرعي
+        window.saveMemberTestimonialItem = function() {
+            const id = document.getElementById('memberEditingTestimonialId').value;
+            const clientName = document.getElementById('memberTestimonialClientName').value.trim();
+            const clientRole = document.getElementById('memberTestimonialClientRole').value.trim();
+            const comment = document.getElementById('memberTestimonialComment').value.trim();
+            const rating = parseInt(document.getElementById('memberTestimonialRating').value) || 5;
+            const enabled = document.getElementById('memberTestimonialEnabled').checked;
+
+            if (!clientName || !comment) { alert('أدخل اسم العميل ونصف التقييم'); return; }
+            if (!appData.testimonials) appData.testimonials = [];
+
+            if (id) {
+                const t = appData.testimonials.find(x => x.id === id);
+                if (t) { t.clientName = clientName; t.clientRole = clientRole; t.comment = comment; t.rating = rating; t.enabled = enabled; }
+            } else {
+                appData.testimonials.push({ id: 't_' + Date.now(), clientName, clientRole, comment, rating, enabled });
+            }
+            window.resetMemberTestimonialForm();
+            renderMemberTestimonialsList();
+            renderTestimonialsSection();
+        };
+
+        window.resetMemberTestimonialForm = function() {
+            document.getElementById('memberEditingTestimonialId').value = '';
+            document.getElementById('memberTestimonialClientName').value = '';
+            document.getElementById('memberTestimonialClientRole').value = '';
+            document.getElementById('memberTestimonialComment').value = '';
+            document.getElementById('memberTestimonialRating').value = '5';
+            document.getElementById('memberTestimonialEnabled').checked = true;
+            document.getElementById('memberTestimonialFormTitle').textContent = 'إدارة آراء ومراجعات العملاء لصفحتك';
+        };
+
+        window.editMemberTestimonialItem = function(id) {
+            const t = (appData.testimonials || []).find(x => x.id === id);
+            if (!t) return;
+            document.getElementById('memberEditingTestimonialId').value = t.id;
+            document.getElementById('memberTestimonialClientName').value = t.clientName;
+            document.getElementById('memberTestimonialClientRole').value = t.clientRole || '';
+            document.getElementById('memberTestimonialComment').value = t.comment;
+            document.getElementById('memberTestimonialRating').value = t.rating || 5;
+            document.getElementById('memberTestimonialEnabled').checked = t.enabled !== false;
+            document.getElementById('memberTestimonialFormTitle').textContent = 'تعديل التقييم';
+        };
+
+        window.deleteMemberTestimonialItem = function(id) {
+            appData.testimonials = (appData.testimonials || []).filter(x => x.id !== id);
+            renderMemberTestimonialsList();
+            renderTestimonialsSection();
+        };
+
+        function renderMemberTestimonialsList() {
+            const container = document.getElementById('memberTestimonialsList');
+            if(!container) return; container.innerHTML = '';
+            (appData.testimonials || []).forEach((t) => {
+                const statusBadge = t.enabled !== false ? '<span class="text-emerald-500 font-bold">مفعل</span>' : '<span class="text-red-500 font-bold">متوقف</span>';
+                container.innerHTML += `
+                    <div class="bg-white dark:bg-cardbg border border-gray-300 dark:border-gray-700 p-2.5 rounded-lg flex items-center justify-between shadow-sm">
+                        <div>
+                            <div class="text-gray-900 dark:text-white font-extrabold text-xs">${t.clientName} (${statusBadge}) - ⭐ ${t.rating}</div>
+                            <div class="text-[10px] text-gray-500 truncate max-w-[140px]">${t.comment}</div>
+                        </div>
+                        <div class="flex items-center gap-1">
+                            <button type="button" onclick="window.editMemberTestimonialItem('${t.id}')" class="bg-blue-500/20 text-blue-600 dark:text-blue-400 px-2 py-0.5 rounded text-[10px] font-bold">تعديل</button>
+                            <button type="button" onclick="window.deleteMemberTestimonialItem('${t.id}')" class="bg-red-500/20 text-red-600 dark:text-red-400 px-2 py-0.5 rounded text-[10px] font-bold">حذف</button>
+                        </div>
+                    </div>`;
+            });
+        }
 
         window.saveMemberLinkItem = function() {
             const id = document.getElementById('memberEditingLinkId').value;
@@ -2014,10 +2207,81 @@
             renderAdminPendingRequests();
             renderAdminUsersList();
             renderAdminSidebarList();
+            renderAdminTestimonialsList();
             renderAdminGalleryList();
             renderAdminCategories();
             renderAdminCategorySelect();
             renderAdminLinksList();
+        }
+
+        // إدارة آراء العملاء في لوحة الأدمن
+        window.saveTestimonialItem = function() {
+            const id = document.getElementById('editingTestimonialId').value;
+            const clientName = document.getElementById('testimonialClientName').value.trim();
+            const clientRole = document.getElementById('testimonialClientRole').value.trim();
+            const comment = document.getElementById('testimonialComment').value.trim();
+            const rating = parseInt(document.getElementById('testimonialRating').value) || 5;
+            const enabled = document.getElementById('testimonialEnabled').checked;
+
+            if (!clientName || !comment) { alert('أدخل اسم العميل ونص التعليق'); return; }
+            if (!appData.testimonials) appData.testimonials = [];
+
+            if (id) {
+                const t = appData.testimonials.find(x => x.id === id);
+                if (t) { t.clientName = clientName; t.clientRole = clientRole; t.comment = comment; t.rating = rating; t.enabled = enabled; }
+            } else {
+                appData.testimonials.push({ id: 't_' + Date.now(), clientName, clientRole, comment, rating, enabled });
+            }
+            window.resetTestimonialForm();
+            renderAdminTestimonialsList();
+            renderTestimonialsSection();
+        };
+
+        window.resetTestimonialForm = function() {
+            document.getElementById('editingTestimonialId').value = '';
+            document.getElementById('testimonialClientName').value = '';
+            document.getElementById('testimonialClientRole').value = '';
+            document.getElementById('testimonialComment').value = '';
+            document.getElementById('testimonialRating').value = '5';
+            document.getElementById('testimonialEnabled').checked = true;
+            document.getElementById('testimonialFormTitle').textContent = 'إضافة رأي عميل جديد';
+        };
+
+        window.editTestimonialItem = function(id) {
+            const t = (appData.testimonials || []).find(x => x.id === id);
+            if (!t) return;
+            document.getElementById('editingTestimonialId').value = t.id;
+            document.getElementById('testimonialClientName').value = t.clientName;
+            document.getElementById('testimonialClientRole').value = t.clientRole || '';
+            document.getElementById('testimonialComment').value = t.comment;
+            document.getElementById('testimonialRating').value = t.rating || 5;
+            document.getElementById('testimonialEnabled').checked = t.enabled !== false;
+            document.getElementById('testimonialFormTitle').textContent = 'تعديل التقييم';
+        };
+
+        window.deleteTestimonialItem = function(id) {
+            appData.testimonials = (appData.testimonials || []).filter(x => x.id !== id);
+            renderAdminTestimonialsList();
+            renderTestimonialsSection();
+        };
+
+        function renderAdminTestimonialsList() {
+            const container = document.getElementById('adminTestimonialsList');
+            if(!container) return; container.innerHTML = '';
+            (appData.testimonials || []).forEach((t) => {
+                const statusBadge = t.enabled !== false ? '<span class="text-emerald-500 font-bold">مفعل</span>' : '<span class="text-red-500 font-bold">متوقف</span>';
+                container.innerHTML += `
+                    <div class="bg-white dark:bg-cardbg border border-gray-300 dark:border-gray-700 rounded-xl p-2.5 flex items-center justify-between shadow-sm">
+                        <div>
+                            <div class="font-extrabold text-gray-900 dark:text-white">${t.clientName} (${statusBadge}) - ⭐ ${t.rating}</div>
+                            <div class="text-[10px] text-gray-500 truncate max-w-[140px]">${t.comment}</div>
+                        </div>
+                        <div class="flex items-center gap-1">
+                            <button type="button" onclick="window.editTestimonialItem('${t.id}')" class="bg-blue-500/20 text-blue-600 dark:text-blue-400 px-2 py-0.5 rounded text-[10px] font-bold">تعديل</button>
+                            <button type="button" onclick="window.deleteTestimonialItem('${t.id}')" class="bg-red-500/20 text-red-600 dark:text-red-400 px-2 py-0.5 rounded text-[10px] font-bold">حذف</button>
+                        </div>
+                    </div>`;
+            });
         }
 
         window.saveSidebarItem = function() {
@@ -2147,6 +2411,7 @@
                     { id: 'sb1', title: 'لوحة تحكم العضو', url: '#', icon: 'fa-solid fa-user-gear', action: 'openMemberPanel', enabled: true },
                     { id: 'sb2', title: 'انضم إلينا كعضو', url: '#', icon: 'fa-solid fa-user-plus', action: 'openJoin', enabled: true }
                 ],
+                testimonials: [],
                 gallery: [],
                 links: []
             };
@@ -2412,7 +2677,7 @@
                             <button type="button" onclick="window.moveLink(${index}, -1)" class="bg-gray-200 dark:bg-gray-700 text-goldaccent px-1.5 py-0.5 rounded text-[10px] font-bold">⬆️</button>
                             <button type="button" onclick="window.moveLink(${index}, 1)" class="bg-gray-200 dark:bg-gray-700 text-goldaccent px-1.5 py-0.5 rounded text-[10px] font-bold">⬇️</button>
                             <button type="button" onclick="window.editLink('${l.id}')" class="bg-blue-500/20 text-blue-600 dark:text-blue-400 px-2 py-0.5 rounded text-[10px] font-bold">تعديل</button>
-                            <button type="button" onclick="window.deleteLink('${l.id}')" class="bg-red-500/20 text-red-600 dark:text-red-400 px-2 py-0.5 rounded text-[10px] font-bold">حذف</button>
+                            <button type="button" onclick="window.deleteLink('${l.id}')" class="bg-red-500/20 text-red-600 px-2 py-0.5 rounded text-[10px] font-bold">حذف</button>
                         </div>
                     </div>`;
             });
