@@ -1110,7 +1110,7 @@
             } else {
                 rootData.users['mahmoud'] = defaultUserData;
                 appData = defaultUserData;
-                set(dbRef, rootData);
+                set(dbRef, rootData).catch(err => console.error("Initial set error:", err));
             }
             initApp();
             
@@ -1120,7 +1120,7 @@
                 }, 500);
             }
         }, (error) => {
-            console.error("Firebase error", error);
+            console.error("Firebase read error:", error);
             initApp();
         });
 
@@ -1129,7 +1129,8 @@
             set(dbRef, rootData).then(() => {
                 alert('تم الحفظ والتحديث على السحابة بنجاح!');
             }).catch((err) => {
-                alert('خطأ في الحفظ: ' + err.message);
+                alert('خطأ في الاتصال بقاعدة البيانات أو صلاحيات الحفظ (تأكد من قواعد Firebase Realtime Database Rules): ' + err.message);
+                console.error("Firebase save error:", err);
             });
         }
 
@@ -1316,7 +1317,7 @@
             if (link) {
                 link.clicks = (link.clicks || 0) + 1;
                 rootData.users[currentUsername] = appData;
-                set(dbRef, rootData).catch(err => console.log(err));
+                set(dbRef, rootData).catch(err => console.error("Click track error:", err));
             }
         };
 
@@ -1390,7 +1391,7 @@
                 set(dbRef, rootData).then(() => {
                     renderNotificationsList();
                     updateNotificationBadge();
-                });
+                }).catch(err => console.error("Mark read error:", err));
             }
         };
 
@@ -1405,7 +1406,7 @@
             set(dbRef, rootData).then(() => {
                 renderNotificationsList();
                 updateNotificationBadge();
-            });
+            }).catch(err => console.error("Mark all read error:", err));
         };
 
         window.deleteNotification = function(id) {
@@ -1414,7 +1415,7 @@
                 set(dbRef, rootData).then(() => {
                     renderNotificationsList();
                     updateNotificationBadge();
-                });
+                }).catch(err => console.error("Delete notif error:", err));
             }
         };
 
@@ -1441,7 +1442,7 @@
                 alert('تم إرسال الإشعار بنجاح داخل النظام!');
                 document.getElementById('broadcastTitle').value = '';
                 document.getElementById('broadcastMessage').value = '';
-            });
+            }).catch(err => alert('خطأ في إرسال الإشعار: ' + err.message));
         };
 
         window.resetDesignDefaults = function() {
@@ -1528,7 +1529,7 @@
                 document.getElementById('feedbackSenderContact').value = '';
                 document.getElementById('feedbackMessage').value = '';
                 window.closeFeedbackModal();
-            });
+            }).catch(err => alert('خطأ في إرسال الملاحظة: ' + err.message));
         };
 
         window.openJoinModal = function() { document.getElementById('joinModal').classList.remove('hidden'); };
@@ -1545,7 +1546,7 @@
             set(dbRef, rootData).then(() => {
                 alert('تم إرسال طلب انضمامك بنجاح وسيتم إرسال التفاصيل عبر الواتساب.');
                 window.closeJoinModal();
-            });
+            }).catch(err => alert('خطأ في إرسال الطلب: ' + err.message));
         };
 
         window.openGalleryModal = function() { renderGalleryGrid(); document.getElementById('galleryModal').classList.remove('hidden'); };
@@ -2374,7 +2375,7 @@
         window.deleteFeedbackMessage = function(msgId) {
             if (rootData.feedbackMessages && rootData.feedbackMessages[msgId]) {
                 delete rootData.feedbackMessages[msgId];
-                set(dbRef, rootData).then(() => { renderAdminFeedbackList(); });
+                set(dbRef, rootData).then(() => { renderAdminFeedbackList(); }).catch(err => console.error("Delete feedback error:", err));
             }
         };
 
@@ -2432,12 +2433,18 @@
                 links: []
             };
             delete rootData.pendingRequests[username];
-            set(dbRef, rootData).then(() => { alert(`تم قبول العضو ${username}`); populateAdminForm(); });
+            set(dbRef, rootData).then(() => { alert(`تم قبول العضو ${username}`); populateAdminForm(); }).catch(err => alert('خطأ: ' + err.message));
         };
-        window.rejectRequest = function(username) { delete rootData.pendingRequests[username]; set(dbRef, rootData).then(() => populateAdminForm()); };
+        window.rejectRequest = function(username) { 
+            delete rootData.pendingRequests[username]; 
+            set(dbRef, rootData).then(() => populateAdminForm()).catch(err => console.error("Reject error:", err)); 
+        };
         window.deletePlatformUser = function(username) {
             if (username === 'mahmoud') return;
-            if (confirm(`حذف حساب ${username}؟`)) { delete rootData.users[username]; set(dbRef, rootData).then(() => populateAdminForm()); }
+            if (confirm(`حذف حساب ${username}؟`)) { 
+                delete rootData.users[username]; 
+                set(dbRef, rootData).then(() => populateAdminForm()).catch(err => console.error("Delete user error:", err)); 
+            }
         };
 
         function renderAdminPendingRequests() {
@@ -2497,7 +2504,6 @@
             saveDataToFirebase();
             renderAdminGalleryList();
             renderGalleryGrid();
-            alert(isNew ? 'تم نشر المشروع وإرسال إشعار داخل المنصة بنجاح! 🔔' : 'تم تحديث المشروع بنجاح!');
         };
 
         window.resetGalleryForm = function() {
@@ -2693,7 +2699,7 @@
                             <button type="button" onclick="window.moveLink(${index}, -1)" class="bg-gray-200 dark:bg-gray-700 text-goldaccent px-1.5 py-0.5 rounded text-[10px] font-bold">⬆️</button>
                             <button type="button" onclick="window.moveLink(${index}, 1)" class="bg-gray-200 dark:bg-gray-700 text-goldaccent px-1.5 py-0.5 rounded text-[10px] font-bold">⬇️</button>
                             <button type="button" onclick="window.editLink('${l.id}')" class="bg-blue-500/20 text-blue-600 dark:text-blue-400 px-2 py-0.5 rounded text-[10px] font-bold">تعديل</button>
-                            <button type="button" onclick="window.deleteLink('${l.id}')" class="bg-red-500/20 text-red-600 px-2 py-0.5 rounded text-[10px] font-bold">حذف</button>
+                            <button type="button" onclick="window.deleteLink('${l.id}')" class="bg-red-500/20 text-red-600 dark:text-red-400 px-2 py-0.5 rounded text-[10px] font-bold">حذف</button>
                         </div>
                     </div>`;
             });
@@ -2741,7 +2747,7 @@
             appData.bgImageUrl = document.getElementById('adminBgImageUrl').value.trim();
             appData.bgImgOpacity = parseFloat(document.getElementById('adminBgImgOpacity').value);
             appData.showMap = document.getElementById('adminShowMap').checked;
-            appData.mapUrl = document.getElementById('mapUrl').value?.trim() || document.getElementById('adminMapUrl').value.trim();
+            appData.mapUrl = document.getElementById('adminMapUrl').value.trim();
             appData.mapEmbed = document.getElementById('adminMapEmbed').value.trim();
             
             const avatarUrlInputVal = document.getElementById('editAvatarUrl').value.trim();
