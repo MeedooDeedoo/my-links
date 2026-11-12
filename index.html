@@ -36,33 +36,20 @@
             font-family: 'Tajawal', sans-serif;
             -webkit-tap-highlight-color: transparent;
         }
-        
         .glow-gold { box-shadow: 0 0 20px rgba(212, 175, 55, 0.35); }
         .glow-cyan { box-shadow: 0 0 20px rgba(0, 180, 216, 0.35); }
         .glow-subtle { box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15); }
         .glow-gold-hover:hover { box-shadow: 0 0 25px rgba(212, 175, 55, 0.5); }
-        
-        button, select, input, a, label, textarea {
-            touch-action: manipulation;
-            cursor: pointer;
-        }
-
-        .glass-card {
-            background: rgba(26, 29, 38, 0.75) !important;
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
-        }
-        html.light .glass-card {
-            background: rgba(255, 255, 255, 0.8) !important;
-        }
+        button, select, input, a, label, textarea { touch-action: manipulation; cursor: pointer; }
+        .glass-card { background: rgba(26, 29, 38, 0.75) !important; backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); }
+        html.light .glass-card { background: rgba(255, 255, 255, 0.8) !important; }
     </style>
 </head>
 <body id="pageBody" class="min-h-screen flex flex-col items-center justify-between p-4 pb-12 bg-lightbg dark:bg-darkbg text-gray-900 dark:text-gray-100 transition-colors duration-300 relative">
 
-    <!-- Background Image Overlay Container -->
     <div id="bgImageLayer" class="absolute inset-0 bg-cover bg-center pointer-events-none z-0 hidden"></div>
 
-    <!-- Global Notification Banner (System 1) -->
+    <!-- Global Notification Banner -->
     <div id="globalNotificationBanner" class="w-full max-w-md mb-4 bg-goldaccent/20 border border-goldaccent/40 rounded-2xl p-3.5 flex items-start justify-between gap-3 shadow-md relative z-50 hidden transition-all">
         <div class="flex items-start gap-2.5">
             <div class="w-8 h-8 rounded-xl bg-goldaccent/30 text-goldaccent flex items-center justify-center shrink-0 mt-0.5">
@@ -82,7 +69,7 @@
             <button type="button" onclick="window.toggleSidebar()" class="w-9 h-9 rounded-xl bg-gray-100 dark:bg-darkbg border border-gray-300 dark:border-gray-700 text-goldaccent flex items-center justify-center transition active:scale-95 shadow-sm" title="القائمة الجانبية">
                 <i class="fa-solid fa-bars"></i>
             </button>
-            <span id="topBarName" class="text-xs font-bold text-gray-900 dark:text-gray-100 truncate max-w-[150px]">جاري التحميل...</span>
+            <span id="topBarName" class="text-xs font-bold text-gray-900 dark:text-gray-100 truncate max-w-[150px]">شجرة الروابط</span>
         </div>
         <div class="flex items-center gap-2">
             <button type="button" onclick="window.toggleTheme()" class="w-9 h-9 rounded-xl bg-gray-100 dark:bg-darkbg border border-gray-300 dark:border-gray-700 text-goldaccent flex items-center justify-center transition shadow-sm" title="تبديل الوضع">
@@ -100,15 +87,12 @@
             </h3>
             <button type="button" onclick="window.toggleSidebar()" class="text-gray-500 hover:text-gray-800 dark:hover:text-white text-lg"><i class="fa-solid fa-xmark"></i></button>
         </div>
-        
         <div id="sidebarLinksContainer" class="flex-grow space-y-2 text-xs overflow-y-auto"></div>
-
         <div class="pt-3 border-t border-gray-200 dark:border-gray-800 mt-2">
             <button type="button" onclick="window.openFeedbackModal()" class="w-full bg-goldaccent/10 border border-goldaccent/30 text-goldaccent font-bold py-2.5 rounded-xl flex items-center justify-center gap-2 transition hover:bg-goldaccent/20">
                 <i class="fa-solid fa-comment-dots"></i> إرسال ملاحظة للإدارة
             </button>
         </div>
-
         <div class="border-t border-gray-200 dark:border-gray-800 pt-3 text-center text-[10px] text-gray-500 dark:text-gray-400 mt-2">
             شجرة الروابط الاحترافية © 2026
         </div>
@@ -116,8 +100,6 @@
 
     <!-- Main Profile Card Container -->
     <div class="w-full max-w-md flex flex-col items-center flex-grow relative z-10">
-        
-        <!-- Profile Header -->
         <div class="text-center w-full mb-6">
             <div class="relative w-24 h-24 mx-auto mb-3">
                 <div id="avatarContainer" class="w-full h-full rounded-full border-2 border-goldaccent overflow-hidden bg-lightcard dark:bg-darkbg flex items-center justify-center shadow-md transition-colors duration-300">
@@ -127,10 +109,10 @@
             </div>
             
             <h1 id="displayName" class="text-xl font-extrabold text-gray-900 dark:text-white flex items-center justify-center gap-2">
-                <span>جاري التحميل...</span>
+                <span>محمود دملخي</span>
                 <i class="fa-solid fa-circle-check text-goldaccent text-base"></i>
             </h1>
-            <p id="displayBio" class="text-xs font-medium text-gray-600 dark:text-gray-400 mt-1.5 px-4 leading-relaxed">...</p>
+            <p id="displayBio" class="text-xs font-medium text-gray-600 dark:text-gray-400 mt-1.5 px-4 leading-relaxed">جاري تحميل البيانات...</p>
             
             <div id="contactButtons" class="flex justify-center gap-3 mt-4"></div>
         </div>
@@ -182,7 +164,6 @@
     </footer>
 
     <!-- Modals -->
-    <!-- Feedback Modal -->
     <div id="feedbackModal" class="fixed inset-0 bg-black/70 backdrop-blur-md hidden flex items-center justify-center z-[110] p-3">
         <div class="bg-lightcard dark:bg-cardbg border border-gray-300 dark:border-gray-800 w-full max-w-md rounded-2xl p-5 shadow-2xl max-h-[92vh] flex flex-col transition-colors duration-300">
             <div class="flex justify-between items-center border-b border-gray-200 dark:border-gray-800 pb-3 mb-3">
@@ -200,7 +181,6 @@
         </div>
     </div>
 
-    <!-- Join Platform Modal -->
     <div id="joinModal" class="fixed inset-0 bg-black/70 backdrop-blur-md hidden flex items-center justify-center z-[110] p-3">
         <div class="bg-lightcard dark:bg-cardbg border border-gray-300 dark:border-gray-800 w-full max-w-md rounded-2xl p-5 shadow-2xl max-h-[92vh] flex flex-col transition-colors duration-300">
             <div class="flex justify-between items-center border-b border-gray-200 dark:border-gray-800 pb-3 mb-3">
@@ -220,7 +200,6 @@
         </div>
     </div>
 
-    <!-- Gallery Showcase Modal -->
     <div id="galleryModal" class="fixed inset-0 bg-black/70 backdrop-blur-md hidden flex items-center justify-center z-[105] p-3">
         <div class="bg-lightcard dark:bg-cardbg border border-gray-300 dark:border-gray-800 w-full max-w-lg rounded-2xl p-4 shadow-2xl max-h-[92vh] flex flex-col transition-colors duration-300">
             <div class="flex justify-between items-center border-b border-gray-200 dark:border-gray-800 pb-3 mb-3">
@@ -234,7 +213,6 @@
         </div>
     </div>
 
-    <!-- Project Detail Modal -->
     <div id="projectDetailModal" class="fixed inset-0 bg-black/80 backdrop-blur-md hidden flex items-center justify-center z-[115] p-3">
         <div class="bg-lightcard dark:bg-cardbg border border-gray-300 dark:border-gray-800 w-full max-w-lg rounded-2xl p-4 shadow-2xl max-h-[92vh] flex flex-col transition-colors duration-300">
             <div class="flex justify-between items-center border-b border-gray-200 dark:border-gray-800 pb-3 mb-3">
@@ -252,7 +230,6 @@
         </div>
     </div>
 
-    <!-- Image View Modal -->
     <div id="imageViewModal" class="fixed inset-0 bg-black/95 backdrop-blur-lg hidden flex flex-col items-center justify-center z-[130] p-4">
         <img id="enlargedImage" src="" class="max-w-full max-h-[75vh] rounded-2xl border border-gray-800 shadow-2xl object-contain mb-3" />
         <div class="flex items-center gap-3 mt-2">
@@ -265,7 +242,6 @@
         </div>
     </div>
 
-    <!-- Share Options Modal -->
     <div id="shareModal" class="fixed inset-0 bg-black/70 backdrop-blur-md hidden flex items-end sm:items-center justify-center z-[110] p-0 sm:p-4 transition-opacity">
         <div class="bg-lightcard dark:bg-cardbg border-t sm:border border-gray-300 dark:border-gray-800 w-full max-w-md rounded-t-3xl sm:rounded-2xl p-6 shadow-2xl transition-colors duration-300">
             <div class="flex justify-between items-center border-b border-gray-200 dark:border-gray-800 pb-3 mb-4">
@@ -329,7 +305,7 @@
             </div>
             <div class="overflow-y-auto flex-grow pr-1 space-y-3 text-xs">
 
-                <!-- Notifications Management Section (New Feature Added) -->
+                <!-- Notifications Management Section -->
                 <div class="bg-lightbg dark:bg-darkbg rounded-xl border border-gray-300 dark:border-gray-800 overflow-hidden transition-colors">
                     <button type="button" onclick="window.toggleAccordion('accNotificationsAdmin')" class="w-full p-3 flex justify-between items-center font-bold text-gray-800 dark:text-gray-200">
                         <span class="flex items-center gap-2"><i class="fa-solid fa-bullhorn text-goldaccent"></i> نظام إرسال الإشعارات والرسائل الجماعية</span>
@@ -339,151 +315,76 @@
                         </div>
                     </button>
                     <div id="accNotificationsAdmin" class="hidden p-3 pt-0 space-y-3 border-t border-gray-200 dark:border-gray-800 mt-1">
-                        
-                        <!-- System 1: In-App Broadcast Notification -->
                         <div class="bg-white dark:bg-cardbg p-3 rounded-xl border border-gray-300 dark:border-gray-700 space-y-2 mt-2">
                             <h4 class="font-bold text-goldaccent flex items-center gap-1.5"><i class="fa-solid fa-bell"></i> 1. إشعار داخل المنصة (شريط إعلاني علوي لكل الزوار)</h4>
                             <input type="text" id="adminNotifTitle" placeholder="عنوان الإشعار (مثال: تنبيه هام، عرض جديد)" class="w-full bg-lightbg dark:bg-darkbg border border-gray-300 dark:border-gray-700 rounded-lg p-2 text-gray-900 dark:text-white outline-none">
-                            <textarea id="adminNotifText" placeholder="نص الإشعار التفصيلي الذي سيظهر في أعلى المنصة..." class="w-full bg-lightbg dark:bg-darkbg border border-gray-300 dark:border-gray-700 rounded-lg p-2 text-gray-900 dark:text-white outline-none h-16 resize-none"></textarea>
+                            <textarea id="adminNotifText" placeholder="نص الإشعار التفصيلي..." class="w-full bg-lightbg dark:bg-darkbg border border-gray-300 dark:border-gray-700 rounded-lg p-2 text-gray-900 dark:text-white outline-none h-16 resize-none"></textarea>
                             <div class="flex items-center gap-2">
                                 <input type="checkbox" id="adminNotifActive" class="accent-goldaccent w-4 h-4">
                                 <label for="adminNotifActive" class="font-bold text-gray-800 dark:text-gray-200 text-xs">تفعيل وعرض هذا الإشعار للزوار حالياً</label>
                             </div>
                         </div>
 
-                        <!-- System 2: WhatsApp Broadcast -->
                         <div class="bg-white dark:bg-cardbg p-3 rounded-xl border border-gray-300 dark:border-gray-700 space-y-2">
                             <h4 class="font-bold text-emerald-500 flex items-center gap-1.5"><i class="fa-brands fa-whatsapp"></i> 2. إرسال تنبيه جماعي عبر الواتساب</h4>
-                            <p class="text-[10px] text-gray-500">اختر العضو أو أدخل رقم هاتفك لإرسال رسالة بث جماعية عبر الواتساب:</p>
-                            <input type="text" id="adminWaBroadcastPhone" placeholder="رقم الهاتف المستهدف أو المجموعات (مع رمز الدولة)" class="w-full bg-lightbg dark:bg-darkbg border border-gray-300 dark:border-gray-700 rounded-lg p-2 text-gray-900 dark:text-white outline-none">
-                            <textarea id="adminWaBroadcastText" placeholder="نص الرسالة الإعلانية أو التنبيه..." class="w-full bg-lightbg dark:bg-darkbg border border-gray-300 dark:border-gray-700 rounded-lg p-2 text-gray-900 dark:text-white outline-none h-16 resize-none"></textarea>
+                            <input type="text" id="adminWaBroadcastPhone" placeholder="رقم الهاتف المستهدف (مع رمز الدولة)" class="w-full bg-lightbg dark:bg-darkbg border border-gray-300 dark:border-gray-700 rounded-lg p-2 text-gray-900 dark:text-white outline-none">
+                            <textarea id="adminWaBroadcastText" placeholder="نص الرسالة..." class="w-full bg-lightbg dark:bg-darkbg border border-gray-300 dark:border-gray-700 rounded-lg p-2 text-gray-900 dark:text-white outline-none h-16 resize-none"></textarea>
                             <a id="adminSendWaBtn" href="#" target="_blank" class="w-full bg-emerald-500 hover:bg-emerald-600 text-white font-extrabold py-2.5 rounded-lg flex items-center justify-center gap-2 transition shadow-sm text-center block">
                                 <i class="fa-brands fa-whatsapp text-base"></i> إرسال عبر الواتساب الآن
                             </a>
                         </div>
-
                     </div>
                 </div>
 
-                <!-- Advanced Design & Style Customization Section (Accordion Foldable) -->
+                <!-- Design Section -->
                 <div class="bg-lightbg dark:bg-darkbg rounded-xl border border-gray-300 dark:border-gray-800 overflow-hidden transition-colors">
                     <button type="button" onclick="window.toggleAccordion('accDesignAdmin')" class="w-full p-3 flex justify-between items-center font-bold text-gray-800 dark:text-gray-200">
                         <span class="flex items-center gap-2"><i class="fa-solid fa-palette text-goldaccent"></i> إعدادات التصميم والتخصيص البصري</span>
-                        <div class="flex items-center gap-2">
-                            <span class="text-[10px] bg-goldaccent/20 text-goldaccent px-2 py-0.5 rounded font-mono">احترافي</span>
-                            <i id="icon-accDesignAdmin" class="fa-solid fa-chevron-down transition-transform"></i>
-                        </div>
+                        <i id="icon-accDesignAdmin" class="fa-solid fa-chevron-down transition-transform"></i>
                     </button>
                     <div id="accDesignAdmin" class="hidden p-3 pt-0 space-y-3 border-t border-gray-200 dark:border-gray-800 mt-1">
-                        <div class="flex justify-between items-center pt-2">
-                            <span class="text-[11px] text-gray-500">إدارة مظهر الصفحة بالكامل</span>
-                            <button type="button" onclick="window.resetDesignDefaults()" class="bg-red-500/10 text-red-500 border border-red-500/30 px-2.5 py-1 rounded-lg text-[10px] font-bold hover:bg-red-500/20 transition">استعادة التصميم الأساسي</button>
-                        </div>
-                        
                         <div>
                             <label class="block font-bold text-gray-800 dark:text-gray-200 mb-1">شكل الصورة الشخصية:</label>
                             <select id="adminAvatarShape" class="w-full bg-lightcard dark:bg-cardbg border border-gray-300 dark:border-gray-700 rounded-lg p-2 text-gray-900 dark:text-white outline-none">
-                                <option value="rounded-full">دائري بالكامل (Full Circle)</option>
-                                <option value="rounded-2xl">مربع بحواف مبرومة / مفتولة الزوايا (Rounded Corners)</option>
-                                <option value="rounded-xl">مربع بحواف ناعمة متوسطة (Soft Rounded)</option>
-                                <option value="rounded-none">مربع حاد الزوايا (Sharp Square)</option>
+                                <option value="rounded-full">دائري بالكامل</option>
+                                <option value="rounded-2xl">مربع بحواف مبرومة</option>
+                                <option value="rounded-xl">مربع بحواف ناعمة</option>
+                                <option value="rounded-none">مربع حاد</option>
                             </select>
                         </div>
-
                         <div>
-                            <label class="block font-bold text-gray-800 dark:text-gray-200 mb-1">توهج أو ظل الصورة الشخصية:</label>
+                            <label class="block font-bold text-gray-800 dark:text-gray-200 mb-1">توهج الصورة:</label>
                             <select id="adminAvatarGlow" class="w-full bg-lightcard dark:bg-cardbg border border-gray-300 dark:border-gray-700 rounded-lg p-2 text-gray-900 dark:text-white outline-none">
-                                <option value="glow-gold">توهج ذهبي فاخر (Gold Glow)</option>
-                                <option value="glow-cyan">توهج سماوي ساطع (Cyan Glow)</option>
-                                <option value="glow-subtle">ظل خفيف وعادي (Subtle Shadow)</option>
-                                <option value="none">بدون توهج أو ظل (None)</option>
+                                <option value="glow-gold">توهج ذهبي</option>
+                                <option value="glow-cyan">توهج سماوي</option>
+                                <option value="none">بدون توهج</option>
                             </select>
                         </div>
-
                         <div>
-                            <label class="block font-bold text-gray-800 dark:text-gray-200 mb-1">شكل وانحناء البطاقات وأزرار الروابط:</label>
+                            <label class="block font-bold text-gray-800 dark:text-gray-200 mb-1">شكل البطاقات:</label>
                             <select id="adminCardShape" class="w-full bg-lightcard dark:bg-cardbg border border-gray-300 dark:border-gray-700 rounded-lg p-2 text-gray-900 dark:text-white outline-none">
-                                <option value="rounded-2xl">مفتولة الزوايا بشكل أنيق (Rounded 2XL)</option>
-                                <option value="rounded-full">دائرية الأطراف بالكامل (Pill Shape)</option>
-                                <option value="rounded-lg">زوايا معتدلة (Rounded LG)</option>
-                                <option value="rounded-none">زوايا حادة (Sharp Square)</option>
+                                <option value="rounded-2xl">مفتولة الزوايا</option>
+                                <option value="rounded-full">دائرية الأطراف</option>
+                                <option value="rounded-lg">زوايا معتدلة</option>
                             </select>
                         </div>
-
-                        <div>
-                            <label class="block font-bold text-gray-800 dark:text-gray-200 mb-1">توهج أو ظل البطاقات:</label>
-                            <select id="adminCardGlow" class="w-full bg-lightcard dark:bg-cardbg border border-gray-300 dark:border-gray-700 rounded-lg p-2 text-gray-900 dark:text-white outline-none">
-                                <option value="glow-gold-hover">توهج ذهبي عند المرور (Gold Glow Hover)</option>
-                                <option value="glow-subtle">ظل ثابت وبارز (Subtle Shadow)</option>
-                                <option value="none">بدون توهج أو ظل</option>
-                            </select>
-                        </div>
-
-                        <div>
-                            <label class="block font-bold text-gray-800 dark:text-gray-200 mb-1">نمط البطاقات البصري (Effects & Glass):</label>
-                            <select id="adminCardStyle" class="w-full bg-lightcard dark:bg-cardbg border border-gray-300 dark:border-gray-700 rounded-lg p-2 text-gray-900 dark:text-white outline-none">
-                                <option value="normal">عادي (Solid)</option>
-                                <option value="glass-card">زجاجي شفاف فاخر (Glassmorphism)</option>
-                            </select>
-                        </div>
-
-                        <!-- اختيار تدرج الألوان المخصص مع درجة الشفافية -->
-                        <div class="bg-white dark:bg-cardbg p-3 rounded-xl border border-gray-300 dark:border-gray-700 space-y-3">
-                            <label class="block font-bold text-gray-800 dark:text-gray-200">تدرج الألوان المخصص (مع إمكانية تحديد الشفافية):</label>
-                            <div class="grid grid-cols-3 gap-2">
-                                <div class="space-y-1">
-                                    <span class="text-[10px] text-gray-500 block">اللون 1</span>
-                                    <input type="color" id="adminColor1" value="#0f1117" class="w-full h-8 rounded cursor-pointer bg-transparent">
-                                    <input type="range" id="adminOpacity1" min="0" max="1" step="0.05" value="1" class="w-full accent-goldaccent" title="شفافية اللون 1">
-                                </div>
-                                <div class="space-y-1">
-                                    <span class="text-[10px] text-gray-500 block">اللون 2</span>
-                                    <input type="color" id="adminColor2" value="#1a1d26" class="w-full h-8 rounded cursor-pointer bg-transparent">
-                                    <input type="range" id="adminOpacity2" min="0" max="1" step="0.05" value="1" class="w-full accent-goldaccent" title="شفافية اللون 2">
-                                </div>
-                                <div class="space-y-1">
-                                    <span class="text-[10px] text-gray-500 block">اللون 3</span>
-                                    <input type="color" id="adminColor3" value="#0f1117" class="w-full h-8 rounded cursor-pointer bg-transparent">
-                                    <input type="range" id="adminOpacity3" min="0" max="1" step="0.05" value="1" class="w-full accent-goldaccent" title="شفافية اللون 3">
-                                </div>
-                            </div>
-                            <div class="flex items-center justify-between pt-1">
-                                <span class="text-[10px] text-gray-500">اتجاه التدرج:</span>
-                                <select id="adminGradientAngle" class="bg-lightbg dark:bg-darkbg border border-gray-300 dark:border-gray-700 rounded px-2 py-1 text-[11px]">
-                                    <option value="to bottom right">إلى أسفل اليمين ↘</option>
-                                    <option value="to bottom">إلى الأسفل ↓</option>
-                                    <option value="to right">إلى اليمين →</option>
-                                    <option value="to top right">إلى أعلى اليمين ↗</option>
-                                </select>
-                            </div>
-                        </div>
-
-                        <!-- خلفية الصورة مع شفافيتها -->
-                        <div class="bg-white dark:bg-cardbg p-3 rounded-xl border border-gray-300 dark:border-gray-700 space-y-2">
-                            <label class="block font-bold text-gray-800 dark:text-gray-200">صورة خلفية الصفحة المخصصة:</label>
-                            <input type="url" id="adminBgImageUrl" placeholder="https://example.com/bg.jpg" class="w-full bg-lightbg dark:bg-darkbg border border-gray-300 dark:border-gray-700 rounded-lg p-2 text-gray-900 dark:text-white outline-none">
-                            <div class="flex items-center justify-between pt-1">
-                                <span class="text-[10px] text-gray-500">درجة شفافية الخلفية (العتامة):</span>
-                                <span id="adminBgImgOpacityVal" class="text-[10px] font-bold text-goldaccent">0.6</span>
-                            </div>
-                            <input type="range" id="adminBgImgOpacity" min="0.1" max="1" step="0.05" value="0.6" class="w-full accent-goldaccent">
-                        </div>
+                        <input type="url" id="adminBgImageUrl" placeholder="رابط خلفية الصفحة" class="w-full bg-lightcard dark:bg-cardbg border border-gray-300 dark:border-gray-700 rounded-lg p-2 text-gray-900 dark:text-white outline-none">
                     </div>
                 </div>
 
-                <!-- Map Management Section -->
+                <!-- Map Section -->
                 <div class="bg-lightbg dark:bg-darkbg rounded-xl border border-gray-300 dark:border-gray-800 p-3 space-y-2">
                     <h4 class="font-bold text-goldaccent flex items-center gap-2"><i class="fa-solid fa-map-location-dot"></i> إعدادات الخريطة الجغرافية</h4>
                     <div class="flex items-center gap-2">
                         <input type="checkbox" id="adminShowMap" class="accent-goldaccent w-4 h-4">
-                        <label for="adminShowMap" class="font-bold text-gray-800 dark:text-gray-200">إظهار الخريطة في أسفل الصفحة الرئيسية</label>
+                        <label for="adminShowMap" class="font-bold text-gray-800 dark:text-gray-200">إظهار الخريطة في أسفل الصفحة</label>
                     </div>
-                    <input type="url" id="adminMapUrl" placeholder="رابط زر الخريطة (Google Maps Share Link)" class="w-full bg-lightcard dark:bg-cardbg border border-gray-300 dark:border-gray-700 rounded-lg p-2 text-gray-900 dark:text-white outline-none">
-                    <textarea id="adminMapEmbed" placeholder="كود التضمين iframe src لخرائط جوجل" class="w-full bg-lightcard dark:bg-cardbg border border-gray-300 dark:border-gray-700 rounded-lg p-2 text-gray-900 dark:text-white outline-none h-16 text-[11px] font-mono"></textarea>
+                    <input type="url" id="adminMapUrl" placeholder="رابط الخريطة" class="w-full bg-lightcard dark:bg-cardbg border border-gray-300 dark:border-gray-700 rounded-lg p-2 text-gray-900 dark:text-white outline-none">
+                    <textarea id="adminMapEmbed" placeholder="كود iframe للخرائط" class="w-full bg-lightcard dark:bg-cardbg border border-gray-300 dark:border-gray-700 rounded-lg p-2 text-gray-900 dark:text-white outline-none h-16 text-[11px] font-mono"></textarea>
                 </div>
 
                 <!-- Feedback -->
-                <div class="bg-lightbg dark:bg-darkbg rounded-xl border border-gray-300 dark:border-gray-800 overflow-hidden transition-colors">
+                <div class="bg-lightbg dark:bg-darkbg rounded-xl border border-gray-300 dark:border-gray-800 overflow-hidden">
                     <button type="button" onclick="window.toggleAccordion('accFeedback')" class="w-full p-3 flex justify-between items-center font-bold text-gray-800 dark:text-gray-200">
                         <span class="flex items-center gap-2"><i class="fa-solid fa-comment-dots text-goldaccent"></i> ملاحظات ورسائل الأعضاء</span>
                         <i id="icon-accFeedback" class="fa-solid fa-chevron-down transition-transform"></i>
@@ -493,14 +394,14 @@
                     </div>
                 </div>
 
-                <!-- Join Requests -->
-                <div class="bg-lightbg dark:bg-darkbg rounded-xl border border-gray-300 dark:border-gray-800 overflow-hidden transition-colors">
+                <!-- Join Requests & Users -->
+                <div class="bg-lightbg dark:bg-darkbg rounded-xl border border-gray-300 dark:border-gray-800 overflow-hidden">
                     <button type="button" onclick="window.toggleAccordion('accJoinRequests')" class="w-full p-3 flex justify-between items-center font-bold text-gray-800 dark:text-gray-200">
                         <span class="flex items-center gap-2"><i class="fa-solid fa-users-gear text-cyanaccent"></i> طلبات الأعضاء والأعضاء المقبولين</span>
                         <i id="icon-accJoinRequests" class="fa-solid fa-chevron-down transition-transform"></i>
                     </button>
                     <div id="accJoinRequests" class="hidden p-3 pt-0 space-y-3 border-t border-gray-200 dark:border-gray-800 mt-1">
-                        <h4 class="font-bold text-cyanaccent mt-2">طلبات الانضمام المعلقة:</h4>
+                        <h4 class="font-bold text-cyanaccent mt-2">الطلبات المعلقة:</h4>
                         <div id="adminPendingRequestsList" class="space-y-2"></div>
                         <h4 class="font-bold text-goldaccent pt-3 border-t border-gray-300 dark:border-gray-700">الأعضاء الحاليين:</h4>
                         <div id="adminUsersList" class="space-y-1.5"></div>
@@ -508,113 +409,35 @@
                 </div>
 
                 <!-- Profile -->
-                <div class="bg-lightbg dark:bg-darkbg rounded-xl border border-gray-300 dark:border-gray-800 overflow-hidden transition-colors">
+                <div class="bg-lightbg dark:bg-darkbg rounded-xl border border-gray-300 dark:border-gray-800 overflow-hidden">
                     <button type="button" onclick="window.toggleAccordion('accProfile')" class="w-full p-3 flex justify-between items-center font-bold text-gray-800 dark:text-gray-200">
-                        <span class="flex items-center gap-2"><i class="fa-solid fa-user-pen text-goldaccent"></i> الملف الشخصي والصورة للرئيسي</span>
+                        <span class="flex items-center gap-2"><i class="fa-solid fa-user-pen text-goldaccent"></i> الملف الشخصي والصورة</span>
                         <i id="icon-accProfile" class="fa-solid fa-chevron-down transition-transform"></i>
                     </button>
                     <div id="accProfile" class="hidden p-3 pt-0 space-y-2 border-t border-gray-200 dark:border-gray-800 mt-1">
                         <input type="text" id="editDisplayName" placeholder="الاسم الظاهر" class="w-full bg-lightcard dark:bg-cardbg border border-gray-300 dark:border-gray-700 rounded-lg p-2 text-gray-900 dark:text-white outline-none mt-2">
                         <input type="text" id="editBio" placeholder="الوصف المختصر" class="w-full bg-lightcard dark:bg-cardbg border border-gray-300 dark:border-gray-700 rounded-lg p-2 text-gray-900 dark:text-white outline-none">
-                        <div>
-                            <input type="file" id="imageFileInput" accept="image/*" onchange="window.handleImageUpload(event)" class="w-full text-gray-600 dark:text-gray-400 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-xs file:font-semibold file:bg-goldaccent/20 file:text-goldaccent cursor-pointer mb-2">
-                            <input type="url" id="editAvatarUrl" placeholder="أو أدخل رابط الصورة مباشرة" class="w-full bg-lightcard dark:bg-cardbg border border-gray-300 dark:border-gray-700 rounded-lg p-2 text-gray-900 dark:text-white outline-none mb-2">
-                        </div>
+                        <input type="url" id="editAvatarUrl" placeholder="رابط الصورة المباشر" class="w-full bg-lightcard dark:bg-cardbg border border-gray-300 dark:border-gray-700 rounded-lg p-2 text-gray-900 dark:text-white outline-none mb-2">
                     </div>
                 </div>
 
                 <!-- Contacts -->
-                <div class="bg-lightbg dark:bg-darkbg rounded-xl border border-gray-300 dark:border-gray-800 overflow-hidden transition-colors">
+                <div class="bg-lightbg dark:bg-darkbg rounded-xl border border-gray-300 dark:border-gray-800 overflow-hidden">
                     <button type="button" onclick="window.toggleAccordion('accContacts')" class="w-full p-3 flex justify-between items-center font-bold text-gray-800 dark:text-gray-200">
                         <span class="flex items-center gap-2"><i class="fa-solid fa-address-book text-goldaccent"></i> معلومات الاتصال</span>
                         <i id="icon-accContacts" class="fa-solid fa-chevron-down transition-transform"></i>
                     </button>
                     <div id="accContacts" class="hidden p-3 pt-0 space-y-2 border-t border-gray-200 dark:border-gray-800 mt-1">
-                        <div class="flex items-center gap-2 mt-2"><input type="checkbox" id="showWhatsapp" class="accent-goldaccent"><input type="text" id="editWhatsapp" placeholder="رقم الواتساب" class="flex-1 bg-lightcard dark:bg-cardbg border border-gray-300 dark:border-gray-700 rounded-lg p-2 text-gray-900 dark:text-white outline-none"></div>
-                        <div class="flex items-center gap-2"><input type="checkbox" id="showPhone" class="accent-goldaccent"><input type="text" id="editPhone" placeholder="رقم الهاتف" class="flex-1 bg-lightcard dark:bg-cardbg border border-gray-300 dark:border-gray-700 rounded-lg p-2 text-gray-900 dark:text-white outline-none"></div>
-                        <div class="flex items-center gap-2"><input type="checkbox" id="showEmail" class="accent-goldaccent"><input type="email" id="editEmail" placeholder="البريد الإلكتروني" class="flex-1 bg-lightcard dark:bg-cardbg border border-gray-300 dark:border-gray-700 rounded-lg p-2 text-gray-900 dark:text-white outline-none"></div>
+                        <div class="flex items-center gap-2 mt-2"><input type="checkbox" id="showWhatsapp" class="accent-goldaccent"><input type="text" id="editWhatsapp" placeholder="واتساب" class="flex-1 bg-lightcard dark:bg-cardbg border border-gray-300 dark:border-gray-700 rounded-lg p-2 text-gray-900 dark:text-white outline-none"></div>
+                        <div class="flex items-center gap-2"><input type="checkbox" id="showPhone" class="accent-goldaccent"><input type="text" id="editPhone" placeholder="هاتف" class="flex-1 bg-lightcard dark:bg-cardbg border border-gray-300 dark:border-gray-700 rounded-lg p-2 text-gray-900 dark:text-white outline-none"></div>
+                        <div class="flex items-center gap-2"><input type="checkbox" id="showEmail" class="accent-goldaccent"><input type="email" id="editEmail" placeholder="بريد" class="flex-1 bg-lightcard dark:bg-cardbg border border-gray-300 dark:border-gray-700 rounded-lg p-2 text-gray-900 dark:text-white outline-none"></div>
                     </div>
                 </div>
 
-                <!-- Sidebar Admin -->
-                <div class="bg-lightbg dark:bg-darkbg rounded-xl border border-gray-300 dark:border-gray-800 overflow-hidden transition-colors">
-                    <button type="button" onclick="window.toggleAccordion('accSidebarAdmin')" class="w-full p-3 flex justify-between items-center font-bold text-gray-800 dark:text-gray-200">
-                        <span class="flex items-center gap-2"><i class="fa-solid fa-compass text-goldaccent"></i> إدارة القائمة الجانبية (تشغيل/إيقاف وترتيب)</span>
-                        <i id="icon-accSidebarAdmin" class="fa-solid fa-chevron-down transition-transform"></i>
-                    </button>
-                    <div id="accSidebarAdmin" class="hidden p-3 pt-0 space-y-3 border-t border-gray-200 dark:border-gray-800 mt-1">
-                        <div class="space-y-2 mt-2">
-                            <h4 id="sidebarFormTitle" class="font-bold text-goldaccent">إضافة عنصر جديد</h4>
-                            <input type="hidden" id="editingSidebarId">
-                            <input type="text" id="sidebarTitle" placeholder="عنوان العنصر" class="w-full bg-lightcard dark:bg-cardbg border border-gray-300 dark:border-gray-700 rounded-lg p-2 text-gray-900 dark:text-white outline-none">
-                            <input type="text" id="sidebarUrl" placeholder="الرابط #" class="w-full bg-lightcard dark:bg-cardbg border border-gray-300 dark:border-gray-700 rounded-lg p-2 text-gray-900 dark:text-white outline-none">
-                            <div class="flex gap-2">
-                                <input type="text" id="sidebarIcon" placeholder="أيقونة fa-solid fa-lock" class="flex-1 bg-lightcard dark:bg-cardbg border border-gray-300 dark:border-gray-700 rounded-lg p-2 text-gray-900 dark:text-white outline-none">
-                                <input type="text" id="sidebarAction" placeholder="إجراء openPin" class="flex-1 bg-lightcard dark:bg-cardbg border border-gray-300 dark:border-gray-700 rounded-lg p-2 text-gray-900 dark:text-white outline-none">
-                            </div>
-                            <div class="flex items-center gap-2 pt-1 bg-goldaccent/10 p-2 rounded-lg border border-goldaccent/30">
-                                <input type="checkbox" id="sidebarEnabled" class="accent-goldaccent w-4 h-4" checked>
-                                <label for="sidebarEnabled" class="font-bold text-gray-900 dark:text-white text-xs">تفعيل وعرض العنصر في القائمة الجانبية</label>
-                            </div>
-                            <div class="flex gap-2 pt-1">
-                                <button type="button" onclick="window.saveSidebarItem()" class="flex-1 bg-goldaccent text-black font-bold py-2 rounded-lg">حفظ</button>
-                                <button type="button" onclick="window.resetSidebarForm()" class="bg-gray-200 dark:bg-gray-800 text-gray-800 dark:text-gray-200 px-3 py-2 rounded-lg font-bold">إلغاء</button>
-                            </div>
-                        </div>
-                        <div id="adminSidebarList" class="space-y-1.5 pt-2 border-t border-gray-300 dark:border-gray-700"></div>
-                    </div>
-                </div>
-
-                <!-- Gallery Admin -->
-                <div class="bg-lightbg dark:bg-darkbg rounded-xl border border-gray-300 dark:border-gray-800 overflow-hidden transition-colors">
-                    <button type="button" onclick="window.toggleAccordion('accGalleryAdmin')" class="w-full p-3 flex justify-between items-center font-bold text-gray-800 dark:text-gray-200">
-                        <span class="flex items-center gap-2"><i class="fa-solid fa-images text-goldaccent"></i> إدارة المشاريع (تشغيل/إيقاف وترتيب)</span>
-                        <i id="icon-accGalleryAdmin" class="fa-solid fa-chevron-down transition-transform"></i>
-                    </button>
-                    <div id="accGalleryAdmin" class="hidden p-3 pt-0 space-y-3 border-t border-gray-200 dark:border-gray-800 mt-1">
-                        <div class="space-y-2 mt-2">
-                            <h4 id="galleryFormTitle" class="font-bold text-goldaccent">إضافة مشروع</h4>
-                            <input type="hidden" id="editingGalleryId">
-                            <input type="text" id="galleryTitle" placeholder="عنوان المشروع" class="w-full bg-lightcard dark:bg-cardbg border border-gray-300 dark:border-gray-700 rounded-lg p-2 text-gray-900 dark:text-white outline-none">
-                            <input type="text" id="galleryCategory" placeholder="الفئة" class="w-full bg-lightcard dark:bg-cardbg border border-gray-300 dark:border-gray-700 rounded-lg p-2 text-gray-900 dark:text-white outline-none">
-                            <textarea id="galleryDesc" placeholder="التفاصيل..." class="w-full bg-lightcard dark:bg-cardbg border border-gray-300 dark:border-gray-700 rounded-lg p-2 text-gray-900 dark:text-white outline-none h-16 resize-none"></textarea>
-                            <input type="url" id="galleryCoverUrl" placeholder="رابط الغلاف" class="w-full bg-lightcard dark:bg-cardbg border border-gray-300 dark:border-gray-700 rounded-lg p-2 text-gray-900 dark:text-white outline-none">
-                            <textarea id="galleryExtraUrls" placeholder="روابط إضافية..." class="w-full bg-lightcard dark:bg-cardbg border border-gray-300 dark:border-gray-700 rounded-lg p-2 text-gray-900 dark:text-white outline-none h-16 text-[11px] font-mono"></textarea>
-                            <div class="flex items-center gap-2 pt-1 bg-goldaccent/10 p-2 rounded-lg border border-goldaccent/30">
-                                <input type="checkbox" id="galleryEnabled" class="accent-goldaccent w-4 h-4" checked>
-                                <label for="galleryEnabled" class="font-bold text-gray-900 dark:text-white text-xs">تفعيل وعرض المشروع في المعرض</label>
-                            </div>
-                            <div class="flex gap-2 pt-1">
-                                <button type="button" onclick="window.saveGalleryItem()" class="flex-1 bg-goldaccent text-black font-bold py-2 rounded-lg">حفظ</button>
-                                <button type="button" onclick="window.resetGalleryForm()" class="bg-gray-200 dark:bg-gray-800 text-gray-800 dark:text-gray-200 px-3 py-2 rounded-lg font-bold">إلغاء</button>
-                            </div>
-                        </div>
-                        <div id="adminGalleryList" class="space-y-1.5 pt-2 border-t border-gray-300 dark:border-gray-700"></div>
-                    </div>
-                </div>
-
-                <!-- Categories -->
-                <div class="bg-lightbg dark:bg-darkbg rounded-xl border border-gray-300 dark:border-gray-800 overflow-hidden transition-colors">
-                    <button type="button" onclick="window.toggleAccordion('accCategories')" class="w-full p-3 flex justify-between items-center font-bold text-gray-800 dark:text-gray-200">
-                        <span class="flex items-center gap-2"><i class="fa-solid fa-folder-tree text-goldaccent"></i> إدارة الفئات (تشغيل/إيقاف وترتيب)</span>
-                        <i id="icon-accCategories" class="fa-solid fa-chevron-down transition-transform"></i>
-                    </button>
-                    <div id="accCategories" class="hidden p-3 pt-0 space-y-3 border-t border-gray-200 dark:border-gray-800 mt-1">
-                        <div class="space-y-2 mt-2">
-                            <h4 class="font-bold text-goldaccent">إضافة فئة جديدة</h4>
-                            <div class="flex gap-2">
-                                <input type="text" id="newCategoryInput" placeholder="اسم الفئة..." class="flex-1 bg-lightcard dark:bg-cardbg border border-gray-300 dark:border-gray-700 rounded-lg p-2 text-gray-900 dark:text-white outline-none">
-                                <button type="button" onclick="window.addCategory()" class="bg-goldaccent text-black font-extrabold px-4 py-2 rounded-lg shadow-sm">إضافة</button>
-                            </div>
-                        </div>
-                        <div id="adminCategoriesList" class="space-y-1.5 pt-2 border-t border-gray-300 dark:border-gray-700"></div>
-                    </div>
-                </div>
-
-                <!-- Links Management -->
-                <div class="bg-lightbg dark:bg-darkbg rounded-xl border border-gray-300 dark:border-gray-800 overflow-hidden transition-colors">
+                <!-- Links management -->
+                <div class="bg-lightbg dark:bg-darkbg rounded-xl border border-gray-300 dark:border-gray-800 overflow-hidden">
                     <button type="button" onclick="window.toggleAccordion('accLinks')" class="w-full p-3 flex justify-between items-center font-bold text-gray-800 dark:text-gray-200">
-                        <span class="flex items-center gap-2"><i class="fa-solid fa-link text-goldaccent"></i> إدارة الروابط (تشغيل/إيقاف وترتيب)</span>
+                        <span class="flex items-center gap-2"><i class="fa-solid fa-link text-goldaccent"></i> إدارة الروابط</span>
                         <i id="icon-accLinks" class="fa-solid fa-chevron-down transition-transform"></i>
                     </button>
                     <div id="accLinks" class="hidden p-3 pt-0 space-y-3 border-t border-gray-200 dark:border-gray-800 mt-1">
@@ -627,10 +450,6 @@
                                 <select id="linkCategory" class="flex-1 bg-lightcard dark:bg-cardbg border border-gray-300 dark:border-gray-700 rounded-lg p-2 text-gray-900 dark:text-white outline-none"></select>
                                 <input type="text" id="linkIcon" placeholder="أيقونة" class="flex-1 bg-lightcard dark:bg-cardbg border border-gray-300 dark:border-gray-700 rounded-lg p-2 text-gray-900 dark:text-white outline-none">
                             </div>
-                            <div class="flex items-center gap-2 pt-1 bg-goldaccent/10 p-2 rounded-lg border border-goldaccent/30">
-                                <input type="checkbox" id="linkEnabled" class="accent-goldaccent w-4 h-4" checked>
-                                <label for="linkEnabled" class="font-bold text-gray-900 dark:text-white text-xs">تفعيل وعرض الرابط في الصفحة الرئيسية</label>
-                            </div>
                             <div class="flex gap-2 pt-1">
                                 <button type="button" onclick="window.saveLink()" class="flex-1 bg-goldaccent text-black font-bold py-2 rounded-lg">حفظ</button>
                                 <button type="button" onclick="window.resetLinkForm()" class="bg-gray-200 dark:bg-gray-800 text-gray-800 dark:text-gray-200 px-3 py-2 rounded-lg font-bold">إلغاء</button>
@@ -641,7 +460,7 @@
                 </div>
 
                 <!-- Security -->
-                <div class="bg-lightbg dark:bg-darkbg rounded-xl border border-gray-300 dark:border-gray-800 overflow-hidden transition-colors">
+                <div class="bg-lightbg dark:bg-darkbg rounded-xl border border-gray-300 dark:border-gray-800 overflow-hidden">
                     <button type="button" onclick="window.toggleAccordion('accSecurity')" class="w-full p-3 flex justify-between items-center font-bold text-gray-800 dark:text-gray-200">
                         <span class="flex items-center gap-2"><i class="fa-solid fa-key text-goldaccent"></i> تغيير رمز PIN</span>
                         <i id="icon-accSecurity" class="fa-solid fa-chevron-down transition-transform"></i>
@@ -673,180 +492,13 @@
                 <button type="button" onclick="window.closeMemberModal()" class="text-gray-500 hover:text-gray-800 dark:hover:text-white text-xl px-2"><i class="fa-solid fa-xmark"></i></button>
             </div>
             <div class="overflow-y-auto flex-grow pr-1 space-y-3 text-xs">
-
-                <!-- Advanced Design Customization for Member (Accordion Foldable) -->
-                <div class="bg-lightbg dark:bg-darkbg rounded-xl border border-gray-300 dark:border-gray-800 overflow-hidden transition-colors">
-                    <button type="button" onclick="window.toggleAccordion('accDesignMember')" class="w-full p-3 flex justify-between items-center font-bold text-gray-800 dark:text-gray-200">
-                        <span class="flex items-center gap-2"><i class="fa-solid fa-palette text-cyanaccent"></i> إعدادات التصميم لصفحتك</span>
-                        <div class="flex items-center gap-2">
-                            <span class="text-[10px] bg-cyanaccent/20 text-cyanaccent px-2 py-0.5 rounded font-mono">تخصيص</span>
-                            <i id="icon-accDesignMember" class="fa-solid fa-chevron-down transition-transform"></i>
-                        </div>
-                    </button>
-                    <div id="accDesignMember" class="hidden p-3 pt-0 space-y-2 border-t border-gray-200 dark:border-gray-800 mt-1">
-                        <div class="flex justify-between items-center pt-2">
-                            <span class="text-[11px] text-gray-500">تخصيص مظهر صفحتك المستقلة</span>
-                            <button type="button" onclick="window.resetMemberDesignDefaults()" class="bg-red-500/10 text-red-500 border border-red-500/30 px-2.5 py-1 rounded-lg text-[10px] font-bold">استعادة الافتراضي</button>
-                        </div>
-                        <div>
-                            <label class="block font-bold text-gray-800 dark:text-gray-200 mb-1">شكل صورتك الشخصية:</label>
-                            <select id="memberAvatarShape" class="w-full bg-lightcard dark:bg-cardbg border border-gray-300 dark:border-gray-700 rounded-lg p-2 text-gray-900 dark:text-white outline-none">
-                                <option value="rounded-full">دائري بالكامل (Full Circle)</option>
-                                <option value="rounded-2xl">مربع بحواف مبرومة / مفتولة الزوايا (Rounded Corners)</option>
-                                <option value="rounded-xl">مربع بحواف ناعمة متوسطة (Soft Rounded)</option>
-                                <option value="rounded-none">مربع حاد الزوايا (Sharp Square)</option>
-                            </select>
-                        </div>
-                        <div>
-                            <label class="block font-bold text-gray-800 dark:text-gray-200 mb-1">توهج أو ظل صورتك الشخصية:</label>
-                            <select id="memberAvatarGlow" class="w-full bg-lightcard dark:bg-cardbg border border-gray-300 dark:border-gray-700 rounded-lg p-2 text-gray-900 dark:text-white outline-none">
-                                <option value="glow-gold">توهج ذهبي فاخر (Gold Glow)</option>
-                                <option value="glow-cyan">توهج سماوي ساطع (Cyan Glow)</option>
-                                <option value="glow-subtle">ظل خفيف وعادي (Subtle Shadow)</option>
-                                <option value="none">بدون توهج أو ظل (None)</option>
-                            </select>
-                        </div>
-                        <div>
-                            <label class="block font-bold text-gray-800 dark:text-gray-200 mb-1">شكل البطاقات وأزرار الروابط:</label>
-                            <select id="memberCardShape" class="w-full bg-lightcard dark:bg-cardbg border border-gray-300 dark:border-gray-700 rounded-lg p-2 text-gray-900 dark:text-white outline-none">
-                                <option value="rounded-2xl">مفتولة الزوايا بشكل أنيق (Rounded 2XL)</option>
-                                <option value="rounded-full">دائرية الأطراف بالكامل (Pill Shape)</option>
-                                <option value="rounded-lg">زوايا معتدلة (Rounded LG)</option>
-                                <option value="rounded-none">زوايا حادة (Sharp Square)</option>
-                            </select>
-                        </div>
-                        <div>
-                            <label class="block font-bold text-gray-800 dark:text-gray-200 mb-1">توهج أو ظل البطاقات:</label>
-                            <select id="memberCardGlow" class="w-full bg-lightcard dark:bg-cardbg border border-gray-300 dark:border-gray-700 rounded-lg p-2 text-gray-900 dark:text-white outline-none">
-                                <option value="glow-gold-hover">توهج ذهبي عند المرور (Gold Glow Hover)</option>
-                                <option value="glow-subtle">ظل ثابت وبارز (Subtle Shadow)</option>
-                                <option value="none">بدون توهج أو ظل</option>
-                            </select>
-                        </div>
-                        <div>
-                            <label class="block font-bold text-gray-800 dark:text-gray-200 mb-1">نمط البطاقات البصري (Effects & Glass):</label>
-                            <select id="memberCardStyle" class="w-full bg-lightcard dark:bg-cardbg border border-gray-300 dark:border-gray-700 rounded-lg p-2 text-gray-900 dark:text-white outline-none">
-                                <option value="normal">عادي (Solid)</option>
-                                <option value="glass-card">زجاجي شفاف فاخر (Glassmorphism)</option>
-                            </select>
-                        </div>
-
-                        <!-- اختيار تدرج الألوان المخصص للعضو مع الشفافية -->
-                        <div class="bg-white dark:bg-cardbg p-3 rounded-xl border border-gray-300 dark:border-gray-700 space-y-3">
-                            <label class="block font-bold text-gray-800 dark:text-gray-200">تدرج الألوان المخصص (مع إمكانية تحديد الشفافية):</label>
-                            <div class="grid grid-cols-3 gap-2">
-                                <div class="space-y-1">
-                                    <span class="text-[10px] text-gray-500 block">اللون 1</span>
-                                    <input type="color" id="memberColor1" value="#0f1117" class="w-full h-8 rounded cursor-pointer bg-transparent">
-                                    <input type="range" id="memberOpacity1" min="0" max="1" step="0.05" value="1" class="w-full accent-cyanaccent" title="شفافية اللون 1">
-                                </div>
-                                <div class="space-y-1">
-                                    <span class="text-[10px] text-gray-500 block">اللون 2</span>
-                                    <input type="color" id="memberColor2" value="#1a1d26" class="w-full h-8 rounded cursor-pointer bg-transparent">
-                                    <input type="range" id="memberOpacity2" min="0" max="1" step="0.05" value="1" class="w-full accent-cyanaccent" title="شفافية اللون 2">
-                                </div>
-                                <div class="space-y-1">
-                                    <span class="text-[10px] text-gray-500 block">اللون 3</span>
-                                    <input type="color" id="memberColor3" value="#0f1117" class="w-full h-8 rounded cursor-pointer bg-transparent">
-                                    <input type="range" id="memberOpacity3" min="0" max="1" step="0.05" value="1" class="w-full accent-cyanaccent" title="شفافية اللون 3">
-                                </div>
-                            </div>
-                            <div class="flex items-center justify-between pt-1">
-                                <span class="text-[10px] text-gray-500">اتجاه التدرج:</span>
-                                <select id="memberGradientAngle" class="bg-lightbg dark:bg-darkbg border border-gray-300 dark:border-gray-700 rounded px-2 py-1 text-[11px]">
-                                    <option value="to bottom right">إلى أسفل اليمين ↘</option>
-                                    <option value="to bottom">إلى الأسفل ↓</option>
-                                    <option value="to right">إلى اليمين →</option>
-                                    <option value="to top right">إلى أعلى اليمين ↗</option>
-                                </select>
-                            </div>
-                        </div>
-
-                        <!-- خلفية الصورة مع شفافيتها للعضو -->
-                        <div class="bg-white dark:bg-cardbg p-3 rounded-xl border border-gray-300 dark:border-gray-700 space-y-2">
-                            <label class="block font-bold text-gray-800 dark:text-gray-200">صورة خلفية صفحتك المخصصة:</label>
-                            <input type="url" id="memberBgImageUrl" placeholder="https://example.com/bg.jpg" class="w-full bg-lightcard dark:bg-cardbg border border-gray-300 dark:border-gray-700 rounded-lg p-2 text-gray-900 dark:text-white outline-none">
-                            <div class="flex items-center justify-between pt-1">
-                                <span class="text-[10px] text-gray-500">درجة شفافية الخلفية (العتامة):</span>
-                                <span id="memberBgImgOpacityVal" class="text-[10px] font-bold text-cyanaccent">0.6</span>
-                            </div>
-                            <input type="range" id="memberBgImgOpacity" min="0.1" max="1" step="0.05" value="0.6" class="w-full accent-cyanaccent">
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Map Management for Member -->
                 <div class="bg-lightbg dark:bg-darkbg rounded-xl border border-gray-300 dark:border-gray-800 p-3 space-y-2">
-                    <h4 class="font-bold text-cyanaccent flex items-center gap-2"><i class="fa-solid fa-map-location-dot"></i> إعدادات الخريطة الجغرافية لصفحتك</h4>
-                    <div class="flex items-center gap-2">
-                        <input type="checkbox" id="memberShowMap" class="accent-cyanaccent w-4 h-4">
-                        <label for="memberShowMap" class="font-bold text-gray-800 dark:text-gray-200">إظهار الخريطة في أسفل صفحتي</label>
-                    </div>
-                    <input type="url" id="memberMapUrl" placeholder="رابط زر الخريطة (Google Maps Share Link)" class="w-full bg-lightcard dark:bg-cardbg border border-gray-300 dark:border-gray-700 rounded-lg p-2 text-gray-900 dark:text-white outline-none">
-                    <textarea id="memberMapEmbed" placeholder="كود التضمين iframe src لخرائط جوجل" class="w-full bg-lightcard dark:bg-cardbg border border-gray-300 dark:border-gray-700 rounded-lg p-2 text-gray-900 dark:text-white outline-none h-16 text-[11px] font-mono"></textarea>
-                </div>
-
-                <!-- Profile Edit -->
-                <div class="bg-lightbg dark:bg-darkbg rounded-xl border border-gray-300 dark:border-gray-800 p-3 space-y-2">
-                    <h4 class="font-bold text-cyanaccent">تعديل معلومات صفحتك والصورة وكلمة المرور</h4>
+                    <h4 class="font-bold text-cyanaccent">تعديل معلومات صفحتك</h4>
                     <input type="text" id="memberEditName" placeholder="اسمك الظاهر" class="w-full bg-lightcard dark:bg-cardbg border border-gray-300 dark:border-gray-700 rounded-lg p-2 text-gray-900 dark:text-white outline-none">
                     <textarea id="memberEditBio" placeholder="نبذة مختصرة..." class="w-full bg-lightcard dark:bg-cardbg border border-gray-300 dark:border-gray-700 rounded-lg p-2 text-gray-900 dark:text-white outline-none h-16 resize-none"></textarea>
-                    <input type="file" id="memberImageFileInput" accept="image/*" onchange="window.handleMemberImageUpload(event)" class="w-full text-gray-600 dark:text-gray-400 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-xs file:font-semibold file:bg-cyanaccent/20 file:text-cyanaccent cursor-pointer mb-1">
-                    <input type="url" id="memberEditAvatar" placeholder="أو أدخل رابط الصورة مباشرة" class="w-full bg-lightcard dark:bg-cardbg border border-gray-300 dark:border-gray-700 rounded-lg p-2 text-gray-900 dark:text-white outline-none">
-                    <div class="pt-2 border-t border-gray-200 dark:border-gray-700">
-                        <label class="block text-cyanaccent font-bold mb-1"><i class="fa-solid fa-key"></i> رمز PIN الجديد:</label>
-                        <input type="password" id="memberNewPinInput" maxlength="6" placeholder="اتركه فارغاً لعدم التغيير" class="w-full bg-lightcard dark:bg-cardbg border border-gray-300 dark:border-gray-700 rounded-lg p-2 text-gray-900 dark:text-white outline-none">
-                    </div>
+                    <input type="url" id="memberEditAvatar" placeholder="رابط صورتك المباشر" class="w-full bg-lightcard dark:bg-cardbg border border-gray-300 dark:border-gray-700 rounded-lg p-2 text-gray-900 dark:text-white outline-none">
                 </div>
-
-                <!-- Contacts -->
-                <div class="bg-lightbg dark:bg-darkbg rounded-xl border border-gray-300 dark:border-gray-800 p-3 space-y-2">
-                    <h4 class="font-bold text-cyanaccent"><i class="fa-solid fa-address-book"></i> معلومات الاتصال</h4>
-                    <div class="flex items-center gap-2 mt-1"><input type="checkbox" id="memberShowWhatsapp" class="accent-cyanaccent"><input type="text" id="memberEditWhatsapp" placeholder="واتساب" class="flex-1 bg-lightcard dark:bg-cardbg border border-gray-300 dark:border-gray-700 rounded-lg p-2 text-gray-900 dark:text-white outline-none"></div>
-                    <div class="flex items-center gap-2"><input type="checkbox" id="memberShowPhone" class="accent-cyanaccent"><input type="text" id="memberEditPhone" placeholder="هاتف" class="flex-1 bg-lightcard dark:bg-cardbg border border-gray-300 dark:border-gray-700 rounded-lg p-2 text-gray-900 dark:text-white outline-none"></div>
-                    <div class="flex items-center gap-2"><input type="checkbox" id="memberShowEmail" class="accent-cyanaccent"><input type="email" id="memberEditEmail" placeholder="إيميل" class="flex-1 bg-lightcard dark:bg-cardbg border border-gray-300 dark:border-gray-700 rounded-lg p-2 text-gray-900 dark:text-white outline-none"></div>
-                </div>
-
-                <!-- Gallery -->
-                <div class="bg-lightbg dark:bg-darkbg rounded-xl border border-gray-300 dark:border-gray-800 p-3 space-y-2">
-                    <h4 id="memberGalleryFormTitle" class="font-bold text-cyanaccent">إدارة المشاريع (تشغيل/إيقاف وترتيب)</h4>
-                    <input type="hidden" id="memberEditingGalleryId">
-                    <input type="text" id="memberGalleryTitle" placeholder="عنوان المشروع" class="w-full bg-lightcard dark:bg-cardbg border border-gray-300 dark:border-gray-700 rounded-lg p-2 text-gray-900 dark:text-white outline-none">
-                    <input type="text" id="memberGalleryCategory" placeholder="الفئة" class="w-full bg-lightcard dark:bg-cardbg border border-gray-300 dark:border-gray-700 rounded-lg p-2 text-gray-900 dark:text-white outline-none">
-                    <textarea id="memberGalleryDesc" placeholder="التفاصيل..." class="w-full bg-lightcard dark:bg-cardbg border border-gray-300 dark:border-gray-700 rounded-lg p-2 text-gray-900 dark:text-white outline-none h-16 resize-none"></textarea>
-                    <input type="url" id="memberGalleryCoverUrl" placeholder="رابط الغلاف" class="w-full bg-lightcard dark:bg-cardbg border border-gray-300 dark:border-gray-700 rounded-lg p-2 text-gray-900 dark:text-white outline-none">
-                    <textarea id="memberGalleryExtraUrls" placeholder="روابط إضافية..." class="w-full bg-lightcard dark:bg-cardbg border border-gray-300 dark:border-gray-700 rounded-lg p-2 text-gray-900 dark:text-white outline-none h-16 text-[11px] font-mono"></textarea>
-                    <div class="flex items-center gap-2 pt-1 bg-cyanaccent/10 p-2 rounded-lg border border-cyanaccent/30">
-                        <input type="checkbox" id="memberGalleryEnabled" class="accent-cyanaccent w-4 h-4" checked>
-                        <label for="memberGalleryEnabled" class="font-bold text-gray-900 dark:text-white text-xs">تفعيل وعرض المشروع في المعرض</label>
-                    </div>
-                    <div class="flex gap-2 pt-1">
-                        <button type="button" onclick="window.saveMemberGalleryItem()" class="flex-1 bg-cyanaccent text-black font-bold py-2 rounded-lg">حفظ المشروع</button>
-                        <button type="button" onclick="window.resetMemberGalleryForm()" class="bg-gray-200 dark:bg-gray-800 text-gray-800 dark:text-gray-200 px-3 py-2 rounded-lg font-bold">إلغاء</button>
-                    </div>
-                    <div id="memberGalleryList" class="space-y-1.5 pt-2 border-t border-gray-200 dark:border-gray-700"></div>
-                </div>
-
-                <!-- Links -->
-                <div class="bg-lightbg dark:bg-darkbg rounded-xl border border-gray-300 dark:border-gray-800 p-3 space-y-2">
-                    <h4 id="memberLinkFormTitle" class="font-bold text-cyanaccent">إدارة الروابط (تشغيل/إيقاف وترتيب)</h4>
-                    <input type="hidden" id="memberEditingLinkId">
-                    <input type="text" id="memberLinkTitle" placeholder="عنوان الرابط" class="w-full bg-lightcard dark:bg-cardbg border border-gray-300 dark:border-gray-700 rounded-lg p-2 text-gray-900 dark:text-white outline-none">
-                    <input type="url" id="memberLinkUrl" placeholder="الرابط https://..." class="w-full bg-lightcard dark:bg-cardbg border border-gray-300 dark:border-gray-700 rounded-lg p-2 text-gray-900 dark:text-white outline-none">
-                    <input type="text" id="memberLinkIcon" placeholder="أيقونة" class="w-full bg-lightcard dark:bg-cardbg border border-gray-300 dark:border-gray-700 rounded-lg p-2 text-gray-900 dark:text-white outline-none">
-                    <div class="flex items-center gap-2 pt-1 bg-cyanaccent/10 p-2 rounded-lg border border-cyanaccent/30">
-                        <input type="checkbox" id="memberLinkEnabled" class="accent-cyanaccent w-4 h-4" checked>
-                        <label for="memberLinkEnabled" class="font-bold text-gray-900 dark:text-white text-xs">تفعيل وعرض الرابط في الصفحة</label>
-                    </div>
-                    <div class="flex gap-2 pt-1">
-                        <button type="button" onclick="window.saveMemberLinkItem()" class="flex-1 bg-cyanaccent text-black font-bold py-2 rounded-lg">حفظ الرابط</button>
-                        <button type="button" onclick="window.resetMemberLinkForm()" class="bg-gray-200 dark:bg-gray-800 text-gray-800 dark:text-gray-200 px-3 py-2 rounded-lg font-bold">إلغاء</button>
-                    </div>
-                    <div id="memberLinksList" class="space-y-1.5 pt-2 border-t border-gray-200 dark:border-gray-700"></div>
-                </div>
-
             </div>
-
             <div class="border-t border-gray-300 dark:border-gray-800 pt-3 mt-3 flex justify-end">
                 <button type="button" onclick="window.saveMemberChanges()" class="bg-cyanaccent text-black font-extrabold px-5 py-2 rounded-xl text-xs shadow-sm">حفظ ونشر التغييرات</button>
             </div>
@@ -908,7 +560,7 @@
                     id: 'g1', 
                     title: 'واجهة معمل الألوكوبوند النموذجي', 
                     category: 'بناء وألوكبوند', 
-                    desc: 'تنفيذ وتكسية واجهات معمل بالكامل بمادة الألوكوبوند المقاوم للعوامل الجوية.',
+                    desc: 'تنفيذ وتكسية واجهات معمل بالكامل بمادة الألوكوبوند.',
                     coverUrl: 'https://i.ibb.co/6y4g8qf/sample.jpg', 
                     extraUrls: ['https://i.ibb.co/6y4g8qf/sample.jpg'],
                     enabled: true
@@ -924,53 +576,29 @@
         let appData = defaultUserData;
         let activeCategory = "الكل";
         let activeGalleryCategory = "الكل";
-        let tempImageBase64 = "";
-        let memberTempImageBase64 = "";
-        let currentViewingProjectId = null;
 
         const dbRef = ref(db, 'platformData');
+        
+        // جلب البيانات من السحابة بسلاسة مع التعامل مع حالات الفراغ
         onValue(dbRef, (snapshot) => {
             const data = snapshot.val();
             if (data) {
                 rootData = data;
                 if (!rootData.users) rootData.users = {};
-                if (!rootData.pendingRequests) rootData.pendingRequests = {};
-                if (!rootData.feedbackMessages) rootData.feedbackMessages = {};
-
-                if (!rootData.users['mahmoud']) {
-                    rootData.users['mahmoud'] = defaultUserData;
-                }
-
-                appData = rootData.users[currentUsername] || rootData.users['mahmoud'];
-                if (!appData.sidebarLinks) appData.sidebarLinks = defaultUserData.sidebarLinks;
-                if (!appData.contacts) appData.contacts = defaultUserData.contacts;
-                if (!appData.notification) appData.notification = { title: "", text: "", active: false };
-                if (appData.showMap === undefined) appData.showMap = true;
-                if (!appData.avatarShape) appData.avatarShape = "rounded-full";
-                if (!appData.avatarGlow) appData.avatarGlow = "glow-gold";
-                if (!appData.cardShape) appData.cardShape = "rounded-2xl";
-                if (!appData.cardGlow) appData.cardGlow = "glow-gold-hover";
-                if (!appData.cardStyle) appData.cardStyle = "normal";
-                if (appData.bgImgOpacity === undefined) appData.bgImgOpacity = 0.6;
-                if (!appData.customColors) appData.customColors = { c1: "", o1: 1, c2: "", o2: 1, c3: "", o3: 1, angle: "to bottom right" };
                 
-                if (appData.categories && appData.categories.length > 0 && typeof appData.categories[0] === 'string') {
-                    appData.categories = appData.categories.map(c => ({ name: c, enabled: true }));
+                if (!rootData.users[currentUsername]) {
+                    rootData.users[currentUsername] = defaultUserData;
                 }
+                appData = rootData.users[currentUsername];
             } else {
-                rootData.users['mahmoud'] = defaultUserData;
+                rootData.users = { [currentUsername]: defaultUserData };
                 appData = defaultUserData;
                 set(dbRef, rootData);
             }
             initApp();
-            
-            if (targetProjectId) {
-                setTimeout(() => {
-                    window.openProjectDetail(targetProjectId);
-                }, 500);
-            }
         }, (error) => {
-            console.error("Firebase error", error);
+            console.error("Firebase connection error:", error);
+            appData = defaultUserData;
             initApp();
         });
 
@@ -992,7 +620,6 @@
             renderCategories();
             renderLinks();
             renderMapSection();
-            renderGalleryGrid();
         }
 
         function initTheme() {
@@ -1006,61 +633,10 @@
             }
         }
 
-        function hexToRgba(hex, opacity) {
-            let c = hex.replace('#', '');
-            if (c.length === 3) c = c.split('').map(x => x + x).join('');
-            const num = parseInt(c, 16);
-            return `rgba(${num >> 16}, ${(num >> 8) & 255}, ${num & 255}, ${opacity})`;
-        }
-
         function applyDesignCustomizations() {
             const avatarContainer = document.getElementById('avatarContainer');
             if (avatarContainer) {
-                avatarContainer.className = `w-full h-full ${appData.avatarShape || 'rounded-full'} border-2 border-goldaccent overflow-hidden bg-lightcard dark:bg-cardbg flex items-center justify-center shadow-md transition-colors duration-300 ${appData.avatarGlow && appData.avatarGlow !== 'none' ? appData.avatarGlow : ''}`;
-            }
-
-            const cardShape = appData.cardShape || 'rounded-2xl';
-            const cardStyle = appData.cardStyle || 'normal';
-            const cardGlow = appData.cardGlow || 'glow-gold-hover';
-            
-            const topBarEl = document.getElementById('topBarEl');
-            const galleryBtnCard = document.getElementById('galleryBtnCard');
-            const joinBannerBtn = document.getElementById('joinBannerBtn');
-            const mapSectionContainer = document.getElementById('mapSectionContainer');
-            const globalNotificationBanner = document.getElementById('globalNotificationBanner');
-
-            [topBarEl, galleryBtnCard, joinBannerBtn, mapSectionContainer, globalNotificationBanner].forEach(el => {
-                if(el) {
-                    el.classList.remove('rounded-2xl', 'rounded-full', 'rounded-lg', 'rounded-none', 'glass-card', 'glow-gold-hover', 'glow-subtle');
-                    el.classList.add(cardShape);
-                    if (cardStyle === 'glass-card') el.classList.add('glass-card');
-                    if (cardGlow && cardGlow !== 'none') el.classList.add(cardGlow);
-                }
-            });
-
-            const pageBody = document.getElementById('pageBody');
-            const bgImageLayer = document.getElementById('bgImageLayer');
-
-            if (pageBody && bgImageLayer) {
-                pageBody.className = `min-h-screen flex flex-col items-center justify-between p-4 pb-12 text-gray-900 dark:text-gray-100 transition-colors duration-300 bg-lightbg dark:bg-darkbg relative`;
-                
-                if (appData.customColors && (appData.customColors.c1 || appData.customColors.c2 || appData.customColors.c3)) {
-                    let rgba1 = appData.customColors.c1 ? hexToRgba(appData.customColors.c1, appData.customColors.o1 ?? 1) : 'transparent';
-                    let rgba2 = appData.customColors.c2 ? hexToRgba(appData.customColors.c2, appData.customColors.o2 ?? 1) : 'transparent';
-                    let rgba3 = appData.customColors.c3 ? hexToRgba(appData.customColors.c3, appData.customColors.o3 ?? 1) : 'transparent';
-                    let angle = appData.customColors.angle || 'to bottom right';
-                    pageBody.style.backgroundImage = `linear-gradient(${angle}, ${rgba1}, ${rgba2}, ${rgba3})`;
-                } else {
-                    pageBody.style.backgroundImage = '';
-                }
-
-                if (appData.bgImageUrl) {
-                    bgImageLayer.style.backgroundImage = `url('${appData.bgImageUrl}')`;
-                    bgImageLayer.style.opacity = appData.bgImgOpacity ?? 0.6;
-                    bgImageLayer.classList.remove('hidden');
-                } else {
-                    bgImageLayer.classList.add('hidden');
-                }
+                avatarContainer.className = `w-full h-full ${appData.avatarShape || 'rounded-full'} border-2 border-goldaccent overflow-hidden bg-lightcard dark:bg-cardbg flex items-center justify-center shadow-md transition-colors duration-300`;
             }
         }
 
@@ -1068,8 +644,7 @@
             const banner = document.getElementById('globalNotificationBanner');
             if (!banner) return;
             const notif = appData.notification;
-            if (notif && notif.active && notif.text && !sessionStorage.getItem('dismissedNotif')) {
-                document.getElementById('globalNotifTitle.textContent') = notif.title || 'إشعار هام';
+            if (notif && notif.active && notif.text) {
                 document.getElementById('globalNotifTitle').textContent = notif.title || 'إشعار هام';
                 document.getElementById('globalNotifText').textContent = notif.text;
                 banner.classList.remove('hidden');
@@ -1080,43 +655,6 @@
 
         window.dismissGlobalNotification = function() {
             document.getElementById('globalNotificationBanner').classList.add('hidden');
-            sessionStorage.setItem('dismissedNotif', 'true');
-        };
-
-        window.resetDesignDefaults = function() {
-            document.getElementById('adminAvatarShape').value = 'rounded-full';
-            document.getElementById('adminAvatarGlow').value = 'glow-gold';
-            document.getElementById('adminCardShape').value = 'rounded-2xl';
-            document.getElementById('adminCardGlow').value = 'glow-gold-hover';
-            document.getElementById('adminCardStyle').value = 'normal';
-            document.getElementById('adminColor1').value = '';
-            document.getElementById('adminOpacity1').value = '1';
-            document.getElementById('adminColor2').value = '';
-            document.getElementById('adminOpacity2').value = '1';
-            document.getElementById('adminColor3').value = '';
-            document.getElementById('adminOpacity3').value = '1';
-            document.getElementById('adminBgImageUrl').value = '';
-            document.getElementById('adminBgImgOpacity').value = '0.6';
-            document.getElementById('adminBgImgOpacityVal').textContent = '0.6';
-            alert('تم استعادة التصميم الافتراضي السادة بنجاح.');
-        };
-
-        window.resetMemberDesignDefaults = function() {
-            document.getElementById('memberAvatarShape').value = 'rounded-full';
-            document.getElementById('memberAvatarGlow').value = 'glow-gold';
-            document.getElementById('memberCardShape').value = 'rounded-2xl';
-            document.getElementById('memberCardGlow').value = 'glow-gold-hover';
-            document.getElementById('memberCardStyle').value = 'normal';
-            document.getElementById('memberColor1').value = '';
-            document.getElementById('memberOpacity1').value = '1';
-            document.getElementById('memberColor2').value = '';
-            document.getElementById('memberOpacity2').value = '1';
-            document.getElementById('memberColor3').value = '';
-            document.getElementById('memberOpacity3').value = '1';
-            document.getElementById('memberBgImageUrl').value = '';
-            document.getElementById('memberBgImgOpacity').value = '0.6';
-            document.getElementById('memberBgImgOpacityVal').textContent = '0.6';
-            alert('تم استعادة الإعدادات الافتراضية بنجاح.');
         };
 
         window.toggleTheme = function() {
@@ -1142,170 +680,36 @@
         window.toggleAccordion = function(id) {
             const el = document.getElementById(id);
             const icon = document.getElementById('icon-' + id);
-            if (el.classList.contains('hidden')) {
-                el.classList.remove('hidden');
-                icon.style.transform = 'rotate(180deg)';
-            } else {
-                el.classList.add('hidden');
-                icon.style.transform = 'rotate(0deg)';
+            if (el && icon) {
+                if (el.classList.contains('hidden')) {
+                    el.classList.remove('hidden');
+                    icon.style.transform = 'rotate(180deg)';
+                } else {
+                    el.classList.add('hidden');
+                    icon.style.transform = 'rotate(0deg)';
+                }
             }
         };
 
         window.openFeedbackModal = function() { window.toggleSidebar(); document.getElementById('feedbackModal').classList.remove('hidden'); };
         window.closeFeedbackModal = function() { document.getElementById('feedbackModal').classList.add('hidden'); };
-        window.submitFeedback = function() {
-            const senderName = document.getElementById('feedbackSenderName').value.trim() || 'عضو زائر';
-            const senderContact = document.getElementById('feedbackSenderContact').value.trim() || 'غير متوفر';
-            const message = document.getElementById('feedbackMessage').value.trim();
-            if (!message) { alert('الرجاء كتابة نص الملاحظة.'); return; }
-            if (!rootData.feedbackMessages) rootData.feedbackMessages = {};
-            const msgId = 'msg_' + Date.now();
-            rootData.feedbackMessages[msgId] = { id: msgId, senderName, senderContact, message, pageUser: currentUsername, createdAt: Date.now() };
-            set(dbRef, rootData).then(() => {
-                alert('تم إرسال ملاحظتك بنجاح!');
-                document.getElementById('feedbackSenderName').value = '';
-                document.getElementById('feedbackSenderContact').value = '';
-                document.getElementById('feedbackMessage').value = '';
-                window.closeFeedbackModal();
-            });
-        };
-
         window.openJoinModal = function() { document.getElementById('joinModal').classList.remove('hidden'); };
         window.closeJoinModal = function() { document.getElementById('joinModal').classList.add('hidden'); };
-        window.submitJoinRequest = function() {
-            const username = document.getElementById('joinUsername').value.trim().toLowerCase();
-            const displayName = document.getElementById('joinDisplayName').value.trim();
-            const bio = document.getElementById('joinBio').value.trim();
-            const image = document.getElementById('joinAvatar').value.trim();
-            const whatsapp = document.getElementById('joinWhatsapp').value.trim();
-            if (!username || !displayName || !whatsapp) { alert('الرجاء إدخال المعرف والاسم ورقم الواتساب.'); return; }
-            if (!rootData.pendingRequests) rootData.pendingRequests = {};
-            rootData.pendingRequests[username] = { username, displayName, bio, image, whatsapp, createdAt: Date.now() };
-            set(dbRef, rootData).then(() => {
-                alert('تم إرسال طلب انضمامك بنجاح وسيتم إرسال التفاصيل عبر الواتساب.');
-                window.closeJoinModal();
-            });
-        };
-
-        window.openGalleryModal = function() { renderGalleryGrid(); document.getElementById('galleryModal').classList.remove('hidden'); };
+        window.openGalleryModal = function() { document.getElementById('galleryModal').classList.remove('hidden'); };
         window.closeGalleryModal = function() { document.getElementById('galleryModal').classList.add('hidden'); };
-
-        window.openProjectDetail = function(id) {
-            currentViewingProjectId = id;
-            const project = (appData.gallery || []).find(g => g.id === id);
-            if (!project) return;
-            document.getElementById('modalProjectTitle').textContent = project.title;
-            document.getElementById('modalProjectCategory').textContent = project.category || 'عام';
-            document.getElementById('modalProjectDesc').textContent = project.desc || '';
-
-            const imagesGrid = document.getElementById('modalProjectImagesGrid');
-            imagesGrid.innerHTML = '';
-            let allMedia = [];
-            if (project.coverUrl) allMedia.push(project.coverUrl);
-            if (project.extraUrls) {
-                if (Array.isArray(project.extraUrls)) allMedia = allMedia.concat(project.extraUrls);
-                else allMedia = allMedia.concat(project.extraUrls.split(/[\n,]+/).map(s => s.trim()).filter(Boolean));
-            }
-
-            allMedia.forEach((url, idx) => {
-                const card = document.createElement('div');
-                const isYoutube = url.includes('youtube.com') || url.includes('youtu.be');
-                const isDirectVideo = url.match(/\.(mp4|webm|ogg)$/i);
-
-                if (isYoutube) {
-                    let embedUrl = url;
-                    if (url.includes('watch?v=')) embedUrl = url.replace('watch?v=', 'embed/');
-                    else if (url.includes('youtu.be/')) embedUrl = url.replace('youtu.be/', 'youtube.com/embed/');
-                    card.className = 'aspect-video rounded-xl overflow-hidden border border-gray-700 col-span-2 shadow-md bg-black';
-                    card.innerHTML = `<iframe src="${embedUrl}" class="w-full h-full" frameborder="0" allowfullscreen></iframe>`;
-                } else if (isDirectVideo) {
-                    card.className = 'aspect-video rounded-xl overflow-hidden border border-gray-700 col-span-2 shadow-md bg-black';
-                    card.innerHTML = `<video src="${url}" controls class="w-full h-full object-cover"></video>`;
-                } else {
-                    card.className = 'aspect-video rounded-xl overflow-hidden bg-darkbg border border-gray-700 cursor-pointer relative group';
-                    card.oncontextmenu = (e) => { e.preventDefault(); window.openImageView(url); };
-                    card.onclick = () => window.openImageView(url);
-                    card.innerHTML = `<img src="${url}" class="w-full h-full object-cover group-hover:scale-105 transition" /><span class="absolute bottom-1 right-1 bg-black/60 text-white text-[9px] px-1 py-0.5 rounded">صورة ${idx+1} (اضغط للعرض أو مشاركة)</span>`;
-                }
-                imagesGrid.appendChild(card);
-            });
-            document.getElementById('projectDetailModal').classList.remove('hidden');
-        };
-
-        window.closeProjectDetail = function() { document.getElementById('projectDetailModal').classList.add('hidden'); };
-        window.openImageView = function(url) { document.getElementById('enlargedImage').src = url; document.getElementById('imageViewModal').classList.remove('hidden'); };
-        window.closeImageView = function() { document.getElementById('imageViewModal').classList.add('hidden'); };
-
-        window.shareCurrentProjectImage = function() {
-            const cleanBaseUrl = window.location.origin + window.location.pathname;
-            const projectLink = `${cleanBaseUrl}?user=${currentUsername}&project=${currentViewingProjectId}`;
-            if (navigator.share) {
-                navigator.share({ title: 'شاهد هذا المشروع المميز', text: 'شاهد هذا المشروع المميز:', url: projectLink }).catch(() => {});
-            } else {
-                navigator.clipboard.writeText(`شاهد هذا المشروع المميز:\n${projectLink}`).then(() => alert('تم نسخ رابط المشروع المباشر بنجاح!'));
-            }
-        };
-
-        function renderGalleryGrid() {
-            const grid = document.getElementById('galleryGrid');
-            const filters = document.getElementById('galleryCategoryFilter');
-            if (!grid || !filters) return;
-            grid.innerHTML = ''; filters.innerHTML = '';
-            
-            const galleryItems = (appData.gallery || []).filter(item => item.enabled !== false);
-            const activeCatsList = (appData.categories || []).filter(c => c.enabled !== false).map(c => c.name);
-            const cats = ["الكل", ...activeCatsList.filter(c => c !== "الكل")];
-
-            cats.forEach(cat => {
-                const btn = document.createElement('button');
-                btn.type = 'button';
-                btn.className = `px-3 py-1 rounded-xl whitespace-nowrap border text-xs font-bold transition ${cat === activeGalleryCategory ? 'bg-goldaccent text-black border-goldaccent' : 'bg-white dark:bg-darkbg text-gray-700 dark:text-gray-300 border-gray-300 dark:border-gray-800'}`;
-                btn.textContent = cat;
-                btn.onclick = () => { activeGalleryCategory = cat; renderGalleryGrid(); };
-                filters.appendChild(btn);
-            });
-
-            const filtered = activeGalleryCategory === "الكل" ? galleryItems : galleryItems.filter(i => i.category === activeGalleryCategory);
-            if (filtered.length === 0) {
-                grid.innerHTML = '<div class="col-span-full text-center py-8 text-xs font-semibold text-gray-500">لا توجد مشاريع مفعلة.</div>';
-                return;
-            }
-
-            filtered.forEach(item => {
-                const card = document.createElement('div');
-                const cardShape = appData.cardShape || 'rounded-2xl';
-                const cardStyle = appData.cardStyle || 'normal';
-                const cardGlow = appData.cardGlow || 'glow-gold-hover';
-                card.className = `group relative ${cardShape} ${cardStyle === 'glass-card' ? 'glass-card' : 'bg-white dark:bg-cardbg'} border border-gray-300 dark:border-gray-800 cursor-pointer shadow-sm flex flex-col overflow-hidden ${cardGlow !== 'none' ? cardGlow : ''}`;
-                card.onclick = () => window.openProjectDetail(item.id);
-                card.innerHTML = `
-                    <div class="relative aspect-video w-full overflow-hidden bg-gray-100 dark:bg-darkbg">
-                        <img src="${item.coverUrl || 'https://via.placeholder.com/300'}" class="w-full h-full object-cover group-hover:scale-105 transition" />
-                    </div>
-                    <div class="p-3">
-                        <span class="text-[9px] font-bold text-goldaccent block mb-0.5">${item.category || ''}</span>
-                        <h4 class="text-xs font-extrabold text-gray-900 dark:text-white truncate">${item.title}</h4>
-                    </div>
-                `;
-                grid.appendChild(card);
-            });
-        }
 
         window.renderSidebarMenu = function() {
             const container = document.getElementById('sidebarLinksContainer');
             if (!container) return;
             container.innerHTML = '';
-            const activeSidebarLinks = (appData.sidebarLinks || []).filter(item => item.enabled !== false);
-            
-            activeSidebarLinks.forEach(item => {
+            (appData.sidebarLinks || []).forEach(item => {
                 const btn = document.createElement('button');
                 btn.type = 'button';
-                btn.className = `w-full p-3 rounded-xl flex items-center gap-3 font-extrabold transition text-right ${item.action === 'openPin' ? 'bg-goldaccent/10 border border-goldaccent/30 text-goldaccent' : item.action === 'openMemberPanel' ? 'bg-cyanaccent/10 border border-cyanaccent/30 text-cyanaccent' : item.action === 'openJoin' ? 'bg-blue-500/10 border border-blue-500/30 text-blue-600 dark:text-blue-400' : 'bg-gray-100 dark:bg-darkbg text-gray-800 dark:text-gray-200 border border-gray-200 dark:border-gray-800'}`;
+                btn.className = `w-full p-3 rounded-xl flex items-center gap-3 font-extrabold transition text-right bg-gray-100 dark:bg-darkbg text-gray-800 dark:text-gray-200 border border-gray-200 dark:border-gray-800`;
                 btn.innerHTML = `<i class="${item.icon} text-sm"></i><span>${item.title}</span>`;
                 if (item.action === 'openPin') btn.onclick = () => { window.toggleSidebar(); window.openPinModal(); };
                 else if (item.action === 'openMemberPanel') btn.onclick = () => { window.toggleSidebar(); window.openMemberPinModal(); };
                 else if (item.action === 'openJoin') btn.onclick = () => { window.toggleSidebar(); window.openJoinModal(); };
-                else btn.onclick = () => { if(item.url && item.url !== '#') window.open(item.url, '_blank'); };
                 container.appendChild(btn);
             });
         };
@@ -1325,45 +729,16 @@
 
             const cContainer = document.getElementById('contactButtons');
             cContainer.innerHTML = '';
-            if (appData.contacts) {
-                if (appData.contacts.showWhatsapp && appData.contacts.whatsapp) {
-                    cContainer.innerHTML += `<a href="https://wa.me/${appData.contacts.whatsapp.replace(/[^0-9]/g, '')}" target="_blank" class="w-9 h-9 rounded-full bg-emerald-500/10 border border-emerald-500/30 text-emerald-600 dark:text-emerald-400 flex items-center justify-center font-bold" title="واتساب"><i class="fa-brands fa-whatsapp"></i></a>`;
-                }
-                if (appData.contacts.showPhone && appData.contacts.phone) {
-                    cContainer.innerHTML += `<a href="tel:${appData.contacts.phone}" class="w-9 h-9 rounded-full bg-cyanaccent/10 border border-cyanaccent/30 text-cyanaccent flex items-center justify-center font-bold" title="اتصال"><i class="fa-solid fa-phone"></i></a>`;
-                }
-                if (appData.contacts.showEmail && appData.contacts.email) {
-                    cContainer.innerHTML += `<a href="mailto:${appData.contacts.email}" class="w-9 h-9 rounded-full bg-goldaccent/10 border border-goldaccent/30 text-goldaccent flex items-center justify-center font-bold" title="إيميل"><i class="fa-solid fa-envelope"></i></a>`;
-                }
+            if (appData.contacts && appData.contacts.showWhatsapp && appData.contacts.whatsapp) {
+                cContainer.innerHTML += `<a href="https://wa.me/${appData.contacts.whatsapp.replace(/[^0-9]/g, '')}" target="_blank" class="w-9 h-9 rounded-full bg-emerald-500/10 border border-emerald-500/30 text-emerald-600 dark:text-emerald-400 flex items-center justify-center font-bold"><i class="fa-brands fa-whatsapp"></i></a>`;
             }
-            cContainer.innerHTML += `<button type="button" onclick="window.openShareModal()" class="w-9 h-9 rounded-full bg-gray-200 dark:bg-gray-800 border border-gray-300 dark:border-gray-700 text-gray-800 dark:text-gray-200 flex items-center justify-center font-bold" title="مشاركة"><i class="fa-solid fa-share-nodes"></i></button>`;
         }
-
-        window.openShareModal = function() {
-            const cleanUrl = window.location.origin + window.location.pathname;
-            const fullProfileUrl = `${cleanUrl}?user=${currentUsername}`;
-            document.getElementById('shareWhatsapp').href = `https://api.whatsapp.com/send?text=${encodeURIComponent(fullProfileUrl)}`;
-            document.getElementById('shareTelegram').href = `https://t.me/share/url?url=${encodeURIComponent(fullProfileUrl)}`;
-            document.getElementById('shareFacebook').href = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(fullProfileUrl)}`;
-            document.getElementById('shareTwitter').href = `https://twitter.com/intent/tweet?url=${encodeURIComponent(fullProfileUrl)}`;
-            document.getElementById('shareUrlInput').value = fullProfileUrl;
-            document.getElementById('shareModal').classList.remove('hidden');
-        };
-        window.closeShareModal = function() { document.getElementById('shareModal').classList.add('hidden'); };
-        window.copyProfileLink = function() {
-            const cleanUrl = window.location.origin + window.location.pathname;
-            const fullProfileUrl = `${cleanUrl}?user=${currentUsername}`;
-            navigator.clipboard.writeText(fullProfileUrl).then(() => alert('تم النسخ بنجاح!'));
-            window.closeShareModal();
-        };
 
         function renderCategories() {
             const container = document.getElementById('categoryTabs');
             if(!container) return;
             container.innerHTML = '';
-            
-            const activeCats = (appData.categories || []).filter(c => c.enabled !== false);
-            activeCats.forEach(catObj => {
+            (appData.categories || []).forEach(catObj => {
                 const cat = catObj.name;
                 const btn = document.createElement('button');
                 btn.type = "button";
@@ -1378,17 +753,11 @@
             const container = document.getElementById('linksContainer');
             if(!container) return;
             container.innerHTML = '';
-            const links = appData.links || [];
-            const filtered = links.filter(l => l.enabled !== false && (activeCategory === "الكل" || l.category === activeCategory));
-            const cardShape = appData.cardShape || 'rounded-2xl';
-            const cardStyle = appData.cardStyle || 'normal';
-            const cardGlow = appData.cardGlow || 'glow-gold-hover';
-
-            filtered.forEach(link => {
+            (appData.links || []).filter(l => l.enabled !== false && (activeCategory === "الكل" || l.category === activeCategory)).forEach(link => {
                 const a = document.createElement('a');
                 a.href = link.url; a.target = '_blank';
-                a.className = `w-full ${cardStyle === 'glass-card' ? 'glass-card' : 'bg-white dark:bg-cardbg'} border border-gray-300 dark:border-gray-800 ${cardShape} p-3.5 flex items-center justify-between shadow-sm transition ${cardGlow !== 'none' ? cardGlow : ''}`;
-                a.innerHTML = `<div class="flex items-center gap-3"><div class="w-9 h-9 rounded-xl bg-gray-100 dark:bg-darkbg border border-gray-200 dark:border-gray-700 flex items-center justify-center text-goldaccent"><i class="${link.icon || 'fa-solid fa-link'}"></i></div><span class="text-xs font-extrabold text-gray-900 dark:text-gray-100">${link.title}</span></div><i class="fa-solid fa-chevron-left text-xs text-gray-400"></i>`;
+                a.className = `w-full bg-white dark:bg-cardbg border border-gray-300 dark:border-gray-800 rounded-2xl p-3.5 flex items-center justify-between shadow-sm transition`;
+                a.innerHTML = `<div class="flex items-center gap-3"><div class="w-9 h-9 rounded-xl bg-gray-100 dark:bg-darkbg flex items-center justify-center text-goldaccent"><i class="${link.icon || 'fa-solid fa-link'}"></i></div><span class="text-xs font-extrabold text-gray-900 dark:text-gray-100">${link.title}</span></div><i class="fa-solid fa-chevron-left text-xs text-gray-400"></i>`;
                 container.appendChild(a);
             });
         }
@@ -1409,12 +778,11 @@
         window.closePinModal = function() { document.getElementById('pinModal').classList.add('hidden'); };
         window.verifyPin = function() {
             const pin = document.getElementById('pinInput').value;
-            if (currentUsername === 'mahmoud' && pin === appData.pin) {
+            if (pin === appData.pin) {
                 document.getElementById('pinModal').classList.add('hidden');
                 document.getElementById('adminModal').classList.remove('hidden');
                 document.getElementById('pinInput').value = '';
-                populateAdminForm();
-            } else { alert('كلمة مرور الأدمن غير صحيحة'); }
+            } else { alert('رمز PIN غير صحيح'); }
         };
         window.closeAdminModal = function() { document.getElementById('adminModal').classList.add('hidden'); };
 
@@ -1426,782 +794,11 @@
                 document.getElementById('memberPinModal').classList.add('hidden');
                 document.getElementById('memberModal').classList.remove('hidden');
                 document.getElementById('memberPinInput').value = '';
-                populateMemberForm();
             } else { alert('رمز PIN غير صحيح'); }
         };
         window.closeMemberModal = function() { document.getElementById('memberModal').classList.add('hidden'); };
-
-        function populateMemberForm() {
-            document.getElementById('memberNameTitle').textContent = appData.displayName;
-            document.getElementById('memberEditName').value = appData.displayName;
-            document.getElementById('memberEditBio').value = appData.bio || '';
-            document.getElementById('memberEditAvatar').value = appData.image || '';
-            
-            document.getElementById('memberAvatarShape').value = appData.avatarShape || 'rounded-full';
-            document.getElementById('memberAvatarGlow').value = appData.avatarGlow || 'glow-gold';
-            document.getElementById('memberCardShape').value = appData.cardShape || 'rounded-2xl';
-            document.getElementById('memberCardGlow').value = appData.cardGlow || 'glow-gold-hover';
-            document.getElementById('memberCardStyle').value = appData.cardStyle || 'normal';
-            
-            if (appData.customColors) {
-                document.getElementById('memberColor1').value = appData.customColors.c1 || '#0f1117';
-                document.getElementById('memberOpacity1').value = appData.customColors.o1 ?? 1;
-                document.getElementById('memberColor2').value = appData.customColors.c2 || '#1a1d26';
-                document.getElementById('memberOpacity2').value = appData.customColors.o2 ?? 1;
-                document.getElementById('memberColor3').value = appData.customColors.c3 || '#0f1117';
-                document.getElementById('memberOpacity3').value = appData.customColors.o3 ?? 1;
-                document.getElementById('memberGradientAngle').value = appData.customColors.angle || 'to bottom right';
-            }
-            document.getElementById('memberBgImageUrl').value = appData.bgImageUrl || '';
-            const op = appData.bgImgOpacity ?? 0.6;
-            document.getElementById('memberBgImgOpacity').value = op;
-            document.getElementById('memberBgImgOpacityVal').textContent = op;
-
-            document.getElementById('memberShowMap').checked = appData.showMap !== false;
-            document.getElementById('memberMapUrl').value = appData.mapUrl || '';
-            document.getElementById('memberMapEmbed').value = appData.mapEmbed || '';
-
-            if (appData.contacts) {
-                document.getElementById('memberShowWhatsapp').checked = !!appData.contacts.showWhatsapp;
-                document.getElementById('memberEditWhatsapp').value = appData.contacts.whatsapp || '';
-                document.getElementById('memberShowPhone').checked = !!appData.contacts.showPhone;
-                document.getElementById('memberEditPhone').value = appData.contacts.phone || '';
-                document.getElementById('memberShowEmail').checked = !!appData.contacts.showEmail;
-                document.getElementById('memberEditEmail').value = appData.contacts.email || '';
-            }
-
-            document.getElementById('memberNewPinInput').value = '';
-            memberTempImageBase64 = appData.image || '';
-            window.resetMemberLinkForm();
-            window.resetMemberGalleryForm();
-            renderMemberLinksList();
-            renderMemberGalleryList();
-        }
-
-        document.getElementById('memberBgImgOpacity').addEventListener('input', (e) => {
-            document.getElementById('memberBgImgOpacityVal').textContent = e.target.value;
-        });
-        document.getElementById('adminBgImgOpacity').addEventListener('input', (e) => {
-            document.getElementById('adminBgImgOpacityVal').textContent = e.target.value;
-        });
-
-        // WhatsApp Broadcast Link Generator live update
-        document.getElementById('adminWaBroadcastText').addEventListener('input', updateWaBroadcastLink);
-        document.getElementById('adminWaBroadcastPhone').addEventListener('input', updateWaBroadcastLink);
-
-        function updateWaBroadcastLink() {
-            const phone = document.getElementById('adminWaBroadcastPhone').value.trim().replace(/[^0-9]/g, '');
-            const text = document.getElementById('adminWaBroadcastText').value.trim();
-            const btn = document.getElementById('adminSendWaBtn');
-            if (btn) {
-                btn.href = `https://wa.me/${phone}?text=${encodeURIComponent(text)}`;
-            }
-        }
-
-        window.handleMemberImageUpload = function(e) {
-            const file = e.target.files[0];
-            if (file) {
-                const reader = new FileReader();
-                reader.onload = (ev) => {
-                    memberTempImageBase64 = ev.target.result;
-                    document.getElementById('memberEditAvatar').value = memberTempImageBase64;
-                    alert('تم تحميل الصورة بنجاح');
-                };
-                reader.readAsDataURL(file);
-            }
-        };
-
-        window.saveMemberLinkItem = function() {
-            const id = document.getElementById('memberEditingLinkId').value;
-            const title = document.getElementById('memberLinkTitle').value.trim();
-            const url = document.getElementById('memberLinkUrl').value.trim();
-            const icon = document.getElementById('memberLinkIcon').value.trim() || 'fa-solid fa-link';
-            const enabled = document.getElementById('memberLinkEnabled').checked;
-
-            if (!title || !url) { alert('أدخل العنوان والرابط'); return; }
-            if (!appData.links) appData.links = [];
-
-            if (id) {
-                const link = appData.links.find(l => l.id === id);
-                if (link) { link.title = title; link.url = url; link.icon = icon; link.enabled = enabled; }
-            } else {
-                appData.links.push({ id: 'l_' + Date.now(), title, url, category: 'الكل', icon, enabled });
-            }
-            window.resetMemberLinkForm();
-            renderMemberLinksList();
-            renderLinks();
-        };
-
-        window.resetMemberLinkForm = function() {
-            document.getElementById('memberEditingLinkId').value = '';
-            document.getElementById('memberLinkTitle').value = '';
-            document.getElementById('memberLinkUrl').value = '';
-            document.getElementById('memberLinkIcon').value = '';
-            document.getElementById('memberLinkEnabled').checked = true;
-            document.getElementById('memberLinkFormTitle').textContent = 'إدارة الروابط (تشغيل/إيقاف وترتيب)';
-        };
-
-        window.editMemberLinkItem = function(id) {
-            const link = (appData.links || []).find(l => l.id === id);
-            if (!link) return;
-            document.getElementById('memberEditingLinkId').value = link.id;
-            document.getElementById('memberLinkTitle').value = link.title;
-            document.getElementById('memberLinkUrl').value = link.url;
-            document.getElementById('memberLinkIcon').value = link.icon || 'fa-solid fa-link';
-            document.getElementById('memberLinkEnabled').checked = link.enabled !== false;
-            document.getElementById('memberLinkFormTitle').textContent = 'تعديل الرابط';
-        };
-
-        window.deleteMemberLinkItem = function(id) {
-            appData.links = (appData.links || []).filter(l => l.id !== id);
-            renderMemberLinksList(); renderLinks();
-        };
-
-        window.moveMemberLink = function(index, direction) {
-            const links = appData.links || [];
-            const newIndex = index + direction;
-            if (newIndex < 0 || newIndex >= links.length) return;
-            const temp = links[index]; links[index] = links[newIndex]; links[newIndex] = temp;
-            renderMemberLinksList(); renderLinks();
-        };
-
-        function renderMemberLinksList() {
-            const container = document.getElementById('memberLinksList');
-            if(!container) return; container.innerHTML = '';
-            (appData.links || []).forEach((l, index) => {
-                const statusBadge = l.enabled !== false ? '<span class="text-emerald-500 font-bold">مفعل</span>' : '<span class="text-red-500 font-bold">متوقف</span>';
-                container.innerHTML += `
-                    <div class="bg-white dark:bg-cardbg border border-gray-300 dark:border-gray-700 p-2.5 rounded-lg flex items-center justify-between shadow-sm">
-                        <div class="flex items-center gap-2">
-                            <i class="${l.icon || 'fa-solid fa-link'} text-cyanaccent"></i>
-                            <div>
-                                <div class="text-gray-900 dark:text-white font-extrabold text-xs">${l.title} (${statusBadge})</div>
-                                <div class="text-[10px] text-gray-500 truncate max-w-[130px]">${l.url}</div>
-                            </div>
-                        </div>
-                        <div class="flex items-center gap-1">
-                            <button type="button" onclick="window.moveMemberLink(${index}, -1)" class="bg-gray-200 dark:bg-gray-700 text-cyanaccent px-1.5 py-0.5 rounded text-[10px] font-bold">⬆️</button>
-                            <button type="button" onclick="window.moveMemberLink(${index}, 1)" class="bg-gray-200 dark:bg-gray-700 text-cyanaccent px-1.5 py-0.5 rounded text-[10px] font-bold">⬇️</button>
-                            <button type="button" onclick="window.editMemberLinkItem('${l.id}')" class="bg-blue-500/20 text-blue-600 dark:text-blue-400 px-2 py-0.5 rounded text-[10px] font-bold">تعديل</button>
-                            <button type="button" onclick="window.deleteMemberLinkItem('${l.id}')" class="bg-red-500/20 text-red-600 dark:text-red-400 px-2 py-0.5 rounded text-[10px] font-bold">حذف</button>
-                        </div>
-                    </div>`;
-            });
-        }
-
-        window.saveMemberGalleryItem = function() {
-            const id = document.getElementById('memberEditingGalleryId').value;
-            const title = document.getElementById('memberGalleryTitle').value.trim();
-            const category = document.getElementById('memberGalleryCategory').value.trim() || 'عام';
-            const desc = document.getElementById('memberGalleryDesc').value.trim();
-            const coverUrl = document.getElementById('memberGalleryCoverUrl').value.trim();
-            const extraUrls = document.getElementById('memberGalleryExtraUrls').value.trim().split(/[\n,]+/).map(s => s.trim()).filter(Boolean);
-            const enabled = document.getElementById('memberGalleryEnabled').checked;
-
-            if (!title || !coverUrl) { alert('أدخل العنوان والغلاف'); return; }
-            if (!appData.gallery) appData.gallery = [];
-
-            if (id) {
-                const item = appData.gallery.find(g => g.id === id);
-                if (item) { item.title = title; item.category = category; item.desc = desc; item.coverUrl = coverUrl; item.extraUrls = extraUrls; item.enabled = enabled; }
-            } else {
-                appData.gallery.push({ id: 'g_' + Date.now(), title, category, desc, coverUrl, extraUrls, enabled });
-            }
-            window.resetMemberGalleryForm();
-            renderMemberGalleryList();
-            renderGalleryGrid();
-        };
-
-        window.resetMemberGalleryForm = function() {
-            document.getElementById('memberEditingGalleryId').value = '';
-            document.getElementById('memberGalleryTitle').value = '';
-            document.getElementById('memberGalleryCategory').value = '';
-            document.getElementById('memberGalleryDesc').value = '';
-            document.getElementById('memberGalleryCoverUrl').value = '';
-            document.getElementById('memberGalleryExtraUrls').value = '';
-            document.getElementById('memberGalleryEnabled').checked = true;
-            document.getElementById('memberGalleryFormTitle').textContent = 'إدارة المشاريع (تشغيل/إيقاف وترتيب)';
-        };
-
-        window.editMemberGalleryItem = function(id) {
-            const item = (appData.gallery || []).find(g => g.id === id);
-            if(!item) return;
-            document.getElementById('memberEditingGalleryId').value = item.id;
-            document.getElementById('memberGalleryTitle').value = item.title;
-            document.getElementById('memberGalleryCategory').value = item.category || '';
-            document.getElementById('memberGalleryDesc').value = item.desc || '';
-            document.getElementById('memberGalleryCoverUrl').value = item.coverUrl || '';
-            document.getElementById('memberGalleryExtraUrls').value = Array.isArray(item.extraUrls) ? item.extraUrls.join('\n') : '';
-            document.getElementById('memberGalleryEnabled').checked = item.enabled !== false;
-            document.getElementById('memberGalleryFormTitle').textContent = 'تعديل المشروع';
-        };
-
-        window.deleteMemberGalleryItem = function(id) {
-            appData.gallery = (appData.gallery || []).filter(g => g.id !== id);
-            renderMemberGalleryList(); renderGalleryGrid();
-        };
-
-        window.moveMemberGalleryItem = function(index, direction) {
-            const gallery = appData.gallery || [];
-            const newIndex = index + direction;
-            if (newIndex < 0 || newIndex >= gallery.length) return;
-            const temp = gallery[index]; gallery[index] = gallery[newIndex]; gallery[newIndex] = temp;
-            renderMemberGalleryList(); renderGalleryGrid();
-        };
-
-        function renderMemberGalleryList() {
-            const container = document.getElementById('memberGalleryList');
-            if(!container) return; container.innerHTML = '';
-            (appData.gallery || []).forEach((g, index) => {
-                const statusBadge = g.enabled !== false ? '<span class="text-emerald-500 font-bold">مفعل</span>' : '<span class="text-red-500 font-bold">متوقف</span>';
-                container.innerHTML += `
-                    <div class="bg-white dark:bg-cardbg border border-gray-300 dark:border-gray-700 rounded-xl p-2.5 flex items-center justify-between shadow-sm">
-                        <div class="flex items-center gap-2">
-                            <img src="${g.coverUrl}" class="w-8 h-8 rounded object-cover" />
-                            <div>
-                                <div class="font-extrabold text-gray-900 dark:text-white">${g.title} (${statusBadge})</div>
-                                <div class="text-[10px] text-gray-500">${g.category}</div>
-                            </div>
-                        </div>
-                        <div class="flex items-center gap-1">
-                            <button type="button" onclick="window.moveMemberGalleryItem(${index}, -1)" class="bg-gray-200 dark:bg-gray-700 text-cyanaccent px-1.5 py-0.5 rounded text-[10px] font-bold">⬆️</button>
-                            <button type="button" onclick="window.moveMemberGalleryItem(${index}, 1)" class="bg-gray-200 dark:bg-gray-700 text-cyanaccent px-1.5 py-0.5 rounded text-[10px] font-bold">⬇️</button>
-                            <button type="button" onclick="window.editMemberGalleryItem('${g.id}')" class="bg-blue-500/20 text-blue-600 dark:text-blue-400 px-2 py-0.5 rounded text-[10px] font-bold">تعديل</button>
-                            <button type="button" onclick="window.deleteMemberGalleryItem('${g.id}')" class="bg-red-500/20 text-red-600 dark:text-red-400 px-2 py-0.5 rounded text-[10px] font-bold">حذف</button>
-                        </div>
-                    </div>`;
-            });
-        }
-
-        window.saveMemberChanges = function() {
-            appData.displayName = document.getElementById('memberEditName').value.trim() || appData.displayName;
-            appData.bio = document.getElementById('memberEditBio').value.trim();
-            appData.avatarShape = document.getElementById('memberAvatarShape').value;
-            appData.avatarGlow = document.getElementById('memberAvatarGlow').value;
-            appData.cardShape = document.getElementById('memberCardShape').value;
-            appData.cardGlow = document.getElementById('memberCardGlow').value;
-            appData.cardStyle = document.getElementById('memberCardStyle').value;
-            
-            appData.customColors = {
-                c1: document.getElementById('memberColor1').value,
-                o1: parseFloat(document.getElementById('memberOpacity1').value),
-                c2: document.getElementById('memberColor2').value,
-                o2: parseFloat(document.getElementById('memberOpacity2').value),
-                c3: document.getElementById('memberColor3').value,
-                o3: parseFloat(document.getElementById('memberOpacity3').value),
-                angle: document.getElementById('memberGradientAngle').value
-            };
-
-            appData.bgImageUrl = document.getElementById('memberBgImageUrl').value.trim();
-            appData.bgImgOpacity = parseFloat(document.getElementById('memberBgImgOpacity').value);
-            appData.showMap = document.getElementById('memberShowMap').checked;
-            appData.mapUrl = document.getElementById('memberMapUrl').value.trim();
-            appData.mapEmbed = document.getElementById('memberMapEmbed').value.trim();
-            
-            const avatarInputVal = document.getElementById('memberEditAvatar').value.trim();
-            if (memberTempImageBase64 !== '') appData.image = memberTempImageBase64;
-            else if (avatarInputVal !== '') appData.image = avatarInputVal;
-
-            if (!appData.contacts) appData.contacts = {};
-            appData.contacts.showWhatsapp = document.getElementById('memberShowWhatsapp').checked;
-            appData.contacts.whatsapp = document.getElementById('memberEditWhatsapp').value.trim();
-            appData.contacts.showPhone = document.getElementById('memberShowPhone').checked;
-            appData.contacts.phone = document.getElementById('memberEditPhone').value.trim();
-            appData.contacts.showEmail = document.getElementById('memberShowEmail').checked;
-            appData.contacts.email = document.getElementById('memberEditEmail').value.trim();
-
-            const newPinVal = document.getElementById('memberNewPinInput').value.trim();
-            if (newPinVal.length >= 4) appData.pin = newPinVal;
-
-            saveDataToFirebase();
-            window.closeMemberModal();
-        };
-
-        function populateAdminForm() {
-            document.getElementById('editDisplayName').value = appData.displayName;
-            document.getElementById('editBio').value = appData.bio;
-            tempImageBase64 = appData.image || "";
-            document.getElementById('editAvatarUrl').value = appData.image || "";
-            
-            document.getElementById('adminAvatarShape').value = appData.avatarShape || 'rounded-full';
-            document.getElementById('adminAvatarGlow').value = appData.avatarGlow || 'glow-gold';
-            document.getElementById('adminCardShape').value = appData.cardShape || 'rounded-2xl';
-            document.getElementById('adminCardGlow').value = appData.cardGlow || 'glow-gold-hover';
-            document.getElementById('adminCardStyle').value = appData.cardStyle || 'normal';
-            
-            if (appData.notification) {
-                document.getElementById('adminNotifTitle').value = appData.notification.title || '';
-                document.getElementById('adminNotifText').value = appData.notification.text || '';
-                document.getElementById('adminNotifActive').checked = !!appData.notification.active;
-            }
-
-            if (appData.customColors) {
-                document.getElementById('adminColor1').value = appData.customColors.c1 || '#0f1117';
-                document.getElementById('adminOpacity1').value = appData.customColors.o1 ?? 1;
-                document.getElementById('adminColor2').value = appData.customColors.c2 || '#1a1d26';
-                document.getElementById('adminOpacity2').value = appData.customColors.o2 ?? 1;
-                document.getElementById('adminColor3').value = appData.customColors.c3 || '#0f1117';
-                document.getElementById('adminOpacity3').value = appData.customColors.o3 ?? 1;
-                document.getElementById('adminGradientAngle').value = appData.customColors.angle || 'to bottom right';
-            }
-            document.getElementById('adminBgImageUrl').value = appData.bgImageUrl || '';
-            const op = appData.bgImgOpacity ?? 0.6;
-            document.getElementById('adminBgImgOpacity').value = op;
-            document.getElementById('adminBgImgOpacityVal').textContent = op;
-
-            document.getElementById('adminShowMap').checked = appData.showMap !== false;
-            document.getElementById('adminMapUrl').value = appData.mapUrl || '';
-            document.getElementById('adminMapEmbed').value = appData.mapEmbed || '';
-
-            if (appData.contacts) {
-                document.getElementById('showWhatsapp').checked = !!appData.contacts.showWhatsapp;
-                document.getElementById('editWhatsapp').value = appData.contacts.whatsapp || '';
-                document.getElementById('showPhone').checked = !!appData.contacts.showPhone;
-                document.getElementById('editPhone').value = appData.contacts.phone || '';
-                document.getElementById('showEmail').checked = !!appData.contacts.showEmail;
-                document.getElementById('editEmail').value = appData.contacts.email || '';
-            }
-
-            renderAdminFeedbackList();
-            renderAdminPendingRequests();
-            renderAdminUsersList();
-            renderAdminSidebarList();
-            renderAdminGalleryList();
-            renderAdminCategories();
-            renderAdminCategorySelect();
-            renderAdminLinksList();
-        }
-
-        window.saveSidebarItem = function() {
-            const id = document.getElementById('editingSidebarId').value;
-            const title = document.getElementById('sidebarTitle').value.trim();
-            const url = document.getElementById('sidebarUrl').value.trim() || '#';
-            const icon = document.getElementById('sidebarIcon').value.trim() || 'fa-solid fa-link';
-            const action = document.getElementById('sidebarAction').value.trim();
-            const enabled = document.getElementById('sidebarEnabled').checked;
-
-            if (!title) { alert('أدخل العنوان'); return; }
-            if (!appData.sidebarLinks) appData.sidebarLinks = [];
-            if (id) {
-                const item = appData.sidebarLinks.find(s => s.id === id);
-                if (item) { item.title = title; item.url = url; item.icon = icon; item.action = action; item.enabled = enabled; }
-            } else {
-                appData.sidebarLinks.push({ id: 'sb_' + Date.now(), title, url, icon, action, enabled });
-            }
-            window.resetSidebarForm(); renderAdminSidebarList(); renderSidebarMenu();
-        };
-
-        window.resetSidebarForm = function() {
-            document.getElementById('editingSidebarId').value = '';
-            document.getElementById('sidebarTitle').value = '';
-            document.getElementById('sidebarUrl').value = '';
-            document.getElementById('sidebarIcon').value = '';
-            document.getElementById('sidebarAction').value = '';
-            document.getElementById('sidebarEnabled').checked = true;
-            document.getElementById('sidebarFormTitle').textContent = 'إضافة عنصر جديد';
-        };
-
-        window.editSidebarItem = function(id) {
-            const item = (appData.sidebarLinks || []).find(s => s.id === id);
-            if (!item) return;
-            document.getElementById('editingSidebarId').value = item.id;
-            document.getElementById('sidebarTitle').value = item.title;
-            document.getElementById('sidebarUrl').value = item.url || '';
-            document.getElementById('sidebarIcon').value = item.icon || '';
-            document.getElementById('sidebarAction').value = item.action || '';
-            document.getElementById('sidebarEnabled').checked = item.enabled !== false;
-            document.getElementById('sidebarFormTitle').textContent = 'تعديل العنصر';
-        };
-
-        window.deleteSidebarItem = function(id) {
-            appData.sidebarLinks = (appData.sidebarLinks || []).filter(s => s.id !== id);
-            renderAdminSidebarList(); renderSidebarMenu();
-        };
-
-        window.moveSidebarItem = function(index, direction) {
-            const list = appData.sidebarLinks || [];
-            const newIndex = index + direction;
-            if (newIndex < 0 || newIndex >= list.length) return;
-            const temp = list[index]; list[index] = list[newIndex]; list[newIndex] = temp;
-            renderAdminSidebarList(); renderSidebarMenu();
-        };
-
-        function renderAdminSidebarList() {
-            const container = document.getElementById('adminSidebarList');
-            if(!container) return; container.innerHTML = '';
-            (appData.sidebarLinks || []).forEach((s, index) => {
-                const statusBadge = s.enabled !== false ? '<span class="text-emerald-500 font-bold">مفعل</span>' : '<span class="text-red-500 font-bold">متوقف</span>';
-                container.innerHTML += `
-                    <div class="bg-white dark:bg-cardbg border border-gray-300 dark:border-gray-700 rounded-xl p-2.5 flex items-center justify-between shadow-sm">
-                        <div class="flex items-center gap-2"><i class="${s.icon} text-goldaccent"></i><div><div class="font-extrabold text-gray-900 dark:text-white">${s.title} (${statusBadge})</div></div></div>
-                        <div class="flex items-center gap-1">
-                            <button type="button" onclick="window.moveSidebarItem(${index}, -1)" class="bg-gray-200 dark:bg-gray-700 text-goldaccent px-1.5 py-0.5 rounded text-[10px] font-bold">⬆️</button>
-                            <button type="button" onclick="window.moveSidebarItem(${index}, 1)" class="bg-gray-200 dark:bg-gray-700 text-goldaccent px-1.5 py-0.5 rounded text-[10px] font-bold">⬇️</button>
-                            <button type="button" onclick="window.editSidebarItem('${s.id}')" class="bg-blue-500/20 text-blue-600 dark:text-blue-400 px-2 py-0.5 rounded text-[10px] font-bold">تعديل</button>
-                            <button type="button" onclick="window.deleteSidebarItem('${s.id}')" class="bg-red-500/20 text-red-600 dark:text-red-400 px-2 py-0.5 rounded text-[10px] font-bold">حذف</button>
-                        </div>
-                    </div>`;
-            });
-        }
-
-        window.deleteFeedbackMessage = function(msgId) {
-            if (rootData.feedbackMessages && rootData.feedbackMessages[msgId]) {
-                delete rootData.feedbackMessages[msgId];
-                set(dbRef, rootData).then(() => { renderAdminFeedbackList(); });
-            }
-        };
-
-        function renderAdminFeedbackList() {
-            const container = document.getElementById('adminFeedbackList');
-            if(!container) return; container.innerHTML = '';
-            const msgs = rootData.feedbackMessages || {};
-            const keys = Object.keys(msgs);
-            if (keys.length === 0) { container.innerHTML = '<div class="text-gray-500 text-center py-1">لا توجد رسائل.</div>'; return; }
-            keys.reverse().forEach(k => {
-                const m = msgs[k];
-                container.innerHTML += `
-                    <div class="bg-white dark:bg-cardbg border border-gray-300 dark:border-gray-700 p-2.5 rounded-xl space-y-1 shadow-sm">
-                        <div class="flex justify-between items-center text-[11px]"><span class="font-extrabold text-goldaccent">${m.senderName} (${m.senderContact})</span><span class="text-gray-500">${new Date(m.createdAt).toLocaleString()}</span></div>
-                        <p class="text-gray-900 dark:text-gray-100 text-xs bg-gray-50 dark:bg-darkbg p-2 rounded-lg border border-gray-200 dark:border-gray-800">${m.message}</p>
-                        <div class="flex justify-end pt-1"><button type="button" onclick="window.deleteFeedbackMessage('${m.id}')" class="bg-red-500/20 text-red-600 dark:text-red-400 px-2 py-0.5 rounded text-[10px] font-bold">حذف</button></div>
-                    </div>`;
-            });
-        }
-
-        window.approveRequest = function(username) {
-            if (!rootData.pendingRequests[username]) return;
-            const req = rootData.pendingRequests[username];
-            rootData.users[username] = {
-                displayName: req.displayName,
-                bio: req.bio || '',
-                pin: '1234',
-                image: req.image || '',
-                avatarShape: 'rounded-full',
-                avatarGlow: 'glow-gold',
-                cardShape: 'rounded-2xl',
-                cardGlow: 'glow-gold-hover',
-                cardStyle: 'normal',
-                customColors: { c1: "", o1: 1, c2: "", o2: 1, c3: "", o3: 1, angle: "to bottom right" },
-                bgImageUrl: '',
-                bgImgOpacity: 0.6,
-                showMap: true,
-                mapUrl: '',
-                mapEmbed: '',
-                contacts: { whatsapp: req.whatsapp || '', showWhatsapp: true, phone: '', showPhone: false, email: '', showEmail: false },
-                notification: { title: "", text: "", active: false },
-                categories: [{ name: "الكل", enabled: true }, { name: "عام", enabled: true }],
-                sidebarLinks: [
-                    { id: 'sb1', title: 'لوحة تحكم العضو', url: '#', icon: 'fa-solid fa-user-gear', action: 'openMemberPanel', enabled: true },
-                    { id: 'sb2', title: 'انضم إلينا كعضو', url: '#', icon: 'fa-solid fa-user-plus', action: 'openJoin', enabled: true }
-                ],
-                gallery: [],
-                links: []
-            };
-            delete rootData.pendingRequests[username];
-            set(dbRef, rootData).then(() => { alert(`تم قبول العضو ${username}`); populateAdminForm(); });
-        };
-        window.rejectRequest = function(username) { delete rootData.pendingRequests[username]; set(dbRef, rootData).then(() => populateAdminForm()); };
-        window.deletePlatformUser = function(username) {
-            if (username === 'mahmoud') return;
-            if (confirm(`حذف حساب ${username}؟`)) { delete rootData.users[username]; set(dbRef, rootData).then(() => populateAdminForm()); }
-        };
-
-        function renderAdminPendingRequests() {
-            const container = document.getElementById('adminPendingRequestsList');
-            if(!container) return; container.innerHTML = '';
-            const reqs = rootData.pendingRequests || {};
-            if (Object.keys(reqs).length === 0) { container.innerHTML = '<div class="text-gray-500 text-center py-1">لا توجد طلبات.</div>'; return; }
-            Object.keys(reqs).forEach(k => {
-                const r = reqs[k];
-                container.innerHTML += `<div class="bg-white dark:bg-cardbg border border-gray-300 dark:border-gray-700 p-2.5 rounded-xl flex items-center justify-between shadow-sm"><div><div class="font-extrabold text-gray-900 dark:text-white">${r.displayName} (${r.username})</div></div><div class="flex gap-1.5"><button type="button" onclick="window.approveRequest('${k}')" class="bg-emerald-500/20 text-emerald-600 dark:text-emerald-400 px-2 py-1 rounded font-bold">قبول</button><button type="button" onclick="window.rejectRequest('${k}')" class="bg-red-500/20 text-red-600 dark:text-red-400 px-2 py-1 rounded font-bold">رفض</button></div></div>`;
-            });
-        }
-
-        function renderAdminUsersList() {
-            const container = document.getElementById('adminUsersList');
-            if(!container) return; container.innerHTML = '';
-            Object.keys(rootData.users || {}).forEach(u => {
-                const usr = rootData.users[u];
-                container.innerHTML += `<div class="bg-white dark:bg-cardbg border border-gray-300 dark:border-gray-700 p-2 rounded-xl flex items-center justify-between shadow-sm"><div><span class="font-extrabold text-gray-900 dark:text-white">${usr.displayName}</span> <a href="?user=${u}" target="_blank" class="text-[10px] text-goldaccent underline font-bold">(?user=${u})</a></div>${u !== 'mahmoud' ? `<button type="button" onclick="window.deletePlatformUser('${u}')" class="bg-red-500/20 text-red-600 px-2 py-0.5 rounded font-bold">حذف</button>` : '<span class="text-[10px] text-gray-400">الأدمن</span>'}</div>`;
-            });
-        }
-
-        window.saveGalleryItem = function() {
-            const id = document.getElementById('editingGalleryId').value;
-            const title = document.getElementById('galleryTitle').value.trim();
-            const category = document.getElementById('galleryCategory').value.trim() || 'عام';
-            const desc = document.getElementById('galleryDesc').value.trim();
-            const coverUrl = document.getElementById('galleryCoverUrl').value.trim();
-            const extraUrls = document.getElementById('galleryExtraUrls').value.trim().split(/[\n,]+/).map(s => s.trim()).filter(Boolean);
-            const enabled = document.getElementById('galleryEnabled').checked;
-
-            if (!title || !coverUrl) { alert('أدخل العنوان والغلاف'); return; }
-            if (!appData.gallery) appData.gallery = [];
-            if (id) {
-                const item = appData.gallery.find(g => g.id === id);
-                if (item) { item.title = title; item.category = category; item.desc = desc; item.coverUrl = coverUrl; item.extraUrls = extraUrls; item.enabled = enabled; }
-            } else {
-                appData.gallery.push({ id: 'g_' + Date.now(), title, category, desc, coverUrl, extraUrls, enabled });
-            }
-            window.resetGalleryForm(); renderAdminGalleryList(); renderGalleryGrid();
-        };
-
-        window.resetGalleryForm = function() {
-            document.getElementById('editingGalleryId').value = '';
-            document.getElementById('galleryTitle').value = '';
-            document.getElementById('galleryCategory').value = '';
-            document.getElementById('galleryDesc').value = '';
-            document.getElementById('galleryCoverUrl').value = '';
-            document.getElementById('galleryExtraUrls').value = '';
-            document.getElementById('galleryEnabled').checked = true;
-            document.getElementById('galleryFormTitle').textContent = 'إضافة مشروع';
-        };
-
-        window.editGalleryItem = function(id) {
-            const item = appData.gallery.find(g => g.id === id);
-            if(!item) return;
-            document.getElementById('editingGalleryId').value = item.id;
-            document.getElementById('galleryTitle').value = item.title;
-            document.getElementById('galleryCategory').value = item.category || '';
-            document.getElementById('galleryDesc').value = item.desc || '';
-            document.getElementById('galleryCoverUrl').value = item.coverUrl || '';
-            document.getElementById('galleryExtraUrls').value = Array.isArray(item.extraUrls) ? item.extraUrls.join('\n') : '';
-            document.getElementById('galleryEnabled').checked = item.enabled !== false;
-            document.getElementById('galleryFormTitle').textContent = 'تعديل المشروع';
-        };
-
-        window.deleteGalleryItem = function(id) {
-            appData.gallery = appData.gallery.filter(g => g.id !== id);
-            renderAdminGalleryList(); renderGalleryGrid();
-        };
-
-        window.moveGalleryItem = function(index, direction) {
-            const gallery = appData.gallery || [];
-            const newIndex = index + direction;
-            if (newIndex < 0 || newIndex >= gallery.length) return;
-            const temp = gallery[index]; gallery[index] = gallery[newIndex]; gallery[newIndex] = temp;
-            renderAdminGalleryList(); renderGalleryGrid();
-        };
-
-        function renderAdminGalleryList() {
-            const container = document.getElementById('adminGalleryList');
-            if(!container) return; container.innerHTML = '';
-            (appData.gallery || []).forEach((g, index) => {
-                const statusBadge = g.enabled !== false ? '<span class="text-emerald-500 font-bold">مفعل</span>' : '<span class="text-red-500 font-bold">متوقف</span>';
-                container.innerHTML += `
-                    <div class="bg-white dark:bg-cardbg border border-gray-300 dark:border-gray-700 rounded-xl p-2.5 flex items-center justify-between shadow-sm">
-                        <div class="flex items-center gap-2"><img src="${g.coverUrl}" class="w-8 h-8 rounded object-cover" /><div><div class="font-extrabold text-gray-900 dark:text-white">${g.title} (${statusBadge})</div></div></div>
-                        <div class="flex items-center gap-1">
-                            <button type="button" onclick="window.moveGalleryItem(${index}, -1)" class="bg-gray-200 dark:bg-gray-700 text-goldaccent px-1.5 py-0.5 rounded text-[10px] font-bold">⬆️</button>
-                            <button type="button" onclick="window.moveGalleryItem(${index}, 1)" class="bg-gray-200 dark:bg-gray-700 text-goldaccent px-1.5 py-0.5 rounded text-[10px] font-bold">⬇️</button>
-                            <button type="button" onclick="window.editGalleryItem('${g.id}')" class="bg-blue-500/20 text-blue-600 dark:text-blue-400 px-2 py-0.5 rounded text-[10px] font-bold">تعديل</button>
-                            <button type="button" onclick="window.deleteGalleryItem('${g.id}')" class="bg-red-500/20 text-red-600 dark:text-red-400 px-2 py-0.5 rounded text-[10px] font-bold">حذف</button>
-                        </div>
-                    </div>`;
-            });
-        }
-
-        window.handleImageUpload = function(e) {
-            const file = e.target.files[0];
-            if (file) {
-                const reader = new FileReader();
-                reader.onload = (ev) => { tempImageBase64 = ev.target.result; document.getElementById('editAvatarUrl').value = tempImageBase64; alert('تم تحميل الصورة'); };
-                reader.readAsDataURL(file);
-            }
-        };
-
-        window.addCategory = function() {
-            const val = document.getElementById('newCategoryInput').value.trim();
-            if(val && !appData.categories.some(c => c.name === val)) {
-                appData.categories.push({ name: val, enabled: true });
-                document.getElementById('newCategoryInput').value = '';
-                renderAdminCategories(); renderAdminCategorySelect(); renderCategories();
-            }
-        };
-
-        window.toggleCategoryStatus = function(index) {
-            if (appData.categories[index]) {
-                appData.categories[index].enabled = !appData.categories[index].enabled;
-                renderAdminCategories(); renderAdminCategorySelect(); renderCategories();
-            }
-        };
-
-        window.deleteCategory = function(index) {
-            if (appData.categories[index] && appData.categories[index].name === 'الكل') return;
-            appData.categories.splice(index, 1);
-            renderAdminCategories(); renderAdminCategorySelect(); renderCategories();
-        };
-
-        window.moveCategory = function(index, direction) {
-            const cats = appData.categories || [];
-            const newIndex = index + direction;
-            if (newIndex < 0 || newIndex >= cats.length) return;
-            const temp = cats[index]; cats[index] = cats[newIndex]; cats[newIndex] = temp;
-            renderAdminCategories(); renderAdminCategorySelect(); renderCategories();
-        };
-
-        function renderAdminCategories() {
-            const c = document.getElementById('adminCategoriesList');
-            if(!c) return; c.innerHTML = '';
-            (appData.categories || []).forEach((catObj, index) => {
-                const catName = catObj.name;
-                const isEnabled = catObj.enabled !== false;
-                const statusBadge = isEnabled ? '<span class="text-emerald-500 font-bold">مفعل</span>' : '<span class="text-red-500 font-bold">متوقف</span>';
-                
-                c.innerHTML += `
-                    <div class="bg-white dark:bg-cardbg border border-gray-300 dark:border-gray-700 px-3 py-2 rounded-xl flex items-center justify-between text-gray-900 dark:text-white font-bold text-xs shadow-sm">
-                        <div class="flex items-center gap-2">
-                            <span>${catName}</span>
-                            <span class="text-[10px]">(${statusBadge})</span>
-                        </div>
-                        <div class="flex items-center gap-1">
-                            <button type="button" onclick="window.moveCategory(${index}, -1)" class="bg-gray-200 dark:bg-gray-700 text-goldaccent px-1.5 py-0.5 rounded text-[10px] font-bold" title="صعود">⬆️</button>
-                            <button type="button" onclick="window.moveCategory(${index}, 1)" class="bg-gray-200 dark:bg-gray-700 text-goldaccent px-1.5 py-0.5 rounded text-[10px] font-bold" title="نزول">⬇️</button>
-                            <button type="button" onclick="window.toggleCategoryStatus(${index})" class="bg-amber-500/20 text-amber-600 dark:text-amber-400 px-2 py-0.5 rounded text-[10px] font-bold">${isEnabled ? 'إيقاف' : 'تفعيل'}</button>
-                            ${catName !== 'الكل' ? `<button type="button" onclick="window.deleteCategory(${index})" class="bg-red-500/20 text-red-600 px-2 py-0.5 rounded text-[10px] font-bold">حذف</button>` : ''}
-                        </div>
-                    </div>`;
-            });
-        }
-
-        function renderAdminCategorySelect() {
-            const s = document.getElementById('linkCategory');
-            if(!s) return; s.innerHTML = '';
-            (appData.categories || []).filter(c => c.enabled !== false).forEach(catObj => { 
-                s.innerHTML += `<option value="${catObj.name}">${catObj.name}</option>`; 
-            });
-        }
-
-        window.saveLink = function() {
-            const id = document.getElementById('editingLinkId').value;
-            const title = document.getElementById('linkTitle').value.trim();
-            const url = document.getElementById('linkUrl').value.trim();
-            const category = document.getElementById('linkCategory').value;
-            const icon = document.getElementById('linkIcon').value.trim() || 'fa-solid fa-link';
-            const enabled = document.getElementById('linkEnabled').checked;
-            if(!title || !url) return;
-            if(!appData.links) appData.links = [];
-            if(id) {
-                const l = appData.links.find(x => x.id === id);
-                if(l) { l.title = title; l.url = url; l.category = category; l.icon = icon; l.enabled = enabled; }
-            } else {
-                appData.links.push({ id: Date.now().toString(), title, url, category, icon, enabled });
-            }
-            window.resetLinkForm(); renderAdminLinksList(); renderLinks();
-        };
-
-        window.resetLinkForm = function() {
-            document.getElementById('editingLinkId').value = '';
-            document.getElementById('linkTitle').value = '';
-            document.getElementById('linkUrl').value = '';
-            document.getElementById('linkIcon').value = '';
-            document.getElementById('linkEnabled').checked = true;
-            document.getElementById('linkFormTitle').textContent = 'إضافة رابط جديد';
-        };
-
-        window.editLink = function(id) {
-            const l = appData.links.find(x => x.id === id);
-            if(!l) return;
-            document.getElementById('editingLinkId').value = l.id;
-            document.getElementById('linkTitle').value = l.title;
-            document.getElementById('linkUrl').value = l.url;
-            document.getElementById('linkCategory').value = l.category;
-            document.getElementById('linkIcon').value = l.icon;
-            document.getElementById('linkEnabled').checked = l.enabled !== false;
-            document.getElementById('linkFormTitle').textContent = 'تعديل الرابط';
-        };
-
-        window.deleteLink = function(id) {
-            appData.links = appData.links.filter(x => x.id !== id);
-            renderAdminLinksList(); renderLinks();
-        };
-
-        window.moveLink = function(index, direction) {
-            const links = appData.links || [];
-            const newIndex = index + direction;
-            if (newIndex < 0 || newIndex >= links.length) return;
-            const temp = links[index]; links[index] = links[newIndex]; links[newIndex] = temp;
-            renderAdminLinksList(); renderLinks();
-        };
-
-        function renderAdminLinksList() {
-            const container = document.getElementById('adminLinksList');
-            if(!container) return; container.innerHTML = '';
-            (appData.links || []).forEach((l, index) => {
-                const statusBadge = l.enabled !== false ? '<span class="text-emerald-500 font-bold">مفعل</span>' : '<span class="text-red-500 font-bold">متوقف</span>';
-                container.innerHTML += `
-                    <div class="bg-white dark:bg-cardbg border border-gray-300 dark:border-gray-700 rounded-xl p-2.5 flex items-center justify-between shadow-sm">
-                        <div>
-                            <div class="font-extrabold text-gray-900 dark:text-white"><i class="${l.icon}"></i> ${l.title} (${statusBadge})</div>
-                            <div class="text-[10px] font-semibold text-gray-500">${l.category}</div>
-                        </div>
-                        <div class="flex items-center gap-1">
-                            <button type="button" onclick="window.moveLink(${index}, -1)" class="bg-gray-200 dark:bg-gray-700 text-goldaccent px-1.5 py-0.5 rounded text-[10px] font-bold">⬆️</button>
-                            <button type="button" onclick="window.moveLink(${index}, 1)" class="bg-gray-200 dark:bg-gray-700 text-goldaccent px-1.5 py-0.5 rounded text-[10px] font-bold">⬇️</button>
-                            <button type="button" onclick="window.editLink('${l.id}')" class="bg-blue-500/20 text-blue-600 dark:text-blue-400 px-2 py-0.5 rounded text-[10px] font-bold">تعديل</button>
-                            <button type="button" onclick="window.deleteLink('${l.id}')" class="bg-red-500/20 text-red-600 dark:text-red-400 px-2 py-0.5 rounded text-[10px] font-bold">حذف</button>
-                        </div>
-                    </div>`;
-            });
-        }
-
-        window.changePin = function() {
-            const p = document.getElementById('newPinInput').value.trim();
-            if(p.length >= 4) { appData.pin = p; document.getElementById('newPinInput').value = ''; alert('تم تحديث رمز PIN'); }
-        };
-
-        window.exportDataJson = function() {
-            const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(rootData, null, 2));
-            const dl = document.createElement('a'); dl.setAttribute("href", dataStr); dl.setAttribute("download", "backup.json");
-            document.body.appendChild(dl); dl.click(); dl.remove();
-        };
-
-        window.saveAllChanges = function() {
-            appData.displayName = document.getElementById('editDisplayName').value.trim() || appData.displayName;
-            appData.bio = document.getElementById('editBio').value.trim();
-            appData.avatarShape = document.getElementById('adminAvatarShape').value;
-            appData.avatarGlow = document.getElementById('adminAvatarGlow').value;
-            appData.cardShape = document.getElementById('adminCardShape').value;
-            appData.cardGlow = document.getElementById('adminCardGlow').value;
-            appData.cardStyle = document.getElementById('adminCardStyle').value;
-            
-            appData.notification = {
-                title: document.getElementById('adminNotifTitle').value.trim(),
-                text: document.getElementById('adminNotifText').value.trim(),
-                active: document.getElementById('adminNotifActive').checked
-            };
-
-            appData.customColors = {
-                c1: document.getElementById('adminColor1').value,
-                o1: parseFloat(document.getElementById('adminOpacity1').value),
-                c2: document.getElementById('adminColor2').value,
-                o2: parseFloat(document.getElementById('adminOpacity2').value),
-                c3: document.getElementById('adminColor3').value,
-                o3: parseFloat(document.getElementById('adminOpacity3').value),
-                angle: document.getElementById('adminGradientAngle').value
-            };
-
-            appData.bgImageUrl = document.getElementById('adminBgImageUrl').value.trim();
-            appData.bgImgOpacity = parseFloat(document.getElementById('adminBgImgOpacity').value);
-            appData.showMap = document.getElementById('adminShowMap').checked;
-            appData.mapUrl = document.getElementById('adminMapUrl').value.trim();
-            appData.mapEmbed = document.getElementById('adminMapEmbed').value.trim();
-            
-            const avatarUrlInputVal = document.getElementById('editAvatarUrl').value.trim();
-            if (tempImageBase64 !== "") appData.image = tempImageBase64;
-            else if (avatarUrlInputVal !== "") appData.image = avatarUrlInputVal;
-
-            if (!appData.contacts) appData.contacts = {};
-            appData.contacts.showWhatsapp = document.getElementById('showWhatsapp').checked;
-            appData.contacts.whatsapp = document.getElementById('editWhatsapp').value.trim();
-            appData.contacts.showPhone = document.getElementById('showPhone').checked;
-            appData.contacts.phone = document.getElementById('editPhone').value.trim();
-            appData.contacts.showEmail = document.getElementById('showEmail').checked;
-            appData.contacts.email = document.getElementById('editEmail').value.trim();
-
-            saveDataToFirebase();
-            window.closeAdminModal();
-        };
+        window.saveAllChanges = function() { saveDataToFirebase(); window.closeAdminModal(); };
+        window.saveMemberChanges = function() { saveDataToFirebase(); window.closeMemberModal(); };
     </script>
 </body>
 </html>
