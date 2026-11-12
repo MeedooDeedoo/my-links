@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>منصة شجرة الروابط الاحترافية - مع نظام إحصائيات النقرات</title>
+    <title>منصة شجرة الروابط الاحترافية - مع شريط الحالة المباشرة</title>
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
@@ -32,26 +32,20 @@
     <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800&display=swap" rel="stylesheet">
     
     <style>
-        body {
-            font-family: 'Tajawal', sans-serif;
-            -webkit-tap-highlight-color: transparent;
-        }
+        body { font-family: 'Tajawal', sans-serif; -webkit-tap-highlight-color: transparent; }
         .glow-gold { box-shadow: 0 0 20px rgba(212, 175, 55, 0.35); }
         .glow-cyan { box-shadow: 0 0 20px rgba(0, 180, 216, 0.35); }
         .glow-subtle { box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15); }
         .glow-gold-hover:hover { box-shadow: 0 0 25px rgba(212, 175, 55, 0.5); }
         button, select, input, a, label, textarea { touch-action: manipulation; cursor: pointer; }
-        .glass-card {
-            background: rgba(26, 29, 38, 0.75) !important;
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
-        }
+        .glass-card { background: rgba(26, 29, 38, 0.75) !important; backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); }
         html.light .glass-card { background: rgba(255, 255, 255, 0.8) !important; }
+        @keyframes pulse-slow { 0%, 100% { opacity: 1; transform: scale(1); } 50% { opacity: 0.6; transform: scale(1.05); } }
+        .pulse-live { animation: pulse-slow 2s infinite ease-in-out; }
     </style>
 </head>
 <body id="pageBody" class="min-h-screen flex flex-col items-center justify-between p-4 pb-12 bg-lightbg dark:bg-darkbg text-gray-900 dark:text-gray-100 transition-colors duration-300 relative">
 
-    <!-- Background Image Layer -->
     <div id="bgImageLayer" class="absolute inset-0 bg-cover bg-center pointer-events-none z-0 hidden"></div>
 
     <!-- Top Bar -->
@@ -102,6 +96,13 @@
                     <img id="profileImage" src="" alt="Profile" class="w-full h-full object-cover hidden">
                 </div>
             </div>
+
+            <!-- إداة شريط الحالة المباشرة البارز -->
+            <div id="liveStatusBadgeContainer" class="inline-flex items-center gap-2 px-3 py-1 rounded-full text-[11px] font-bold mb-3 border shadow-sm transition-all">
+                <span id="liveStatusDot" class="w-2.5 h-2.5 rounded-full inline-block pulse-live"></span>
+                <span id="liveStatusText">جاري تحديث الحالة...</span>
+            </div>
+
             <h1 id="displayName" class="text-xl font-extrabold text-gray-900 dark:text-white flex items-center justify-center gap-2">
                 <span>جاري التحميل...</span>
                 <i class="fa-solid fa-circle-check text-goldaccent text-base"></i>
@@ -438,6 +439,28 @@
                     </div>
                 </div>
 
+                <!-- إعدادات شريط الحالة المباشرة -->
+                <div class="bg-lightbg dark:bg-darkbg rounded-xl border border-gray-300 dark:border-gray-800 p-3 space-y-2">
+                    <h4 class="font-bold text-goldaccent flex items-center gap-2"><i class="fa-solid fa-signal"></i> إعدادات شريط الحالة المباشرة (Live Status)</h4>
+                    <div class="flex items-center gap-2 pt-1">
+                        <input type="checkbox" id="adminShowLiveStatus" class="accent-goldaccent w-4 h-4" checked>
+                        <label for="adminShowLiveStatus" class="font-bold text-gray-800 dark:text-gray-200">إظهار شريط الحالة في الصفحة</label>
+                    </div>
+                    <div>
+                        <label class="block text-[11px] text-gray-500 mb-1">نص الحالة (مثل: متاح للعمل الحر):</label>
+                        <input type="text" id="adminLiveStatusText" placeholder="متاح للعمل الحر والطلبات" class="w-full bg-lightcard dark:bg-cardbg border border-gray-300 dark:border-gray-700 rounded-lg p-2 text-gray-900 dark:text-white outline-none">
+                    </div>
+                    <div>
+                        <label class="block text-[11px] text-gray-500 mb-1">نوع الحالة واللون:</label>
+                        <select id="adminLiveStatusType" class="w-full bg-lightcard dark:bg-cardbg border border-gray-300 dark:border-gray-700 rounded-lg p-2 text-gray-900 dark:text-white outline-none">
+                            <option value="emerald">متاح ومستعد (أخضر زمردي 🟢)</option>
+                            <option value="amber">مشغول حالياً (برتقالي ⏳)</option>
+                            <option value="rose">غير متاح / إجازة (أحمر 🔴)</option>
+                            <option value="cyan">قيد التنفيذ / متصل (سماوي 🔵)</option>
+                        </select>
+                    </div>
+                </div>
+
                 <!-- إعدادات الخريطة -->
                 <div class="bg-lightbg dark:bg-darkbg rounded-xl border border-gray-300 dark:border-gray-800 p-3 space-y-2">
                     <h4 class="font-bold text-goldaccent flex items-center gap-2"><i class="fa-solid fa-map-location-dot"></i> إعدادات الخريطة الجغرافية</h4>
@@ -739,6 +762,28 @@
                     </div>
                 </div>
 
+                <!-- إعدادات شريط الحالة المباشرة للعضو -->
+                <div class="bg-lightbg dark:bg-darkbg rounded-xl border border-gray-300 dark:border-gray-800 p-3 space-y-2">
+                    <h4 class="font-bold text-cyanaccent flex items-center gap-2"><i class="fa-solid fa-signal"></i> إعدادات شريط الحالة المباشرة لصفحتك</h4>
+                    <div class="flex items-center gap-2 pt-1">
+                        <input type="checkbox" id="memberShowLiveStatus" class="accent-cyanaccent w-4 h-4" checked>
+                        <label for="memberShowLiveStatus" class="font-bold text-gray-800 dark:text-gray-200">إظهار شريط الحالة في صفحتي</label>
+                    </div>
+                    <div>
+                        <label class="block text-[11px] text-gray-500 mb-1">نص الحالة المباشرة:</label>
+                        <input type="text" id="memberLiveStatusText" placeholder="متاح للعمل الحر والطلبات" class="w-full bg-lightcard dark:bg-cardbg border border-gray-300 dark:border-gray-700 rounded-lg p-2 text-gray-900 dark:text-white outline-none">
+                    </div>
+                    <div>
+                        <label class="block text-[11px] text-gray-500 mb-1">نوع الحالة واللون:</label>
+                        <select id="memberLiveStatusType" class="w-full bg-lightcard dark:bg-cardbg border border-gray-300 dark:border-gray-700 rounded-lg p-2 text-gray-900 dark:text-white outline-none">
+                            <option value="emerald">متاح ومستعد (أخضر زمردي 🟢)</option>
+                            <option value="amber">مشغول حالياً (برتقالي ⏳)</option>
+                            <option value="rose">غير متاح / إجازة (أحمر 🔴)</option>
+                            <option value="cyan">قيد التنفيذ / متصل (سماوي 🔵)</option>
+                        </select>
+                    </div>
+                </div>
+
                 <div class="bg-lightbg dark:bg-darkbg rounded-xl border border-gray-300 dark:border-gray-800 p-3 space-y-2">
                     <h4 class="font-bold text-cyanaccent flex items-center gap-2"><i class="fa-solid fa-map-location-dot"></i> إعدادات الخريطة الجغرافية لصفحتك</h4>
                     <div class="flex items-center gap-2">
@@ -812,7 +857,7 @@
         </div>
     </div>
 
-    <!-- Script Engine with Firebase & Click Analytics -->
+    <!-- Script Engine with Firebase, Click Analytics & Live Status Badge -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/13.2.0/firebase-app.js";
         import { getDatabase, ref, set, onValue } from "https://www.gstatic.com/firebasejs/13.2.0/firebase-database.js";
@@ -847,6 +892,9 @@
             customColors: { c1: "", o1: 0, c2: "", o2: 0, c3: "", o3: 0, angle: "to bottom right" },
             bgImageUrl: "",
             bgImgOpacity: 0.6,
+            showLiveStatus: true,
+            liveStatusText: "متاح للعمل الحر واستقبال الطلبات 🟢",
+            liveStatusType: "emerald",
             showMap: true,
             mapUrl: "https://maps.app.goo.gl/YourMapLocation",
             mapEmbed: "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3238.8!2d37.134!3d36.202!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zMzbCsDEyJzEyLjgiTiAzN8KwMDgnMDIuNCJF!5e0!3m2!1sar!2s!4v1!5m2!1sar!2s",
@@ -904,6 +952,10 @@
                 if (!appData.sidebarLinks) appData.sidebarLinks = defaultUserData.sidebarLinks;
                 if (!appData.contacts) appData.contacts = defaultUserData.contacts;
                 if (appData.showMap === undefined) appData.showMap = true;
+                if (appData.showLiveStatus === undefined) appData.showLiveStatus = true;
+                if (!appData.liveStatusText) appData.liveStatusText = defaultUserData.liveStatusText;
+                if (!appData.liveStatusType) appData.liveStatusType = "emerald";
+
                 if (!appData.avatarShape) appData.avatarShape = "rounded-full";
                 if (!appData.avatarGlow) appData.avatarGlow = "glow-gold";
                 if (!appData.cardShape) appData.cardShape = "rounded-2xl";
@@ -949,6 +1001,7 @@
             initTheme();
             applyDesignCustomizations();
             renderProfile();
+            renderLiveStatusBadge();
             renderSidebarMenu();
             renderCategories();
             renderLinks();
@@ -1022,6 +1075,38 @@
                 } else {
                     bgImageLayer.classList.add('hidden');
                 }
+            }
+        }
+
+        // عرض شريط الحالة المباشرة البارز
+        function renderLiveStatusBadge() {
+            const container = document.getElementById('liveStatusBadgeContainer');
+            const dot = document.getElementById('liveStatusDot');
+            const text = document.getElementById('liveStatusText');
+            if (!container || !dot || !text) return;
+
+            if (appData.showLiveStatus === false) {
+                container.classList.add('hidden');
+                return;
+            }
+            container.classList.remove('hidden');
+            text.textContent = appData.liveStatusText || 'متاح للعمل الحر 🟢';
+
+            const type = appData.liveStatusType || 'emerald';
+            container.className = "inline-flex items-center gap-2 px-3.5 py-1 rounded-full text-[11px] font-bold mb-3 border shadow-sm transition-all ";
+            
+            if (type === 'emerald') {
+                container.classList.add('bg-emerald-500/10', 'border-emerald-500/30', 'text-emerald-600', 'dark:text-emerald-400');
+                dot.className = 'w-2.5 h-2.5 rounded-full inline-block pulse-live bg-emerald-500';
+            } else if (type === 'amber') {
+                container.classList.add('bg-amber-500/10', 'border-amber-500/30', 'text-amber-600', 'dark:text-amber-400');
+                dot.className = 'w-2.5 h-2.5 rounded-full inline-block pulse-live bg-amber-500';
+            } else if (type === 'rose') {
+                container.classList.add('bg-rose-500/10', 'border-rose-500/30', 'text-rose-600', 'dark:text-rose-400');
+                dot.className = 'w-2.5 h-2.5 rounded-full inline-block pulse-live bg-rose-500';
+            } else if (type === 'cyan') {
+                container.classList.add('bg-cyan-500/10', 'border-cyan-500/30', 'text-cyan-600', 'dark:text-cyan-400');
+                dot.className = 'w-2.5 h-2.5 rounded-full inline-block pulse-live bg-cyan-500';
             }
         }
 
@@ -1529,6 +1614,10 @@
             document.getElementById('memberCardShape').value = appData.cardShape || 'rounded-2xl';
             document.getElementById('memberCardGlow').value = appData.cardGlow || 'glow-gold-hover';
             document.getElementById('memberCardStyle').value = appData.cardStyle || 'normal';
+
+            document.getElementById('memberShowLiveStatus').checked = appData.showLiveStatus !== false;
+            document.getElementById('memberLiveStatusText').value = appData.liveStatusText || '';
+            document.getElementById('memberLiveStatusType').value = appData.liveStatusType || 'emerald';
             
             if (appData.customColors) {
                 document.getElementById('memberColor1').value = appData.customColors.c1 || '#0f1117';
@@ -1756,6 +1845,10 @@
             appData.cardGlow = document.getElementById('memberCardGlow').value;
             appData.cardStyle = document.getElementById('memberCardStyle').value;
             
+            appData.showLiveStatus = document.getElementById('memberShowLiveStatus').checked;
+            appData.liveStatusText = document.getElementById('memberLiveStatusText').value.trim();
+            appData.liveStatusType = document.getElementById('memberLiveStatusType').value;
+
             appData.customColors = {
                 c1: document.getElementById('memberColor1').value,
                 o1: parseFloat(document.getElementById('memberOpacity1').value),
@@ -1802,6 +1895,10 @@
             document.getElementById('adminCardShape').value = appData.cardShape || 'rounded-2xl';
             document.getElementById('adminCardGlow').value = appData.cardGlow || 'glow-gold-hover';
             document.getElementById('adminCardStyle').value = appData.cardStyle || 'normal';
+
+            document.getElementById('adminShowLiveStatus').checked = appData.showLiveStatus !== false;
+            document.getElementById('adminLiveStatusText').value = appData.liveStatusText || '';
+            document.getElementById('adminLiveStatusType').value = appData.liveStatusType || 'emerald';
             
             if (appData.customColors) {
                 document.getElementById('adminColor1').value = appData.customColors.c1 || '#0f1117';
@@ -1957,6 +2054,9 @@
                 cardShape: 'rounded-2xl',
                 cardGlow: 'glow-gold-hover',
                 cardStyle: 'normal',
+                showLiveStatus: true,
+                liveStatusText: 'متاح للعمل الحر 🟢',
+                liveStatusType: 'emerald',
                 customColors: { c1: "", o1: 0, c2: "", o2: 0, c3: "", o3: 0, angle: "to bottom right" },
                 bgImageUrl: '',
                 bgImgOpacity: 0.6,
@@ -2260,6 +2360,10 @@
             appData.cardGlow = document.getElementById('adminCardGlow').value;
             appData.cardStyle = document.getElementById('adminCardStyle').value;
             
+            appData.showLiveStatus = document.getElementById('adminShowLiveStatus').checked;
+            appData.liveStatusText = document.getElementById('adminLiveStatusText').value.trim();
+            appData.liveStatusType = document.getElementById('adminLiveStatusType').value;
+
             appData.customColors = {
                 c1: document.getElementById('adminColor1').value,
                 o1: parseFloat(document.getElementById('adminOpacity1').value),
