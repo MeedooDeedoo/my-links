@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>منصة شجرة الروابط الاحترافية - مع آراء العملاء</title>
+    <title>منصة شجرة الروابط الاحترافية</title>
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
@@ -40,10 +40,6 @@
         button, select, input, a, label, textarea { touch-action: manipulation; cursor: pointer; }
         .glass-card { background: rgba(26, 29, 38, 0.75) !important; backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); }
         html.light .glass-card { background: rgba(255, 255, 255, 0.8) !important; }
-        @keyframes pulse-slow { 0%, 100% { opacity: 1; transform: scale(1); } 50% { opacity: 0.6; transform: scale(1.05); } }
-        .pulse-live { animation: pulse-slow 2s infinite ease-in-out; }
-        @keyframes float-btn { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-5px); } }
-        .floating-action-btn { animation: float-btn 3s infinite ease-in-out; }
     </style>
 </head>
 <body id="pageBody" class="min-h-screen flex flex-col items-center justify-between p-4 pb-16 bg-lightbg dark:bg-darkbg text-gray-900 dark:text-gray-100 transition-colors duration-300 relative">
@@ -51,14 +47,14 @@
     <div id="bgImageLayer" class="absolute inset-0 bg-cover bg-center pointer-events-none z-0 hidden"></div>
 
     <!-- Floating Quick Contact Button -->
-    <a id="floatingWhatsappBtn" href="#" target="_blank" class="fixed bottom-6 left-6 z-50 bg-emerald-500 text-white p-3.5 rounded-full shadow-2xl flex items-center justify-center text-xl floating-action-btn transition hover:scale-110 border-2 border-white/20 hidden" title="تواصل معي سريعاً">
+    <a id="floatingWhatsappBtn" href="#" target="_blank" class="fixed bottom-6 left-6 z-50 bg-emerald-500 text-white p-3.5 rounded-full shadow-2xl flex items-center justify-center text-xl hover:scale-110 transition border-2 border-white/20 hidden" title="تواصل معي سريعاً">
         <i class="fa-brands fa-whatsapp"></i>
     </a>
 
     <!-- Top Bar -->
     <div id="topBarEl" class="w-full max-w-md flex justify-between items-center mb-6 bg-lightcard dark:bg-cardbg p-3.5 rounded-2xl border border-gray-300 dark:border-gray-800 shadow-md relative z-40 transition-colors duration-300">
         <div class="flex items-center gap-2">
-            <button type="button" onclick="window.toggleSidebar()" class="w-9 h-9 rounded-xl bg-gray-100 dark:bg-darkbg border border-gray-300 dark:border-gray-700 text-goldaccent flex items-center justify-center transition active:scale-95 shadow-sm" title="القائمة الجانبية">
+            <button type="button" onclick="window.toggleSidebar()" class="w-9 h-9 rounded-xl bg-gray-100 dark:bg-darkbg border border-gray-300 dark:border-gray-700 text-goldaccent flex items-center justify-center transition shadow-sm" title="القائمة الجانبية">
                 <i class="fa-solid fa-bars"></i>
             </button>
             <span id="topBarName" class="text-xs font-bold text-gray-900 dark:text-gray-100 truncate max-w-[130px]">جاري التحميل...</span>
@@ -105,8 +101,8 @@
             </div>
 
             <!-- شريط الحالة المباشرة البارز -->
-            <div id="liveStatusBadgeContainer" class="inline-flex items-center gap-2 px-3 py-1 rounded-full text-[11px] font-bold mb-3 border shadow-sm transition-all">
-                <span id="liveStatusDot" class="w-2.5 h-2.5 rounded-full inline-block pulse-live"></span>
+            <div id="liveStatusBadgeContainer" class="inline-flex items-center gap-2 px-3.5 py-1 rounded-full text-[11px] font-bold mb-3 border shadow-sm transition-all">
+                <span id="liveStatusDot" class="w-2.5 h-2.5 rounded-full inline-block"></span>
                 <span id="liveStatusText">جاري تحديث الحالة...</span>
             </div>
 
@@ -135,7 +131,7 @@
 
         <div id="linksContainer" class="w-full flex flex-col gap-3 mb-6"></div>
 
-        <!-- قسم آراء ومراجعات العملاء (Testimonials Section) -->
+        <!-- قسم آراء ومراجعات العملاء -->
         <div id="testimonialsSectionContainer" class="w-full mb-6 hidden">
             <div class="flex items-center justify-between mb-3 px-1">
                 <span class="text-xs font-extrabold text-gray-900 dark:text-white flex items-center gap-1.5">
@@ -160,6 +156,7 @@
             </div>
         </div>
 
+        <!-- زر الانضمام إلينا (يخضع للتحكم بالتفعيل/الإيقاف) -->
         <button type="button" id="joinBannerBtn" onclick="window.openJoinModal()" class="w-full bg-gradient-to-r from-cyanaccent/20 via-blue-500/10 to-cyanaccent/20 border border-cyanaccent/40 rounded-2xl p-3 flex items-center justify-center gap-2 text-cyanaccent font-extrabold text-xs shadow-md transition hover:scale-[1.01]">
             <i class="fa-solid fa-user-plus"></i> انضم إلينا وأنشئ صفحتك الخاصة مجاناً
         </button>
@@ -264,14 +261,14 @@
             <button type="button" onclick="window.shareCurrentProjectImage()" class="bg-goldaccent text-black px-4 py-2 rounded-xl text-xs font-extrabold shadow-md flex items-center gap-2 transition hover:scale-105">
                 <i class="fa-solid fa-share-nodes"></i> مشاركة هذا المشروع والصورة
             </button>
-            <button type="button" onclick="window.closeImageView()" class="bg-gray-800 text-gray-200 px-4 py-2 rounded-xl text-xs font-bold border border-gray-700">
+            <button type="button" onclick="window.closeImageView()" class="bg-gray-800 text-gray-200 px-4 py-2 rounded-xl text-xs font-bold">
                 <i class="fa-solid fa-xmark"></i> إغلاق
             </button>
         </div>
     </div>
 
     <!-- Share Options Modal -->
-    <div id="shareModal" class="fixed inset-0 bg-black/70 backdrop-blur-md hidden flex items-end sm:items-center justify-center z-[110] p-0 sm:p-4 transition-opacity">
+    <div id="shareModal" class="fixed inset-0 bg-black/70 backdrop-blur-md hidden flex items-end sm:items-center justify-center z-[110] p-0 sm:p-4">
         <div class="bg-lightcard dark:bg-cardbg border-t sm:border border-gray-300 dark:border-gray-800 w-full max-w-md rounded-t-3xl sm:rounded-2xl p-6 shadow-2xl transition-colors duration-300">
             <div class="flex justify-between items-center border-b border-gray-200 dark:border-gray-800 pb-3 mb-4">
                 <h3 class="text-base font-bold text-gray-900 dark:text-white flex items-center gap-2">
@@ -353,6 +350,15 @@
                     </div>
                 </div>
 
+                <!-- إعدادات التفعيل والعرض العامة -->
+                <div class="bg-lightbg dark:bg-darkbg rounded-xl border border-gray-300 dark:border-gray-800 p-3 space-y-2">
+                    <h4 class="font-bold text-goldaccent flex items-center gap-2"><i class="fa-solid fa-toggle-on"></i> إعدادات العرض والتفعيل العامة</h4>
+                    <div class="flex items-center gap-2 pt-1 bg-white dark:bg-cardbg p-2.5 rounded-xl border border-gray-200 dark:border-gray-700">
+                        <input type="checkbox" id="adminShowJoinBanner" class="accent-goldaccent w-4 h-4" checked>
+                        <label for="adminShowJoinBanner" class="font-extrabold text-gray-800 dark:text-gray-200">إظهار جملة وزر "انضم إلينا" في الواجهة الرئيسية</label>
+                    </div>
+                </div>
+
                 <!-- إعدادات التصميم -->
                 <div class="bg-lightbg dark:bg-darkbg rounded-xl border border-gray-300 dark:border-gray-800 overflow-hidden transition-colors">
                     <button type="button" onclick="window.toggleAccordion('accDesignAdmin')" class="w-full p-3 flex justify-between items-center font-bold text-gray-800 dark:text-gray-200">
@@ -365,7 +371,7 @@
                     <div id="accDesignAdmin" class="hidden p-3 pt-0 space-y-3 border-t border-gray-200 dark:border-gray-800 mt-1">
                         <div class="flex justify-between items-center pt-2">
                             <span class="text-[11px] text-gray-500">إدارة مظهر الصفحة بالكامل</span>
-                            <button type="button" onclick="window.resetDesignDefaults()" class="bg-red-500/10 text-red-500 border border-red-500/30 px-2.5 py-1 rounded-lg text-[10px] font-bold hover:bg-red-500/20 transition">استعادة التصميم الأساسي (شفافية 0)</button>
+                            <button type="button" onclick="window.resetDesignDefaults()" class="bg-red-500/10 text-red-500 border border-red-500/30 px-2.5 py-1 rounded-lg text-[10px] font-bold">استعادة التصميم الأساسي (شفافية 0)</button>
                         </div>
                         
                         <div>
@@ -590,7 +596,7 @@
                     </div>
                 </div>
 
-                <!-- إدارة آراء ومراجعات العملاء (Testimonials Admin) -->
+                <!-- إدارة آراء ومراجعات العملاء -->
                 <div class="bg-lightbg dark:bg-darkbg rounded-xl border border-gray-300 dark:border-gray-800 overflow-hidden transition-colors">
                     <button type="button" onclick="window.toggleAccordion('accTestimonialsAdmin')" class="w-full p-3 flex justify-between items-center font-bold text-gray-800 dark:text-gray-200">
                         <span class="flex items-center gap-2"><i class="fa-solid fa-star text-goldaccent"></i> إدارة آراء ومراجعات العملاء</span>
@@ -973,7 +979,7 @@
         </div>
     </div>
 
-    <!-- Script Engine with Firebase, Testimonials Section & All Features -->
+    <!-- Script Engine with Firebase & Testimonials -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/13.2.0/firebase-app.js";
         import { getDatabase, ref, set, onValue } from "https://www.gstatic.com/firebasejs/13.2.0/firebase-database.js";
@@ -1014,6 +1020,7 @@
             showFloatingBtn: true,
             floatingWhatsapp: "+963900000000",
             floatingMessage: "مرحباً محمود، أود الاستفسار عن خدماتك وتصاميمك...",
+            showJoinBanner: true,
             showMap: true,
             mapUrl: "https://maps.app.goo.gl/YourMapLocation",
             mapEmbed: "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3238.8!2d37.134!3d36.202!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zMzbCsDEyJzEyLjgiTiAzN8KwMDgnMDIuNCJF!5e0!3m2!1sar!2s!4v1!5m2!1sar!2s",
@@ -1076,6 +1083,7 @@
                 if (!appData.contacts) appData.contacts = defaultUserData.contacts;
                 if (!appData.testimonials) appData.testimonials = defaultUserData.testimonials;
                 if (appData.showMap === undefined) appData.showMap = true;
+                if (appData.showJoinBanner === undefined) appData.showJoinBanner = true;
                 if (appData.showLiveStatus === undefined) appData.showLiveStatus = true;
                 if (!appData.liveStatusText) appData.liveStatusText = defaultUserData.liveStatusText;
                 if (!appData.liveStatusType) appData.liveStatusType = "emerald";
@@ -1131,6 +1139,7 @@
             renderProfile();
             renderLiveStatusBadge();
             renderFloatingWhatsappBtn();
+            renderJoinBannerVisibility();
             renderSidebarMenu();
             renderCategories();
             renderLinks();
@@ -1208,7 +1217,6 @@
             }
         }
 
-        // عرض شريط الحالة المباشرة البارز
         function renderLiveStatusBadge() {
             const container = document.getElementById('liveStatusBadgeContainer');
             const dot = document.getElementById('liveStatusDot');
@@ -1227,20 +1235,19 @@
             
             if (type === 'emerald') {
                 container.classList.add('bg-emerald-500/10', 'border-emerald-500/30', 'text-emerald-600', 'dark:text-emerald-400');
-                dot.className = 'w-2.5 h-2.5 rounded-full inline-block pulse-live bg-emerald-500';
+                dot.className = 'w-2.5 h-2.5 rounded-full inline-block bg-emerald-500';
             } else if (type === 'amber') {
                 container.classList.add('bg-amber-500/10', 'border-amber-500/30', 'text-amber-600', 'dark:text-amber-400');
-                dot.className = 'w-2.5 h-2.5 rounded-full inline-block pulse-live bg-amber-500';
+                dot.className = 'w-2.5 h-2.5 rounded-full inline-block bg-amber-500';
             } else if (type === 'rose') {
                 container.classList.add('bg-rose-500/10', 'border-rose-500/30', 'text-rose-600', 'dark:text-rose-400');
-                dot.className = 'w-2.5 h-2.5 rounded-full inline-block pulse-live bg-rose-500';
+                dot.className = 'w-2.5 h-2.5 rounded-full inline-block bg-rose-500';
             } else if (type === 'cyan') {
                 container.classList.add('bg-cyan-500/10', 'border-cyan-500/30', 'text-cyan-600', 'dark:text-cyan-400');
-                dot.className = 'w-2.5 h-2.5 rounded-full inline-block pulse-live bg-cyan-500';
+                dot.className = 'w-2.5 h-2.5 rounded-full inline-block bg-cyan-500';
             }
         }
 
-        // عرض الزر العائم للتواصل السريع
         function renderFloatingWhatsappBtn() {
             const floatBtn = document.getElementById('floatingWhatsappBtn');
             if (!floatBtn) return;
@@ -1254,7 +1261,16 @@
             floatBtn.classList.remove('hidden');
         }
 
-        // عرض قسم آراء ومراجعات العملاء
+        function renderJoinBannerVisibility() {
+            const banner = document.getElementById('joinBannerBtn');
+            if (!banner) return;
+            if (appData.showJoinBanner === false) {
+                banner.classList.add('hidden');
+            } else {
+                banner.classList.remove('hidden');
+            }
+        }
+
         function renderTestimonialsSection() {
             const sectionContainer = document.getElementById('testimonialsSectionContainer');
             const container = document.getElementById('testimonialsContainer');
@@ -1621,7 +1637,7 @@
                 const cardShape = appData.cardShape || 'rounded-2xl';
                 const cardStyle = appData.cardStyle || 'normal';
                 const cardGlow = appData.cardGlow || 'glow-gold-hover';
-                card.className = `group relative ${cardShape} ${cardStyle === 'glass-card' ? 'glass-card' : 'bg-white dark:bg-cardbg'} border border-gray-300 dark:border-gray-800 cursor-pointer shadow-sm flex flex-col overflow-hidden ${cardGlow !== 'none' ? cardGlow : ''}`;
+                card.className = `group relative ${cardShape} ${cardStyle === 'glass-card' ? 'glass-card' : 'bg-white dark:bg-cardbg'} border border-gray-300 dark:border-gray-800 cursor-pointer shadow-sm flex flex-col overflow-hidden transition ${cardGlow !== 'none' ? cardGlow : ''}`;
                 card.onclick = () => window.openProjectDetail(item.id);
                 card.innerHTML = `
                     <div class="relative aspect-video w-full overflow-hidden bg-gray-100 dark:bg-darkbg">
@@ -1864,7 +1880,6 @@
             }
         };
 
-        // إدارة آراء العملاء للعضو الفرعي
         window.saveMemberTestimonialItem = function() {
             const id = document.getElementById('memberEditingTestimonialId').value;
             const clientName = document.getElementById('memberTestimonialClientName').value.trim();
@@ -2160,6 +2175,7 @@
             document.getElementById('adminCardGlow').value = appData.cardGlow || 'glow-gold-hover';
             document.getElementById('adminCardStyle').value = appData.cardStyle || 'normal';
 
+            document.getElementById('adminShowJoinBanner').checked = appData.showJoinBanner !== false;
             document.getElementById('adminShowLiveStatus').checked = appData.showLiveStatus !== false;
             document.getElementById('adminLiveStatusText').value = appData.liveStatusText || '';
             document.getElementById('adminLiveStatusType').value = appData.liveStatusType || 'emerald';
@@ -2214,7 +2230,6 @@
             renderAdminLinksList();
         }
 
-        // إدارة آراء العملاء في لوحة الأدمن
         window.saveTestimonialItem = function() {
             const id = document.getElementById('editingTestimonialId').value;
             const clientName = document.getElementById('testimonialClientName').value.trim();
@@ -2399,6 +2414,7 @@
                 showFloatingBtn: true,
                 floatingWhatsapp: req.whatsapp || '',
                 floatingMessage: 'مرحباً، أود الاستفسار عن خدماتكم...',
+                showJoinBanner: true,
                 customColors: { c1: "", o1: 0, c2: "", o2: 0, c3: "", o3: 0, angle: "to bottom right" },
                 bgImageUrl: '',
                 bgImgOpacity: 0.6,
@@ -2703,6 +2719,7 @@
             appData.cardGlow = document.getElementById('adminCardGlow').value;
             appData.cardStyle = document.getElementById('adminCardStyle').value;
             
+            appData.showJoinBanner = document.getElementById('adminShowJoinBanner').checked;
             appData.showLiveStatus = document.getElementById('adminShowLiveStatus').checked;
             appData.liveStatusText = document.getElementById('adminLiveStatusText').value.trim();
             appData.liveStatusType = document.getElementById('adminLiveStatusType').value;
@@ -2724,7 +2741,7 @@
             appData.bgImageUrl = document.getElementById('adminBgImageUrl').value.trim();
             appData.bgImgOpacity = parseFloat(document.getElementById('adminBgImgOpacity').value);
             appData.showMap = document.getElementById('adminShowMap').checked;
-            appData.mapUrl = document.getElementById('adminMapUrl').value.trim();
+            appData.mapUrl = document.getElementById('mapUrl').value?.trim() || document.getElementById('adminMapUrl').value.trim();
             appData.mapEmbed = document.getElementById('adminMapEmbed').value.trim();
             
             const avatarUrlInputVal = document.getElementById('editAvatarUrl').value.trim();
