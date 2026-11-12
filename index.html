@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>منصة شجرة الروابط الاحترافية - مع شريط الحالة المباشرة</title>
+    <title>منصة شجرة الروابط الاحترافية - مع الزر العائم</title>
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
@@ -42,14 +42,21 @@
         html.light .glass-card { background: rgba(255, 255, 255, 0.8) !important; }
         @keyframes pulse-slow { 0%, 100% { opacity: 1; transform: scale(1); } 50% { opacity: 0.6; transform: scale(1.05); } }
         .pulse-live { animation: pulse-slow 2s infinite ease-in-out; }
+        @keyframes float-btn { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-5px); } }
+        .floating-action-btn { animation: float-btn 3s infinite ease-in-out; }
     </style>
 </head>
-<body id="pageBody" class="min-h-screen flex flex-col items-center justify-between p-4 pb-12 bg-lightbg dark:bg-darkbg text-gray-900 dark:text-gray-100 transition-colors duration-300 relative">
+<body id="pageBody" class="min-h-screen flex flex-col items-center justify-between p-4 pb-16 bg-lightbg dark:bg-darkbg text-gray-900 dark:text-gray-100 transition-colors duration-300 relative">
 
     <div id="bgImageLayer" class="absolute inset-0 bg-cover bg-center pointer-events-none z-0 hidden"></div>
 
+    <!-- Floating Quick Contact Button -->
+    <a id="floatingWhatsappBtn" href="#" target="_blank" class="fixed bottom-6 left-6 z-50 bg-emerald-500 text-white p-3.5 rounded-full shadow-2xl flex items-center justify-center text-xl floating-action-btn transition hover:scale-110 border-2 border-white/20 hidden" title="تواصل معي سريعاً">
+        <i class="fa-brands fa-whatsapp"></i>
+    </a>
+
     <!-- Top Bar -->
-    <div id="topBarEl" class="w-full max-w-md flex justify-between items-center mb-6 bg-lightcard dark:bg-cardbg p-3.5 rounded-2xl border border-gray-300 dark:border-gray-800 shadow-md relative z-50 transition-colors duration-300">
+    <div id="topBarEl" class="w-full max-w-md flex justify-between items-center mb-6 bg-lightcard dark:bg-cardbg p-3.5 rounded-2xl border border-gray-300 dark:border-gray-800 shadow-md relative z-40 transition-colors duration-300">
         <div class="flex items-center gap-2">
             <button type="button" onclick="window.toggleSidebar()" class="w-9 h-9 rounded-xl bg-gray-100 dark:bg-darkbg border border-gray-300 dark:border-gray-700 text-goldaccent flex items-center justify-center transition active:scale-95 shadow-sm" title="القائمة الجانبية">
                 <i class="fa-solid fa-bars"></i>
@@ -97,7 +104,7 @@
                 </div>
             </div>
 
-            <!-- إداة شريط الحالة المباشرة البارز -->
+            <!-- شريط الحالة المباشرة البارز -->
             <div id="liveStatusBadgeContainer" class="inline-flex items-center gap-2 px-3 py-1 rounded-full text-[11px] font-bold mb-3 border shadow-sm transition-all">
                 <span id="liveStatusDot" class="w-2.5 h-2.5 rounded-full inline-block pulse-live"></span>
                 <span id="liveStatusText">جاري تحديث الحالة...</span>
@@ -461,6 +468,23 @@
                     </div>
                 </div>
 
+                <!-- إعدادات الزر العائم للتواصل السريع -->
+                <div class="bg-lightbg dark:bg-darkbg rounded-xl border border-gray-300 dark:border-gray-800 p-3 space-y-2">
+                    <h4 class="font-bold text-goldaccent flex items-center gap-2"><i class="fa-solid fa-comments"></i> إعدادات زر "تواصل معي سريعاً" العائم</h4>
+                    <div class="flex items-center gap-2 pt-1">
+                        <input type="checkbox" id="adminShowFloatingBtn" class="accent-goldaccent w-4 h-4" checked>
+                        <label for="adminShowFloatingBtn" class="font-bold text-gray-800 dark:text-gray-200">إظهار الزر العائم في الشاشة</label>
+                    </div>
+                    <div>
+                        <label class="block text-[11px] text-gray-500 mb-1">رقم الواتساب للزر العائم:</label>
+                        <input type="text" id="adminFloatingWhatsapp" placeholder="+963900000000" class="w-full bg-lightcard dark:bg-cardbg border border-gray-300 dark:border-gray-700 rounded-lg p-2 text-gray-900 dark:text-white outline-none">
+                    </div>
+                    <div>
+                        <label class="block text-[11px] text-gray-500 mb-1">رسالة الترحيب التلقائية:</label>
+                        <input type="text" id="adminFloatingMessage" placeholder="مرحباً، أود الاستفسار عن خدماتكم..." class="w-full bg-lightcard dark:bg-cardbg border border-gray-300 dark:border-gray-700 rounded-lg p-2 text-gray-900 dark:text-white outline-none">
+                    </div>
+                </div>
+
                 <!-- إعدادات الخريطة -->
                 <div class="bg-lightbg dark:bg-darkbg rounded-xl border border-gray-300 dark:border-gray-800 p-3 space-y-2">
                     <h4 class="font-bold text-goldaccent flex items-center gap-2"><i class="fa-solid fa-map-location-dot"></i> إعدادات الخريطة الجغرافية</h4>
@@ -784,6 +808,23 @@
                     </div>
                 </div>
 
+                <!-- إعدادات الزر العائم للعضو -->
+                <div class="bg-lightbg dark:bg-darkbg rounded-xl border border-gray-300 dark:border-gray-800 p-3 space-y-2">
+                    <h4 class="font-bold text-cyanaccent flex items-center gap-2"><i class="fa-solid fa-comments"></i> إعدادات زر "تواصل معي سريعاً" العائم</h4>
+                    <div class="flex items-center gap-2 pt-1">
+                        <input type="checkbox" id="memberShowFloatingBtn" class="accent-cyanaccent w-4 h-4" checked>
+                        <label for="memberShowFloatingBtn" class="font-bold text-gray-800 dark:text-gray-200">إظهار الزر العائم في صفحتي</label>
+                    </div>
+                    <div>
+                        <label class="block text-[11px] text-gray-500 mb-1">رقم الواتساب للزر العائم:</label>
+                        <input type="text" id="memberFloatingWhatsapp" placeholder="+963900000000" class="w-full bg-lightcard dark:bg-cardbg border border-gray-300 dark:border-gray-700 rounded-lg p-2 text-gray-900 dark:text-white outline-none">
+                    </div>
+                    <div>
+                        <label class="block text-[11px] text-gray-500 mb-1">رسالة الترحيب التلقائية:</label>
+                        <input type="text" id="memberFloatingMessage" placeholder="مرحباً، أود الاستفسار عن خدماتكم..." class="w-full bg-lightcard dark:bg-cardbg border border-gray-300 dark:border-gray-700 rounded-lg p-2 text-gray-900 dark:text-white outline-none">
+                    </div>
+                </div>
+
                 <div class="bg-lightbg dark:bg-darkbg rounded-xl border border-gray-300 dark:border-gray-800 p-3 space-y-2">
                     <h4 class="font-bold text-cyanaccent flex items-center gap-2"><i class="fa-solid fa-map-location-dot"></i> إعدادات الخريطة الجغرافية لصفحتك</h4>
                     <div class="flex items-center gap-2">
@@ -857,7 +898,7 @@
         </div>
     </div>
 
-    <!-- Script Engine with Firebase, Click Analytics & Live Status Badge -->
+    <!-- Script Engine with Firebase, Click Analytics, Live Status & Floating Contact Button -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/13.2.0/firebase-app.js";
         import { getDatabase, ref, set, onValue } from "https://www.gstatic.com/firebasejs/13.2.0/firebase-database.js";
@@ -895,6 +936,9 @@
             showLiveStatus: true,
             liveStatusText: "متاح للعمل الحر واستقبال الطلبات 🟢",
             liveStatusType: "emerald",
+            showFloatingBtn: true,
+            floatingWhatsapp: "+963900000000",
+            floatingMessage: "مرحباً محمود، أود الاستفسار عن خدماتك وتصاميمك...",
             showMap: true,
             mapUrl: "https://maps.app.goo.gl/YourMapLocation",
             mapEmbed: "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3238.8!2d37.134!3d36.202!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zMzbCsDEyJzEyLjgiTiAzN8KwMDgnMDIuNCJF!5e0!3m2!1sar!2s!4v1!5m2!1sar!2s",
@@ -956,6 +1000,10 @@
                 if (!appData.liveStatusText) appData.liveStatusText = defaultUserData.liveStatusText;
                 if (!appData.liveStatusType) appData.liveStatusType = "emerald";
 
+                if (appData.showFloatingBtn === undefined) appData.showFloatingBtn = true;
+                if (!appData.floatingWhatsapp) appData.floatingWhatsapp = defaultUserData.floatingWhatsapp;
+                if (!appData.floatingMessage) appData.floatingMessage = defaultUserData.floatingMessage;
+
                 if (!appData.avatarShape) appData.avatarShape = "rounded-full";
                 if (!appData.avatarGlow) appData.avatarGlow = "glow-gold";
                 if (!appData.cardShape) appData.cardShape = "rounded-2xl";
@@ -1002,6 +1050,7 @@
             applyDesignCustomizations();
             renderProfile();
             renderLiveStatusBadge();
+            renderFloatingWhatsappBtn();
             renderSidebarMenu();
             renderCategories();
             renderLinks();
@@ -1056,7 +1105,7 @@
             const bgImageLayer = document.getElementById('bgImageLayer');
 
             if (pageBody && bgImageLayer) {
-                pageBody.className = `min-h-screen flex flex-col items-center justify-between p-4 pb-12 text-gray-900 dark:text-gray-100 transition-colors duration-300 bg-lightbg dark:bg-darkbg relative`;
+                pageBody.className = `min-h-screen flex flex-col items-center justify-between p-4 pb-16 text-gray-900 dark:text-gray-100 transition-colors duration-300 bg-lightbg dark:bg-darkbg relative`;
                 
                 if (appData.customColors && (appData.customColors.c1 || appData.customColors.c2 || appData.customColors.c3)) {
                     let rgba1 = appData.customColors.c1 ? hexToRgba(appData.customColors.c1, appData.customColors.o1 ?? 0) : 'transparent';
@@ -1108,6 +1157,20 @@
                 container.classList.add('bg-cyan-500/10', 'border-cyan-500/30', 'text-cyan-600', 'dark:text-cyan-400');
                 dot.className = 'w-2.5 h-2.5 rounded-full inline-block pulse-live bg-cyan-500';
             }
+        }
+
+        // عرض الزر العائم للتواصل السريع
+        function renderFloatingWhatsappBtn() {
+            const floatBtn = document.getElementById('floatingWhatsappBtn');
+            if (!floatBtn) return;
+            if (appData.showFloatingBtn === false || !appData.floatingWhatsapp) {
+                floatBtn.classList.add('hidden');
+                return;
+            }
+            const cleanNumber = appData.floatingWhatsapp.replace(/[^0-9]/g, '');
+            const msg = encodeURIComponent(appData.floatingMessage || 'مرحباً، أود الاستفسار عن خدماتكم...');
+            floatBtn.href = `https://wa.me/${cleanNumber}?text=${msg}`;
+            floatBtn.classList.remove('hidden');
         }
 
         window.trackLinkClick = function(id) {
@@ -1618,6 +1681,10 @@
             document.getElementById('memberShowLiveStatus').checked = appData.showLiveStatus !== false;
             document.getElementById('memberLiveStatusText').value = appData.liveStatusText || '';
             document.getElementById('memberLiveStatusType').value = appData.liveStatusType || 'emerald';
+
+            document.getElementById('memberShowFloatingBtn').checked = appData.showFloatingBtn !== false;
+            document.getElementById('memberFloatingWhatsapp').value = appData.floatingWhatsapp || '';
+            document.getElementById('memberFloatingMessage').value = appData.floatingMessage || '';
             
             if (appData.customColors) {
                 document.getElementById('memberColor1').value = appData.customColors.c1 || '#0f1117';
@@ -1849,6 +1916,10 @@
             appData.liveStatusText = document.getElementById('memberLiveStatusText').value.trim();
             appData.liveStatusType = document.getElementById('memberLiveStatusType').value;
 
+            appData.showFloatingBtn = document.getElementById('memberShowFloatingBtn').checked;
+            appData.floatingWhatsapp = document.getElementById('memberFloatingWhatsapp').value.trim();
+            appData.floatingMessage = document.getElementById('memberFloatingMessage').value.trim();
+
             appData.customColors = {
                 c1: document.getElementById('memberColor1').value,
                 o1: parseFloat(document.getElementById('memberOpacity1').value),
@@ -1899,6 +1970,10 @@
             document.getElementById('adminShowLiveStatus').checked = appData.showLiveStatus !== false;
             document.getElementById('adminLiveStatusText').value = appData.liveStatusText || '';
             document.getElementById('adminLiveStatusType').value = appData.liveStatusType || 'emerald';
+
+            document.getElementById('adminShowFloatingBtn').checked = appData.showFloatingBtn !== false;
+            document.getElementById('adminFloatingWhatsapp').value = appData.floatingWhatsapp || '';
+            document.getElementById('adminFloatingMessage').value = appData.floatingMessage || '';
             
             if (appData.customColors) {
                 document.getElementById('adminColor1').value = appData.customColors.c1 || '#0f1117';
@@ -2057,6 +2132,9 @@
                 showLiveStatus: true,
                 liveStatusText: 'متاح للعمل الحر 🟢',
                 liveStatusType: 'emerald',
+                showFloatingBtn: true,
+                floatingWhatsapp: req.whatsapp || '',
+                floatingMessage: 'مرحباً، أود الاستفسار عن خدماتكم...',
                 customColors: { c1: "", o1: 0, c2: "", o2: 0, c3: "", o3: 0, angle: "to bottom right" },
                 bgImageUrl: '',
                 bgImgOpacity: 0.6,
@@ -2363,6 +2441,10 @@
             appData.showLiveStatus = document.getElementById('adminShowLiveStatus').checked;
             appData.liveStatusText = document.getElementById('adminLiveStatusText').value.trim();
             appData.liveStatusType = document.getElementById('adminLiveStatusType').value;
+
+            appData.showFloatingBtn = document.getElementById('adminShowFloatingBtn').checked;
+            appData.floatingWhatsapp = document.getElementById('adminFloatingWhatsapp').value.trim();
+            appData.floatingMessage = document.getElementById('adminFloatingMessage').value.trim();
 
             appData.customColors = {
                 c1: document.getElementById('adminColor1').value,
