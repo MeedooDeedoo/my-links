@@ -37,7 +37,6 @@
             -webkit-tap-highlight-color: transparent;
         }
         
-        /* تأثيرات التوهج والظلال */
         .glow-gold { box-shadow: 0 0 20px rgba(212, 175, 55, 0.35); }
         .glow-cyan { box-shadow: 0 0 20px rgba(0, 180, 216, 0.35); }
         .glow-subtle { box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15); }
@@ -46,32 +45,6 @@
         button, select, input, a, label, textarea {
             touch-action: manipulation;
             cursor: pointer;
-        }
-
-        /* الزخارف الإسلامية والنقوش المتطابقة مع الوضعين */
-        .pattern-islamic-geo {
-            background-image: radial-gradient(rgba(212, 175, 55, 0.12) 1.5px, transparent 1.5px), radial-gradient(rgba(212, 175, 55, 0.08) 1.5px, transparent 1.5px);
-            background-size: 32px 32px;
-            background-position: 0 0, 16px 16px;
-        }
-        html.light .pattern-islamic-geo {
-            background-image: radial-gradient(rgba(180, 140, 30, 0.18) 1.5px, transparent 1.5px), radial-gradient(rgba(180, 140, 30, 0.1) 1.5px, transparent 1.5px);
-        }
-
-        .pattern-islamic-stars {
-            background-image: radial-gradient(currentColor 1px, transparent 1px);
-            background-size: 24px 24px;
-            opacity: 0.07;
-        }
-
-        .pattern-grid {
-            background-image: radial-gradient(rgba(212, 175, 55, 0.15) 1px, transparent 1px);
-            background-size: 24px 24px;
-        }
-
-        .pattern-lines {
-            background-image: linear-gradient(0deg, rgba(100,100,100,0.05) 1px, transparent 1px);
-            background-size: 100% 20px;
         }
 
         .glass-card {
@@ -84,7 +57,10 @@
         }
     </style>
 </head>
-<body id="pageBody" class="min-h-screen flex flex-col items-center justify-between p-4 pb-12 bg-lightbg dark:bg-darkbg text-gray-900 dark:text-gray-100 transition-colors duration-300">
+<body id="pageBody" class="min-h-screen flex flex-col items-center justify-between p-4 pb-12 bg-lightbg dark:bg-darkbg text-gray-900 dark:text-gray-100 transition-colors duration-300 relative">
+
+    <!-- Background Image Overlay Container -->
+    <div id="bgImageLayer" class="absolute inset-0 bg-cover bg-center pointer-events-none z-0 hidden"></div>
 
     <!-- Top Bar -->
     <div id="topBarEl" class="w-full max-w-md flex justify-between items-center mb-6 bg-lightcard dark:bg-cardbg p-3.5 rounded-2xl border border-gray-300 dark:border-gray-800 shadow-md relative z-50 transition-colors duration-300">
@@ -191,7 +167,7 @@
         <p>© <span id="year">2026</span> جميع الحقوق محفوظة - شجرة الروابط</p>
     </footer>
 
-    <!-- Modals (Feedback, Join, Gallery, Project Detail, Image View, Share, PIN, Admin, Member) -->
+    <!-- Modals -->
     <!-- Feedback Modal -->
     <div id="feedbackModal" class="fixed inset-0 bg-black/70 backdrop-blur-md hidden flex items-center justify-center z-[110] p-3">
         <div class="bg-lightcard dark:bg-cardbg border border-gray-300 dark:border-gray-800 w-full max-w-md rounded-2xl p-5 shadow-2xl max-h-[92vh] flex flex-col transition-colors duration-300">
@@ -401,31 +377,46 @@
                             </select>
                         </div>
 
-                        <div>
-                            <label class="block font-bold text-gray-800 dark:text-gray-200 mb-1">الزخارف والنقوش الإسلامية والخلفية:</label>
-                            <select id="adminBgPattern" class="w-full bg-lightcard dark:bg-cardbg border border-gray-300 dark:border-gray-700 rounded-lg p-2 text-gray-900 dark:text-white outline-none">
-                                <option value="none">بدون زخرفة (سادة)</option>
-                                <option value="pattern-islamic-geo">نقوش هندسية إسلامية فاخرة (Islamic Geometric)</option>
-                                <option value="pattern-islamic-stars">نجوم إسلامية ونقاط متطابقة (Islamic Stars)</option>
-                                <option value="pattern-grid">نقاط شبكية رقمية (Grid Dots)</option>
-                                <option value="pattern-lines">خطوط عرضية سينمائية (Scanlines)</option>
-                            </select>
+                        <!-- اختيار تدرج الألوان المخصص مع درجة الشفافية -->
+                        <div class="bg-white dark:bg-cardbg p-3 rounded-xl border border-gray-300 dark:border-gray-700 space-y-3">
+                            <label class="block font-bold text-gray-800 dark:text-gray-200">تدرج الألوان المخصص (مع إمكانية تحديد الشفافية):</label>
+                            <div class="grid grid-cols-3 gap-2">
+                                <div class="space-y-1">
+                                    <span class="text-[10px] text-gray-500 block">اللون 1</span>
+                                    <input type="color" id="adminColor1" value="#0f1117" class="w-full h-8 rounded cursor-pointer bg-transparent">
+                                    <input type="range" id="adminOpacity1" min="0" max="1" step="0.05" value="1" class="w-full accent-goldaccent" title="شفافية اللون 1">
+                                </div>
+                                <div class="space-y-1">
+                                    <span class="text-[10px] text-gray-500 block">اللون 2</span>
+                                    <input type="color" id="adminColor2" value="#1a1d26" class="w-full h-8 rounded cursor-pointer bg-transparent">
+                                    <input type="range" id="adminOpacity2" min="0" max="1" step="0.05" value="1" class="w-full accent-goldaccent" title="شفافية اللون 2">
+                                </div>
+                                <div class="space-y-1">
+                                    <span class="text-[10px] text-gray-500 block">اللون 3</span>
+                                    <input type="color" id="adminColor3" value="#0f1117" class="w-full h-8 rounded cursor-pointer bg-transparent">
+                                    <input type="range" id="adminOpacity3" min="0" max="1" step="0.05" value="1" class="w-full accent-goldaccent" title="شفافية اللون 3">
+                                </div>
+                            </div>
+                            <div class="flex items-center justify-between pt-1">
+                                <span class="text-[10px] text-gray-500">اتجاه التدرج:</span>
+                                <select id="adminGradientAngle" class="bg-lightbg dark:bg-darkbg border border-gray-300 dark:border-gray-700 rounded px-2 py-1 text-[11px]">
+                                    <option value="to bottom right">إلى أسفل اليمين ↘</option>
+                                    <option value="to bottom">إلى الأسفل ↓</option>
+                                    <option value="to right">إلى اليمين →</option>
+                                    <option value="to top right">إلى أعلى اليمين ↗</option>
+                                </select>
+                            </div>
                         </div>
 
-                        <div>
-                            <label class="block font-bold text-gray-800 dark:text-gray-200 mb-1">تدرج ألوان الخلفية (دمج 3 ألوان حسب الطلب):</label>
-                            <select id="adminBgGradient" class="w-full bg-lightcard dark:bg-cardbg border border-gray-300 dark:border-gray-700 rounded-lg p-2 text-gray-900 dark:text-white outline-none">
-                                <option value="none">بدون تدرج (اللون الافتراضي)</option>
-                                <option value="bg-gradient-to-br from-gray-950 via-neutral-900 to-amber-950/60">تدرج ثلاثي (فحمي ليلي + أسود معدني + برونزي دافئ)</option>
-                                <option value="bg-gradient-to-tr from-slate-950 via-blue-950 to-indigo-950">تدرج ثلاثي سينمائي (أزرق ملكي داكن + كحلي + نيلي)</option>
-                                <option value="bg-gradient-to-br from-zinc-950 via-stone-900 to-yellow-950/50">تدرج ثلاثي فاخر (فحمي مطفي + حجري + ذهبي خافت)</option>
-                                <option value="bg-gradient-to-r from-neutral-950 via-purple-950/40 to-slate-950">تدرج ثلاثي ملكي (فحمي + بنفسجي داكن + رمادي عميق)</option>
-                            </select>
-                        </div>
-
-                        <div>
-                            <label class="block font-bold text-gray-800 dark:text-gray-200 mb-1">رابط صورة خلفية الصفحة المخصصة (Background Image URL):</label>
-                            <input type="url" id="adminBgImageUrl" placeholder="https://example.com/bg.jpg (اتركه فارغاً للافتراضي)" class="w-full bg-lightcard dark:bg-cardbg border border-gray-300 dark:border-gray-700 rounded-lg p-2 text-gray-900 dark:text-white outline-none">
+                        <!-- خلفية الصورة مع شفافيتها -->
+                        <div class="bg-white dark:bg-cardbg p-3 rounded-xl border border-gray-300 dark:border-gray-700 space-y-2">
+                            <label class="block font-bold text-gray-800 dark:text-gray-200">صورة خلفية الصفحة المخصصة:</label>
+                            <input type="url" id="adminBgImageUrl" placeholder="https://example.com/bg.jpg" class="w-full bg-lightbg dark:bg-darkbg border border-gray-300 dark:border-gray-700 rounded-lg p-2 text-gray-900 dark:text-white outline-none">
+                            <div class="flex items-center justify-between pt-1">
+                                <span class="text-[10px] text-gray-500">درجة شفافية الخلفية (العتامة):</span>
+                                <span id="adminBgImgOpacityVal" class="text-[10px] font-bold text-goldaccent">0.6</span>
+                            </div>
+                            <input type="range" id="adminBgImgOpacity" min="0.1" max="1" step="0.05" value="0.6" class="w-full accent-goldaccent">
                         </div>
                     </div>
                 </div>
@@ -689,29 +680,47 @@
                                 <option value="glass-card">زجاجي شفاف فاخر (Glassmorphism)</option>
                             </select>
                         </div>
-                        <div>
-                            <label class="block font-bold text-gray-800 dark:text-gray-200 mb-1">الزخارف والنقوش الإسلامية والخلفية:</label>
-                            <select id="memberBgPattern" class="w-full bg-lightcard dark:bg-cardbg border border-gray-300 dark:border-gray-700 rounded-lg p-2 text-gray-900 dark:text-white outline-none">
-                                <option value="none">بدون زخرفة (سادة)</option>
-                                <option value="pattern-islamic-geo">نقوش هندسية إسلامية فاخرة (Islamic Geometric)</option>
-                                <option value="pattern-islamic-stars">نجوم إسلامية ونقاط متطابقة (Islamic Stars)</option>
-                                <option value="pattern-grid">نقاط شبكية رقمية (Grid Dots)</option>
-                                <option value="pattern-lines">خطوط عرضية سينمائية (Scanlines)</option>
-                            </select>
+
+                        <!-- اختيار تدرج الألوان المخصص للعضو مع الشفافية -->
+                        <div class="bg-white dark:bg-cardbg p-3 rounded-xl border border-gray-300 dark:border-gray-700 space-y-3">
+                            <label class="block font-bold text-gray-800 dark:text-gray-200">تدرج الألوان المخصص (مع إمكانية تحديد الشفافية):</label>
+                            <div class="grid grid-cols-3 gap-2">
+                                <div class="space-y-1">
+                                    <span class="text-[10px] text-gray-500 block">اللون 1</span>
+                                    <input type="color" id="memberColor1" value="#0f1117" class="w-full h-8 rounded cursor-pointer bg-transparent">
+                                    <input type="range" id="memberOpacity1" min="0" max="1" step="0.05" value="1" class="w-full accent-cyanaccent" title="شفافية اللون 1">
+                                </div>
+                                <div class="space-y-1">
+                                    <span class="text-[10px] text-gray-500 block">اللون 2</span>
+                                    <input type="color" id="memberColor2" value="#1a1d26" class="w-full h-8 rounded cursor-pointer bg-transparent">
+                                    <input type="range" id="memberOpacity2" min="0" max="1" step="0.05" value="1" class="w-full accent-cyanaccent" title="شفافية اللون 2">
+                                </div>
+                                <div class="space-y-1">
+                                    <span class="text-[10px] text-gray-500 block">اللون 3</span>
+                                    <input type="color" id="memberColor3" value="#0f1117" class="w-full h-8 rounded cursor-pointer bg-transparent">
+                                    <input type="range" id="memberOpacity3" min="0" max="1" step="0.05" value="1" class="w-full accent-cyanaccent" title="شفافية اللون 3">
+                                </div>
+                            </div>
+                            <div class="flex items-center justify-between pt-1">
+                                <span class="text-[10px] text-gray-500">اتجاه التدرج:</span>
+                                <select id="memberGradientAngle" class="bg-lightbg dark:bg-darkbg border border-gray-300 dark:border-gray-700 rounded px-2 py-1 text-[11px]">
+                                    <option value="to bottom right">إلى أسفل اليمين ↘</option>
+                                    <option value="to bottom">إلى الأسفل ↓</option>
+                                    <option value="to right">إلى اليمين →</option>
+                                    <option value="to top right">إلى أعلى اليمين ↗</option>
+                                </select>
+                            </div>
                         </div>
-                        <div>
-                            <label class="block font-bold text-gray-800 dark:text-gray-200 mb-1">تدرج ألوان الخلفية (دمج 3 ألوان حسب الطلب):</label>
-                            <select id="memberBgGradient" class="w-full bg-lightcard dark:bg-cardbg border border-gray-300 dark:border-gray-700 rounded-lg p-2 text-gray-900 dark:text-white outline-none">
-                                <option value="none">بدون تدرج (اللون الافتراضي)</option>
-                                <option value="bg-gradient-to-br from-gray-950 via-neutral-900 to-amber-950/60">تدرج ثلاثي (فحمي ليلي + أسود معدني + برونزي دافئ)</option>
-                                <option value="bg-gradient-to-tr from-slate-950 via-blue-950 to-indigo-950">تدرج ثلاثي سينمائي (أزرق ملكي داكن + كحلي + نيلي)</option>
-                                <option value="bg-gradient-to-br from-zinc-950 via-stone-900 to-yellow-950/50">تدرج ثلاثي فاخر (فحمي مطفي + حجري + ذهبي خافت)</option>
-                                <option value="bg-gradient-to-r from-neutral-950 via-purple-950/40 to-slate-950">تدرج ثلاثي ملكي (فحمي + بنفسجي داكن + رمادي عميق)</option>
-                            </select>
-                        </div>
-                        <div>
-                            <label class="block font-bold text-gray-800 dark:text-gray-200 mb-1">رابط خلفية مخصصة لصفحتك (اختياري):</label>
+
+                        <!-- خلفية الصورة مع شفافيتها للعضو -->
+                        <div class="bg-white dark:bg-cardbg p-3 rounded-xl border border-gray-300 dark:border-gray-700 space-y-2">
+                            <label class="block font-bold text-gray-800 dark:text-gray-200">صورة خلفية صفحتك المخصصة:</label>
                             <input type="url" id="memberBgImageUrl" placeholder="https://example.com/bg.jpg" class="w-full bg-lightcard dark:bg-cardbg border border-gray-300 dark:border-gray-700 rounded-lg p-2 text-gray-900 dark:text-white outline-none">
+                            <div class="flex items-center justify-between pt-1">
+                                <span class="text-[10px] text-gray-500">درجة شفافية الخلفية (العتامة):</span>
+                                <span id="memberBgImgOpacityVal" class="text-[10px] font-bold text-cyanaccent">0.6</span>
+                            </div>
+                            <input type="range" id="memberBgImgOpacity" min="0.1" max="1" step="0.05" value="0.6" class="w-full accent-cyanaccent">
                         </div>
                     </div>
                 </div>
@@ -826,9 +835,9 @@
             cardShape: "rounded-2xl",
             cardGlow: "glow-gold-hover",
             cardStyle: "normal",
-            bgPattern: "pattern-islamic-geo",
-            bgGradient: "bg-gradient-to-br from-gray-950 via-neutral-900 to-amber-950/60",
+            customColors: { c1: "", o1: 1, c2: "", o2: 1, c3: "", o3: 1, angle: "to bottom right" },
             bgImageUrl: "",
+            bgImgOpacity: 0.6,
             showMap: true,
             mapUrl: "https://maps.app.goo.gl/YourMapLocation",
             mapEmbed: "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3238.8!2d37.134!3d36.202!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zMzbCsDEyJzEyLjgiTiAzN8KwMDgnMDIuNCJF!5e0!3m2!1sar!2s!4v1!5m2!1sar!2s",
@@ -890,8 +899,8 @@
                 if (!appData.cardShape) appData.cardShape = "rounded-2xl";
                 if (!appData.cardGlow) appData.cardGlow = "glow-gold-hover";
                 if (!appData.cardStyle) appData.cardStyle = "normal";
-                if (!appData.bgPattern) appData.bgPattern = "pattern-islamic-geo";
-                if (!appData.bgGradient) appData.bgGradient = "bg-gradient-to-br from-gray-950 via-neutral-900 to-amber-950/60";
+                if (appData.bgImgOpacity === undefined) appData.bgImgOpacity = 0.6;
+                if (!appData.customColors) appData.customColors = { c1: "", o1: 1, c2: "", o2: 1, c3: "", o3: 1, angle: "to bottom right" };
                 
                 if (appData.categories && appData.categories.length > 0 && typeof appData.categories[0] === 'string') {
                     appData.categories = appData.categories.map(c => ({ name: c, enabled: true }));
@@ -944,14 +953,19 @@
             }
         }
 
+        function hexToRgba(hex, opacity) {
+            let c = hex.replace('#', '');
+            if (c.length === 3) c = c.split('').map(x => x + x).join('');
+            const num = parseInt(c, 16);
+            return `rgba(${num >> 16}, ${(num >> 8) & 255}, ${num & 255}, ${opacity})`;
+        }
+
         function applyDesignCustomizations() {
-            // شكل وتوهج الصورة الشخصية
             const avatarContainer = document.getElementById('avatarContainer');
             if (avatarContainer) {
                 avatarContainer.className = `w-full h-full ${appData.avatarShape || 'rounded-full'} border-2 border-goldaccent overflow-hidden bg-lightcard dark:bg-cardbg flex items-center justify-center shadow-md transition-colors duration-300 ${appData.avatarGlow && appData.avatarGlow !== 'none' ? appData.avatarGlow : ''}`;
             }
 
-            // تطبيق شكل وتوهج البطاقات والأزرار
             const cardShape = appData.cardShape || 'rounded-2xl';
             const cardStyle = appData.cardStyle || 'normal';
             const cardGlow = appData.cardGlow || 'glow-gold-hover';
@@ -970,22 +984,30 @@
                 }
             });
 
-            // الخلفية والتدرجات والزخارف
             const pageBody = document.getElementById('pageBody');
-            if (pageBody) {
-                pageBody.className = `min-h-screen flex flex-col items-center justify-between p-4 pb-12 text-gray-900 dark:text-gray-100 transition-colors duration-300 ${appData.bgGradient && appData.bgGradient !== 'none' ? appData.bgGradient : 'bg-lightbg dark:bg-darkbg'}`;
+            const bgImageLayer = document.getElementById('bgImageLayer');
+
+            if (pageBody && bgImageLayer) {
+                pageBody.className = `min-h-screen flex flex-col items-center justify-between p-4 pb-12 text-gray-900 dark:text-gray-100 transition-colors duration-300 bg-lightbg dark:bg-darkbg relative`;
                 
-                pageBody.classList.remove('pattern-islamic-geo', 'pattern-islamic-stars', 'pattern-grid', 'pattern-lines');
-                if (appData.bgPattern && appData.bgPattern !== 'none') {
-                    pageBody.classList.add(appData.bgPattern);
+                // تطبيق تدرج الألوان المخصص إن وجد
+                if (appData.customColors && (appData.customColors.c1 || appData.customColors.c2 || appData.customColors.c3)) {
+                    let rgba1 = appData.customColors.c1 ? hexToRgba(appData.customColors.c1, appData.customColors.o1 ?? 1) : 'transparent';
+                    let rgba2 = appData.customColors.c2 ? hexToRgba(appData.customColors.c2, appData.customColors.o2 ?? 1) : 'transparent';
+                    let rgba3 = appData.customColors.c3 ? hexToRgba(appData.customColors.c3, appData.customColors.o3 ?? 1) : 'transparent';
+                    let angle = appData.customColors.angle || 'to bottom right';
+                    pageBody.style.backgroundImage = `linear-gradient(${angle}, ${rgba1}, ${rgba2}, ${rgba3})`;
+                } else {
+                    pageBody.style.backgroundImage = '';
                 }
 
+                // تطبيق صورة الخلفية وشفافيتها
                 if (appData.bgImageUrl) {
-                    pageBody.style.backgroundImage = `url('${appData.bgImageUrl}')`;
-                    pageBody.style.backgroundSize = 'cover';
-                    pageBody.style.backgroundPosition = 'center';
-                } else if (!appData.bgGradient || appData.bgGradient === 'none') {
-                    pageBody.style.backgroundImage = '';
+                    bgImageLayer.style.backgroundImage = `url('${appData.bgImageUrl}')`;
+                    bgImageLayer.style.opacity = appData.bgImgOpacity ?? 0.6;
+                    bgImageLayer.classList.remove('hidden');
+                } else {
+                    bgImageLayer.classList.add('hidden');
                 }
             }
         }
@@ -996,10 +1018,16 @@
             document.getElementById('adminCardShape').value = 'rounded-2xl';
             document.getElementById('adminCardGlow').value = 'glow-gold-hover';
             document.getElementById('adminCardStyle').value = 'normal';
-            document.getElementById('adminBgPattern').value = 'pattern-islamic-geo';
-            document.getElementById('adminBgGradient').value = 'bg-gradient-to-br from-gray-950 via-neutral-900 to-amber-950/60';
+            document.getElementById('adminColor1').value = '';
+            document.getElementById('adminOpacity1').value = '1';
+            document.getElementById('adminColor2').value = '';
+            document.getElementById('adminOpacity2').value = '1';
+            document.getElementById('adminColor3').value = '';
+            document.getElementById('adminOpacity3').value = '1';
             document.getElementById('adminBgImageUrl').value = '';
-            alert('تم استعادة التصميم الافتراضي الفاخر بنجاح.');
+            document.getElementById('adminBgImgOpacity').value = '0.6';
+            document.getElementById('adminBgImgOpacityVal').textContent = '0.6';
+            alert('تم استعادة التصميم الافتراضي السادة بنجاح.');
         };
 
         window.resetMemberDesignDefaults = function() {
@@ -1008,9 +1036,15 @@
             document.getElementById('memberCardShape').value = 'rounded-2xl';
             document.getElementById('memberCardGlow').value = 'glow-gold-hover';
             document.getElementById('memberCardStyle').value = 'normal';
-            document.getElementById('memberBgPattern').value = 'pattern-islamic-geo';
-            document.getElementById('memberBgGradient').value = 'bg-gradient-to-br from-gray-950 via-neutral-900 to-amber-950/60';
+            document.getElementById('memberColor1').value = '';
+            document.getElementById('memberOpacity1').value = '1';
+            document.getElementById('memberColor2').value = '';
+            document.getElementById('memberOpacity2').value = '1';
+            document.getElementById('memberColor3').value = '';
+            document.getElementById('memberOpacity3').value = '1';
             document.getElementById('memberBgImageUrl').value = '';
+            document.getElementById('memberBgImgOpacity').value = '0.6';
+            document.getElementById('memberBgImgOpacityVal').textContent = '0.6';
             alert('تم استعادة الإعدادات الافتراضية بنجاح.');
         };
 
@@ -1186,7 +1220,7 @@
             });
         }
 
-        function renderSidebarMenu() {
+        window.renderSidebarMenu = function() {
             const container = document.getElementById('sidebarLinksContainer');
             if (!container) return;
             container.innerHTML = '';
@@ -1203,7 +1237,7 @@
                 else btn.onclick = () => { if(item.url && item.url !== '#') window.open(item.url, '_blank'); };
                 container.appendChild(btn);
             });
-        }
+        };
 
         function renderProfile() {
             document.getElementById('topBarName').textContent = appData.displayName;
@@ -1337,9 +1371,20 @@
             document.getElementById('memberCardShape').value = appData.cardShape || 'rounded-2xl';
             document.getElementById('memberCardGlow').value = appData.cardGlow || 'glow-gold-hover';
             document.getElementById('memberCardStyle').value = appData.cardStyle || 'normal';
-            document.getElementById('memberBgPattern').value = appData.bgPattern || 'pattern-islamic-geo';
-            document.getElementById('memberBgGradient').value = appData.bgGradient || 'bg-gradient-to-br from-gray-950 via-neutral-900 to-amber-950/60';
+            
+            if (appData.customColors) {
+                document.getElementById('memberColor1').value = appData.customColors.c1 || '#0f1117';
+                document.getElementById('memberOpacity1').value = appData.customColors.o1 ?? 1;
+                document.getElementById('memberColor2').value = appData.customColors.c2 || '#1a1d26';
+                document.getElementById('memberOpacity2').value = appData.customColors.o2 ?? 1;
+                document.getElementById('memberColor3').value = appData.customColors.c3 || '#0f1117';
+                document.getElementById('memberOpacity3').value = appData.customColors.o3 ?? 1;
+                document.getElementById('memberGradientAngle').value = appData.customColors.angle || 'to bottom right';
+            }
             document.getElementById('memberBgImageUrl').value = appData.bgImageUrl || '';
+            const op = appData.bgImgOpacity ?? 0.6;
+            document.getElementById('memberBgImgOpacity').value = op;
+            document.getElementById('memberBgImgOpacityVal').textContent = op;
 
             document.getElementById('memberShowMap').checked = appData.showMap !== false;
             document.getElementById('memberMapUrl').value = appData.mapUrl || '';
@@ -1361,6 +1406,13 @@
             renderMemberLinksList();
             renderMemberGalleryList();
         }
+
+        document.getElementById('memberBgImgOpacity').addEventListener('input', (e) => {
+            document.getElementById('memberBgImgOpacityVal').textContent = e.target.value;
+        });
+        document.getElementById('adminBgImgOpacity').addEventListener('input', (e) => {
+            document.getElementById('adminBgImgOpacityVal').textContent = e.target.value;
+        });
 
         window.handleMemberImageUpload = function(e) {
             const file = e.target.files[0];
@@ -1545,9 +1597,19 @@
             appData.cardShape = document.getElementById('memberCardShape').value;
             appData.cardGlow = document.getElementById('memberCardGlow').value;
             appData.cardStyle = document.getElementById('memberCardStyle').value;
-            appData.bgPattern = document.getElementById('memberBgPattern').value;
-            appData.bgGradient = document.getElementById('memberBgGradient').value;
+            
+            appData.customColors = {
+                c1: document.getElementById('memberColor1').value,
+                o1: parseFloat(document.getElementById('memberOpacity1').value),
+                c2: document.getElementById('memberColor2').value,
+                o2: parseFloat(document.getElementById('memberOpacity2').value),
+                c3: document.getElementById('memberColor3').value,
+                o3: parseFloat(document.getElementById('memberOpacity3').value),
+                angle: document.getElementById('memberGradientAngle').value
+            };
+
             appData.bgImageUrl = document.getElementById('memberBgImageUrl').value.trim();
+            appData.bgImgOpacity = parseFloat(document.getElementById('memberBgImgOpacity').value);
             appData.showMap = document.getElementById('memberShowMap').checked;
             appData.mapUrl = document.getElementById('memberMapUrl').value.trim();
             appData.mapEmbed = document.getElementById('memberMapEmbed').value.trim();
@@ -1582,9 +1644,20 @@
             document.getElementById('adminCardShape').value = appData.cardShape || 'rounded-2xl';
             document.getElementById('adminCardGlow').value = appData.cardGlow || 'glow-gold-hover';
             document.getElementById('adminCardStyle').value = appData.cardStyle || 'normal';
-            document.getElementById('adminBgPattern').value = appData.bgPattern || 'pattern-islamic-geo';
-            document.getElementById('adminBgGradient').value = appData.bgGradient || 'bg-gradient-to-br from-gray-950 via-neutral-900 to-amber-950/60';
+            
+            if (appData.customColors) {
+                document.getElementById('adminColor1').value = appData.customColors.c1 || '#0f1117';
+                document.getElementById('adminOpacity1').value = appData.customColors.o1 ?? 1;
+                document.getElementById('adminColor2').value = appData.customColors.c2 || '#1a1d26';
+                document.getElementById('adminOpacity2').value = appData.customColors.o2 ?? 1;
+                document.getElementById('adminColor3').value = appData.customColors.c3 || '#0f1117';
+                document.getElementById('adminOpacity3').value = appData.customColors.o3 ?? 1;
+                document.getElementById('adminGradientAngle').value = appData.customColors.angle || 'to bottom right';
+            }
             document.getElementById('adminBgImageUrl').value = appData.bgImageUrl || '';
+            const op = appData.bgImgOpacity ?? 0.6;
+            document.getElementById('adminBgImgOpacity').value = op;
+            document.getElementById('adminBgImgOpacityVal').textContent = op;
 
             document.getElementById('adminShowMap').checked = appData.showMap !== false;
             document.getElementById('adminMapUrl').value = appData.mapUrl || '';
@@ -1718,9 +1791,9 @@
                 cardShape: 'rounded-2xl',
                 cardGlow: 'glow-gold-hover',
                 cardStyle: 'normal',
-                bgPattern: 'pattern-islamic-geo',
-                bgGradient: 'bg-gradient-to-br from-gray-950 via-neutral-900 to-amber-950/60',
+                customColors: { c1: "", o1: 1, c2: "", o2: 1, c3: "", o3: 1, angle: "to bottom right" },
                 bgImageUrl: '',
+                bgImgOpacity: 0.6,
                 showMap: true,
                 mapUrl: '',
                 mapEmbed: '',
@@ -1975,7 +2048,7 @@
                             <button type="button" onclick="window.moveLink(${index}, -1)" class="bg-gray-200 dark:bg-gray-700 text-goldaccent px-1.5 py-0.5 rounded text-[10px] font-bold">⬆️</button>
                             <button type="button" onclick="window.moveLink(${index}, 1)" class="bg-gray-200 dark:bg-gray-700 text-goldaccent px-1.5 py-0.5 rounded text-[10px] font-bold">⬇️</button>
                             <button type="button" onclick="window.editLink('${l.id}')" class="bg-blue-500/20 text-blue-600 dark:text-blue-400 px-2 py-0.5 rounded text-[10px] font-bold">تعديل</button>
-                            <button type="button" onclick="window.deleteLink('${l.id}')" class="bg-red-500/20 text-red-600 px-2 py-0.5 rounded text-[10px] font-bold">حذف</button>
+                            <button type="button" onclick="window.deleteLink('${l.id}')" class="bg-red-500/20 text-red-600 dark:text-red-400 px-2 py-0.5 rounded text-[10px] font-bold">حذف</button>
                         </div>
                     </div>`;
             });
@@ -2000,9 +2073,19 @@
             appData.cardShape = document.getElementById('adminCardShape').value;
             appData.cardGlow = document.getElementById('adminCardGlow').value;
             appData.cardStyle = document.getElementById('adminCardStyle').value;
-            appData.bgPattern = document.getElementById('adminBgPattern').value;
-            appData.bgGradient = document.getElementById('adminBgGradient').value;
+            
+            appData.customColors = {
+                c1: document.getElementById('adminColor1').value,
+                o1: parseFloat(document.getElementById('adminOpacity1').value),
+                c2: document.getElementById('adminColor2').value,
+                o2: parseFloat(document.getElementById('adminOpacity2').value),
+                c3: document.getElementById('adminColor3').value,
+                o3: parseFloat(document.getElementById('adminOpacity3').value),
+                angle: document.getElementById('adminGradientAngle').value
+            };
+
             appData.bgImageUrl = document.getElementById('adminBgImageUrl').value.trim();
+            appData.bgImgOpacity = parseFloat(document.getElementById('adminBgImgOpacity').value);
             appData.showMap = document.getElementById('adminShowMap').checked;
             appData.mapUrl = document.getElementById('adminMapUrl').value.trim();
             appData.mapEmbed = document.getElementById('adminMapEmbed').value.trim();
