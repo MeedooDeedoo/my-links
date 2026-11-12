@@ -131,6 +131,17 @@
 
         <div id="linksContainer" class="w-full flex flex-col gap-3 mb-6"></div>
 
+        <!-- قسم الكوبونات والخصومات الترويجية (مع عدد المرات المتاح) -->
+        <div id="promoSectionContainer" class="w-full mb-6 hidden">
+            <div class="flex items-center justify-between mb-3 px-1">
+                <span class="text-xs font-extrabold text-gray-900 dark:text-white flex items-center gap-1.5">
+                    <i class="fa-solid fa-tags text-goldaccent"></i> كوبونات العروض والخصومات
+                </span>
+                <span class="text-[10px] font-bold text-goldaccent">نسخ الرمز ينقص من الرصيد 🏷️</span>
+            </div>
+            <div id="promoCodesContainer" class="w-full grid grid-cols-1 gap-3"></div>
+        </div>
+
         <!-- قسم آراء ومراجعات العملاء -->
         <div id="testimonialsSectionContainer" class="w-full mb-6 hidden">
             <div class="flex items-center justify-between mb-3 px-1">
@@ -331,7 +342,7 @@
             </div>
             <div class="overflow-y-auto flex-grow pr-1 space-y-3 text-xs">
 
-                <!-- 📊 قسم الإحصائيات وزوار متقدم للأدمن فقط -->
+                <!-- 📊 إحصائيات الزوار وتحليل الأداء -->
                 <div class="bg-lightbg dark:bg-darkbg rounded-xl border border-gray-300 dark:border-gray-800 overflow-hidden transition-colors">
                     <button type="button" onclick="window.toggleAccordion('accAnalytics')" class="w-full p-3 flex justify-between items-center font-bold text-gray-800 dark:text-gray-200">
                         <span class="flex items-center gap-2"><i class="fa-solid fa-chart-line text-goldaccent"></i> إحصائيات الزوار وتحليل الأداء (أدمن فقط)</span>
@@ -372,7 +383,45 @@
                     </div>
                 </div>
 
-                <!-- قسم إرسال الإشعارات الفورية الجماعية -->
+                <!-- 🏷️ قسم إدارة الكوبونات والخصومات الترويجية (مع عدد المرات المتاح) -->
+                <div class="bg-lightbg dark:bg-darkbg rounded-xl border border-gray-300 dark:border-gray-800 overflow-hidden transition-colors">
+                    <button type="button" onclick="window.toggleAccordion('accPromoAdmin')" class="w-full p-3 flex justify-between items-center font-bold text-gray-800 dark:text-gray-200">
+                        <span class="flex items-center gap-2"><i class="fa-solid fa-tags text-goldaccent"></i> إدارة الكوبونات وعدد مرات الاستخدام</span>
+                        <div class="flex items-center gap-2">
+                            <span class="text-[10px] bg-goldaccent/20 text-goldaccent px-2 py-0.5 rounded font-mono">محدث</span>
+                            <i id="icon-accPromoAdmin" class="fa-solid fa-chevron-down transition-transform"></i>
+                        </div>
+                    </button>
+                    <div id="accPromoAdmin" class="hidden p-3 pt-0 space-y-3 border-t border-gray-200 dark:border-gray-800 mt-1">
+                        <div class="flex items-center gap-2 pt-2 bg-white dark:bg-cardbg p-2.5 rounded-xl border border-gray-200 dark:border-gray-700">
+                            <input type="checkbox" id="adminShowPromoSection" class="accent-goldaccent w-4 h-4" checked>
+                            <label for="adminShowPromoSection" class="font-extrabold text-gray-800 dark:text-gray-200">إظهار قسم الكوبونات في الصفحة الرئيسية</label>
+                        </div>
+
+                        <div class="space-y-2 pt-2 border-t border-gray-200 dark:border-gray-700">
+                            <h4 id="promoFormTitle" class="font-bold text-goldaccent">إضافة كوبون خصم جديد برصيد مرات محدد</h4>
+                            <input type="hidden" id="editingPromoId">
+                            <input type="text" id="promoCodeVal" placeholder="رمز الكوبون (مثال: MAHMOUD10)" class="w-full bg-lightcard dark:bg-cardbg border border-gray-300 dark:border-gray-700 rounded-lg p-2 text-gray-900 dark:text-white outline-none uppercase font-mono font-bold">
+                            <input type="text" id="promoDiscountVal" placeholder="قيمة الخصم (مثال: خصم 10% أو 50$)" class="w-full bg-lightcard dark:bg-cardbg border border-gray-300 dark:border-gray-700 rounded-lg p-2 text-gray-900 dark:text-white outline-none">
+                            <div class="space-y-1">
+                                <label class="block text-[11px] text-gray-500">عدد مرات الاستخدام المتاحة (مثال: 5 مرات):</label>
+                                <input type="number" id="promoUsesVal" min="1" value="10" placeholder="عدد المرات المتاحة" class="w-full bg-lightcard dark:bg-cardbg border border-gray-300 dark:border-gray-700 rounded-lg p-2 text-gray-900 dark:text-white outline-none font-bold text-goldaccent">
+                            </div>
+                            <textarea id="promoDescVal" placeholder="وصف العرض والخدمة المشمولة..." class="w-full bg-lightcard dark:bg-cardbg border border-gray-300 dark:border-gray-700 rounded-lg p-2 text-gray-900 dark:text-white outline-none h-16 resize-none"></textarea>
+                            <div class="flex items-center gap-2 pt-1 bg-goldaccent/10 p-2 rounded-lg border border-goldaccent/30">
+                                <input type="checkbox" id="promoEnabled" class="accent-goldaccent w-4 h-4" checked>
+                                <label for="promoEnabled" class="font-bold text-gray-900 dark:text-white text-xs">تفعيل وعرض الكوبون</label>
+                            </div>
+                            <div class="flex gap-2 pt-1">
+                                <button type="button" onclick="window.savePromoItem()" class="flex-1 bg-goldaccent text-black font-bold py-2 rounded-lg">حفظ الكوبون</button>
+                                <button type="button" onclick="window.resetPromoForm()" class="bg-gray-200 dark:bg-gray-800 text-gray-800 dark:text-gray-200 px-3 py-2 rounded-lg font-bold">إلغاء</button>
+                            </div>
+                        </div>
+                        <div id="adminPromoList" class="space-y-1.5 pt-2 border-t border-gray-300 dark:border-gray-700"></div>
+                    </div>
+                </div>
+
+                <!-- إرسال الإشعارات الفورية الجماعية -->
                 <div class="bg-lightbg dark:bg-darkbg rounded-xl border border-gray-300 dark:border-gray-800 overflow-hidden transition-colors">
                     <button type="button" onclick="window.toggleAccordion('accBroadcast')" class="w-full p-3 flex justify-between items-center font-bold text-gray-800 dark:text-gray-200">
                         <span class="flex items-center gap-2"><i class="fa-solid fa-paper-plane text-goldaccent"></i> إرسال إشعار فوري لجميع الهواتف</span>
@@ -384,7 +433,7 @@
                             <select id="broadcastTargetUser" class="w-full bg-lightcard dark:bg-cardbg border border-gray-300 dark:border-gray-700 rounded-lg p-2 text-gray-900 dark:text-white outline-none">
                                 <option value="all">جميع الزوار والأعضاء (إشعار شامل لكل الهواتف)</option>
                             </select>
-                            <input type="text" id="broadcastTitle" placeholder="عنوان الإشعار (مثال: مشروع جديد مضاف الآن! 🔥)" class="w-full bg-lightcard dark:bg-cardbg border border-gray-300 dark:border-gray-700 rounded-lg p-2 text-gray-900 dark:text-white outline-none">
+                            <input type="text" id="broadcastTitle" placeholder="عنوان الإشعار (مثال: كود خصم جديد مضاف الآن! 🔥)" class="w-full bg-lightcard dark:bg-cardbg border border-gray-300 dark:border-gray-700 rounded-lg p-2 text-gray-900 dark:text-white outline-none">
                             <textarea id="broadcastMessage" placeholder="نص تفاصيل الإشعار الذي سيظهر في لوحة إشعارات الهواتف..." class="w-full bg-lightcard dark:bg-cardbg border border-gray-300 dark:border-gray-700 rounded-lg p-2 text-gray-900 dark:text-white outline-none h-20 resize-none"></textarea>
                             <button type="button" onclick="window.sendPlatformNotification()" class="w-full bg-goldaccent text-black font-bold py-2 rounded-lg shadow-sm">إرسال الإشعار الفوري الآن 🚀</button>
                         </div>
@@ -1020,7 +1069,7 @@
         </div>
     </div>
 
-    <!-- Script Engine with Firebase & Analytics -->
+    <!-- Script Engine with Firebase & Promo Codes Usage Limit -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/13.2.0/firebase-app.js";
         import { getDatabase, ref, set, onValue } from "https://www.gstatic.com/firebasejs/13.2.0/firebase-database.js";
@@ -1062,11 +1111,16 @@
             floatingWhatsapp: "+963900000000",
             floatingMessage: "مرحباً محمود، أود الاستفسار عن خدماتك وتصاميمك...",
             showJoinBanner: true,
+            showPromoSection: true,
             showMap: true,
             mapUrl: "https://maps.app.goo.gl/YourMapLocation",
             mapEmbed: "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3238.8!2d37.134!3d36.202!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zMzbCsDEyJzEyLjgiTiAzN8KwMDgnMDIuNCJF!5e0!3m2!1sar!2s!4v1!5m2!1sar!2s",
             contacts: { whatsapp: "+963900000000", showWhatsapp: true, phone: "+963900000000", showPhone: true, email: "info@example.com", showEmail: true },
             analytics: { totalViews: 0 },
+            promoCodes: [
+                { id: 'p1', code: 'MAHMOUD10', discount: 'خصم 10%', usesLeft: 5, desc: 'خصم خاص على جميع خدمات التصميم الإعلاني وهويات الشركات.', enabled: true },
+                { id: 'p2', code: 'ALUCOBOND50', discount: 'خصم 50$', usesLeft: 3, desc: 'خصم مباشر عند طلب توريد وتركيب ألوكوبوند للواجهات.', enabled: true }
+            ],
             categories: [
                 { name: "الكل", enabled: true },
                 { name: "إعلان وتصميم", enabled: true },
@@ -1122,6 +1176,11 @@
 
                 appData = rootData.users[currentUsername] || rootData.users['mahmoud'];
                 if (!appData.analytics) appData.analytics = { totalViews: 0 };
+                if (!appData.promoCodes) appData.promoCodes = defaultUserData.promoCodes;
+                else {
+                    appData.promoCodes.forEach(p => { if (p.usesLeft === undefined) p.usesLeft = 10; });
+                }
+                if (appData.showPromoSection === undefined) appData.showPromoSection = true;
                 if (!appData.sidebarLinks) appData.sidebarLinks = defaultUserData.sidebarLinks;
                 if (!appData.contacts) appData.contacts = defaultUserData.contacts;
                 if (!appData.testimonials) appData.testimonials = defaultUserData.testimonials;
@@ -1156,7 +1215,6 @@
                 set(dbRef, rootData).catch(err => console.error("Initial set error:", err));
             }
 
-            // زيادة عداد الزيارات مرة واحدة لكل جلسة تصفح
             if (!sessionStorage.getItem('visited_' + currentUsername)) {
                 sessionStorage.setItem('visited_' + currentUsername, 'true');
                 if (!appData.analytics) appData.analytics = { totalViews: 0 };
@@ -1182,7 +1240,7 @@
             set(dbRef, rootData).then(() => {
                 alert('تم الحفظ والتحديث على السحابة بنجاح!');
             }).catch((err) => {
-                alert('خطأ في الاتصال بقاعدة البيانات أو صلاحيات الحفظ (تأكد من قواعد Firebase Realtime Database Rules): ' + err.message);
+                alert('خطأ في الاتصال بقاعدة البيانات أو صلاحيات الحفظ: ' + err.message);
                 console.error("Firebase save error:", err);
             });
         }
@@ -1194,6 +1252,7 @@
             renderLiveStatusBadge();
             renderFloatingWhatsappBtn();
             renderJoinBannerVisibility();
+            renderPromoSection();
             renderSidebarMenu();
             renderCategories();
             renderLinks();
@@ -1325,7 +1384,153 @@
             }
         }
 
-        function renderTestimonialsSection() {
+        function renderPromoSection() {
+            const sectionContainer = document.getElementById('promoSectionContainer');
+            const container = document.getElementById('promoCodesContainer');
+            if (!sectionContainer || !container) return;
+
+            if (appData.showPromoSection === false) {
+                sectionContainer.classList.add('hidden');
+                return;
+            }
+
+            // عرض الكوبونات المفعلة والتي يتبقى لها رصيد استخدام (> 0)
+            const items = (appData.promoCodes || []).filter(p => p.enabled !== false && (p.usesLeft === undefined || p.usesLeft > 0));
+            if (items.length === 0) {
+                sectionContainer.classList.add('hidden');
+                return;
+            }
+
+            sectionContainer.classList.remove('hidden');
+            container.innerHTML = '';
+
+            const cardShape = appData.cardShape || 'rounded-2xl';
+            const cardStyle = appData.cardStyle || 'normal';
+
+            items.forEach(p => {
+                const uses = p.usesLeft !== undefined ? p.usesLeft : 10;
+                const card = document.createElement('div');
+                card.className = `w-full ${cardStyle === 'glass-card' ? 'glass-card' : 'bg-white dark:bg-cardbg'} border border-goldaccent/30 ${cardShape} p-3.5 shadow-sm space-y-2 relative overflow-hidden`;
+                card.innerHTML = `
+                    <div class="flex justify-between items-center">
+                        <span class="bg-goldaccent/10 border border-goldaccent/40 text-goldaccent text-xs font-mono font-extrabold px-3 py-1 rounded-lg tracking-wider">${p.code}</span>
+                        <div class="flex items-center gap-1.5">
+                            <span class="text-[10px] font-bold text-amber-500 bg-amber-500/10 border border-amber-500/30 px-2 py-0.5 rounded-full">متبقي: ${uses} مرات</span>
+                            <span class="text-xs font-extrabold text-emerald-500 bg-emerald-500/10 border border-emerald-500/30 px-2 py-0.5 rounded-full">${p.discount}</span>
+                        </div>
+                    </div>
+                    <p class="text-xs text-gray-700 dark:text-gray-300 leading-relaxed">${p.desc}</p>
+                    <div class="flex justify-between items-center pt-2 border-t border-gray-200 dark:border-gray-800 mt-1">
+                        <span class="text-[10px] text-gray-400">نسخ الكود سينقص رصيد الاستخدام تلقائياً</span>
+                        <button type="button" onclick="window.copyPromoCodeAndDecrement('${p.id}')" class="bg-goldaccent text-black px-3 py-1 rounded-lg text-[11px] font-extrabold shadow-sm hover:scale-105 transition">
+                            <i class="fa-solid fa-copy ml-1"></i> نسخ الرمز والاستخدام
+                        </button>
+                    </div>
+                `;
+                container.appendChild(card);
+            });
+        }
+
+        window.copyPromoCodeAndDecrement = function(id) {
+            const promo = (appData.promoCodes || []).find(p => p.id === id);
+            if (!promo) return;
+
+            if (promo.usesLeft !== undefined && promo.usesLeft <= 0) {
+                alert('عذراً، نفدت عدد مرات استخدام هذا الكوبون بالكامل!');
+                renderPromoSection();
+                return;
+            }
+
+            // خصم مرة واحدة من المتاح
+            if (promo.usesLeft !== undefined) {
+                promo.usesLeft -= 1;
+            }
+
+            // حفظ التحديثات مباشرة على قاعدة البيانات لكي تنعكس فوراً
+            rootData.users[currentUsername] = appData;
+            set(dbRef, rootData).then(() => {
+                navigator.clipboard.writeText(promo.code).then(() => {
+                    alert(`تم نسخ كود الخصم (${promo.code}) بنجاح!\nالمتبقي من مرات الاستخدام: ${promo.usesLeft}`);
+                    renderPromoSection();
+                    renderAdminPromoList();
+                });
+            }).catch(err => {
+                console.error("Promo decrement error:", err);
+            });
+        };
+
+        window.savePromoItem = function() {
+            const id = document.getElementById('editingPromoId').value;
+            const code = document.getElementById('promoCodeVal').value.trim().toUpperCase();
+            const discount = document.getElementById('promoDiscountVal').value.trim();
+            const usesLeft = parseInt(document.getElementById('promoUsesVal').value) || 10;
+            const desc = document.getElementById('promoDescVal').value.trim();
+            const enabled = document.getElementById('promoEnabled').checked;
+
+            if (!code || !discount) { alert('الرجاء إدخال رمز الكوبون وقيمة الخصم.'); return; }
+            if (!appData.promoCodes) appData.promoCodes = [];
+
+            if (id) {
+                const item = appData.promoCodes.find(p => p.id === id);
+                if (item) { item.code = code; item.discount = discount; item.usesLeft = usesLeft; item.desc = desc; item.enabled = enabled; }
+            } else {
+                appData.promoCodes.push({ id: 'p_' + Date.now(), code, discount, usesLeft, desc, enabled });
+            }
+            window.resetPromoForm();
+            renderAdminPromoList();
+            renderPromoSection();
+        };
+
+        window.resetPromoForm = function() {
+            document.getElementById('editingPromoId').value = '';
+            document.getElementById('promoCodeVal').value = '';
+            document.getElementById('promoDiscountVal').value = '';
+            document.getElementById('promousesVal') ? document.getElementById('promoUsesVal').value = '10' : null;
+            document.getElementById('promoDescVal').value = '';
+            document.getElementById('promoEnabled').checked = true;
+            document.getElementById('promoFormTitle').textContent = 'إضافة كوبون خصم جديد برصيد مرات محدد';
+        };
+
+        window.editPromoItem = function(id) {
+            const item = (appData.promoCodes || []).find(p => p.id === id);
+            if (!item) return;
+            document.getElementById('editingPromoId').value = item.id;
+            document.getElementById('promoCodeVal').value = item.code;
+            document.getElementById('promoDiscountVal').value = item.discount;
+            document.getElementById('promoUsesVal').value = item.usesLeft !== undefined ? item.usesLeft : 10;
+            document.getElementById('promoDescVal').value = item.desc || '';
+            document.getElementById('promoEnabled').checked = item.enabled !== false;
+            document.getElementById('promoFormTitle').textContent = 'تعديل الكوبون';
+        };
+
+        window.deletePromoItem = function(id) {
+            appData.promoCodes = (appData.promoCodes || []).filter(p => p.id !== id);
+            renderAdminPromoList();
+            renderPromoSection();
+        };
+
+        function renderAdminPromoList() {
+            const container = document.getElementById('adminPromoList');
+            if (!container) return;
+            container.innerHTML = '';
+            (appData.promoCodes || []).forEach(p => {
+                const statusBadge = p.enabled !== false ? '<span class="text-emerald-500 font-bold">مفعل</span>' : '<span class="text-red-500 font-bold">متوقف</span>';
+                const uses = p.usesLeft !== undefined ? p.usesLeft : 10;
+                container.innerHTML += `
+                    <div class="bg-white dark:bg-cardbg border border-gray-300 dark:border-gray-700 rounded-xl p-2.5 flex items-center justify-between shadow-sm">
+                        <div>
+                            <div class="font-extrabold text-gray-900 dark:text-white font-mono">${p.code} (${statusBadge}) - <span class="text-goldaccent">${p.discount}</span> <span class="text-amber-500 text-[10px]">(المتبقي: ${uses})</span></div>
+                            <div class="text-[10px] text-gray-500 truncate max-w-[150px]">${p.desc}</div>
+                        </div>
+                        <div class="flex items-center gap-1">
+                            <button type="button" onclick="window.editPromoItem('${p.id}')" class="bg-blue-500/20 text-blue-600 dark:text-blue-400 px-2 py-0.5 rounded text-[10px] font-bold">تعديل</button>
+                            <button type="button" onclick="window.deletePromoItem('${p.id}')" class="bg-red-500/20 text-red-600 dark:text-red-400 px-2 py-0.5 rounded text-[10px] font-bold">حذف</button>
+                        </div>
+                    </div>`;
+            });
+        }
+
+        window.renderTestimonialsSection = function() {
             const sectionContainer = document.getElementById('testimonialsSectionContainer');
             const container = document.getElementById('testimonialsContainer');
             if (!sectionContainer || !container) return;
@@ -1362,7 +1567,7 @@
                 `;
                 container.appendChild(card);
             });
-        }
+        };
 
         window.trackLinkClick = function(id) {
             if (!appData.links) return;
@@ -2230,6 +2435,7 @@
             document.getElementById('adminCardStyle').value = appData.cardStyle || 'normal';
 
             document.getElementById('adminShowJoinBanner').checked = appData.showJoinBanner !== false;
+            document.getElementById('adminShowPromoSection').checked = appData.showPromoSection !== false;
             document.getElementById('adminShowLiveStatus').checked = appData.showLiveStatus !== false;
             document.getElementById('adminLiveStatusText').value = appData.liveStatusText || '';
             document.getElementById('adminLiveStatusType').value = appData.liveStatusType || 'emerald';
@@ -2265,7 +2471,6 @@
                 document.getElementById('editEmail').value = appData.contacts.email || '';
             }
 
-            // تعبئة إحصائيات الأدمن الحصرية
             const totalViews = appData.analytics?.totalViews || 0;
             const totalClicks = (appData.links || []).reduce((sum, l) => sum + (l.clicks || 0), 0);
             const totalFeedbacks = Object.keys(rootData.feedbackMessages || {}).length;
@@ -2305,6 +2510,7 @@
             renderAdminSidebarList();
             renderAdminTestimonialsList();
             renderAdminGalleryList();
+            renderAdminPromoList();
             renderAdminCategories();
             renderAdminCategorySelect();
             renderAdminLinksList();
@@ -2507,6 +2713,7 @@
                 floatingWhatsapp: req.whatsapp || '',
                 floatingMessage: 'مرحباً، أود الاستفسار عن خدماتكم...',
                 showJoinBanner: true,
+                showPromoSection: true,
                 customColors: { c1: "", o1: 0, c2: "", o2: 0, c3: "", o3: 0, angle: "to bottom right" },
                 bgImageUrl: '',
                 bgImgOpacity: 0.6,
@@ -2515,6 +2722,7 @@
                 mapEmbed: '',
                 contacts: { whatsapp: req.whatsapp || '', showWhatsapp: true, phone: '', showPhone: false, email: '', showEmail: false },
                 analytics: { totalViews: 0 },
+                promoCodes: [],
                 categories: [{ name: "الكل", enabled: true }, { name: "عام", enabled: true }],
                 sidebarLinks: [
                     { id: 'sb1', title: 'لوحة تحكم العضو', url: '#', icon: 'fa-solid fa-user-gear', action: 'openMemberPanel', enabled: true },
@@ -2790,7 +2998,7 @@
                             <button type="button" onclick="window.moveLink(${index}, -1)" class="bg-gray-200 dark:bg-gray-700 text-goldaccent px-1.5 py-0.5 rounded text-[10px] font-bold">⬆️</button>
                             <button type="button" onclick="window.moveLink(${index}, 1)" class="bg-gray-200 dark:bg-gray-700 text-goldaccent px-1.5 py-0.5 rounded text-[10px] font-bold">⬇️</button>
                             <button type="button" onclick="window.editLink('${l.id}')" class="bg-blue-500/20 text-blue-600 dark:text-blue-400 px-2 py-0.5 rounded text-[10px] font-bold">تعديل</button>
-                            <button type="button" onclick="window.deleteLink('${l.id}')" class="bg-red-500/20 text-red-600 dark:text-red-400 px-2 py-0.5 rounded text-[10px] font-bold">حذف</button>
+                            <button type="button" onclick="window.deleteLink('${l.id}')" class="bg-red-500/20 text-red-600 px-2 py-0.5 rounded text-[10px] font-bold">حذف</button>
                         </div>
                     </div>`;
             });
@@ -2817,6 +3025,7 @@
             appData.cardStyle = document.getElementById('adminCardStyle').value;
             
             appData.showJoinBanner = document.getElementById('adminShowJoinBanner').checked;
+            appData.showPromoSection = document.getElementById('adminShowPromoSection').checked;
             appData.showLiveStatus = document.getElementById('adminShowLiveStatus').checked;
             appData.liveStatusText = document.getElementById('adminLiveStatusText').value.trim();
             appData.liveStatusType = document.getElementById('adminLiveStatusType').value;
