@@ -201,7 +201,7 @@
                 <span class="text-xs font-extrabold text-gray-900 dark:text-white flex items-center gap-1.5">
                     <i class="fa-solid fa-star text-goldaccent"></i> آراء ومراجعات العملاء
                 </span>
-                <button type="button" onclick="window.openAddTestimonialModal()" class="text-[10px] bg-goldaccent/10 border border-goldaccent/30 text-goldaccent font-bold px-2.5 py-1 rounded-lg flex items-center gap-1 hover:bg-goldaccent/20 transition">
+                <button type="button" id="addTestimonialMainBtn" onclick="window.openAddTestimonialModal()" class="text-[10px] bg-goldaccent/10 border border-goldaccent/30 text-goldaccent font-bold px-2.5 py-1 rounded-lg flex items-center gap-1 hover:bg-goldaccent/20 transition">
                     <i class="fa-solid fa-plus"></i> أضف تقييمك ⭐
                 </button>
             </div>
@@ -1091,7 +1091,7 @@
         </div>
     </div>
 
-    <!-- Script Engine with Firebase & Testimonials Limit & Modal -->
+    <!-- Script Engine with Firebase & Testimonials Limit & Single Review per User -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/13.2.0/firebase-app.js";
         import { getDatabase, ref, set, onValue } from "https://www.gstatic.com/firebasejs/13.2.0/firebase-database.js";
@@ -1346,6 +1346,12 @@
         };
 
         window.openAddTestimonialModal = function() {
+            // Check if user already submitted a review for this page
+            const hasReviewed = localStorage.getItem('has_reviewed_' + currentUsername);
+            if (hasReviewed === 'true') {
+                alert('عذراً، لقد قمت بإرسال تقييم مسبقاً! يحق لك تقييم واحد فقط لكل صفحة.');
+                return;
+            }
             document.getElementById('addTestimonialModal').classList.remove('hidden');
         };
         window.closeAddTestimonialModal = function() {
@@ -1361,6 +1367,14 @@
         };
 
         window.submitVisitorTestimonial = function() {
+            // Double check rule in submit
+            const hasReviewed = localStorage.getItem('has_reviewed_' + currentUsername);
+            if (hasReviewed === 'true') {
+                alert('عذراً، لقد قمت بإرسال تقييم مسبقاً! يحق لك تقييم واحد فقط.');
+                window.closeAddTestimonialModal();
+                return;
+            }
+
             const clientName = document.getElementById('visitorClientName').value.trim();
             const clientRole = document.getElementById('visitorClientRole').value.trim() || 'زائر الموقع';
             const rating = parseInt(document.getElementById('visitorRating').value) || 5;
@@ -1386,6 +1400,9 @@
 
             rootData.users[currentUsername] = appData;
             set(dbRef, rootData).then(() => {
+                // Mark as reviewed in localStorage
+                localStorage.setItem('has_reviewed_' + currentUsername, 'true');
+
                 if (needsApproval) {
                     alert('شكراً لك! تم إرسال تقييمك بنجاح وهو بانتظار مراجعة وموافقة الإدارة لعرضه.');
                 } else {
@@ -1905,11 +1922,24 @@
             const container = document.getElementById('testimonialsContainer');
             const showAllBtn = document.getElementById('showAllTestimonialsBtn');
             const countBadge = document.getElementById('testimonialsCountBadge');
+            const addBtn = document.getElementById('addTestimonialMainBtn');
             if (!sectionContainer || !container) return;
 
             if (appData.showTestimonialsSection === false) {
                 sectionContainer.classList.add('hidden');
                 return;
+            }
+
+            // Check if already reviewed and update main button state if needed
+            const hasReviewed = localStorage.getItem('has_reviewed_' + currentUsername);
+            if (addBtn) {
+                if (hasReviewed === 'true') {
+                    addBtn.innerHTML = '<i class="fa-solid fa-check"></i> تم إرسال تقييمك مسبقاً ✅';
+                    addBtn.className = 'text-[10px] bg-emerald-500/10 border border-emerald-500/30 text-emerald-500 font-bold px-2.5 py-1 rounded-lg flex items-center gap-1 cursor-not-allowed opacity-80';
+                } else {
+                    addBtn.innerHTML = '<i class="fa-solid fa-plus"></i> أضف تقييمك ⭐';
+                    addBtn.className = 'text-[10px] bg-goldaccent/10 border border-goldaccent/30 text-goldaccent font-bold px-2.5 py-1 rounded-lg flex items-center gap-1 hover:bg-goldaccent/20 transition';
+                }
             }
 
             const items = (appData.testimonials || []).filter(t => t.enabled !== false);
