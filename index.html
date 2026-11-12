@@ -52,7 +52,7 @@
     </a>
 
     <!-- Top Bar -->
-    <div id="topBarEl" class="w-full max-w-md flex justify-between items-center mb-6 bg-lightcard dark:bg-cardbg p-3.5 rounded-2xl border border-gray-300 dark:border-gray-800 shadow-md relative z-40 transition-colors duration-300">
+    <div id="topBarEl" class="w-full max-w-md flex justify-between items-center mb-4 bg-lightcard dark:bg-cardbg p-3.5 rounded-2xl border border-gray-300 dark:border-gray-800 shadow-md relative z-40 transition-colors duration-300">
         <div class="flex items-center gap-2">
             <button type="button" onclick="window.toggleSidebar()" class="w-9 h-9 rounded-xl bg-gray-100 dark:bg-darkbg border border-gray-300 dark:border-gray-700 text-goldaccent flex items-center justify-center transition shadow-sm" title="القائمة الجانبية">
                 <i class="fa-solid fa-bars"></i>
@@ -92,6 +92,33 @@
 
     <!-- Main Profile Card Container -->
     <div class="w-full max-w-md flex flex-col items-center flex-grow relative z-10">
+
+        <!-- ⏳ قسم عداد التنازل والتخفيضات المؤقتة (Flash Deals) -->
+        <div id="flashDealContainer" class="w-full mb-4 bg-gradient-to-r from-red-500/15 via-amber-500/10 to-red-500/15 border border-red-500/40 rounded-2xl p-3.5 shadow-sm text-center space-y-2 hidden">
+            <div class="flex items-center justify-center gap-1.5 text-xs font-extrabold text-red-500 dark:text-red-400">
+                <i class="fa-solid fa-bolt animate-pulse"></i>
+                <span id="flashDealTitle">عرض خاص محدود الوقت!</span>
+            </div>
+            <!-- العداد التنازلي -->
+            <div class="flex justify-center items-center gap-2 text-[11px] font-mono font-bold">
+                <div class="bg-cardbg dark:bg-darkbg border border-red-500/30 px-2 py-1 rounded-lg text-red-500">
+                    <span id="dealSeconds">00</span> <span class="text-[9px] text-gray-400">ثانية</span>
+                </div>
+                <span class="text-red-500">:</span>
+                <div class="bg-cardbg dark:bg-darkbg border border-red-500/30 px-2 py-1 rounded-lg text-red-500">
+                    <span id="dealMinutes">00</span> <span class="text-[9px] text-gray-400">دقيقة</span>
+                </div>
+                <span class="text-red-500">:</span>
+                <div class="bg-cardbg dark:bg-darkbg border border-red-500/30 px-2 py-1 rounded-lg text-red-500">
+                    <span id="dealHours">00</span> <span class="text-[9px] text-gray-400">ساعة</span>
+                </div>
+                <span class="text-red-500">:</span>
+                <div class="bg-cardbg dark:bg-darkbg border border-red-500/30 px-2 py-1 rounded-lg text-red-500">
+                    <span id="dealDays">00</span> <span class="text-[9px] text-gray-400">يوم</span>
+                </div>
+            </div>
+        </div>
+
         <div class="text-center w-full mb-6">
             <div class="relative w-24 h-24 mx-auto mb-3">
                 <div id="avatarContainer" class="w-full h-full rounded-full border-2 border-goldaccent overflow-hidden bg-lightcard dark:bg-darkbg flex items-center justify-center shadow-md transition-colors duration-300">
@@ -131,7 +158,7 @@
 
         <div id="linksContainer" class="w-full flex flex-col gap-3 mb-6"></div>
 
-        <!-- قسم الكوبونات والخصومات الترويجية (مع عدد المرات المتاح) -->
+        <!-- قسم الكوبونات والخصومات الترويجية -->
         <div id="promoSectionContainer" class="w-full mb-6 hidden">
             <div class="flex items-center justify-between mb-3 px-1">
                 <span class="text-xs font-extrabold text-gray-900 dark:text-white flex items-center gap-1.5">
@@ -169,9 +196,8 @@
 
         <!-- زر الانضمام إلينا -->
         <button type="button" id="joinBannerBtn" onclick="window.openJoinModal()" class="w-full bg-gradient-to-r from-cyanaccent/20 via-blue-500/10 to-cyanaccent/20 border border-cyanaccent/40 rounded-2xl p-3 flex items-center justify-center gap-2 text-cyanaccent font-extrabold text-xs shadow-md transition hover:scale-[1.01] hidden">
-    <i class="fa-solid fa-user-plus"></i> انضم إلينا وأنشئ صفحتك الخاصة مجاناً
-</button>
-
+            <i class="fa-solid fa-user-plus"></i> انضم إلينا وأنشئ صفحتك الخاصة مجاناً
+        </button>
     </div>
 
     <!-- Footer -->
@@ -384,7 +410,32 @@
                     </div>
                 </div>
 
-                <!-- 🏷️ قسم إدارة الكوبونات والخصومات الترويجية (مع زر التوليد الآلي) -->
+                <!-- ⏳ إدارة عداد التنازل والعروض المؤقتة (Flash Deals) -->
+                <div class="bg-lightbg dark:bg-darkbg rounded-xl border border-gray-300 dark:border-gray-800 overflow-hidden transition-colors">
+                    <button type="button" onclick="window.toggleAccordion('accFlashDealAdmin')" class="w-full p-3 flex justify-between items-center font-bold text-gray-800 dark:text-gray-200">
+                        <span class="flex items-center gap-2"><i class="fa-solid fa-bolt text-red-500"></i> إدارة عداد العروض المؤقتة (Flash Deal)</span>
+                        <div class="flex items-center gap-2">
+                            <span class="text-[10px] bg-red-500/20 text-red-500 px-2 py-0.5 rounded font-mono">جديد</span>
+                            <i id="icon-accFlashDealAdmin" class="fa-solid fa-chevron-down transition-transform"></i>
+                        </div>
+                    </button>
+                    <div id="accFlashDealAdmin" class="hidden p-3 pt-0 space-y-3 border-t border-gray-200 dark:border-gray-800 mt-1">
+                        <div class="flex items-center gap-2 pt-2 bg-white dark:bg-cardbg p-2.5 rounded-xl border border-gray-200 dark:border-gray-700">
+                            <input type="checkbox" id="adminShowFlashDeal" class="accent-red-500 w-4 h-4">
+                            <label for="adminShowFlashDeal" class="font-extrabold text-gray-800 dark:text-gray-200">تفعيل وإظهار شريط العداد التنازلي في الصفحة</label>
+                        </div>
+                        <div class="space-y-1 pt-1">
+                            <label class="block text-[11px] text-gray-500">عنوان العرض:</label>
+                            <input type="text" id="adminFlashDealTitle" placeholder="عرض خاص لفترة محدودة على واجهات الألوكوبوند!" class="w-full bg-white dark:bg-cardbg border border-gray-200 dark:border-gray-700 rounded-lg p-2 text-gray-900 dark:text-white outline-none font-bold">
+                        </div>
+                        <div class="space-y-1">
+                            <label class="block text-[11px] text-gray-500">تاريخ ووقت انتهاء العرض (Deadline):</label>
+                            <input type="datetime-local" id="adminFlashDealEnd" class="w-full bg-white dark:bg-cardbg border border-gray-200 dark:border-gray-700 rounded-lg p-2 text-gray-900 dark:text-white outline-none font-mono">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 🏷️ قسم إدارة الكوبونات والخصومات الترويجية -->
                 <div class="bg-lightbg dark:bg-darkbg rounded-xl border border-gray-300 dark:border-gray-800 overflow-hidden transition-colors">
                     <button type="button" onclick="window.toggleAccordion('accPromoAdmin')" class="w-full p-3 flex justify-between items-center font-bold text-gray-800 dark:text-gray-200">
                         <span class="flex items-center gap-2"><i class="fa-solid fa-tags text-goldaccent"></i> إدارة الكوبونات وعدد مرات الاستخدام</span>
@@ -403,7 +454,6 @@
                             <h4 id="promoFormTitle" class="font-bold text-goldaccent">إضافة كوبون خصم جديد برصيد مرات محدد</h4>
                             <input type="hidden" id="editingPromoId">
                             
-                            <!-- حقل رمز الكوبون مع زر التوليد السريع -->
                             <div class="flex gap-2">
                                 <input type="text" id="promoCodeVal" placeholder="رمز الكوبون (مثال: MAHMOUD10)" class="w-full bg-lightcard dark:bg-cardbg border border-gray-300 dark:border-gray-700 rounded-lg p-2 text-gray-900 dark:text-white outline-none uppercase font-mono font-bold">
                                 <button type="button" onclick="window.generateRandomPromoCode()" class="bg-cyanaccent/20 border border-cyanaccent/40 text-cyanaccent px-3 py-2 rounded-lg text-xs font-extrabold whitespace-nowrap shadow-sm hover:bg-cyanaccent/30 transition flex items-center gap-1.5" title="توليد كود عشوائي تلقائياً">
@@ -829,256 +879,7 @@
         </div>
     </div>
 
-    <!-- Member Panel Modal -->
-    <div id="memberModal" class="fixed inset-0 bg-black/70 backdrop-blur-md hidden flex items-center justify-center z-[100] p-3">
-        <div class="bg-lightcard dark:bg-cardbg border border-gray-300 dark:border-gray-800 w-full max-w-lg rounded-2xl p-4 shadow-2xl max-h-[92vh] flex flex-col transition-colors duration-300">
-            <div class="flex justify-between items-center border-b border-gray-200 dark:border-gray-800 pb-3 mb-3">
-                <h3 class="text-base font-bold text-cyanaccent flex items-center gap-2">
-                    <i class="fa-solid fa-user-gear"></i> لوحة التحكم الفرعية (<span id="memberNameTitle"></span>)
-                </h3>
-                <button type="button" onclick="window.closeMemberModal()" class="text-gray-500 hover:text-gray-800 dark:hover:text-white text-xl px-2"><i class="fa-solid fa-xmark"></i></button>
-            </div>
-            <div class="overflow-y-auto flex-grow pr-1 space-y-3 text-xs">
-
-                <div class="bg-lightbg dark:bg-darkbg rounded-xl border border-gray-300 dark:border-gray-800 overflow-hidden transition-colors">
-                    <button type="button" onclick="window.toggleAccordion('accDesignMember')" class="w-full p-3 flex justify-between items-center font-bold text-gray-800 dark:text-gray-200">
-                        <span class="flex items-center gap-2"><i class="fa-solid fa-palette text-cyanaccent"></i> إعدادات التصميم لصفحتك</span>
-                        <div class="flex items-center gap-2">
-                            <span class="text-[10px] bg-cyanaccent/20 text-cyanaccent px-2 py-0.5 rounded font-mono">تخصيص</span>
-                            <i id="icon-accDesignMember" class="fa-solid fa-chevron-down transition-transform"></i>
-                        </div>
-                    </button>
-                    <div id="accDesignMember" class="hidden p-3 pt-0 space-y-2 border-t border-gray-200 dark:border-gray-800 mt-1">
-                        <div class="flex justify-between items-center pt-2">
-                            <span class="text-[11px] text-gray-500">تخصيص مظهر صفحتك المستقلة</span>
-                            <button type="button" onclick="window.resetMemberDesignDefaults()" class="bg-red-500/10 text-red-500 border border-red-500/30 px-2.5 py-1 rounded-lg text-[10px] font-bold">استعادة الافتراضي (شفافية 0)</button>
-                        </div>
-                        <div>
-                            <label class="block font-bold text-gray-800 dark:text-gray-200 mb-1">شكل صورتك الشخصية:</label>
-                            <select id="memberAvatarShape" class="w-full bg-lightcard dark:bg-cardbg border border-gray-300 dark:border-gray-700 rounded-lg p-2 text-gray-900 dark:text-white outline-none">
-                                <option value="rounded-full">دائري بالكامل (Full Circle)</option>
-                                <option value="rounded-2xl">مربع بحواف مبرومة / مفتولة الزوايا (Rounded Corners)</option>
-                                <option value="rounded-xl">مربع بحواف ناعمة متوسطة (Soft Rounded)</option>
-                                <option value="rounded-none">مربع حاد الزوايا (Sharp Square)</option>
-                            </select>
-                        </div>
-                        <div>
-                            <label class="block font-bold text-gray-800 dark:text-gray-200 mb-1">توهج أو ظل صورتك الشخصية:</label>
-                            <select id="memberAvatarGlow" class="w-full bg-lightcard dark:bg-cardbg border border-gray-300 dark:border-gray-700 rounded-lg p-2 text-gray-900 dark:text-white outline-none">
-                                <option value="glow-gold">توهج ذهبي فاخر (Gold Glow)</option>
-                                <option value="glow-cyan">توهج سماوي ساطع (Cyan Glow)</option>
-                                <option value="glow-subtle">ظل خفيف وعادي (Subtle Shadow)</option>
-                                <option value="none">بدون توهج أو ظل (None)</option>
-                            </select>
-                        </div>
-                        <div>
-                            <label class="block font-bold text-gray-800 dark:text-gray-200 mb-1">شكل البطاقات وأزرار الروابط:</label>
-                            <select id="memberCardShape" class="w-full bg-lightcard dark:bg-cardbg border border-gray-300 dark:border-gray-700 rounded-lg p-2 text-gray-900 dark:text-white outline-none">
-                                <option value="rounded-2xl">مفتولة الزوايا بشكل أنيق (Rounded 2XL)</option>
-                                <option value="rounded-full">دائرية الأطراف بالكامل (Pill Shape)</option>
-                                <option value="rounded-lg">زوايا معتدلة (Rounded LG)</option>
-                                <option value="rounded-none">زوايا حادة (Sharp Square)</option>
-                            </select>
-                        </div>
-                        <div>
-                            <label class="block font-bold text-gray-800 dark:text-gray-200 mb-1">توهج أو ظل البطاقات:</label>
-                            <select id="memberCardGlow" class="w-full bg-lightcard dark:bg-cardbg border border-gray-300 dark:border-gray-700 rounded-lg p-2 text-gray-900 dark:text-white outline-none">
-                                <option value="glow-gold-hover">توهج ذهبي عند المرور (Gold Glow Hover)</option>
-                                <option value="glow-subtle">ظل ثابت وبارز (Subtle Shadow)</option>
-                                <option value="none">بدون توهج أو ظل</option>
-                            </select>
-                        </div>
-                        <div>
-                            <label class="block font-bold text-gray-800 dark:text-gray-200 mb-1">نمط البطاقات البصري (Effects & Glass):</label>
-                            <select id="memberCardStyle" class="w-full bg-lightcard dark:bg-cardbg border border-gray-300 dark:border-gray-700 rounded-lg p-2 text-gray-900 dark:text-white outline-none">
-                                <option value="normal">عادي (Solid)</option>
-                                <option value="glass-card">زجاجي شفاف فاخر (Glassmorphism)</option>
-                            </select>
-                        </div>
-
-                        <div class="bg-white dark:bg-cardbg p-3 rounded-xl border border-gray-300 dark:border-gray-700 space-y-3">
-                            <label class="block font-bold text-gray-800 dark:text-gray-200">تدرج الألوان المخصص (الشفافية 0 افتراضياً):</label>
-                            <div class="grid grid-cols-3 gap-2">
-                                <div class="space-y-1">
-                                    <span class="text-[10px] text-gray-500 block">اللون 1</span>
-                                    <input type="color" id="memberColor1" value="#0f1117" class="w-full h-8 rounded cursor-pointer bg-transparent">
-                                    <input type="range" id="memberOpacity1" min="0" max="1" step="0.05" value="0" class="w-full accent-cyanaccent" title="شفافية اللون 1">
-                                </div>
-                                <div class="space-y-1">
-                                    <span class="text-[10px] text-gray-500 block">اللون 2</span>
-                                    <input type="color" id="memberColor2" value="#1a1d26" class="w-full h-8 rounded cursor-pointer bg-transparent">
-                                    <input type="range" id="memberOpacity2" min="0" max="1" step="0.05" value="0" class="w-full accent-cyanaccent" title="شفافية اللون 2">
-                                </div>
-                                <div class="space-y-1">
-                                    <span class="text-[10px] text-gray-500 block">اللون 3</span>
-                                    <input type="color" id="memberColor3" value="#0f1117" class="w-full h-8 rounded cursor-pointer bg-transparent">
-                                    <input type="range" id="memberOpacity3" min="0" max="1" step="0.05" value="0" class="w-full accent-cyanaccent" title="شفافية اللون 3">
-                                </div>
-                            </div>
-                            <div class="flex items-center justify-between pt-1">
-                                <span class="text-[10px] text-gray-500">اتجاه التدرج:</span>
-                                <select id="memberGradientAngle" class="bg-lightbg dark:bg-darkbg border border-gray-300 dark:border-gray-700 rounded px-2 py-1 text-[11px]">
-                                    <option value="to bottom right">إلى أسفل اليمين ↘</option>
-                                    <option value="to bottom">إلى الأسفل ↓</option>
-                                    <option value="to right">إلى اليمين →</option>
-                                    <option value="to top right">إلى أعلى اليمين ↗</option>
-                                </select>
-                            </div>
-                        </div>
-
-                        <div class="bg-white dark:bg-cardbg p-3 rounded-xl border border-gray-300 dark:border-gray-700 space-y-2">
-                            <label class="block font-bold text-gray-800 dark:text-gray-200">صورة خلفية صفحتك المخصصة:</label>
-                            <input type="url" id="memberBgImageUrl" placeholder="https://example.com/bg.jpg" class="w-full bg-lightcard dark:bg-cardbg border border-gray-300 dark:border-gray-700 rounded-lg p-2 text-gray-900 dark:text-white outline-none">
-                            <div class="flex items-center justify-between pt-1">
-                                <span class="text-[10px] text-gray-500">درجة شفافية الخلفية:</span>
-                                <span id="memberBgImgOpacityVal" class="text-[10px] font-bold text-cyanaccent">0.6</span>
-                            </div>
-                            <input type="range" id="memberBgImgOpacity" min="0.1" max="1" step="0.05" value="0.6" class="w-full accent-cyanaccent">
-                        </div>
-                    </div>
-                </div>
-
-                <!-- إعدادات شريط الحالة المباشرة للعضو -->
-                <div class="bg-lightbg dark:bg-darkbg rounded-xl border border-gray-300 dark:border-gray-800 p-3 space-y-2">
-                    <h4 class="font-bold text-cyanaccent flex items-center gap-2"><i class="fa-solid fa-signal"></i> إعدادات شريط الحالة المباشرة لصفحتك</h4>
-                    <div class="flex items-center gap-2 pt-1">
-                        <input type="checkbox" id="memberShowLiveStatus" class="accent-cyanaccent w-4 h-4" checked>
-                        <label for="memberShowLiveStatus" class="font-bold text-gray-800 dark:text-gray-200">إظهار شريط الحالة في صفحتي</label>
-                    </div>
-                    <div>
-                        <label class="block text-[11px] text-gray-500 mb-1">نص الحالة المباشرة:</label>
-                        <input type="text" id="memberLiveStatusText" placeholder="متاح للعمل الحر والطلبات" class="w-full bg-lightcard dark:bg-cardbg border border-gray-300 dark:border-gray-700 rounded-lg p-2 text-gray-900 dark:text-white outline-none">
-                    </div>
-                    <div>
-                        <label class="block text-[11px] text-gray-500 mb-1">نوع الحالة واللون:</label>
-                        <select id="memberLiveStatusType" class="w-full bg-lightcard dark:bg-cardbg border border-gray-300 dark:border-gray-700 rounded-lg p-2 text-gray-900 dark:text-white outline-none">
-                            <option value="emerald">متاح ومستعد (أخضر زمردي 🟢)</option>
-                            <option value="amber">مشغول حالياً (برتقالي ⏳)</option>
-                            <option value="rose">غير متاح / إجازة (أحمر 🔴)</option>
-                            <option value="cyan">قيد التنفيذ / متصل (سماوي 🔵)</option>
-                        </select>
-                    </div>
-                </div>
-
-                <!-- إعدادات الزر العائم للعضو -->
-                <div class="bg-lightbg dark:bg-darkbg rounded-xl border border-gray-300 dark:border-gray-800 p-3 space-y-2">
-                    <h4 class="font-bold text-cyanaccent flex items-center gap-2"><i class="fa-solid fa-comments"></i> إعدادات زر "تواصل معي سريعاً" العائم</h4>
-                    <div class="flex items-center gap-2 pt-1">
-                        <input type="checkbox" id="memberShowFloatingBtn" class="accent-cyanaccent w-4 h-4" checked>
-                        <label for="memberShowFloatingBtn" class="font-bold text-gray-800 dark:text-gray-200">إظهار الزر العائم في صفحتي</label>
-                    </div>
-                    <div>
-                        <label class="block text-[11px] text-gray-500 mb-1">رقم الواتساب للزر العائم:</label>
-                        <input type="text" id="memberFloatingWhatsapp" placeholder="+963900000000" class="w-full bg-lightcard dark:bg-cardbg border border-gray-300 dark:border-gray-700 rounded-lg p-2 text-gray-900 dark:text-white outline-none">
-                    </div>
-                    <div>
-                        <label class="block text-[11px] text-gray-500 mb-1">رسالة الترحيب التلقائية:</label>
-                        <input type="text" id="memberFloatingMessage" placeholder="مرحباً، أود الاستفسار عن خدماتكم..." class="w-full bg-lightcard dark:bg-cardbg border border-gray-300 dark:border-gray-700 rounded-lg p-2 text-gray-900 dark:text-white outline-none">
-                    </div>
-                </div>
-
-                <div class="bg-lightbg dark:bg-darkbg rounded-xl border border-gray-300 dark:border-gray-800 p-3 space-y-2">
-                    <h4 class="font-bold text-cyanaccent flex items-center gap-2"><i class="fa-solid fa-map-location-dot"></i> إعدادات الخريطة الجغرافية لصفحتك</h4>
-                    <div class="flex items-center gap-2">
-                        <input type="checkbox" id="memberShowMap" class="accent-cyanaccent w-4 h-4">
-                        <label for="memberShowMap" class="font-bold text-gray-800 dark:text-gray-200">إظهار الخريطة في أسفل صفحتي</label>
-                    </div>
-                    <input type="url" id="memberMapUrl" placeholder="رابط زر الخريطة (Google Maps Share Link)" class="w-full bg-lightcard dark:bg-cardbg border border-gray-300 dark:border-gray-700 rounded-lg p-2 text-gray-900 dark:text-white outline-none">
-                    <textarea id="memberMapEmbed" placeholder="كود التضمين iframe src لخرائط جوجل" class="w-full bg-lightcard dark:bg-cardbg border border-gray-300 dark:border-gray-700 rounded-lg p-2 text-gray-900 dark:text-white outline-none h-16 text-[11px] font-mono"></textarea>
-                </div>
-
-                <!-- إدارة آراء العملاء للعضو الفرعي -->
-                <div class="bg-lightbg dark:bg-darkbg rounded-xl border border-gray-300 dark:border-gray-800 p-3 space-y-2">
-                    <h4 id="memberTestimonialFormTitle" class="font-bold text-cyanaccent flex items-center gap-2"><i class="fa-solid fa-star"></i> إدارة آراء ومراجعات العملاء لصفحتك</h4>
-                    <input type="hidden" id="memberEditingTestimonialId">
-                    <input type="text" id="memberTestimonialClientName" placeholder="اسم العميل" class="w-full bg-lightcard dark:bg-cardbg border border-gray-300 dark:border-gray-700 rounded-lg p-2 text-gray-900 dark:text-white outline-none">
-                    <input type="text" id="memberTestimonialClientRole" placeholder="صفته أو نشاطه" class="w-full bg-lightcard dark:bg-cardbg border border-gray-300 dark:border-gray-700 rounded-lg p-2 text-gray-900 dark:text-white outline-none">
-                    <textarea id="memberTestimonialComment" placeholder="نص رأي العميل..." class="w-full bg-lightcard dark:bg-cardbg border border-gray-300 dark:border-gray-700 rounded-lg p-2 text-gray-900 dark:text-white outline-none h-16 resize-none"></textarea>
-                    <div class="flex items-center justify-between">
-                        <span class="text-[11px] text-gray-500">التقييم بالنجوم:</span>
-                        <select id="memberTestimonialRating" class="bg-lightcard dark:bg-cardbg border border-gray-300 dark:border-gray-700 rounded-lg p-2 text-gray-900 dark:text-white outline-none text-xs">
-                            <option value="5">⭐⭐⭐⭐⭐ (5 نجوم)</option>
-                            <option value="4">⭐⭐⭐⭐ (4 نجوم)</option>
-                            <option value="3">⭐⭐⭐ (3 نجوم)</option>
-                            <option value="2">⭐⭐ (نجمتان)</option>
-                            <option value="1">⭐ (نجمة واحدة)</option>
-                        </select>
-                    </div>
-                    <div class="flex items-center gap-2 pt-1 bg-cyanaccent/10 p-2 rounded-lg border border-cyanaccent/30">
-                        <input type="checkbox" id="memberTestimonialEnabled" class="accent-cyanaccent w-4 h-4" checked>
-                        <label for="memberTestimonialEnabled" class="font-bold text-gray-900 dark:text-white text-xs">تفعيل وعرض التقييم</label>
-                    </div>
-                    <div class="flex gap-2 pt-1">
-                        <button type="button" onclick="window.saveMemberTestimonialItem()" class="flex-1 bg-cyanaccent text-black font-bold py-2 rounded-lg">حفظ التقييم</button>
-                        <button type="button" onclick="window.resetMemberTestimonialForm()" class="bg-gray-200 dark:bg-gray-800 text-gray-800 dark:text-gray-200 px-3 py-2 rounded-lg font-bold">إلغاء</button>
-                    </div>
-                    <div id="memberTestimonialsList" class="space-y-1.5 pt-2 border-t border-gray-200 dark:border-gray-700"></div>
-                </div>
-
-                <div class="bg-lightbg dark:bg-darkbg rounded-xl border border-gray-300 dark:border-gray-800 p-3 space-y-2">
-                    <h4 class="font-bold text-cyanaccent">تعديل معلومات صفحتك والصورة وكلمة المرور</h4>
-                    <input type="text" id="memberEditName" placeholder="اسمك الظاهر" class="w-full bg-lightcard dark:bg-cardbg border border-gray-300 dark:border-gray-700 rounded-lg p-2 text-gray-900 dark:text-white outline-none">
-                    <textarea id="memberEditBio" placeholder="نبذة مختصرة..." class="w-full bg-lightcard dark:bg-cardbg border border-gray-300 dark:border-gray-700 rounded-lg p-2 text-gray-900 dark:text-white outline-none h-16 resize-none"></textarea>
-                    <input type="file" id="memberImageFileInput" accept="image/*" onchange="window.handleMemberImageUpload(event)" class="w-full text-gray-600 dark:text-gray-400 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-xs file:font-semibold file:bg-cyanaccent/20 file:text-cyanaccent cursor-pointer mb-1">
-                    <input type="url" id="memberEditAvatar" placeholder="أو أدخل رابط الصورة مباشرة" class="w-full bg-lightcard dark:bg-cardbg border border-gray-300 dark:border-gray-700 rounded-lg p-2 text-gray-900 dark:text-white outline-none">
-                    <div class="pt-2 border-t border-gray-200 dark:border-gray-700">
-                        <label class="block text-cyanaccent font-bold mb-1"><i class="fa-solid fa-key"></i> رمز PIN الجديد:</label>
-                        <input type="password" id="memberNewPinInput" maxlength="6" placeholder="اتركه فارغاً لعدم التغيير" class="w-full bg-lightcard dark:bg-cardbg border border-gray-300 dark:border-gray-700 rounded-lg p-2 text-gray-900 dark:text-white outline-none">
-                    </div>
-                </div>
-
-                <div class="bg-lightbg dark:bg-darkbg rounded-xl border border-gray-300 dark:border-gray-800 p-3 space-y-2">
-                    <h4 class="font-bold text-cyanaccent"><i class="fa-solid fa-address-book"></i> معلومات الاتصال</h4>
-                    <div class="flex items-center gap-2 mt-1"><input type="checkbox" id="memberShowWhatsapp" class="accent-cyanaccent"><input type="text" id="memberEditWhatsapp" placeholder="واتساب" class="flex-1 bg-lightcard dark:bg-cardbg border border-gray-300 dark:border-gray-700 rounded-lg p-2 text-gray-900 dark:text-white outline-none"></div>
-                    <div class="flex items-center gap-2"><input type="checkbox" id="memberShowPhone" class="accent-cyanaccent"><input type="text" id="memberEditPhone" placeholder="هاتف" class="flex-1 bg-lightcard dark:bg-cardbg border border-gray-300 dark:border-gray-700 rounded-lg p-2 text-gray-900 dark:text-white outline-none"></div>
-                    <div class="flex items-center gap-2"><input type="checkbox" id="memberShowEmail" class="accent-cyanaccent"><input type="email" id="memberEditEmail" placeholder="إيميل" class="flex-1 bg-lightcard dark:bg-cardbg border border-gray-300 dark:border-gray-700 rounded-lg p-2 text-gray-900 dark:text-white outline-none"></div>
-                </div>
-
-                <div class="bg-lightbg dark:bg-darkbg rounded-xl border border-gray-300 dark:border-gray-800 p-3 space-y-2">
-                    <h4 id="memberGalleryFormTitle" class="font-bold text-cyanaccent">إدارة المشاريع</h4>
-                    <input type="hidden" id="memberEditingGalleryId">
-                    <input type="text" id="memberGalleryTitle" placeholder="عنوان المشروع" class="w-full bg-lightcard dark:bg-cardbg border border-gray-300 dark:border-gray-700 rounded-lg p-2 text-gray-900 dark:text-white outline-none">
-                    <input type="text" id="memberGalleryCategory" placeholder="الفئة" class="w-full bg-lightcard dark:bg-cardbg border border-gray-300 dark:border-gray-700 rounded-lg p-2 text-gray-900 dark:text-white outline-none">
-                    <textarea id="memberGalleryDesc" placeholder="التفاصيل..." class="w-full bg-lightcard dark:bg-cardbg border border-gray-300 dark:border-gray-700 rounded-lg p-2 text-gray-900 dark:text-white outline-none h-16 resize-none"></textarea>
-                    <input type="url" id="memberGalleryCoverUrl" placeholder="رابط الغلاف" class="w-full bg-lightcard dark:bg-cardbg border border-gray-300 dark:border-gray-700 rounded-lg p-2 text-gray-900 dark:text-white outline-none">
-                    <textarea id="memberGalleryExtraUrls" placeholder="روابط إضافية..." class="w-full bg-lightcard dark:bg-cardbg border border-gray-300 dark:border-gray-700 rounded-lg p-2 text-gray-900 dark:text-white outline-none h-16 text-[11px] font-mono"></textarea>
-                    <div class="flex items-center gap-2 pt-1 bg-cyanaccent/10 p-2 rounded-lg border border-cyanaccent/30">
-                        <input type="checkbox" id="memberGalleryEnabled" class="accent-cyanaccent w-4 h-4" checked>
-                        <label for="memberGalleryEnabled" class="font-bold text-gray-900 dark:text-white text-xs">تفعيل وعرض المشروع في المعرض</label>
-                    </div>
-                    <div class="flex gap-2 pt-1">
-                        <button type="button" onclick="window.saveMemberGalleryItem()" class="flex-1 bg-cyanaccent text-black font-bold py-2 rounded-lg">حفظ المشروع</button>
-                        <button type="button" onclick="window.resetMemberGalleryForm()" class="bg-gray-200 dark:bg-gray-800 text-gray-800 dark:text-gray-200 px-3 py-2 rounded-lg font-bold">إلغاء</button>
-                    </div>
-                    <div id="memberGalleryList" class="space-y-1.5 pt-2 border-t border-gray-200 dark:border-gray-700"></div>
-                </div>
-
-                <div class="bg-lightbg dark:bg-darkbg rounded-xl border border-gray-300 dark:border-gray-800 p-3 space-y-2">
-                    <h4 id="memberLinkFormTitle" class="font-bold text-cyanaccent">إدارة الروابط وإحصائيات النقرات</h4>
-                    <input type="hidden" id="memberEditingLinkId">
-                    <input type="text" id="memberLinkTitle" placeholder="عنوان الرابط" class="w-full bg-lightcard dark:bg-cardbg border border-gray-300 dark:border-gray-700 rounded-lg p-2 text-gray-900 dark:text-white outline-none">
-                    <input type="url" id="memberLinkUrl" placeholder="الرابط https://..." class="w-full bg-lightcard dark:bg-cardbg border border-gray-300 dark:border-gray-700 rounded-lg p-2 text-gray-900 dark:text-white outline-none">
-                    <input type="text" id="memberLinkIcon" placeholder="أيقونة" class="w-full bg-lightcard dark:bg-cardbg border border-gray-300 dark:border-gray-700 rounded-lg p-2 text-gray-900 dark:text-white outline-none">
-                    <div class="flex items-center gap-2 pt-1 bg-cyanaccent/10 p-2 rounded-lg border border-cyanaccent/30">
-                        <input type="checkbox" id="memberLinkEnabled" class="accent-cyanaccent w-4 h-4" checked>
-                        <label for="memberLinkEnabled" class="font-bold text-gray-900 dark:text-white text-xs">تفعيل وعرض الرابط</label>
-                    </div>
-                    <div class="flex gap-2 pt-1">
-                        <button type="button" onclick="window.saveMemberLinkItem()" class="flex-1 bg-cyanaccent text-black font-bold py-2 rounded-lg">حفظ الرابط</button>
-                        <button type="button" onclick="window.resetMemberLinkForm()" class="bg-gray-200 dark:bg-gray-800 text-gray-800 dark:text-gray-200 px-3 py-2 rounded-lg font-bold">إلغاء</button>
-                    </div>
-                    <div id="memberLinksList" class="space-y-1.5 pt-2 border-t border-gray-200 dark:border-gray-700"></div>
-                </div>
-
-            </div>
-
-            <div class="border-t border-gray-300 dark:border-gray-800 pt-3 mt-3 flex justify-end">
-                <button type="button" onclick="window.saveMemberChanges()" class="bg-cyanaccent text-black font-extrabold px-5 py-2 rounded-xl text-xs shadow-sm">حفظ ونشر التغييرات</button>
-            </div>
-        </div>
-    </div>
-
-    <!-- Script Engine with Firebase & Promo Code Generator -->
+    <!-- Script Engine with Firebase & Flash Deal Countdown Timer -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/13.2.0/firebase-app.js";
         import { getDatabase, ref, set, onValue } from "https://www.gstatic.com/firebasejs/13.2.0/firebase-database.js";
@@ -1119,8 +920,11 @@
             showFloatingBtn: true,
             floatingWhatsapp: "+963900000000",
             floatingMessage: "مرحباً محمود، أود الاستفسار عن خدماتك وتصاميمك...",
-            showJoinBanner: true,
+            showJoinBanner: false,
             showPromoSection: true,
+            showFlashDeal: false,
+            flashDealTitle: "عرض خاص لفترة محدودة على واجهات الألوكوبوند!",
+            flashDealEnd: new Date(Date.now() + 86400000 * 3).toISOString().slice(0, 16),
             showMap: true,
             mapUrl: "https://maps.app.goo.gl/YourMapLocation",
             mapEmbed: "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3238.8!2d37.134!3d36.202!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zMzbCsDEyJzEyLjgiTiAzN8KwMDgnMDIuNCJF!5e0!3m2!1sar!2s!4v1!5m2!1sar!2s",
@@ -1166,8 +970,8 @@
         let activeCategory = "الكل";
         let activeGalleryCategory = "الكل";
         let tempImageBase64 = "";
-        let memberTempImageBase64 = "";
         let currentViewingProjectId = null;
+        let flashDealInterval = null;
 
         const dbRef = ref(db, 'platformData');
         onValue(dbRef, (snapshot) => {
@@ -1190,11 +994,15 @@
                     appData.promoCodes.forEach(p => { if (p.usesLeft === undefined) p.usesLeft = 10; });
                 }
                 if (appData.showPromoSection === undefined) appData.showPromoSection = true;
+                if (appData.showFlashDeal === undefined) appData.showFlashDeal = false;
+                if (!appData.flashDealTitle) appData.flashDealTitle = defaultUserData.flashDealTitle;
+                if (!appData.flashDealEnd) appData.flashDealEnd = defaultUserData.flashDealEnd;
+
                 if (!appData.sidebarLinks) appData.sidebarLinks = defaultUserData.sidebarLinks;
                 if (!appData.contacts) appData.contacts = defaultUserData.contacts;
                 if (!appData.testimonials) appData.testimonials = defaultUserData.testimonials;
                 if (appData.showMap === undefined) appData.showMap = true;
-                if (appData.showJoinBanner === undefined) appData.showJoinBanner = true;
+                if (appData.showJoinBanner === undefined) appData.showJoinBanner = false;
                 if (appData.showLiveStatus === undefined) appData.showLiveStatus = true;
                 if (!appData.liveStatusText) appData.liveStatusText = defaultUserData.liveStatusText;
                 if (!appData.liveStatusType) appData.liveStatusType = "emerald";
@@ -1261,6 +1069,7 @@
             renderLiveStatusBadge();
             renderFloatingWhatsappBtn();
             renderJoinBannerVisibility();
+            renderFlashDealSection();
             renderPromoSection();
             renderSidebarMenu();
             renderCategories();
@@ -1300,16 +1109,17 @@
             const cardGlow = appData.cardGlow || 'glow-gold-hover';
             
             const topBarEl = document.getElementById('topBarEl');
+            const flashDealContainer = document.getElementById('flashDealContainer');
             const galleryBtnCard = document.getElementById('galleryBtnCard');
             const joinBannerBtn = document.getElementById('joinBannerBtn');
             const mapSectionContainer = document.getElementById('mapSectionContainer');
 
-            [topBarEl, galleryBtnCard, joinBannerBtn, mapSectionContainer].forEach(el => {
+            [topBarEl, flashDealContainer, galleryBtnCard, joinBannerBtn, mapSectionContainer].forEach(el => {
                 if(el) {
                     el.classList.remove('rounded-2xl', 'rounded-full', 'rounded-lg', 'rounded-none', 'glass-card', 'glow-gold-hover', 'glow-subtle');
                     el.classList.add(cardShape);
                     if (cardStyle === 'glass-card') el.classList.add('glass-card');
-                    if (cardGlow && cardGlow !== 'none') el.classList.add(cardGlow);
+                    if (cardGlow && cardGlow !== 'none' && el !== flashDealContainer) el.classList.add(cardGlow);
                 }
             });
 
@@ -1337,6 +1147,48 @@
                     bgImageLayer.classList.add('hidden');
                 }
             }
+        }
+
+        function renderFlashDealSection() {
+            const container = document.getElementById('flashDealContainer');
+            const titleEl = document.getElementById('flashDealTitle');
+            if (!container || !titleEl) return;
+
+            if (flashDealInterval) clearInterval(flashDealInterval);
+
+            if (appData.showFlashDeal !== true || !appData.flashDealEnd) {
+                container.classList.add('hidden');
+                return;
+            }
+
+            container.classList.remove('hidden');
+            titleEl.textContent = appData.flashDealTitle || 'عرض خاص لفترة محدودة!';
+
+            const endTime = new Date(appData.flashDealEnd).getTime();
+
+            function updateCountdown() {
+                const now = new Date().getTime();
+                const distance = endTime - now;
+
+                if (distance < 0) {
+                    container.classList.add('hidden');
+                    if (flashDealInterval) clearInterval(flashDealInterval);
+                    return;
+                }
+
+                const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+                const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+                const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+                document.getElementById('dealDays').textContent = String(days).padStart(2, '0');
+                document.getElementById('dealHours').textContent = String(hours).padStart(2, '0');
+                document.getElementById('dealMinutes').textContent = String(minutes).padStart(2, '0');
+                document.getElementById('dealSeconds').textContent = String(seconds).padStart(2, '0');
+            }
+
+            updateCountdown();
+            flashDealInterval = setInterval(updateCountdown, 1000);
         }
 
         function renderLiveStatusBadge() {
@@ -1386,7 +1238,7 @@
         function renderJoinBannerVisibility() {
             const banner = document.getElementById('joinBannerBtn');
             if (!banner) return;
-            if (appData.showJoinBanner === false) {
+            if (appData.showJoinBanner !== true) {
                 banner.classList.add('hidden');
             } else {
                 banner.classList.remove('hidden');
@@ -1439,7 +1291,6 @@
             });
         }
 
-        // دالة توليد كود كوبون عشوائي واحترافي
         window.generateRandomPromoCode = function() {
             const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
             let code = 'PROMO';
@@ -1735,24 +1586,6 @@
             document.getElementById('adminBgImgOpacity').value = '0.6';
             document.getElementById('adminBgImgOpacityVal').textContent = '0.6';
             alert('تم استعادة التصميم الأساسي مع جعل الشفافية 0 بنجاح.');
-        };
-
-        window.resetMemberDesignDefaults = function() {
-            document.getElementById('memberAvatarShape').value = 'rounded-full';
-            document.getElementById('memberAvatarGlow').value = 'glow-gold';
-            document.getElementById('memberCardShape').value = 'rounded-2xl';
-            document.getElementById('memberCardGlow').value = 'glow-gold-hover';
-            document.getElementById('memberCardStyle').value = 'normal';
-            document.getElementById('memberColor1').value = '';
-            document.getElementById('memberOpacity1').value = '0';
-            document.getElementById('memberColor2').value = '';
-            document.getElementById('memberOpacity2').value = '0';
-            document.getElementById('memberColor3').value = '';
-            document.getElementById('memberOpacity3').value = '0';
-            document.getElementById('memberBgImageUrl').value = '';
-            document.getElementById('memberBgImgOpacity').value = '0.6';
-            document.getElementById('memberBgImgOpacityVal').textContent = '0.6';
-            alert('تم استعادة الإعدادات الافتراضية مع جعل الشفافية 0 بنجاح.');
         };
 
         window.toggleTheme = function() {
@@ -2065,379 +1898,6 @@
         };
         window.closeAdminModal = function() { document.getElementById('adminModal').classList.add('hidden'); };
 
-        window.openMemberPinModal = function() { document.getElementById('memberPinModal').classList.remove('hidden'); };
-        window.closeMemberPinModal = function() { document.getElementById('memberPinModal').classList.add('hidden'); };
-        window.verifyMemberPin = function() {
-            const pin = document.getElementById('memberPinInput').value;
-            if (pin === appData.pin) {
-                document.getElementById('memberPinModal').classList.add('hidden');
-                document.getElementById('memberModal').classList.remove('hidden');
-                document.getElementById('memberPinInput').value = '';
-                populateMemberForm();
-            } else { alert('رمز PIN غير صحيح'); }
-        };
-        window.closeMemberModal = function() { document.getElementById('memberModal').classList.add('hidden'); };
-
-        function populateMemberForm() {
-            document.getElementById('memberNameTitle').textContent = appData.displayName;
-            document.getElementById('memberEditName').value = appData.displayName;
-            document.getElementById('memberEditBio').value = appData.bio || '';
-            document.getElementById('memberEditAvatar').value = appData.image || '';
-            
-            document.getElementById('memberAvatarShape').value = appData.avatarShape || 'rounded-full';
-            document.getElementById('memberAvatarGlow').value = appData.avatarGlow || 'glow-gold';
-            document.getElementById('memberCardShape').value = appData.cardShape || 'rounded-2xl';
-            document.getElementById('memberCardGlow').value = appData.cardGlow || 'glow-gold-hover';
-            document.getElementById('memberCardStyle').value = appData.cardStyle || 'normal';
-
-            document.getElementById('memberShowLiveStatus').checked = appData.showLiveStatus !== false;
-            document.getElementById('memberLiveStatusText').value = appData.liveStatusText || '';
-            document.getElementById('memberLiveStatusType').value = appData.liveStatusType || 'emerald';
-
-            document.getElementById('memberShowFloatingBtn').checked = appData.showFloatingBtn !== false;
-            document.getElementById('memberFloatingWhatsapp').value = appData.floatingWhatsapp || '';
-            document.getElementById('memberFloatingMessage').value = appData.floatingMessage || '';
-            
-            if (appData.customColors) {
-                document.getElementById('memberColor1').value = appData.customColors.c1 || '#0f1117';
-                document.getElementById('memberOpacity1').value = appData.customColors.o1 ?? 0;
-                document.getElementById('memberColor2').value = appData.customColors.c2 || '#1a1d26';
-                document.getElementById('memberOpacity2').value = appData.customColors.o2 ?? 0;
-                document.getElementById('memberColor3').value = appData.customColors.c3 || '#0f1117';
-                document.getElementById('memberOpacity3').value = appData.customColors.o3 ?? 0;
-                document.getElementById('memberGradientAngle').value = appData.customColors.angle || 'to bottom right';
-            }
-            document.getElementById('memberBgImageUrl').value = appData.bgImageUrl || '';
-            const op = appData.bgImgOpacity ?? 0.6;
-            document.getElementById('memberBgImgOpacity').value = op;
-            document.getElementById('memberBgImgOpacityVal').textContent = op;
-
-            document.getElementById('memberShowMap').checked = appData.showMap !== false;
-            document.getElementById('memberMapUrl').value = appData.mapUrl || '';
-            document.getElementById('memberMapEmbed').value = appData.mapEmbed || '';
-
-            if (appData.contacts) {
-                document.getElementById('memberShowWhatsapp').checked = !!appData.contacts.showWhatsapp;
-                document.getElementById('memberEditWhatsapp').value = appData.contacts.whatsapp || '';
-                document.getElementById('memberShowPhone').checked = !!appData.contacts.showPhone;
-                document.getElementById('memberEditPhone').value = appData.contacts.phone || '';
-                document.getElementById('memberShowEmail').checked = !!appData.contacts.showEmail;
-                document.getElementById('memberEditEmail').value = appData.contacts.email || '';
-            }
-
-            document.getElementById('memberNewPinInput').value = '';
-            memberTempImageBase64 = appData.image || '';
-            window.resetMemberLinkForm();
-            window.resetMemberGalleryForm();
-            window.resetMemberTestimonialForm();
-            renderMemberLinksList();
-            renderMemberGalleryList();
-            renderMemberTestimonialsList();
-        }
-
-        document.getElementById('memberBgImgOpacity').addEventListener('input', (e) => {
-            document.getElementById('memberBgImgOpacityVal').textContent = e.target.value;
-        });
-        document.getElementById('adminBgImgOpacity').addEventListener('input', (e) => {
-            document.getElementById('adminBgImgOpacityVal').textContent = e.target.value;
-        });
-
-        window.handleMemberImageUpload = function(e) {
-            const file = e.target.files[0];
-            if (file) {
-                const reader = new FileReader();
-                reader.onload = (ev) => {
-                    memberTempImageBase64 = ev.target.result;
-                    document.getElementById('memberEditAvatar').value = memberTempImageBase64;
-                    alert('تم تحميل الصورة بنجاح');
-                };
-                reader.readAsDataURL(file);
-            }
-        };
-
-        window.saveMemberTestimonialItem = function() {
-            const id = document.getElementById('memberEditingTestimonialId').value;
-            const clientName = document.getElementById('memberTestimonialClientName').value.trim();
-            const clientRole = document.getElementById('memberTestimonialClientRole').value.trim();
-            const comment = document.getElementById('memberTestimonialComment').value.trim();
-            const rating = parseInt(document.getElementById('memberTestimonialRating').value) || 5;
-            const enabled = document.getElementById('memberTestimonialEnabled').checked;
-
-            if (!clientName || !comment) { alert('أدخل اسم العميل ونصف التقييم'); return; }
-            if (!appData.testimonials) appData.testimonials = [];
-
-            if (id) {
-                const t = appData.testimonials.find(x => x.id === id);
-                if (t) { t.clientName = clientName; t.clientRole = clientRole; t.comment = comment; t.rating = rating; t.enabled = enabled; }
-            } else {
-                appData.testimonials.push({ id: 't_' + Date.now(), clientName, clientRole, comment, rating, enabled });
-            }
-            window.resetMemberTestimonialForm();
-            renderMemberTestimonialsList();
-            renderTestimonialsSection();
-        };
-
-        window.resetMemberTestimonialForm = function() {
-            document.getElementById('memberEditingTestimonialId').value = '';
-            document.getElementById('memberTestimonialClientName').value = '';
-            document.getElementById('memberTestimonialClientRole').value = '';
-            document.getElementById('memberTestimonialComment').value = '';
-            document.getElementById('memberTestimonialRating').value = '5';
-            document.getElementById('memberTestimonialEnabled').checked = true;
-            document.getElementById('memberTestimonialFormTitle').textContent = 'إدارة آراء ومراجعات العملاء لصفحتك';
-        };
-
-        window.editMemberTestimonialItem = function(id) {
-            const t = (appData.testimonials || []).find(x => x.id === id);
-            if (!t) return;
-            document.getElementById('memberEditingTestimonialId').value = t.id;
-            document.getElementById('memberTestimonialClientName').value = t.clientName;
-            document.getElementById('memberTestimonialClientRole').value = t.clientRole || '';
-            document.getElementById('memberTestimonialComment').value = t.comment;
-            document.getElementById('memberTestimonialRating').value = t.rating || 5;
-            document.getElementById('memberTestimonialEnabled').checked = t.enabled !== false;
-            document.getElementById('memberTestimonialFormTitle').textContent = 'تعديل التقييم';
-        };
-
-        window.deleteMemberTestimonialItem = function(id) {
-            appData.testimonials = (appData.testimonials || []).filter(x => x.id !== id);
-            renderMemberTestimonialsList();
-            renderTestimonialsSection();
-        };
-
-        function renderMemberTestimonialsList() {
-            const container = document.getElementById('memberTestimonialsList');
-            if(!container) return; container.innerHTML = '';
-            (appData.testimonials || []).forEach((t) => {
-                const statusBadge = t.enabled !== false ? '<span class="text-emerald-500 font-bold">مفعل</span>' : '<span class="text-red-500 font-bold">متوقف</span>';
-                container.innerHTML += `
-                    <div class="bg-white dark:bg-cardbg border border-gray-300 dark:border-gray-700 p-2.5 rounded-lg flex items-center justify-between shadow-sm">
-                        <div>
-                            <div class="text-gray-900 dark:text-white font-extrabold text-xs">${t.clientName} (${statusBadge}) - ⭐ ${t.rating}</div>
-                            <div class="text-[10px] text-gray-500 truncate max-w-[140px]">${t.comment}</div>
-                        </div>
-                        <div class="flex items-center gap-1">
-                            <button type="button" onclick="window.editMemberTestimonialItem('${t.id}')" class="bg-blue-500/20 text-blue-600 dark:text-blue-400 px-2 py-0.5 rounded text-[10px] font-bold">تعديل</button>
-                            <button type="button" onclick="window.deleteMemberTestimonialItem('${t.id}')" class="bg-red-500/20 text-red-600 dark:text-red-400 px-2 py-0.5 rounded text-[10px] font-bold">حذف</button>
-                        </div>
-                    </div>`;
-            });
-        }
-
-        window.saveMemberLinkItem = function() {
-            const id = document.getElementById('memberEditingLinkId').value;
-            const title = document.getElementById('memberLinkTitle').value.trim();
-            const url = document.getElementById('memberLinkUrl').value.trim();
-            const icon = document.getElementById('memberLinkIcon').value.trim() || 'fa-solid fa-link';
-            const enabled = document.getElementById('memberLinkEnabled').checked;
-
-            if (!title || !url) { alert('أدخل العنوان والرابط'); return; }
-            if (!appData.links) appData.links = [];
-
-            if (id) {
-                const link = appData.links.find(l => l.id === id);
-                if (link) { link.title = title; link.url = url; link.icon = icon; link.enabled = enabled; }
-            } else {
-                appData.links.push({ id: 'l_' + Date.now(), title, url, category: 'الكل', icon, clicks: 0, enabled });
-            }
-            window.resetMemberLinkForm();
-            renderMemberLinksList();
-            renderLinks();
-        };
-
-        window.resetMemberLinkForm = function() {
-            document.getElementById('memberEditingLinkId').value = '';
-            document.getElementById('memberLinkTitle').value = '';
-            document.getElementById('memberLinkUrl').value = '';
-            document.getElementById('memberLinkIcon').value = '';
-            document.getElementById('memberLinkEnabled').checked = true;
-            document.getElementById('memberLinkFormTitle').textContent = 'إدارة الروابط وإحصائيات النقرات';
-        };
-
-        window.editMemberLinkItem = function(id) {
-            const link = (appData.links || []).find(l => l.id === id);
-            if (!link) return;
-            document.getElementById('memberEditingLinkId').value = link.id;
-            document.getElementById('memberLinkTitle').value = link.title;
-            document.getElementById('memberLinkUrl').value = link.url;
-            document.getElementById('memberLinkIcon').value = link.icon || 'fa-solid fa-link';
-            document.getElementById('memberLinkEnabled').checked = link.enabled !== false;
-            document.getElementById('memberLinkFormTitle').textContent = 'تعديل الرابط';
-        };
-
-        window.deleteMemberLinkItem = function(id) {
-            appData.links = (appData.links || []).filter(l => l.id !== id);
-            renderMemberLinksList(); renderLinks();
-        };
-
-        window.moveMemberLink = function(index, direction) {
-            const links = appData.links || [];
-            const newIndex = index + direction;
-            if (newIndex < 0 || newIndex >= links.length) return;
-            const temp = links[index]; links[index] = links[newIndex]; links[newIndex] = temp;
-            renderMemberLinksList(); renderLinks();
-        };
-
-        function renderMemberLinksList() {
-            const container = document.getElementById('memberLinksList');
-            if(!container) return; container.innerHTML = '';
-            (appData.links || []).forEach((l, index) => {
-                const statusBadge = l.enabled !== false ? '<span class="text-emerald-500 font-bold">مفعل</span>' : '<span class="text-red-500 font-bold">متوقف</span>';
-                container.innerHTML += `
-                    <div class="bg-white dark:bg-cardbg border border-gray-300 dark:border-gray-700 p-2.5 rounded-lg flex items-center justify-between shadow-sm">
-                        <div class="flex items-center gap-2">
-                            <i class="${l.icon || 'fa-solid fa-link'} text-cyanaccent"></i>
-                            <div>
-                                <div class="text-gray-900 dark:text-white font-extrabold text-xs">${l.title} (${statusBadge}) - <span class="text-cyanaccent">النقرات: ${l.clicks || 0}</span></div>
-                                <div class="text-[10px] text-gray-500 truncate max-w-[130px]">${l.url}</div>
-                            </div>
-                        </div>
-                        <div class="flex items-center gap-1">
-                            <button type="button" onclick="window.moveMemberLink(${index}, -1)" class="bg-gray-200 dark:bg-gray-700 text-cyanaccent px-1.5 py-0.5 rounded text-[10px] font-bold">⬆️</button>
-                            <button type="button" onclick="window.moveMemberLink(${index}, 1)" class="bg-gray-200 dark:bg-gray-700 text-cyanaccent px-1.5 py-0.5 rounded text-[10px] font-bold">⬇️</button>
-                            <button type="button" onclick="window.editMemberLinkItem('${l.id}')" class="bg-blue-500/20 text-blue-600 dark:text-blue-400 px-2 py-0.5 rounded text-[10px] font-bold">تعديل</button>
-                            <button type="button" onclick="window.deleteMemberLinkItem('${l.id}')" class="bg-red-500/20 text-red-600 dark:text-red-400 px-2 py-0.5 rounded text-[10px] font-bold">حذف</button>
-                        </div>
-                    </div>`;
-            });
-        }
-
-        window.saveMemberGalleryItem = function() {
-            const id = document.getElementById('memberEditingGalleryId').value;
-            const title = document.getElementById('memberGalleryTitle').value.trim();
-            const category = document.getElementById('memberGalleryCategory').value.trim() || 'عام';
-            const desc = document.getElementById('memberGalleryDesc').value.trim();
-            const coverUrl = document.getElementById('memberGalleryCoverUrl').value.trim();
-            const extraUrls = document.getElementById('memberGalleryExtraUrls').value.trim().split(/[\n,]+/).map(s => s.trim()).filter(Boolean);
-            const enabled = document.getElementById('memberGalleryEnabled').checked;
-
-            if (!title || !coverUrl) { alert('أدخل العنوان والغلاف'); return; }
-            if (!appData.gallery) appData.gallery = [];
-
-            if (id) {
-                const item = appData.gallery.find(g => g.id === id);
-                if (item) { item.title = title; item.category = category; item.desc = desc; item.coverUrl = coverUrl; item.extraUrls = extraUrls; item.enabled = enabled; }
-            } else {
-                appData.gallery.push({ id: 'g_' + Date.now(), title, category, desc, coverUrl, extraUrls, enabled });
-            }
-            window.resetMemberGalleryForm();
-            renderMemberGalleryList();
-            renderGalleryGrid();
-        };
-
-        window.resetMemberGalleryForm = function() {
-            document.getElementById('memberEditingGalleryId').value = '';
-            document.getElementById('memberGalleryTitle').value = '';
-            document.getElementById('memberGalleryCategory').value = '';
-            document.getElementById('memberGalleryDesc').value = '';
-            document.getElementById('memberGalleryCoverUrl').value = '';
-            document.getElementById('memberGalleryExtraUrls').value = '';
-            document.getElementById('memberGalleryEnabled').checked = true;
-            document.getElementById('memberGalleryFormTitle').textContent = 'إدارة المشاريع';
-        };
-
-        window.editMemberGalleryItem = function(id) {
-            const item = (appData.gallery || []).find(g => g.id === id);
-            if(!item) return;
-            document.getElementById('memberEditingGalleryId').value = item.id;
-            document.getElementById('memberGalleryTitle').value = item.title;
-            document.getElementById('memberGalleryCategory').value = item.category || '';
-            document.getElementById('memberGalleryDesc').value = item.desc || '';
-            document.getElementById('memberGalleryCoverUrl').value = item.coverUrl || '';
-            document.getElementById('memberGalleryExtraUrls').value = Array.isArray(item.extraUrls) ? item.extraUrls.join('\n') : '';
-            document.getElementById('memberGalleryEnabled').checked = item.enabled !== false;
-            document.getElementById('memberGalleryFormTitle').textContent = 'تعديل المشروع';
-        };
-
-        window.deleteMemberGalleryItem = function(id) {
-            appData.gallery = (appData.gallery || []).filter(g => g.id !== id);
-            renderMemberGalleryList(); renderGalleryGrid();
-        };
-
-        window.moveMemberGalleryItem = function(index, direction) {
-            const gallery = appData.gallery || [];
-            const newIndex = index + direction;
-            if (newIndex < 0 || newIndex >= gallery.length) return;
-            const temp = gallery[index]; gallery[index] = gallery[newIndex]; gallery[newIndex] = temp;
-            renderMemberGalleryList(); renderGalleryGrid();
-        };
-
-        function renderMemberGalleryList() {
-            const container = document.getElementById('memberGalleryList');
-            if(!container) return; container.innerHTML = '';
-            (appData.gallery || []).forEach((g, index) => {
-                const statusBadge = g.enabled !== false ? '<span class="text-emerald-500 font-bold">مفعل</span>' : '<span class="text-red-500 font-bold">متوقف</span>';
-                container.innerHTML += `
-                    <div class="bg-white dark:bg-cardbg border border-gray-300 dark:border-gray-700 rounded-xl p-2.5 flex items-center justify-between shadow-sm">
-                        <div class="flex items-center gap-2">
-                            <img src="${g.coverUrl}" class="w-8 h-8 rounded object-cover" />
-                            <div>
-                                <div class="font-extrabold text-gray-900 dark:text-white">${g.title} (${statusBadge})</div>
-                                <div class="text-[10px] text-gray-500">${g.category}</div>
-                            </div>
-                        </div>
-                        <div class="flex items-center gap-1">
-                            <button type="button" onclick="window.moveMemberGalleryItem(${index}, -1)" class="bg-gray-200 dark:bg-gray-700 text-cyanaccent px-1.5 py-0.5 rounded text-[10px] font-bold">⬆️</button>
-                            <button type="button" onclick="window.moveMemberGalleryItem(${index}, 1)" class="bg-gray-200 dark:bg-gray-700 text-cyanaccent px-1.5 py-0.5 rounded text-[10px] font-bold">⬇️</button>
-                            <button type="button" onclick="window.editMemberGalleryItem('${g.id}')" class="bg-blue-500/20 text-blue-600 dark:text-blue-400 px-2 py-0.5 rounded text-[10px] font-bold">تعديل</button>
-                            <button type="button" onclick="window.deleteMemberGalleryItem('${g.id}')" class="bg-red-500/20 text-red-600 dark:text-red-400 px-2 py-0.5 rounded text-[10px] font-bold">حذف</button>
-                        </div>
-                    </div>`;
-            });
-        }
-
-        window.saveMemberChanges = function() {
-            appData.displayName = document.getElementById('memberEditName').value.trim() || appData.displayName;
-            appData.bio = document.getElementById('memberEditBio').value.trim();
-            appData.avatarShape = document.getElementById('memberAvatarShape').value;
-            appData.avatarGlow = document.getElementById('memberAvatarGlow').value;
-            appData.cardShape = document.getElementById('memberCardShape').value;
-            appData.cardGlow = document.getElementById('memberCardGlow').value;
-            appData.cardStyle = document.getElementById('memberCardStyle').value;
-            
-            appData.showLiveStatus = document.getElementById('memberShowLiveStatus').checked;
-            appData.liveStatusText = document.getElementById('memberLiveStatusText').value.trim();
-            appData.liveStatusType = document.getElementById('memberLiveStatusType').value;
-
-            appData.showFloatingBtn = document.getElementById('memberShowFloatingBtn').checked;
-            appData.floatingWhatsapp = document.getElementById('memberFloatingWhatsapp').value.trim();
-            appData.floatingMessage = document.getElementById('memberFloatingMessage').value.trim();
-
-            appData.customColors = {
-                c1: document.getElementById('memberColor1').value,
-                o1: parseFloat(document.getElementById('memberOpacity1').value),
-                c2: document.getElementById('memberColor2').value,
-                o2: parseFloat(document.getElementById('memberOpacity2').value),
-                c3: document.getElementById('memberColor3').value,
-                o3: parseFloat(document.getElementById('memberOpacity3').value),
-                angle: document.getElementById('memberGradientAngle').value
-            };
-
-            appData.bgImageUrl = document.getElementById('memberBgImageUrl').value.trim();
-            appData.bgImgOpacity = parseFloat(document.getElementById('memberBgImgOpacity').value);
-            appData.showMap = document.getElementById('memberShowMap').checked;
-            appData.mapUrl = document.getElementById('memberMapUrl').value.trim();
-            appData.mapEmbed = document.getElementById('memberMapEmbed').value.trim();
-            
-            const avatarInputVal = document.getElementById('memberEditAvatar').value.trim();
-            if (memberTempImageBase64 !== '') appData.image = memberTempImageBase64;
-            else if (avatarInputVal !== '') appData.image = avatarInputVal;
-
-            if (!appData.contacts) appData.contacts = {};
-            appData.contacts.showWhatsapp = document.getElementById('memberShowWhatsapp').checked;
-            appData.contacts.whatsapp = document.getElementById('memberEditWhatsapp').value.trim();
-            appData.contacts.showPhone = document.getElementById('memberShowPhone').checked;
-            appData.contacts.phone = document.getElementById('memberEditPhone').value.trim();
-            appData.contacts.showEmail = document.getElementById('memberShowEmail').checked;
-            appData.contacts.email = document.getElementById('memberEditEmail').value.trim();
-
-            const newPinVal = document.getElementById('memberNewPinInput').value.trim();
-            if (newPinVal.length >= 4) appData.pin = newPinVal;
-
-            saveDataToFirebase();
-            window.closeMemberModal();
-        };
-
         function populateAdminForm() {
             document.getElementById('editDisplayName').value = appData.displayName;
             document.getElementById('editBio').value = appData.bio;
@@ -2450,8 +1910,13 @@
             document.getElementById('adminCardGlow').value = appData.cardGlow || 'glow-gold-hover';
             document.getElementById('adminCardStyle').value = appData.cardStyle || 'normal';
 
-            document.getElementById('adminShowJoinBanner').checked = appData.showJoinBanner !== false;
+            document.getElementById('adminShowJoinBanner').checked = appData.showJoinBanner === true;
             document.getElementById('adminShowPromoSection').checked = appData.showPromoSection !== false;
+            
+            document.getElementById('adminShowFlashDeal').checked = appData.showFlashDeal === true;
+            document.getElementById('adminFlashDealTitle').value = appData.flashDealTitle || '';
+            document.getElementById('adminFlashDealEnd').value = appData.flashDealEnd || '';
+
             document.getElementById('adminShowLiveStatus').checked = appData.showLiveStatus !== false;
             document.getElementById('adminLiveStatusText').value = appData.liveStatusText || '';
             document.getElementById('adminLiveStatusType').value = appData.liveStatusType || 'emerald';
@@ -2728,8 +2193,11 @@
                 showFloatingBtn: true,
                 floatingWhatsapp: req.whatsapp || '',
                 floatingMessage: 'مرحباً، أود الاستفسار عن خدماتكم...',
-                showJoinBanner: true,
+                showJoinBanner: false,
                 showPromoSection: true,
+                showFlashDeal: false,
+                flashDealTitle: 'عرض خاص لفترة محدودة!',
+                flashDealEnd: new Date(Date.now() + 86400000).toISOString().slice(0, 16),
                 customColors: { c1: "", o1: 0, c2: "", o2: 0, c3: "", o3: 0, angle: "to bottom right" },
                 bgImageUrl: '',
                 bgImgOpacity: 0.6,
@@ -3042,6 +2510,11 @@
             
             appData.showJoinBanner = document.getElementById('adminShowJoinBanner').checked;
             appData.showPromoSection = document.getElementById('adminShowPromoSection').checked;
+            
+            appData.showFlashDeal = document.getElementById('adminShowFlashDeal').checked;
+            appData.flashDealTitle = document.getElementById('adminFlashDealTitle').value.trim();
+            appData.flashDealEnd = document.getElementById('adminFlashDealEnd').value;
+
             appData.showLiveStatus = document.getElementById('adminShowLiveStatus').checked;
             appData.liveStatusText = document.getElementById('adminLiveStatusText').value.trim();
             appData.liveStatusType = document.getElementById('adminLiveStatusType').value;
