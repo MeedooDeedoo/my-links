@@ -62,6 +62,20 @@
     <!-- Background Image Overlay Container -->
     <div id="bgImageLayer" class="absolute inset-0 bg-cover bg-center pointer-events-none z-0 hidden"></div>
 
+    <!-- Global Notification Banner (System 1) -->
+    <div id="globalNotificationBanner" class="w-full max-w-md mb-4 bg-goldaccent/20 border border-goldaccent/40 rounded-2xl p-3.5 flex items-start justify-between gap-3 shadow-md relative z-50 hidden transition-all">
+        <div class="flex items-start gap-2.5">
+            <div class="w-8 h-8 rounded-xl bg-goldaccent/30 text-goldaccent flex items-center justify-center shrink-0 mt-0.5">
+                <i class="fa-solid fa-bullhorn text-sm"></i>
+            </div>
+            <div>
+                <h4 id="globalNotifTitle" class="text-xs font-extrabold text-gray-900 dark:text-white"></h4>
+                <p id="globalNotifText" class="text-[11px] font-medium text-gray-700 dark:text-gray-300 mt-0.5 leading-relaxed"></p>
+            </div>
+        </div>
+        <button type="button" onclick="window.dismissGlobalNotification()" class="text-gray-500 hover:text-gray-900 dark:hover:text-white text-sm"><i class="fa-solid fa-xmark"></i></button>
+    </div>
+
     <!-- Top Bar -->
     <div id="topBarEl" class="w-full max-w-md flex justify-between items-center mb-6 bg-lightcard dark:bg-cardbg p-3.5 rounded-2xl border border-gray-300 dark:border-gray-800 shadow-md relative z-50 transition-colors duration-300">
         <div class="flex items-center gap-2">
@@ -314,6 +328,42 @@
                 <button type="button" onclick="window.closeAdminModal()" class="text-gray-500 hover:text-gray-800 dark:hover:text-white text-xl px-2"><i class="fa-solid fa-xmark"></i></button>
             </div>
             <div class="overflow-y-auto flex-grow pr-1 space-y-3 text-xs">
+
+                <!-- Notifications Management Section (New Feature Added) -->
+                <div class="bg-lightbg dark:bg-darkbg rounded-xl border border-gray-300 dark:border-gray-800 overflow-hidden transition-colors">
+                    <button type="button" onclick="window.toggleAccordion('accNotificationsAdmin')" class="w-full p-3 flex justify-between items-center font-bold text-gray-800 dark:text-gray-200">
+                        <span class="flex items-center gap-2"><i class="fa-solid fa-bullhorn text-goldaccent"></i> نظام إرسال الإشعارات والرسائل الجماعية</span>
+                        <div class="flex items-center gap-2">
+                            <span class="text-[10px] bg-goldaccent/20 text-goldaccent px-2 py-0.5 rounded font-mono">حصري للأدمن</span>
+                            <i id="icon-accNotificationsAdmin" class="fa-solid fa-chevron-down transition-transform"></i>
+                        </div>
+                    </button>
+                    <div id="accNotificationsAdmin" class="hidden p-3 pt-0 space-y-3 border-t border-gray-200 dark:border-gray-800 mt-1">
+                        
+                        <!-- System 1: In-App Broadcast Notification -->
+                        <div class="bg-white dark:bg-cardbg p-3 rounded-xl border border-gray-300 dark:border-gray-700 space-y-2 mt-2">
+                            <h4 class="font-bold text-goldaccent flex items-center gap-1.5"><i class="fa-solid fa-bell"></i> 1. إشعار داخل المنصة (شريط إعلاني علوي لكل الزوار)</h4>
+                            <input type="text" id="adminNotifTitle" placeholder="عنوان الإشعار (مثال: تنبيه هام، عرض جديد)" class="w-full bg-lightbg dark:bg-darkbg border border-gray-300 dark:border-gray-700 rounded-lg p-2 text-gray-900 dark:text-white outline-none">
+                            <textarea id="adminNotifText" placeholder="نص الإشعار التفصيلي الذي سيظهر في أعلى المنصة..." class="w-full bg-lightbg dark:bg-darkbg border border-gray-300 dark:border-gray-700 rounded-lg p-2 text-gray-900 dark:text-white outline-none h-16 resize-none"></textarea>
+                            <div class="flex items-center gap-2">
+                                <input type="checkbox" id="adminNotifActive" class="accent-goldaccent w-4 h-4">
+                                <label for="adminNotifActive" class="font-bold text-gray-800 dark:text-gray-200 text-xs">تفعيل وعرض هذا الإشعار للزوار حالياً</label>
+                            </div>
+                        </div>
+
+                        <!-- System 2: WhatsApp Broadcast -->
+                        <div class="bg-white dark:bg-cardbg p-3 rounded-xl border border-gray-300 dark:border-gray-700 space-y-2">
+                            <h4 class="font-bold text-emerald-500 flex items-center gap-1.5"><i class="fa-brands fa-whatsapp"></i> 2. إرسال تنبيه جماعي عبر الواتساب</h4>
+                            <p class="text-[10px] text-gray-500">اختر العضو أو أدخل رقم هاتفك لإرسال رسالة بث جماعية عبر الواتساب:</p>
+                            <input type="text" id="adminWaBroadcastPhone" placeholder="رقم الهاتف المستهدف أو المجموعات (مع رمز الدولة)" class="w-full bg-lightbg dark:bg-darkbg border border-gray-300 dark:border-gray-700 rounded-lg p-2 text-gray-900 dark:text-white outline-none">
+                            <textarea id="adminWaBroadcastText" placeholder="نص الرسالة الإعلانية أو التنبيه..." class="w-full bg-lightbg dark:bg-darkbg border border-gray-300 dark:border-gray-700 rounded-lg p-2 text-gray-900 dark:text-white outline-none h-16 resize-none"></textarea>
+                            <a id="adminSendWaBtn" href="#" target="_blank" class="w-full bg-emerald-500 hover:bg-emerald-600 text-white font-extrabold py-2.5 rounded-lg flex items-center justify-center gap-2 transition shadow-sm text-center block">
+                                <i class="fa-brands fa-whatsapp text-base"></i> إرسال عبر الواتساب الآن
+                            </a>
+                        </div>
+
+                    </div>
+                </div>
 
                 <!-- Advanced Design & Style Customization Section (Accordion Foldable) -->
                 <div class="bg-lightbg dark:bg-darkbg rounded-xl border border-gray-300 dark:border-gray-800 overflow-hidden transition-colors">
@@ -842,6 +892,7 @@
             mapUrl: "https://maps.app.goo.gl/YourMapLocation",
             mapEmbed: "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3238.8!2d37.134!3d36.202!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zMzbCsDEyJzEyLjgiTiAzN8KwMDgnMDIuNCJF!5e0!3m2!1sar!2s!4v1!5m2!1sar!2s",
             contacts: { whatsapp: "+963900000000", showWhatsapp: true, phone: "+963900000000", showPhone: true, email: "info@example.com", showEmail: true },
+            notification: { title: "", text: "", active: false },
             categories: [
                 { name: "الكل", enabled: true },
                 { name: "إعلان وتصميم", enabled: true },
@@ -893,6 +944,7 @@
                 appData = rootData.users[currentUsername] || rootData.users['mahmoud'];
                 if (!appData.sidebarLinks) appData.sidebarLinks = defaultUserData.sidebarLinks;
                 if (!appData.contacts) appData.contacts = defaultUserData.contacts;
+                if (!appData.notification) appData.notification = { title: "", text: "", active: false };
                 if (appData.showMap === undefined) appData.showMap = true;
                 if (!appData.avatarShape) appData.avatarShape = "rounded-full";
                 if (!appData.avatarGlow) appData.avatarGlow = "glow-gold";
@@ -934,6 +986,7 @@
         function initApp() {
             initTheme();
             applyDesignCustomizations();
+            renderNotificationBanner();
             renderProfile();
             renderSidebarMenu();
             renderCategories();
@@ -974,8 +1027,9 @@
             const galleryBtnCard = document.getElementById('galleryBtnCard');
             const joinBannerBtn = document.getElementById('joinBannerBtn');
             const mapSectionContainer = document.getElementById('mapSectionContainer');
+            const globalNotificationBanner = document.getElementById('globalNotificationBanner');
 
-            [topBarEl, galleryBtnCard, joinBannerBtn, mapSectionContainer].forEach(el => {
+            [topBarEl, galleryBtnCard, joinBannerBtn, mapSectionContainer, globalNotificationBanner].forEach(el => {
                 if(el) {
                     el.classList.remove('rounded-2xl', 'rounded-full', 'rounded-lg', 'rounded-none', 'glass-card', 'glow-gold-hover', 'glow-subtle');
                     el.classList.add(cardShape);
@@ -990,7 +1044,6 @@
             if (pageBody && bgImageLayer) {
                 pageBody.className = `min-h-screen flex flex-col items-center justify-between p-4 pb-12 text-gray-900 dark:text-gray-100 transition-colors duration-300 bg-lightbg dark:bg-darkbg relative`;
                 
-                // تطبيق تدرج الألوان المخصص إن وجد
                 if (appData.customColors && (appData.customColors.c1 || appData.customColors.c2 || appData.customColors.c3)) {
                     let rgba1 = appData.customColors.c1 ? hexToRgba(appData.customColors.c1, appData.customColors.o1 ?? 1) : 'transparent';
                     let rgba2 = appData.customColors.c2 ? hexToRgba(appData.customColors.c2, appData.customColors.o2 ?? 1) : 'transparent';
@@ -1001,7 +1054,6 @@
                     pageBody.style.backgroundImage = '';
                 }
 
-                // تطبيق صورة الخلفية وشفافيتها
                 if (appData.bgImageUrl) {
                     bgImageLayer.style.backgroundImage = `url('${appData.bgImageUrl}')`;
                     bgImageLayer.style.opacity = appData.bgImgOpacity ?? 0.6;
@@ -1011,6 +1063,25 @@
                 }
             }
         }
+
+        function renderNotificationBanner() {
+            const banner = document.getElementById('globalNotificationBanner');
+            if (!banner) return;
+            const notif = appData.notification;
+            if (notif && notif.active && notif.text && !sessionStorage.getItem('dismissedNotif')) {
+                document.getElementById('globalNotifTitle.textContent') = notif.title || 'إشعار هام';
+                document.getElementById('globalNotifTitle').textContent = notif.title || 'إشعار هام';
+                document.getElementById('globalNotifText').textContent = notif.text;
+                banner.classList.remove('hidden');
+            } else {
+                banner.classList.add('hidden');
+            }
+        }
+
+        window.dismissGlobalNotification = function() {
+            document.getElementById('globalNotificationBanner').classList.add('hidden');
+            sessionStorage.setItem('dismissedNotif', 'true');
+        };
 
         window.resetDesignDefaults = function() {
             document.getElementById('adminAvatarShape').value = 'rounded-full';
@@ -1414,6 +1485,19 @@
             document.getElementById('adminBgImgOpacityVal').textContent = e.target.value;
         });
 
+        // WhatsApp Broadcast Link Generator live update
+        document.getElementById('adminWaBroadcastText').addEventListener('input', updateWaBroadcastLink);
+        document.getElementById('adminWaBroadcastPhone').addEventListener('input', updateWaBroadcastLink);
+
+        function updateWaBroadcastLink() {
+            const phone = document.getElementById('adminWaBroadcastPhone').value.trim().replace(/[^0-9]/g, '');
+            const text = document.getElementById('adminWaBroadcastText').value.trim();
+            const btn = document.getElementById('adminSendWaBtn');
+            if (btn) {
+                btn.href = `https://wa.me/${phone}?text=${encodeURIComponent(text)}`;
+            }
+        }
+
         window.handleMemberImageUpload = function(e) {
             const file = e.target.files[0];
             if (file) {
@@ -1645,6 +1729,12 @@
             document.getElementById('adminCardGlow').value = appData.cardGlow || 'glow-gold-hover';
             document.getElementById('adminCardStyle').value = appData.cardStyle || 'normal';
             
+            if (appData.notification) {
+                document.getElementById('adminNotifTitle').value = appData.notification.title || '';
+                document.getElementById('adminNotifText').value = appData.notification.text || '';
+                document.getElementById('adminNotifActive').checked = !!appData.notification.active;
+            }
+
             if (appData.customColors) {
                 document.getElementById('adminColor1').value = appData.customColors.c1 || '#0f1117';
                 document.getElementById('adminOpacity1').value = appData.customColors.o1 ?? 1;
@@ -1798,6 +1888,7 @@
                 mapUrl: '',
                 mapEmbed: '',
                 contacts: { whatsapp: req.whatsapp || '', showWhatsapp: true, phone: '', showPhone: false, email: '', showEmail: false },
+                notification: { title: "", text: "", active: false },
                 categories: [{ name: "الكل", enabled: true }, { name: "عام", enabled: true }],
                 sidebarLinks: [
                     { id: 'sb1', title: 'لوحة تحكم العضو', url: '#', icon: 'fa-solid fa-user-gear', action: 'openMemberPanel', enabled: true },
@@ -2074,6 +2165,12 @@
             appData.cardGlow = document.getElementById('adminCardGlow').value;
             appData.cardStyle = document.getElementById('adminCardStyle').value;
             
+            appData.notification = {
+                title: document.getElementById('adminNotifTitle').value.trim(),
+                text: document.getElementById('adminNotifText').value.trim(),
+                active: document.getElementById('adminNotifActive').checked
+            };
+
             appData.customColors = {
                 c1: document.getElementById('adminColor1').value,
                 o1: parseFloat(document.getElementById('adminOpacity1').value),
