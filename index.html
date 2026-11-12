@@ -36,34 +36,51 @@
             font-family: 'Tajawal', sans-serif;
             -webkit-tap-highlight-color: transparent;
         }
-        .glow-gold {
-            box-shadow: 0 0 15px rgba(212, 175, 55, 0.25);
-        }
-        .glow-gold-hover:hover {
-            box-shadow: 0 0 20px rgba(212, 175, 55, 0.4);
-        }
+        
+        /* تأثيرات التوهج والظلال */
+        .glow-gold { box-shadow: 0 0 20px rgba(212, 175, 55, 0.35); }
+        .glow-cyan { box-shadow: 0 0 20px rgba(0, 180, 216, 0.35); }
+        .glow-subtle { box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15); }
+        .glow-gold-hover:hover { box-shadow: 0 0 25px rgba(212, 175, 55, 0.5); }
+        
         button, select, input, a, label, textarea {
             touch-action: manipulation;
             cursor: pointer;
         }
-        /* أنماط الزخارف والخلفيات */
+
+        /* الزخارف الإسلامية والنقوش المتطابقة مع الوضعين */
+        .pattern-islamic-geo {
+            background-image: radial-gradient(rgba(212, 175, 55, 0.12) 1.5px, transparent 1.5px), radial-gradient(rgba(212, 175, 55, 0.08) 1.5px, transparent 1.5px);
+            background-size: 32px 32px;
+            background-position: 0 0, 16px 16px;
+        }
+        html.light .pattern-islamic-geo {
+            background-image: radial-gradient(rgba(180, 140, 30, 0.18) 1.5px, transparent 1.5px), radial-gradient(rgba(180, 140, 30, 0.1) 1.5px, transparent 1.5px);
+        }
+
+        .pattern-islamic-stars {
+            background-image: radial-gradient(currentColor 1px, transparent 1px);
+            background-size: 24px 24px;
+            opacity: 0.07;
+        }
+
         .pattern-grid {
             background-image: radial-gradient(rgba(212, 175, 55, 0.15) 1px, transparent 1px);
             background-size: 24px 24px;
         }
-        .pattern-dots {
-            background-image: radial-gradient(#ffffff 1px, transparent 1px);
-            background-size: 20px 20px;
-            background-color: #0f1117;
-        }
+
         .pattern-lines {
-            background-image: linear-gradient(0deg, rgba(255,255,255,0.03) 1px, transparent 1px);
+            background-image: linear-gradient(0deg, rgba(100,100,100,0.05) 1px, transparent 1px);
             background-size: 100% 20px;
         }
+
         .glass-card {
             background: rgba(26, 29, 38, 0.75) !important;
             backdrop-filter: blur(12px);
             -webkit-backdrop-filter: blur(12px);
+        }
+        html.light .glass-card {
+            background: rgba(255, 255, 255, 0.8) !important;
         }
     </style>
 </head>
@@ -113,7 +130,7 @@
         <!-- Profile Header -->
         <div class="text-center w-full mb-6">
             <div class="relative w-24 h-24 mx-auto mb-3">
-                <div id="avatarContainer" class="w-full h-full rounded-full border-2 border-goldaccent glow-gold overflow-hidden bg-lightcard dark:bg-darkbg flex items-center justify-center shadow-md transition-colors duration-300">
+                <div id="avatarContainer" class="w-full h-full rounded-full border-2 border-goldaccent overflow-hidden bg-lightcard dark:bg-darkbg flex items-center justify-center shadow-md transition-colors duration-300">
                     <i id="defaultAvatarIcon" class="fa-solid fa-user text-3xl text-goldaccent/70"></i>
                     <img id="profileImage" src="" alt="Profile" class="w-full h-full object-cover hidden">
                 </div>
@@ -132,7 +149,7 @@
         <div id="categoryTabs" class="w-full flex gap-2 overflow-x-auto pb-2 mb-4 text-xs"></div>
 
         <!-- Gallery Preview Card Button -->
-        <button type="button" id="galleryBtnCard" onclick="window.openGalleryModal()" class="w-full mb-4 bg-gradient-to-r from-goldaccent/20 via-yellow-500/10 to-goldaccent/20 border border-goldaccent/40 rounded-2xl p-3.5 flex items-center justify-between shadow-sm glow-gold-hover transition">
+        <button type="button" id="galleryBtnCard" onclick="window.openGalleryModal()" class="w-full mb-4 bg-gradient-to-r from-goldaccent/20 via-yellow-500/10 to-goldaccent/20 border border-goldaccent/40 rounded-2xl p-3.5 flex items-center justify-between shadow-sm transition">
             <div class="flex items-center gap-3">
                 <div class="w-9 h-9 rounded-xl bg-goldaccent/20 text-goldaccent flex items-center justify-center">
                     <i class="fa-solid fa-images"></i>
@@ -174,6 +191,7 @@
         <p>© <span id="year">2026</span> جميع الحقوق محفوظة - شجرة الروابط</p>
     </footer>
 
+    <!-- Modals (Feedback, Join, Gallery, Project Detail, Image View, Share, PIN, Admin, Member) -->
     <!-- Feedback Modal -->
     <div id="feedbackModal" class="fixed inset-0 bg-black/70 backdrop-blur-md hidden flex items-center justify-center z-[110] p-3">
         <div class="bg-lightcard dark:bg-cardbg border border-gray-300 dark:border-gray-800 w-full max-w-md rounded-2xl p-5 shadow-2xl max-h-[92vh] flex flex-col transition-colors duration-300">
@@ -247,7 +265,6 @@
     <!-- Image View Modal -->
     <div id="imageViewModal" class="fixed inset-0 bg-black/95 backdrop-blur-lg hidden flex flex-col items-center justify-center z-[130] p-4">
         <img id="enlargedImage" src="" class="max-w-full max-h-[75vh] rounded-2xl border border-gray-800 shadow-2xl object-contain mb-3" />
-        
         <div class="flex items-center gap-3 mt-2">
             <button type="button" onclick="window.shareCurrentProjectImage()" class="bg-goldaccent text-black px-4 py-2 rounded-xl text-xs font-extrabold shadow-md flex items-center gap-2 transition hover:scale-105">
                 <i class="fa-solid fa-share-nodes"></i> مشاركة هذا المشروع والصورة
@@ -280,7 +297,7 @@
         </div>
     </div>
 
-    <!-- PIN Authentication Modal (الأدمن الأساسي) -->
+    <!-- PIN Modals -->
     <div id="pinModal" class="fixed inset-0 bg-black/70 backdrop-blur-md hidden flex items-center justify-center z-[100] p-4">
         <div class="bg-lightcard dark:bg-cardbg border border-gray-300 dark:border-gray-800 w-full max-w-xs rounded-2xl p-6 text-center shadow-2xl transition-colors duration-300">
             <div class="w-12 h-12 bg-goldaccent/10 border border-goldaccent/30 rounded-full flex items-center justify-center mx-auto mb-3 text-goldaccent">
@@ -296,7 +313,6 @@
         </div>
     </div>
 
-    <!-- Member PIN Authentication Modal -->
     <div id="memberPinModal" class="fixed inset-0 bg-black/70 backdrop-blur-md hidden flex items-center justify-center z-[100] p-4">
         <div class="bg-lightcard dark:bg-cardbg border border-gray-300 dark:border-gray-800 w-full max-w-xs rounded-2xl p-6 text-center shadow-2xl transition-colors duration-300">
             <div class="w-12 h-12 bg-cyanaccent/10 border border-cyanaccent/30 rounded-full flex items-center justify-center mx-auto mb-3 text-cyanaccent">
@@ -349,12 +365,31 @@
                         </div>
 
                         <div>
+                            <label class="block font-bold text-gray-800 dark:text-gray-200 mb-1">توهج أو ظل الصورة الشخصية:</label>
+                            <select id="adminAvatarGlow" class="w-full bg-lightcard dark:bg-cardbg border border-gray-300 dark:border-gray-700 rounded-lg p-2 text-gray-900 dark:text-white outline-none">
+                                <option value="glow-gold">توهج ذهبي فاخر (Gold Glow)</option>
+                                <option value="glow-cyan">توهج سماوي ساطع (Cyan Glow)</option>
+                                <option value="glow-subtle">ظل خفيف وعادي (Subtle Shadow)</option>
+                                <option value="none">بدون توهج أو ظل (None)</option>
+                            </select>
+                        </div>
+
+                        <div>
                             <label class="block font-bold text-gray-800 dark:text-gray-200 mb-1">شكل وانحناء البطاقات وأزرار الروابط:</label>
                             <select id="adminCardShape" class="w-full bg-lightcard dark:bg-cardbg border border-gray-300 dark:border-gray-700 rounded-lg p-2 text-gray-900 dark:text-white outline-none">
                                 <option value="rounded-2xl">مفتولة الزوايا بشكل أنيق (Rounded 2XL)</option>
                                 <option value="rounded-full">دائرية الأطراف بالكامل (Pill Shape)</option>
                                 <option value="rounded-lg">زوايا معتدلة (Rounded LG)</option>
                                 <option value="rounded-none">زوايا حادة (Sharp Square)</option>
+                            </select>
+                        </div>
+
+                        <div>
+                            <label class="block font-bold text-gray-800 dark:text-gray-200 mb-1">توهج أو ظل البطاقات:</label>
+                            <select id="adminCardGlow" class="w-full bg-lightcard dark:bg-cardbg border border-gray-300 dark:border-gray-700 rounded-lg p-2 text-gray-900 dark:text-white outline-none">
+                                <option value="glow-gold-hover">توهج ذهبي عند المرور (Gold Glow Hover)</option>
+                                <option value="glow-subtle">ظل ثابت وبارز (Subtle Shadow)</option>
+                                <option value="none">بدون توهج أو ظل</option>
                             </select>
                         </div>
 
@@ -367,23 +402,24 @@
                         </div>
 
                         <div>
-                            <label class="block font-bold text-gray-800 dark:text-gray-200 mb-1">نمط زخرفة ونقوش الخلفية:</label>
+                            <label class="block font-bold text-gray-800 dark:text-gray-200 mb-1">الزخارف والنقوش الإسلامية والخلفية:</label>
                             <select id="adminBgPattern" class="w-full bg-lightcard dark:bg-cardbg border border-gray-300 dark:border-gray-700 rounded-lg p-2 text-gray-900 dark:text-white outline-none">
                                 <option value="none">بدون زخرفة (سادة)</option>
+                                <option value="pattern-islamic-geo">نقوش هندسية إسلامية فاخرة (Islamic Geometric)</option>
+                                <option value="pattern-islamic-stars">نجوم إسلامية ونقاط متطابقة (Islamic Stars)</option>
                                 <option value="pattern-grid">نقاط شبكية رقمية (Grid Dots)</option>
-                                <option value="pattern-dots">نجوم ونقاط مضيئة (Star Dots)</option>
                                 <option value="pattern-lines">خطوط عرضية سينمائية (Scanlines)</option>
                             </select>
                         </div>
 
                         <div>
-                            <label class="block font-bold text-gray-800 dark:text-gray-200 mb-1">تدرج ألوان الخلفية (Gradient Background):</label>
+                            <label class="block font-bold text-gray-800 dark:text-gray-200 mb-1">تدرج ألوان الخلفية (دمج 3 ألوان حسب الطلب):</label>
                             <select id="adminBgGradient" class="w-full bg-lightcard dark:bg-cardbg border border-gray-300 dark:border-gray-700 rounded-lg p-2 text-gray-900 dark:text-white outline-none">
                                 <option value="none">بدون تدرج (اللون الافتراضي)</option>
-                                <option value="bg-gradient-to-br from-gray-900 via-zinc-900 to-black">فحمي ليلي عميق (Dark Charcoal)</option>
-                                <option value="bg-gradient-to-tr from-slate-900 via-indigo-950 to-slate-900">أزرق ملكي سينمائي (Cinematic Blue)</option>
-                                <option value="bg-gradient-to-br from-neutral-900 via-stone-900 to-amber-950/40">برونزي ذهبي دافئ (Warm Gold)</option>
-                                <option value="bg-gradient-to-r from-gray-900 via-purple-950/30 to-gray-900">بنفسجي داكن خافت (Dark Purple)</option>
+                                <option value="bg-gradient-to-br from-gray-950 via-neutral-900 to-amber-950/60">تدرج ثلاثي (فحمي ليلي + أسود معدني + برونزي دافئ)</option>
+                                <option value="bg-gradient-to-tr from-slate-950 via-blue-950 to-indigo-950">تدرج ثلاثي سينمائي (أزرق ملكي داكن + كحلي + نيلي)</option>
+                                <option value="bg-gradient-to-br from-zinc-950 via-stone-900 to-yellow-950/50">تدرج ثلاثي فاخر (فحمي مطفي + حجري + ذهبي خافت)</option>
+                                <option value="bg-gradient-to-r from-neutral-950 via-purple-950/40 to-slate-950">تدرج ثلاثي ملكي (فحمي + بنفسجي داكن + رمادي عميق)</option>
                             </select>
                         </div>
 
@@ -621,12 +657,29 @@
                             </select>
                         </div>
                         <div>
+                            <label class="block font-bold text-gray-800 dark:text-gray-200 mb-1">توهج أو ظل صورتك الشخصية:</label>
+                            <select id="memberAvatarGlow" class="w-full bg-lightcard dark:bg-cardbg border border-gray-300 dark:border-gray-700 rounded-lg p-2 text-gray-900 dark:text-white outline-none">
+                                <option value="glow-gold">توهج ذهبي فاخر (Gold Glow)</option>
+                                <option value="glow-cyan">توهج سماوي ساطع (Cyan Glow)</option>
+                                <option value="glow-subtle">ظل خفيف وعادي (Subtle Shadow)</option>
+                                <option value="none">بدون توهج أو ظل (None)</option>
+                            </select>
+                        </div>
+                        <div>
                             <label class="block font-bold text-gray-800 dark:text-gray-200 mb-1">شكل البطاقات وأزرار الروابط:</label>
                             <select id="memberCardShape" class="w-full bg-lightcard dark:bg-cardbg border border-gray-300 dark:border-gray-700 rounded-lg p-2 text-gray-900 dark:text-white outline-none">
                                 <option value="rounded-2xl">مفتولة الزوايا بشكل أنيق (Rounded 2XL)</option>
                                 <option value="rounded-full">دائرية الأطراف بالكامل (Pill Shape)</option>
                                 <option value="rounded-lg">زوايا معتدلة (Rounded LG)</option>
                                 <option value="rounded-none">زوايا حادة (Sharp Square)</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block font-bold text-gray-800 dark:text-gray-200 mb-1">توهج أو ظل البطاقات:</label>
+                            <select id="memberCardGlow" class="w-full bg-lightcard dark:bg-cardbg border border-gray-300 dark:border-gray-700 rounded-lg p-2 text-gray-900 dark:text-white outline-none">
+                                <option value="glow-gold-hover">توهج ذهبي عند المرور (Gold Glow Hover)</option>
+                                <option value="glow-subtle">ظل ثابت وبارز (Subtle Shadow)</option>
+                                <option value="none">بدون توهج أو ظل</option>
                             </select>
                         </div>
                         <div>
@@ -637,22 +690,23 @@
                             </select>
                         </div>
                         <div>
-                            <label class="block font-bold text-gray-800 dark:text-gray-200 mb-1">نمط زخرفة ونقوش الخلفية:</label>
+                            <label class="block font-bold text-gray-800 dark:text-gray-200 mb-1">الزخارف والنقوش الإسلامية والخلفية:</label>
                             <select id="memberBgPattern" class="w-full bg-lightcard dark:bg-cardbg border border-gray-300 dark:border-gray-700 rounded-lg p-2 text-gray-900 dark:text-white outline-none">
                                 <option value="none">بدون زخرفة (سادة)</option>
+                                <option value="pattern-islamic-geo">نقوش هندسية إسلامية فاخرة (Islamic Geometric)</option>
+                                <option value="pattern-islamic-stars">نجوم إسلامية ونقاط متطابقة (Islamic Stars)</option>
                                 <option value="pattern-grid">نقاط شبكية رقمية (Grid Dots)</option>
-                                <option value="pattern-dots">نجوم ونقاط مضيئة (Star Dots)</option>
                                 <option value="pattern-lines">خطوط عرضية سينمائية (Scanlines)</option>
                             </select>
                         </div>
                         <div>
-                            <label class="block font-bold text-gray-800 dark:text-gray-200 mb-1">تدرج ألوان الخلفية (Gradient Background):</label>
+                            <label class="block font-bold text-gray-800 dark:text-gray-200 mb-1">تدرج ألوان الخلفية (دمج 3 ألوان حسب الطلب):</label>
                             <select id="memberBgGradient" class="w-full bg-lightcard dark:bg-cardbg border border-gray-300 dark:border-gray-700 rounded-lg p-2 text-gray-900 dark:text-white outline-none">
                                 <option value="none">بدون تدرج (اللون الافتراضي)</option>
-                                <option value="bg-gradient-to-br from-gray-900 via-zinc-900 to-black">فحمي ليلي عميق (Dark Charcoal)</option>
-                                <option value="bg-gradient-to-tr from-slate-900 via-indigo-950 to-slate-900">أزرق ملكي سينمائي (Cinematic Blue)</option>
-                                <option value="bg-gradient-to-br from-neutral-900 via-stone-900 to-amber-950/40">برونزي ذهبي دافئ (Warm Gold)</option>
-                                <option value="bg-gradient-to-r from-gray-900 via-purple-950/30 to-gray-900">بنفسجي داكن خافت (Dark Purple)</option>
+                                <option value="bg-gradient-to-br from-gray-950 via-neutral-900 to-amber-950/60">تدرج ثلاثي (فحمي ليلي + أسود معدني + برونزي دافئ)</option>
+                                <option value="bg-gradient-to-tr from-slate-950 via-blue-950 to-indigo-950">تدرج ثلاثي سينمائي (أزرق ملكي داكن + كحلي + نيلي)</option>
+                                <option value="bg-gradient-to-br from-zinc-950 via-stone-900 to-yellow-950/50">تدرج ثلاثي فاخر (فحمي مطفي + حجري + ذهبي خافت)</option>
+                                <option value="bg-gradient-to-r from-neutral-950 via-purple-950/40 to-slate-950">تدرج ثلاثي ملكي (فحمي + بنفسجي داكن + رمادي عميق)</option>
                             </select>
                         </div>
                         <div>
@@ -740,7 +794,7 @@
         </div>
     </div>
 
-    <!-- Script Engine with Firebase & Clean Single Link Sharing -->
+    <!-- Script Engine with Firebase -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/13.2.0/firebase-app.js";
         import { getDatabase, ref, set, onValue } from "https://www.gstatic.com/firebasejs/13.2.0/firebase-database.js";
@@ -768,10 +822,12 @@
             pin: "1234",
             image: "",
             avatarShape: "rounded-full",
+            avatarGlow: "glow-gold",
             cardShape: "rounded-2xl",
+            cardGlow: "glow-gold-hover",
             cardStyle: "normal",
-            bgPattern: "none",
-            bgGradient: "none",
+            bgPattern: "pattern-islamic-geo",
+            bgGradient: "bg-gradient-to-br from-gray-950 via-neutral-900 to-amber-950/60",
             bgImageUrl: "",
             showMap: true,
             mapUrl: "https://maps.app.goo.gl/YourMapLocation",
@@ -830,10 +886,12 @@
                 if (!appData.contacts) appData.contacts = defaultUserData.contacts;
                 if (appData.showMap === undefined) appData.showMap = true;
                 if (!appData.avatarShape) appData.avatarShape = "rounded-full";
+                if (!appData.avatarGlow) appData.avatarGlow = "glow-gold";
                 if (!appData.cardShape) appData.cardShape = "rounded-2xl";
+                if (!appData.cardGlow) appData.cardGlow = "glow-gold-hover";
                 if (!appData.cardStyle) appData.cardStyle = "normal";
-                if (!appData.bgPattern) appData.bgPattern = "none";
-                if (!appData.bgGradient) appData.bgGradient = "none";
+                if (!appData.bgPattern) appData.bgPattern = "pattern-islamic-geo";
+                if (!appData.bgGradient) appData.bgGradient = "bg-gradient-to-br from-gray-950 via-neutral-900 to-amber-950/60";
                 
                 if (appData.categories && appData.categories.length > 0 && typeof appData.categories[0] === 'string') {
                     appData.categories = appData.categories.map(c => ({ name: c, enabled: true }));
@@ -887,15 +945,16 @@
         }
 
         function applyDesignCustomizations() {
-            // شكل الصورة الشخصية
+            // شكل وتوهج الصورة الشخصية
             const avatarContainer = document.getElementById('avatarContainer');
             if (avatarContainer) {
-                avatarContainer.className = `w-full h-full ${appData.avatarShape || 'rounded-full'} border-2 border-goldaccent glow-gold overflow-hidden bg-lightcard dark:bg-cardbg flex items-center justify-center shadow-md transition-colors duration-300`;
+                avatarContainer.className = `w-full h-full ${appData.avatarShape || 'rounded-full'} border-2 border-goldaccent overflow-hidden bg-lightcard dark:bg-cardbg flex items-center justify-center shadow-md transition-colors duration-300 ${appData.avatarGlow && appData.avatarGlow !== 'none' ? appData.avatarGlow : ''}`;
             }
 
-            // تطبيق شكل ونمط البطاقات (عادي أو زجاجي Glassmorphism)
+            // تطبيق شكل وتوهج البطاقات والأزرار
             const cardShape = appData.cardShape || 'rounded-2xl';
             const cardStyle = appData.cardStyle || 'normal';
+            const cardGlow = appData.cardGlow || 'glow-gold-hover';
             
             const topBarEl = document.getElementById('topBarEl');
             const galleryBtnCard = document.getElementById('galleryBtnCard');
@@ -904,21 +963,19 @@
 
             [topBarEl, galleryBtnCard, joinBannerBtn, mapSectionContainer].forEach(el => {
                 if(el) {
-                    el.classList.remove('rounded-2xl', 'rounded-full', 'rounded-lg', 'rounded-none', 'glass-card');
+                    el.classList.remove('rounded-2xl', 'rounded-full', 'rounded-lg', 'rounded-none', 'glass-card', 'glow-gold-hover', 'glow-subtle');
                     el.classList.add(cardShape);
-                    if (cardStyle === 'glass-card') {
-                        el.classList.add('glass-card');
-                    }
+                    if (cardStyle === 'glass-card') el.classList.add('glass-card');
+                    if (cardGlow && cardGlow !== 'none') el.classList.add(cardGlow);
                 }
             });
 
-            // تطبيق الخلفية والتدرجات والزخارف
+            // الخلفية والتدرجات والزخارف
             const pageBody = document.getElementById('pageBody');
             if (pageBody) {
                 pageBody.className = `min-h-screen flex flex-col items-center justify-between p-4 pb-12 text-gray-900 dark:text-gray-100 transition-colors duration-300 ${appData.bgGradient && appData.bgGradient !== 'none' ? appData.bgGradient : 'bg-lightbg dark:bg-darkbg'}`;
                 
-                // أنماط الزخرفة
-                pageBody.classList.remove('pattern-grid', 'pattern-dots', 'pattern-lines');
+                pageBody.classList.remove('pattern-islamic-geo', 'pattern-islamic-stars', 'pattern-grid', 'pattern-lines');
                 if (appData.bgPattern && appData.bgPattern !== 'none') {
                     pageBody.classList.add(appData.bgPattern);
                 }
@@ -935,20 +992,24 @@
 
         window.resetDesignDefaults = function() {
             document.getElementById('adminAvatarShape').value = 'rounded-full';
+            document.getElementById('adminAvatarGlow').value = 'glow-gold';
             document.getElementById('adminCardShape').value = 'rounded-2xl';
+            document.getElementById('adminCardGlow').value = 'glow-gold-hover';
             document.getElementById('adminCardStyle').value = 'normal';
-            document.getElementById('adminBgPattern').value = 'none';
-            document.getElementById('adminBgGradient').value = 'none';
+            document.getElementById('adminBgPattern').value = 'pattern-islamic-geo';
+            document.getElementById('adminBgGradient').value = 'bg-gradient-to-br from-gray-950 via-neutral-900 to-amber-950/60';
             document.getElementById('adminBgImageUrl').value = '';
-            alert('تم استعادة الإعدادات الافتراضية. اضغط على "حفظ ونشر للسحاب" لحفظ التغييرات.');
+            alert('تم استعادة التصميم الافتراضي الفاخر بنجاح.');
         };
 
         window.resetMemberDesignDefaults = function() {
             document.getElementById('memberAvatarShape').value = 'rounded-full';
+            document.getElementById('memberAvatarGlow').value = 'glow-gold';
             document.getElementById('memberCardShape').value = 'rounded-2xl';
+            document.getElementById('memberCardGlow').value = 'glow-gold-hover';
             document.getElementById('memberCardStyle').value = 'normal';
-            document.getElementById('memberBgPattern').value = 'none';
-            document.getElementById('memberBgGradient').value = 'none';
+            document.getElementById('memberBgPattern').value = 'pattern-islamic-geo';
+            document.getElementById('memberBgGradient').value = 'bg-gradient-to-br from-gray-950 via-neutral-900 to-amber-950/60';
             document.getElementById('memberBgImageUrl').value = '';
             alert('تم استعادة الإعدادات الافتراضية بنجاح.');
         };
@@ -1067,29 +1128,16 @@
         };
 
         window.closeProjectDetail = function() { document.getElementById('projectDetailModal').classList.add('hidden'); };
-        
-        window.openImageView = function(url) { 
-            document.getElementById('enlargedImage').src = url; 
-            document.getElementById('imageViewModal').classList.remove('hidden'); 
-        };
-        
+        window.openImageView = function(url) { document.getElementById('enlargedImage').src = url; document.getElementById('imageViewModal').classList.remove('hidden'); };
         window.closeImageView = function() { document.getElementById('imageViewModal').classList.add('hidden'); };
 
         window.shareCurrentProjectImage = function() {
             const cleanBaseUrl = window.location.origin + window.location.pathname;
             const projectLink = `${cleanBaseUrl}?user=${currentUsername}&project=${currentViewingProjectId}`;
-            
             if (navigator.share) {
-                navigator.share({
-                    title: 'شاهد هذا المشروع المميز',
-                    text: 'شاهد هذا المشروع المميز:',
-                    url: projectLink
-                }).catch(() => {});
+                navigator.share({ title: 'شاهد هذا المشروع المميز', text: 'شاهد هذا المشروع المميز:', url: projectLink }).catch(() => {});
             } else {
-                const shareText = `شاهد هذا المشروع المميز:\n${projectLink}`;
-                navigator.clipboard.writeText(shareText).then(() => {
-                    alert('تم نسخ رابط المشروع المباشر بنجاح!');
-                });
+                navigator.clipboard.writeText(`شاهد هذا المشروع المميز:\n${projectLink}`).then(() => alert('تم نسخ رابط المشروع المباشر بنجاح!'));
             }
         };
 
@@ -1122,7 +1170,8 @@
                 const card = document.createElement('div');
                 const cardShape = appData.cardShape || 'rounded-2xl';
                 const cardStyle = appData.cardStyle || 'normal';
-                card.className = `group relative ${cardShape} ${cardStyle === 'glass-card' ? 'glass-card' : 'bg-white dark:bg-cardbg'} border border-gray-300 dark:border-gray-800 cursor-pointer shadow-sm flex flex-col overflow-hidden`;
+                const cardGlow = appData.cardGlow || 'glow-gold-hover';
+                card.className = `group relative ${cardShape} ${cardStyle === 'glass-card' ? 'glass-card' : 'bg-white dark:bg-cardbg'} border border-gray-300 dark:border-gray-800 cursor-pointer shadow-sm flex flex-col overflow-hidden ${cardGlow !== 'none' ? cardGlow : ''}`;
                 card.onclick = () => window.openProjectDetail(item.id);
                 card.innerHTML = `
                     <div class="relative aspect-video w-full overflow-hidden bg-gray-100 dark:bg-darkbg">
@@ -1228,11 +1277,12 @@
             const filtered = links.filter(l => l.enabled !== false && (activeCategory === "الكل" || l.category === activeCategory));
             const cardShape = appData.cardShape || 'rounded-2xl';
             const cardStyle = appData.cardStyle || 'normal';
+            const cardGlow = appData.cardGlow || 'glow-gold-hover';
 
             filtered.forEach(link => {
                 const a = document.createElement('a');
                 a.href = link.url; a.target = '_blank';
-                a.className = `w-full ${cardStyle === 'glass-card' ? 'glass-card' : 'bg-white dark:bg-cardbg'} border border-gray-300 dark:border-gray-800 ${cardShape} p-3.5 flex items-center justify-between shadow-sm glow-gold-hover transition`;
+                a.className = `w-full ${cardStyle === 'glass-card' ? 'glass-card' : 'bg-white dark:bg-cardbg'} border border-gray-300 dark:border-gray-800 ${cardShape} p-3.5 flex items-center justify-between shadow-sm transition ${cardGlow !== 'none' ? cardGlow : ''}`;
                 a.innerHTML = `<div class="flex items-center gap-3"><div class="w-9 h-9 rounded-xl bg-gray-100 dark:bg-darkbg border border-gray-200 dark:border-gray-700 flex items-center justify-center text-goldaccent"><i class="${link.icon || 'fa-solid fa-link'}"></i></div><span class="text-xs font-extrabold text-gray-900 dark:text-gray-100">${link.title}</span></div><i class="fa-solid fa-chevron-left text-xs text-gray-400"></i>`;
                 container.appendChild(a);
             });
@@ -1283,10 +1333,12 @@
             document.getElementById('memberEditAvatar').value = appData.image || '';
             
             document.getElementById('memberAvatarShape').value = appData.avatarShape || 'rounded-full';
+            document.getElementById('memberAvatarGlow').value = appData.avatarGlow || 'glow-gold';
             document.getElementById('memberCardShape').value = appData.cardShape || 'rounded-2xl';
+            document.getElementById('memberCardGlow').value = appData.cardGlow || 'glow-gold-hover';
             document.getElementById('memberCardStyle').value = appData.cardStyle || 'normal';
-            document.getElementById('memberBgPattern').value = appData.bgPattern || 'none';
-            document.getElementById('memberBgGradient').value = appData.bgGradient || 'none';
+            document.getElementById('memberBgPattern').value = appData.bgPattern || 'pattern-islamic-geo';
+            document.getElementById('memberBgGradient').value = appData.bgGradient || 'bg-gradient-to-br from-gray-950 via-neutral-900 to-amber-950/60';
             document.getElementById('memberBgImageUrl').value = appData.bgImageUrl || '';
 
             document.getElementById('memberShowMap').checked = appData.showMap !== false;
@@ -1489,7 +1541,9 @@
             appData.displayName = document.getElementById('memberEditName').value.trim() || appData.displayName;
             appData.bio = document.getElementById('memberEditBio').value.trim();
             appData.avatarShape = document.getElementById('memberAvatarShape').value;
+            appData.avatarGlow = document.getElementById('memberAvatarGlow').value;
             appData.cardShape = document.getElementById('memberCardShape').value;
+            appData.cardGlow = document.getElementById('memberCardGlow').value;
             appData.cardStyle = document.getElementById('memberCardStyle').value;
             appData.bgPattern = document.getElementById('memberBgPattern').value;
             appData.bgGradient = document.getElementById('memberBgGradient').value;
@@ -1524,10 +1578,12 @@
             document.getElementById('editAvatarUrl').value = appData.image || "";
             
             document.getElementById('adminAvatarShape').value = appData.avatarShape || 'rounded-full';
+            document.getElementById('adminAvatarGlow').value = appData.avatarGlow || 'glow-gold';
             document.getElementById('adminCardShape').value = appData.cardShape || 'rounded-2xl';
+            document.getElementById('adminCardGlow').value = appData.cardGlow || 'glow-gold-hover';
             document.getElementById('adminCardStyle').value = appData.cardStyle || 'normal';
-            document.getElementById('adminBgPattern').value = appData.bgPattern || 'none';
-            document.getElementById('adminBgGradient').value = appData.bgGradient || 'none';
+            document.getElementById('adminBgPattern').value = appData.bgPattern || 'pattern-islamic-geo';
+            document.getElementById('adminBgGradient').value = appData.bgGradient || 'bg-gradient-to-br from-gray-950 via-neutral-900 to-amber-950/60';
             document.getElementById('adminBgImageUrl').value = appData.bgImageUrl || '';
 
             document.getElementById('adminShowMap').checked = appData.showMap !== false;
@@ -1658,10 +1714,12 @@
                 pin: '1234',
                 image: req.image || '',
                 avatarShape: 'rounded-full',
+                avatarGlow: 'glow-gold',
                 cardShape: 'rounded-2xl',
+                cardGlow: 'glow-gold-hover',
                 cardStyle: 'normal',
-                bgPattern: 'none',
-                bgGradient: 'none',
+                bgPattern: 'pattern-islamic-geo',
+                bgGradient: 'bg-gradient-to-br from-gray-950 via-neutral-900 to-amber-950/60',
                 bgImageUrl: '',
                 showMap: true,
                 mapUrl: '',
@@ -1867,6 +1925,7 @@
             }
             window.resetLinkForm(); renderAdminLinksList(); renderLinks();
         };
+
         window.resetLinkForm = function() {
             document.getElementById('editingLinkId').value = '';
             document.getElementById('linkTitle').value = '';
@@ -1875,6 +1934,7 @@
             document.getElementById('linkEnabled').checked = true;
             document.getElementById('linkFormTitle').textContent = 'إضافة رابط جديد';
         };
+
         window.editLink = function(id) {
             const l = appData.links.find(x => x.id === id);
             if(!l) return;
@@ -1886,6 +1946,7 @@
             document.getElementById('linkEnabled').checked = l.enabled !== false;
             document.getElementById('linkFormTitle').textContent = 'تعديل الرابط';
         };
+
         window.deleteLink = function(id) {
             appData.links = appData.links.filter(x => x.id !== id);
             renderAdminLinksList(); renderLinks();
@@ -1914,7 +1975,7 @@
                             <button type="button" onclick="window.moveLink(${index}, -1)" class="bg-gray-200 dark:bg-gray-700 text-goldaccent px-1.5 py-0.5 rounded text-[10px] font-bold">⬆️</button>
                             <button type="button" onclick="window.moveLink(${index}, 1)" class="bg-gray-200 dark:bg-gray-700 text-goldaccent px-1.5 py-0.5 rounded text-[10px] font-bold">⬇️</button>
                             <button type="button" onclick="window.editLink('${l.id}')" class="bg-blue-500/20 text-blue-600 dark:text-blue-400 px-2 py-0.5 rounded text-[10px] font-bold">تعديل</button>
-                            <button type="button" onclick="window.deleteLink('${l.id}')" class="bg-red-500/20 text-red-600 dark:text-red-400 px-2 py-0.5 rounded text-[10px] font-bold">حذف</button>
+                            <button type="button" onclick="window.deleteLink('${l.id}')" class="bg-red-500/20 text-red-600 px-2 py-0.5 rounded text-[10px] font-bold">حذف</button>
                         </div>
                     </div>`;
             });
@@ -1924,6 +1985,7 @@
             const p = document.getElementById('newPinInput').value.trim();
             if(p.length >= 4) { appData.pin = p; document.getElementById('newPinInput').value = ''; alert('تم تحديث رمز PIN'); }
         };
+
         window.exportDataJson = function() {
             const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(rootData, null, 2));
             const dl = document.createElement('a'); dl.setAttribute("href", dataStr); dl.setAttribute("download", "backup.json");
@@ -1934,7 +1996,9 @@
             appData.displayName = document.getElementById('editDisplayName').value.trim() || appData.displayName;
             appData.bio = document.getElementById('editBio').value.trim();
             appData.avatarShape = document.getElementById('adminAvatarShape').value;
+            appData.avatarGlow = document.getElementById('adminAvatarGlow').value;
             appData.cardShape = document.getElementById('adminCardShape').value;
+            appData.cardGlow = document.getElementById('adminCardGlow').value;
             appData.cardStyle = document.getElementById('adminCardStyle').value;
             appData.bgPattern = document.getElementById('adminBgPattern').value;
             appData.bgGradient = document.getElementById('adminBgGradient').value;
