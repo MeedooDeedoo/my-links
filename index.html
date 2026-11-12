@@ -156,7 +156,7 @@
             </div>
         </div>
 
-        <!-- زر الانضمام إلينا (يخضع للتحكم بالتفعيل/الإيقاف) -->
+        <!-- زر الانضمام إلينا -->
         <button type="button" id="joinBannerBtn" onclick="window.openJoinModal()" class="w-full bg-gradient-to-r from-cyanaccent/20 via-blue-500/10 to-cyanaccent/20 border border-cyanaccent/40 rounded-2xl p-3 flex items-center justify-center gap-2 text-cyanaccent font-extrabold text-xs shadow-md transition hover:scale-[1.01]">
             <i class="fa-solid fa-user-plus"></i> انضم إلينا وأنشئ صفحتك الخاصة مجاناً
         </button>
@@ -330,6 +330,47 @@
                 <button type="button" onclick="window.closeAdminModal()" class="text-gray-500 hover:text-gray-800 dark:hover:text-white text-xl px-2"><i class="fa-solid fa-xmark"></i></button>
             </div>
             <div class="overflow-y-auto flex-grow pr-1 space-y-3 text-xs">
+
+                <!-- 📊 قسم الإحصائيات وزوار متقدم للأدمن فقط -->
+                <div class="bg-lightbg dark:bg-darkbg rounded-xl border border-gray-300 dark:border-gray-800 overflow-hidden transition-colors">
+                    <button type="button" onclick="window.toggleAccordion('accAnalytics')" class="w-full p-3 flex justify-between items-center font-bold text-gray-800 dark:text-gray-200">
+                        <span class="flex items-center gap-2"><i class="fa-solid fa-chart-line text-goldaccent"></i> إحصائيات الزوار وتحليل الأداء (أدمن فقط)</span>
+                        <div class="flex items-center gap-2">
+                            <span class="text-[10px] bg-goldaccent/20 text-goldaccent px-2 py-0.5 rounded font-mono">حصري</span>
+                            <i id="icon-accAnalytics" class="fa-solid fa-chevron-down transition-transform"></i>
+                        </div>
+                    </button>
+                    <div id="accAnalytics" class="hidden p-3 pt-0 space-y-3 border-t border-gray-200 dark:border-gray-800 mt-1">
+                        <div class="grid grid-cols-2 gap-2 mt-2">
+                            <div class="bg-white dark:bg-cardbg p-3 rounded-xl border border-gray-200 dark:border-gray-700 text-center shadow-sm">
+                                <span class="text-[10px] text-gray-500 block mb-1">إجمالي زيارات الصفحة</span>
+                                <span id="statTotalViews" class="text-lg font-extrabold text-goldaccent">0</span>
+                            </div>
+                            <div class="bg-white dark:bg-cardbg p-3 rounded-xl border border-gray-200 dark:border-gray-700 text-center shadow-sm">
+                                <span class="text-[10px] text-gray-500 block mb-1">إجمالي نقرات الروابط</span>
+                                <span id="statTotalClicks" class="text-lg font-extrabold text-cyanaccent">0</span>
+                            </div>
+                            <div class="bg-white dark:bg-cardbg p-3 rounded-xl border border-gray-200 dark:border-gray-700 text-center shadow-sm">
+                                <span class="text-[10px] text-gray-500 block mb-1">رسالة وملاحظة واردة</span>
+                                <span id="statTotalFeedbacks" class="text-lg font-extrabold text-emerald-500">0</span>
+                            </div>
+                            <div class="bg-white dark:bg-cardbg p-3 rounded-xl border border-gray-200 dark:border-gray-700 text-center shadow-sm">
+                                <span class="text-[10px] text-gray-500 block mb-1">المشاريع المنشورة</span>
+                                <span id="statTotalProjects" class="text-lg font-extrabold text-purple-500">0</span>
+                            </div>
+                        </div>
+
+                        <div class="bg-white dark:bg-cardbg p-3 rounded-xl border border-gray-200 dark:border-gray-700 space-y-2">
+                            <span class="font-bold text-gray-800 dark:text-gray-200 block">أداء ونقرات الروابط الفردية:</span>
+                            <div id="statLinksBreakdown" class="space-y-1.5 max-h-36 overflow-y-auto pr-1"></div>
+                        </div>
+
+                        <div class="flex justify-between items-center pt-1">
+                            <span class="text-[10px] text-gray-500">إعادة تعيين العدادات:</span>
+                            <button type="button" onclick="window.resetAnalyticsCounters()" class="bg-red-500/10 text-red-500 border border-red-500/30 px-3 py-1 rounded-lg text-[10px] font-bold">تصفير عداد الزيارات</button>
+                        </div>
+                    </div>
+                </div>
 
                 <!-- قسم إرسال الإشعارات الفورية الجماعية -->
                 <div class="bg-lightbg dark:bg-darkbg rounded-xl border border-gray-300 dark:border-gray-800 overflow-hidden transition-colors">
@@ -979,7 +1020,7 @@
         </div>
     </div>
 
-    <!-- Script Engine with Firebase & Testimonials -->
+    <!-- Script Engine with Firebase & Analytics -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/13.2.0/firebase-app.js";
         import { getDatabase, ref, set, onValue } from "https://www.gstatic.com/firebasejs/13.2.0/firebase-database.js";
@@ -1025,6 +1066,7 @@
             mapUrl: "https://maps.app.goo.gl/YourMapLocation",
             mapEmbed: "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3238.8!2d37.134!3d36.202!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zMzbCsDEyJzEyLjgiTiAzN8KwMDgnMDIuNCJF!5e0!3m2!1sar!2s!4v1!5m2!1sar!2s",
             contacts: { whatsapp: "+963900000000", showWhatsapp: true, phone: "+963900000000", showPhone: true, email: "info@example.com", showEmail: true },
+            analytics: { totalViews: 0 },
             categories: [
                 { name: "الكل", enabled: true },
                 { name: "إعلان وتصميم", enabled: true },
@@ -1079,6 +1121,7 @@
                 }
 
                 appData = rootData.users[currentUsername] || rootData.users['mahmoud'];
+                if (!appData.analytics) appData.analytics = { totalViews: 0 };
                 if (!appData.sidebarLinks) appData.sidebarLinks = defaultUserData.sidebarLinks;
                 if (!appData.contacts) appData.contacts = defaultUserData.contacts;
                 if (!appData.testimonials) appData.testimonials = defaultUserData.testimonials;
@@ -1112,6 +1155,16 @@
                 appData = defaultUserData;
                 set(dbRef, rootData).catch(err => console.error("Initial set error:", err));
             }
+
+            // زيادة عداد الزيارات مرة واحدة لكل جلسة تصفح
+            if (!sessionStorage.getItem('visited_' + currentUsername)) {
+                sessionStorage.setItem('visited_' + currentUsername, 'true');
+                if (!appData.analytics) appData.analytics = { totalViews: 0 };
+                appData.analytics.totalViews = (appData.analytics.totalViews || 0) + 1;
+                rootData.users[currentUsername] = appData;
+                set(dbRef, rootData).catch(err => console.error("View count error:", err));
+            }
+
             initApp();
             
             if (targetProjectId) {
@@ -1171,7 +1224,7 @@
         function applyDesignCustomizations() {
             const avatarContainer = document.getElementById('avatarContainer');
             if (avatarContainer) {
-                avatarContainer.className = `w-full h-full ${appData.avatarShape || 'rounded-full'} border-2 border-goldaccent overflow-hidden bg-lightcard dark:bg-cardbg flex items-center justify-center shadow-md transition-colors duration-300 ${appData.avatarGlow && appData.avatarGlow !== 'none' ? appData.avatarGlow : ''}`;
+                avatarContainer.className = `w-full h-full ${appData.avatarShape || 'rounded-full'} border-2 border-goldaccent overflow-hidden bg-lightcard dark:bg-darkbg flex items-center justify-center shadow-md transition-colors duration-300 ${appData.avatarGlow && appData.avatarGlow !== 'none' ? appData.avatarGlow : ''}`;
             }
 
             const cardShape = appData.cardShape || 'rounded-2xl';
@@ -2212,6 +2265,32 @@
                 document.getElementById('editEmail').value = appData.contacts.email || '';
             }
 
+            // تعبئة إحصائيات الأدمن الحصرية
+            const totalViews = appData.analytics?.totalViews || 0;
+            const totalClicks = (appData.links || []).reduce((sum, l) => sum + (l.clicks || 0), 0);
+            const totalFeedbacks = Object.keys(rootData.feedbackMessages || {}).length;
+            const totalProjects = (appData.gallery || []).length;
+
+            document.getElementById('statTotalViews').textContent = totalViews;
+            document.getElementById('statTotalClicks').textContent = totalClicks;
+            document.getElementById('statTotalFeedbacks').textContent = totalFeedbacks;
+            document.getElementById('statTotalProjects').textContent = totalProjects;
+
+            const linksBreakdown = document.getElementById('statLinksBreakdown');
+            linksBreakdown.innerHTML = '';
+            if ((appData.links || []).length === 0) {
+                linksBreakdown.innerHTML = '<div class="text-[10px] text-gray-400 text-center">لا توجد روابط مضافة.</div>';
+            } else {
+                appData.links.forEach(l => {
+                    linksBreakdown.innerHTML += `
+                        <div class="flex justify-between items-center text-[11px] bg-lightbg dark:bg-darkbg p-2 rounded-lg border border-gray-200 dark:border-gray-800">
+                            <span class="font-bold truncate max-w-[180px]"><i class="${l.icon || 'fa-solid fa-link'} text-goldaccent ml-1"></i> ${l.title}</span>
+                            <span class="bg-cyanaccent/20 text-cyanaccent px-2 py-0.5 rounded font-bold">${l.clicks || 0} نقرة</span>
+                        </div>
+                    `;
+                });
+            }
+
             const broadcastSelect = document.getElementById('broadcastTargetUser');
             if (broadcastSelect) {
                 broadcastSelect.innerHTML = '<option value="all">جميع الزوار والأعضاء (إشعار شامل لكل الهواتف)</option>';
@@ -2230,6 +2309,18 @@
             renderAdminCategorySelect();
             renderAdminLinksList();
         }
+
+        window.resetAnalyticsCounters = function() {
+            if (confirm('هل أنت متأكد من تصفير عداد الزيارات والنقرات؟')) {
+                if (!appData.analytics) appData.analytics = {};
+                appData.analytics.totalViews = 0;
+                if (appData.links) {
+                    appData.links.forEach(l => l.clicks = 0);
+                }
+                saveDataToFirebase();
+                populateAdminForm();
+            }
+        };
 
         window.saveTestimonialItem = function() {
             const id = document.getElementById('editingTestimonialId').value;
@@ -2423,6 +2514,7 @@
                 mapUrl: '',
                 mapEmbed: '',
                 contacts: { whatsapp: req.whatsapp || '', showWhatsapp: true, phone: '', showPhone: false, email: '', showEmail: false },
+                analytics: { totalViews: 0 },
                 categories: [{ name: "الكل", enabled: true }, { name: "عام", enabled: true }],
                 sidebarLinks: [
                     { id: 'sb1', title: 'لوحة تحكم العضو', url: '#', icon: 'fa-solid fa-user-gear', action: 'openMemberPanel', enabled: true },
@@ -2479,7 +2571,6 @@
             if (!title || !coverUrl) { alert('أدخل العنوان والغلاف'); return; }
             if (!appData.gallery) appData.gallery = [];
 
-            let isNew = !id;
             if (id) {
                 const item = appData.gallery.find(g => g.id === id);
                 if (item) { item.title = title; item.category = category; item.desc = desc; item.coverUrl = coverUrl; item.extraUrls = extraUrls; item.enabled = enabled; }
