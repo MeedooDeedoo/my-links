@@ -111,6 +111,13 @@
             <div id="contactButtons" class="flex justify-center gap-3 mt-4"></div>
         </div>
 
+        <!-- زر تفعيل الإشعارات اليدوي المضاف حديثاً -->
+        <div class="w-full mb-4">
+            <button type="button" onclick="window.requestNotificationPermissionAndToken()" class="w-full bg-goldaccent/20 border border-goldaccent/50 text-goldaccent font-extrabold py-3 px-4 rounded-2xl flex items-center justify-center gap-2 shadow-sm transition hover:bg-goldaccent/30 text-xs">
+                <i class="fa-solid fa-bell text-sm"></i> تفعيل الإشعارات الفورية (اضغط هنا في حال لم يظهر الطلب تلقائياً)
+            </button>
+        </div>
+
         <div id="categoryTabs" class="w-full flex gap-2 overflow-x-auto pb-2 mb-4 text-xs"></div>
 
         <button type="button" id="galleryBtnCard" onclick="window.openGalleryModal()" class="w-full mb-4 bg-gradient-to-r from-goldaccent/20 via-yellow-500/10 to-goldaccent/20 border border-goldaccent/40 rounded-2xl p-3.5 flex items-center justify-between shadow-sm transition">
@@ -818,6 +825,7 @@
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/13.2.0/firebase-app.js";
         import { getDatabase, ref, set, onValue } from "https://www.gstatic.com/firebasejs/13.2.0/firebase-database.js";
+        import { getMessaging, getToken, onMessage } from "https://www.gstatic.com/firebasejs/13.2.0/firebase-messaging.js";
 
         const firebaseConfig = {
             apiKey: "AIzaSyDDgTZjnufv21Hn_sb0YicHZg17n91lrfA",
@@ -831,6 +839,47 @@
 
         const app = initializeApp(firebaseConfig);
         const db = getDatabase(app);
+        const messaging = getMessaging(app);
+
+        // دالة طلب إذن الإشعارات وتوليد رمز الجهاز (متاحة عالمياً عبر window)
+        window.requestNotificationPermissionAndToken = async function() {
+            try {
+                const permission = await Notification.requestPermission();
+                if (permission === 'granted') {
+                    console.log('تم منح إذن الإشعارات بنجاح من قبل المستخدم.');
+                    const currentToken = await getToken(messaging, { 
+                        vapidKey: 'BIIuLJYW1J2uJ503cmsKDFIS2iB5B3HOgS5Y2fpJRvNRLM2GmCcZftH1vnkXM9pGkKMv_QOTsa3tnCfo5sXN9fX4'
+                    });
+
+                    if (currentToken) {
+                        console.log('رمز الجهاز (FCM Token):', currentToken);
+                        alert('تم تفعيل الإشعارات بنجاح لهذا الجهاز! 🔔');
+                    } else {
+                        console.warn('لم يتم العثور على رمز تسجيل لهذا الجهاز.');
+                    }
+                } else {
+                    alert('تم رفض إذن الإشعارات من قبل المتصفح.');
+                }
+            } catch (error) {
+                console.error('حدث خطأ أثناء طلب الإذن:', error);
+            }
+        };
+
+        // طلب الإذن تلقائياً عند فتح الصفحة
+        window.addEventListener('DOMContentLoaded', () => {
+            window.requestNotificationPermissionAndToken();
+        });
+
+        // استقبال الإشعارات والموقع مفتوح
+        onMessage(messaging, (payload) => {
+            console.log('تم استلام إشعار والموقع مفتوح:', payload);
+            if (Notification.permission === 'granted' && payload.notification) {
+                new Notification(payload.notification.title, {
+                    body: payload.notification.body,
+                    icon: payload.notification.icon || '/icon.png'
+                });
+            }
+        });
 
         const urlParams = new URLSearchParams(window.location.search);
         const currentUsername = urlParams.get('user') || 'mahmoud';
@@ -2272,52 +2321,6 @@
             window.closeAdminModal();
         };
     </script>
-    <script type="module">
-    import { getMessaging, getToken, onMessage } from "https://www.gstatic.com/firebasejs/13.2.0/firebase-messaging.js";
-
-    // تهيئة نظام الرسائل (يعتمد على متغير app المعرف في مشروعك)
-    const messaging = getMessaging(app);
-
-    // دالة طلب الإذن وتوليد رمز الجهاز وحفظه
-    async function requestNotificationPermissionAndToken() {
-        try {
-            const permission = await Notification.requestPermission();
-            if (permission === 'granted') {
-                console.log('تم منح إذن الإشعارات بنجاح من قبل المستخدم.');
-                
-                // توليد رمز الجهاز باستخدام مفتاح VAPID الخاص بك
-                const currentToken = await getToken(messaging, { 
-                    vapidKey: 'BIIuLJYW1J2uJ503cmsKDFIS2iB5B3HOgS5Y2fpJRvNRLM2GmCcZftH1vnkXM9pGkKMv_QOTsa3tnCfo5sXN9fX4'
-                });
-
-                if (currentToken) {
-                    console.log('رمز الجهاز (FCM Token):', currentToken);
-                    // يمكنك حفظ هذا الرمز في قاعدة البيانات إذا أردت ربطه بالزائر
-                } else {
-                    console.warn('لم يتم العثور على رمز تسجيل لهذا الجهاز.');
-                }
-            } else {
-                console.log('تم رفض إذن الإشعارات من قبل المستخدم.');
-            }
-        } catch (error) {
-            console.error('حدث خطأ أثناء طلب الإذن:', error);
-        }
-    }
-
-    // استدعاء الدالة تلقائياً عند فتح الصفحة (أو يمكنك ربطها بزر مخصص)
-    requestNotificationPermissionAndToken();
-
-    // استقبال الإشعارات عندما يكون الموقع مفتوحاً أمام المستخدم
-    onMessage(messaging, (payload) => {
-        console.log('تم استلام إشعار والموقع مفتوح:', payload);
-        if (Notification.permission === 'granted' && payload.notification) {
-            new Notification(payload.notification.title, {
-                body: payload.notification.body,
-                icon: payload.notification.icon || '/icon.png'
-            });
-        }
-    });
-</script>
 
 </body>
 </html>
