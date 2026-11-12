@@ -111,13 +111,6 @@
             <div id="contactButtons" class="flex justify-center gap-3 mt-4"></div>
         </div>
 
-        <!-- زر تفعيل الإشعارات (يختفي تلقائياً عند منح الإذن) -->
-        <div id="notificationRequestWrapper" class="w-full mb-4 hidden">
-            <button type="button" onclick="window.requestNotificationPermissionAndToken()" class="w-full bg-goldaccent/20 border border-goldaccent/50 text-goldaccent font-extrabold py-3 px-4 rounded-2xl flex items-center justify-center gap-2 shadow-sm transition hover:bg-goldaccent/30 text-xs">
-                <i class="fa-solid fa-bell text-sm"></i> تفعيل الإشعارات الفورية
-            </button>
-        </div>
-
         <div id="categoryTabs" class="w-full flex gap-2 overflow-x-auto pb-2 mb-4 text-xs"></div>
 
         <button type="button" id="galleryBtnCard" onclick="window.openGalleryModal()" class="w-full mb-4 bg-gradient-to-r from-goldaccent/20 via-yellow-500/10 to-goldaccent/20 border border-goldaccent/40 rounded-2xl p-3.5 flex items-center justify-between shadow-sm transition">
@@ -821,11 +814,10 @@
         </div>
     </div>
 
-    <!-- Script Engine with Firebase & Instant Notifications -->
+    <!-- Script Engine with Firebase & In-App Notifications -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/13.2.0/firebase-app.js";
         import { getDatabase, ref, set, onValue } from "https://www.gstatic.com/firebasejs/13.2.0/firebase-database.js";
-        import { getMessaging, getToken, onMessage } from "https://www.gstatic.com/firebasejs/13.2.0/firebase-messaging.js";
 
         const firebaseConfig = {
             apiKey: "AIzaSyDDgTZjnufv21Hn_sb0YicHZg17n91lrfA",
@@ -839,78 +831,6 @@
 
         const app = initializeApp(firebaseConfig);
         const db = getDatabase(app);
-        const messaging = getMessaging(app);
-
-        // التحقق من حالة الإذن وإخفاء أو إظهار زر التفعيل بناءً على ذلك
-        function checkNotificationButtonState() {
-            const wrapper = document.getElementById('notificationRequestWrapper');
-            if (!wrapper) return;
-            
-            if (Notification.permission === 'granted') {
-                wrapper.classList.add('hidden'); // إخفاء الزر تماماً إذا وافق المستخدم مسبقاً
-            } else {
-                wrapper.classList.remove('hidden'); // إظهار الزر إذا لم يمنح الإذن بعد
-            }
-        }
-
-        // دالة طلب إذن الإشعارات وتوليد رمز الجهاز مع إدراج مفتاح الـ VAPID Key بدقة
-        window.requestNotificationPermissionAndToken = async function() {
-            try {
-                const permission = await Notification.requestPermission();
-                checkNotificationButtonState(); // تحديث حالة إخفاء/إظهار الزر فوراً
-                
-                if (permission === 'granted') {
-                    console.log('تم منح إذن الإشعارات بنجاح.');
-                    const currentToken = await getToken(messaging, { 
-                        vapidKey: 'BIIuLJYW1J2uJ503cmsKDFIS2iB5B3HOgS5Y2fpJRvNRLM2GmCcZftH1vnkXM9pGkKMv_QOTsa3tnCfo5sXN9fX4'
-                    });
-
-                    if (currentToken) {
-                        console.log('رمز الجهاز (FCM Token):', currentToken);
-                        alert('تم تفعيل الإشعارات بنجاح لهذا الجهاز! 🔔');
-                    }
-                } else {
-                    alert('تم رفض إذن الإشعارات من قبل المتصفح.');
-                }
-            } catch (error) {
-                console.error('حدث خطأ أثناء طلب الإذن:', error);
-            }
-        };
-
-        // فحص الحالة عند تحميل الصفحة
-        window.addEventListener('DOMContentLoaded', () => {
-            checkNotificationButtonState();
-            if (Notification.permission === 'default') {
-                window.requestNotificationPermissionAndToken();
-            }
-        });
-
-        // تسجيل الـ Service Worker لضمان استلام الإشعارات في الخلفية
-        if ('serviceWorker' in navigator) {
-            navigator.serviceWorker.register('./firebase-messaging-sw.js')
-            .then((reg) => console.log('Service Worker registered successfully:', reg))
-            .catch((err) => console.log('Service Worker registration failed:', err));
-        }
-
-        // استقبال الإشعارات وعرضها في نظام إشعارات الهاتف (System Notification Center) والموقع
-        onMessage(messaging, (payload) => {
-            console.log('تم استلام إشعار:', payload);
-            if (payload.notification) {
-                const title = payload.notification.title;
-                const options = {
-                    body: payload.notification.body,
-                    icon: payload.notification.icon || '/icon.png'
-                };
-
-                if (navigator.serviceWorker && navigator.serviceWorker.ready) {
-                    navigator.serviceWorker.ready.then(registration => {
-                        registration.showNotification(title, options);
-                    });
-                } else if (Notification.permission === 'granted') {
-                    new Notification(title, options);
-                }
-            }
-        });
 
         const urlParams = new URLSearchParams(window.location.search);
         const currentUsername = urlParams.get('user') || 'mahmoud';
@@ -1103,7 +1023,7 @@
             }
         }
 
-        // نظام مركز الإشعارات الفورية
+        // نظام مركز الإشعارات الفورية الداخلي
         window.openNotificationsModal = function() {
             renderNotificationsList();
             document.getElementById('notificationsModal').classList.remove('hidden');
@@ -1222,7 +1142,7 @@
                 createdAt: Date.now()
             };
             set(dbRef, rootData).then(() => {
-                alert('تم إرسال الإشعار الفوري بنجاح ووصل لجميع الهواتف المتصلة!');
+                alert('تم إرسال الإشعار بنجاح داخل النظام!');
                 document.getElementById('broadcastTitle').value = '';
                 document.getElementById('broadcastMessage').value = '';
             });
@@ -2059,7 +1979,7 @@
             });
         }
 
-        // حفظ المشروع الجديد مع إرسال إشعار تلقائي لكل الهواتف المتصلة
+        // حفظ المشروع الجديد مع إرسال إشعار تلقائي لكل الزوار
         window.saveGalleryItem = function() {
             const id = document.getElementById('editingGalleryId').value;
             const title = document.getElementById('galleryTitle').value.trim();
@@ -2080,7 +2000,7 @@
                 const newId = 'g_' + Date.now();
                 appData.gallery.push({ id: newId, title, category, desc, coverUrl, extraUrls, enabled });
 
-                // إرسال إشعار فوري تلقائي لكل الهواتف عند إضافة مشروع جديد
+                // إرسال إشعار داخل النظام لكل الزوار عند إضافة مشروع جديد
                 if (!rootData.notifications) rootData.notifications = {};
                 const notifId = 'notif_' + Date.now();
                 rootData.notifications[notifId] = {
@@ -2098,7 +2018,7 @@
             saveDataToFirebase();
             renderAdminGalleryList();
             renderGalleryGrid();
-            alert(isNew ? 'تم نشر المشروع وإرسال إشعار فوري لجميع الهواتف بنجاح! 🔔' : 'تم تحديث المشروع بنجاح!');
+            alert(isNew ? 'تم نشر المشروع وإرسال إشعار داخل المنصة بنجاح! 🔔' : 'تم تحديث المشروع بنجاح!');
         };
 
         window.resetGalleryForm = function() {
