@@ -318,28 +318,38 @@
             </button>
         </div>
 
-        <!-- 🔹 أداة مقارنة قبل وبعد التنفيذ (الإضافة الجديدة) -->
-        <div id="beforeAfterSection" class="w-full bg-lightcard dark:bg-cardbg border border-gray-300 dark:border-gray-800 rounded-2xl p-3.5 shadow-sm mb-6 hidden">
-            <div class="flex items-center justify-between mb-3 px-1">
-                <span class="text-xs font-extrabold text-gray-900 dark:text-white flex items-center gap-1.5">
-                    <i class="fa-solid fa-wand-magic-sparkles text-goldaccent"></i> مقارنة قبل وبعد التنفيذ
-                </span>
+<!-- 🔹 أداة مقارنة قبل وبعد التنفيذ (بوضع الاحتواء الكامل) -->
+<div id="beforeAfterSection" class="w-full bg-lightcard dark:bg-cardbg border border-gray-300 dark:border-gray-800 rounded-2xl p-3.5 shadow-sm mb-6 hidden">
+    <div class="flex items-center justify-between mb-3 px-1">
+        <span class="text-xs font-extrabold text-gray-900 dark:text-white flex items-center gap-1.5">
+            <i class="fa-solid fa-wand-magic-sparkles text-goldaccent"></i> مقارنة قبل وبعد التنفيذ
+        </span>
+    </div>
+    <div class="relative w-full aspect-video rounded-2xl overflow-hidden shadow-xl select-none border border-gray-200 dark:border-gray-700 bg-gray-900 dark:bg-darkbg flex items-center justify-center" id="baSliderContainer">
+        <!-- صورة بعد التنفيذ (تحتويها الحاوية بالكامل) -->
+        <img id="baAfterImg" src="" alt="بعد التنفيذ" class="absolute inset-0 w-full h-full object-contain">
+        
+        <!-- صورة قبل التنفيذ (مع القص المتناسق واحتواء الصورة) -->
+        <div id="baBeforeWrapper" class="absolute inset-0 overflow-hidden z-10 pointer-events-none" style="clip-path: inset(0 50% 0 0);">
+            <img id="baBeforeImg" src="" alt="قبل التنفيذ" class="absolute inset-0 w-full h-full object-contain">
+        </div>
+
+        <!-- الخط الفاصل والزر المنتصف -->
+        <div id="baDivider" class="absolute inset-y-0 pointer-events-none z-20 flex items-center justify-center" style="left: 50%; transform: translateX(-50%);">
+            <div class="w-0.5 h-full bg-white shadow-[0_0_10px_rgba(0,0,0,0.8)]"></div>
+            <div class="absolute w-9 h-9 rounded-full bg-white text-gray-900 shadow-lg flex items-center justify-center font-bold text-xs border-2 border-gray-300">
+                ⇄
             </div>
-            <div class="relative w-full aspect-video rounded-2xl overflow-hidden shadow-xl select-none border border-gray-200 dark:border-gray-700 bg-gray-100 dark:bg-darkbg" id="baSliderContainer">
-                <img id="baAfterImg" src="" alt="بعد التنفيذ" class="absolute inset-0 w-full h-full object-cover">
-                <div id="baBeforeWrapper" class="absolute inset-y-0 left-0 overflow-hidden" style="width: 50%;">
-                    <img id="baBeforeImg" src="" alt="قبل التنفيذ" class="absolute inset-0 h-full object-cover max-w-none">
-                </div>
-                <div id="baDivider" class="absolute inset-y-0 pointer-events-none z-10 flex items-center justify-center" style="left: 50%;">
-                    <div class="w-0.5 h-full bg-white shadow-[0_0_10px_rgba(0,0,0,0.8)]"></div>
-                    <div class="absolute w-9 h-9 rounded-full bg-white text-gray-900 shadow-lg flex items-center justify-center font-bold text-xs border-2 border-gray-300">
-                        ⇄
-                    </div>
-                </div>
-                <input type="range" min="0" max="100" value="50" 
-                       class="absolute inset-0 w-full h-full opacity-0 cursor-ew-resize z-20" 
-                       oninput="window.moveBaSlider(this)">
-            </div>
+        </div>
+
+        <!-- شريط التحكم الشفاف -->
+        <input type="range" min="0" max="100" value="50" dir="ltr"
+               class="absolute inset-0 w-full h-full opacity-0 cursor-ew-resize z-30" 
+               oninput="window.moveBaSlider(this)">
+    </div>
+</div>
+
+
         </div>
 
         <div id="mapSectionContainer" class="w-full bg-lightcard dark:bg-cardbg border border-gray-300 dark:border-gray-800 rounded-2xl p-3.5 shadow-sm mb-6 hidden">
@@ -3573,77 +3583,41 @@
             saveDataToFirebase();
             window.closeAdminModal();
         };
-        // دالة عرض وتحديث أداة مقارنة قبل وبعد في الواجهة الرئيسية
-window.updateBeforeAfterUI = function(data) {
-    const section = document.getElementById('beforeAfterSection');
-    if (!section) return;
-    
-    // إذا كان الخيار مفعل والروابط موجودة، قم بإظهار القسم ووضع الصور
-    if (data.showBeforeAfter && data.beforeImgUrl && data.afterImgUrl) {
-        section.classList.remove('hidden');
-        document.getElementById('baBeforeImg').src = data.beforeImgUrl;
-        document.getElementById('baAfterImg').src = data.afterImgUrl;
-    } else {
-        section.classList.add('hidden');
-    }
-};
-
-// دالة تحريك الساحبة التفاعلية
+// دالة تحريك أداة مقارنة قبل وبعد
 window.moveBaSlider = function(input) {
     const val = input.value;
     const beforeWrapper = document.getElementById('baBeforeWrapper');
     const divider = document.getElementById('baDivider');
     
     if (beforeWrapper && divider) {
-        beforeWrapper.style.clipPath = `inset(0 ${val}% 0 0)`;
-        divider.style.left = (100 - val) + '%';
+        // قص الصورة الأولى بنسبة صحيحة متناسبة مع شريط التمرير
+        beforeWrapper.style.clipPath = `inset(0 ${100 - val}% 0 0)`;
+        // تحريك الخط الفاصل بدقة في المنتصف
+        divider.style.left = val + '%';
+        divider.style.transform = 'translateX(-50%)';
     }
 };
-const container = document.getElementById('baContainer');
-const beforeWrapper = document.getElementById('baBeforeWrapper');
-const divider = document.getElementById('baDivider');
 
-function updateSliderPosition(clientX) {
-    const rect = container.getBoundingClientRect();
-    let x = clientX - rect.left;
-    let percentage = (x / rect.width) * 100;
+// دالة عرض وتحديث أداة مقارنة قبل وبعد في الواجهة الرئيسية
+window.updateBeforeAfterUI = function(data) {
+    const section = document.getElementById('beforeAfterSection');
+    if (!section) return;
     
-    if (percentage < 0) percentage = 0;
-    if (percentage > 100) percentage = 100;
-    
-    beforeWrapper.style.clipPath = `inset(0 ${100 - percentage}% 0 0)`;
-    divider.style.left = percentage + '%';
-}
-
-// دعم اللمس على الهواتف
-container.addEventListener('touchmove', (e) => {
-    if (e.touches && e.touches[0]) {
-        updateSliderPosition(e.touches[0].clientX);
+    if (data.showBeforeAfter && data.beforeImgUrl && data.afterImgUrl) {
+        section.classList.remove('hidden');
+        document.getElementById('baBeforeImg').src = data.beforeImgUrl;
+        document.getElementById('baAfterImg').src = data.afterImgUrl;
+        
+        // ضبط القيمة على المنتصف تلقائياً عند التحميل
+        const sliderInput = section.querySelector('input[type="range"]');
+        if (sliderInput) {
+            sliderInput.value = 50;
+            window.moveBaSlider(sliderInput);
+        }
+    } else {
+        section.classList.add('hidden');
     }
-}, { passive: true });
-
-container.addEventListener('touchstart', (e) => {
-    if (e.touches && e.touches[0]) {
-        updateSliderPosition(e.touches[0].clientX);
-    }
-}, { passive: true });
-
-// دعم الماوس (للكمبيوتر)
-let isDragging = false;
-container.addEventListener('mousedown', (e) => {
-    isDragging = true;
-    updateSliderPosition(e.clientX);
-});
-
-window.addEventListener('mousemove', (e) => {
-    if (!isDragging) return;
-    updateSliderPosition(e.clientX);
-});
-
-window.addEventListener('mouseup', () => {
-    isDragging = false;
-});
-
+};
 
 
 
