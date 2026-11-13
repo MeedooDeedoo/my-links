@@ -54,6 +54,7 @@
 </head>
 
 
+
 <!-- الجزء الثاني: واجهة الصفحة الرئيسية وعناصر العرض (Body & Header) -->
 
 <body id="pageBody" class="min-h-screen flex flex-col items-center justify-between p-4 pb-16 bg-lightbg dark:bg-darkbg text-gray-900 dark:text-gray-100 transition-colors duration-300 relative">
@@ -1129,7 +1130,7 @@
 
 <!-- الجزء الخامس: محرك البرمجيات ومنطق Firebase وقاعدة البيانات (JavaScript Engine) -->
 
-    <script type="module">
+<script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/13.2.0/firebase-app.js";
         import { getDatabase, ref, set, onValue } from "https://www.gstatic.com/firebasejs/13.2.0/firebase-database.js";
 
@@ -1165,6 +1166,12 @@
             showTestimonialsSection: true,
             requireTestimonialApproval: false,
             showClickCounts: true,
+            
+            // خصائص النبذة المختصرة وتعريف الشركة في القائمة الجانبية
+            sidebarShowAbout: true,
+            sidebarCompanyTitle: "لمسة فن بلس للتصميم والإعلان",
+            sidebarAboutText: "نقدم حلول التصميم الإعلاني المتكاملة، وتكسية واجهات الألوكوبوند بأحدث التقنيات الهندسية.",
+
             customColors: { c1: "", o1: 0, c2: "", o2: 0, c3: "", o3: 0, angle: "to bottom right" },
             bgImageUrl: "",
             bgImgOpacity: 0.6,
@@ -1242,8 +1249,6 @@
         let lastKnownNotifCount = 0;
         let pendingProtectedLink = null;
 
-        applyThemeAccent(currentThemeColor, `rgba(${parseInt(currentThemeColor.slice(1,3),16)}, ${parseInt(currentThemeColor.slice(3,5),16)}, ${parseInt(currentThemeColor.slice(5,7),16)}, 0.35)`, `rgba(${parseInt(currentThemeColor.slice(1,3),16)}, ${parseInt(currentThemeColor.slice(3,5),16)}, ${parseInt(currentThemeColor.slice(5,7),16)}, 0.5)`);
-
         const dbRef = ref(db, 'platformData');
         onValue(dbRef, (snapshot) => {
             const data = snapshot.val();
@@ -1264,6 +1269,12 @@
                 if (appData.showTestimonialsSection === undefined) appData.showTestimonialsSection = true;
                 if (appData.requireTestimonialApproval === undefined) appData.requireTestimonialApproval = false;
                 if (appData.showClickCounts === undefined) appData.showClickCounts = true;
+
+                // التحقق من خصائص النبذة والشركة
+                if (appData.sidebarShowAbout === undefined) appData.sidebarShowAbout = true;
+                if (!appData.sidebarCompanyTitle) appData.sidebarCompanyTitle = "لمسة فن بلس";
+                if (!appData.sidebarAboutText) appData.sidebarAboutText = "خدمات التصميم الإعلاني وتكسية الواجهات";
+
                 if (!appData.analytics) appData.analytics = { totalViews: 0 };
                 if (!appData.fileHub) appData.fileHub = defaultUserData.fileHub;
                 if (!appData.promoCodes) appData.promoCodes = defaultUserData.promoCodes;
@@ -1613,9 +1624,6 @@
             });
         }
 
-        // ==========================================
-        // 📁 إدارة مكتبة الملفات والكتالوجات (File Hub Admin)
-        // ==========================================
         window.saveFileHubItem = function() {
             const id = document.getElementById('editingFileHubId').value;
             const title = document.getElementById('fileHubTitle').value.trim();
@@ -1914,9 +1922,6 @@
             }).catch(err => console.error("Promo lock error:", err));
         };
 
-        // ==========================================
-        // 🏷️ إدارة الكوبونات (Promo Admin)
-        // ==========================================
         window.savePromoItem = function() {
             const id = document.getElementById('editingPromoId').value;
             const code = document.getElementById('promoCodeVal').value.trim().toUpperCase();
@@ -2422,7 +2427,22 @@
             });
         }
 
+        // الدالة المحدثة بالكامل لعرض النبذة واسم الشركة والروابط في القائمة الجانبية
         window.renderSidebarMenu = function() {
+            const aboutSection = document.getElementById('sidebarAboutSection');
+            const companyTitleEl = document.getElementById('sidebarDisplayCompanyTitle');
+            const aboutTextEl = document.getElementById('sidebarDisplayAboutText');
+
+            if (aboutSection && companyTitleEl && aboutTextEl) {
+                if (appData.sidebarShowAbout !== false && (appData.sidebarCompanyTitle || appData.sidebarAboutText)) {
+                    aboutSection.classList.remove('hidden');
+                    companyTitleEl.textContent = appData.sidebarCompanyTitle || 'اسم الشركة أو النشاط';
+                    aboutTextEl.textContent = appData.sidebarAboutText || '';
+                } else {
+                    aboutSection.classList.add('hidden');
+                }
+            }
+
             const container = document.getElementById('sidebarLinksContainer');
             if (!container) return;
             container.innerHTML = '';
@@ -2576,6 +2596,15 @@
             document.getElementById('adminShowTestimonials').checked = appData.showTestimonialsSection !== false;
             document.getElementById('adminRequireTestimonialApproval').checked = appData.requireTestimonialApproval === true;
             document.getElementById('adminShowClickCounts').checked = appData.showClickCounts !== false;
+            
+            // تعبئة حقول إعدادات النبذة والشركة في لوحة التحكم
+            const sidebarShowAboutEl = document.getElementById('sidebarShowAbout');
+            if (sidebarShowAboutEl) sidebarShowAboutEl.checked = appData.sidebarShowAbout !== false;
+            const sidebarCompanyTitleEl = document.getElementById('sidebarCompanyTitle');
+            if (sidebarCompanyTitleEl) sidebarCompanyTitleEl.value = appData.sidebarCompanyTitle || '';
+            const sidebarAboutTextEl = document.getElementById('sidebarAboutText');
+            if (sidebarAboutTextEl) sidebarAboutTextEl.value = appData.sidebarAboutText || '';
+
             document.getElementById('adminAvatarShape').value = appData.avatarShape || 'rounded-full';
             document.getElementById('adminAvatarGlow').value = appData.avatarGlow || 'glow-gold';
             document.getElementById('adminCardShape').value = appData.cardShape || 'rounded-2xl';
@@ -2684,9 +2713,6 @@
             }
         };
 
-        // ==========================================
-        // ⭐ إدارة آراء ومراجعات العملاء (Testimonials Admin)
-        // ==========================================
         window.saveTestimonialItem = function() {
             const id = document.getElementById('editingTestimonialId').value;
             const clientName = document.getElementById('testimonialClientName').value.trim();
@@ -2778,9 +2804,6 @@
             });
         }
 
-        // ==========================================
-        // 🧭 إدارة القائمة الجانبية (Sidebar Admin)
-        // ==========================================
         window.saveSidebarItem = function() {
             const id = document.getElementById('editingSidebarId').value;
             const title = document.getElementById('sidebarTitle').value.trim();
@@ -2974,9 +2997,6 @@
             });
         }
 
-        // ==========================================
-        // 🎨 إدارة المشاريع والأعمال (Gallery Admin)
-        // ==========================================
         window.saveGalleryItem = function() {
             const id = document.getElementById('editingGalleryId').value;
             const title = document.getElementById('galleryTitle').value.trim();
@@ -3219,9 +3239,6 @@
             });
         }
 
-        // ==========================================
-        // 🔗 إدارة الروابط الرئيسية (Links Admin)
-        // ==========================================
         window.saveLink = function() {
             const id = document.getElementById('editingLinkId').value;
             const title = document.getElementById('linkTitle').value.trim();
@@ -3339,6 +3356,15 @@
             appData.showTestimonialsSection = document.getElementById('adminShowTestimonials').checked;
             appData.requireTestimonialApproval = document.getElementById('adminRequireTestimonialApproval').checked;
             appData.showClickCounts = document.getElementById('adminShowClickCounts').checked;
+            
+            // قراءة وحفظ إعدادات النبذة المختصرة وتعريف الشركة من لوحة التحكم
+            const sidebarShowAboutEl = document.getElementById('sidebarShowAbout');
+            if (sidebarShowAboutEl) appData.sidebarShowAbout = sidebarShowAboutEl.checked;
+            const sidebarCompanyTitleEl = document.getElementById('sidebarCompanyTitle');
+            if (sidebarCompanyTitleEl) appData.sidebarCompanyTitle = sidebarCompanyTitleEl.value.trim();
+            const sidebarAboutTextEl = document.getElementById('sidebarAboutText');
+            if (sidebarAboutTextEl) appData.sidebarAboutText = sidebarAboutTextEl.value.trim();
+
             appData.avatarShape = document.getElementById('adminAvatarShape').value;
             appData.avatarGlow = document.getElementById('adminAvatarGlow').value;
             appData.cardShape = document.getElementById('adminCardShape').value;
