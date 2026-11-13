@@ -930,15 +930,34 @@
                     <div id="accSidebarAdmin" class="hidden p-3 pt-0 space-y-3 border-t border-gray-200 dark:border-gray-800 mt-1">
                         
                         <!-- إعدادات النبذة والتعريف بالشركة داخل القائمة -->
-                        <div class="bg-white dark:bg-cardbg p-3 rounded-xl border border-gray-300 dark:border-gray-700 space-y-2 mt-2">
-                            <h4 class="font-bold text-goldaccent flex items-center gap-1.5"><i class="fa-solid fa-address-card"></i> نبذة مختصرة وتعريف الشركة في القائمة</h4>
-                            <div class="flex items-center gap-2 pt-1">
-                                <input type="checkbox" id="sidebarShowAbout" class="accent-goldaccent w-4 h-4" checked>
-                                <label for="sidebarShowAbout" class="font-bold text-gray-800 dark:text-gray-200 text-xs">تفعيل وإظهار قسم "نبذة عن الشركة / الخدمة" في القائمة</label>
-                            </div>
-                            <input type="text" id="sidebarCompanyTitle" placeholder="اسم الشركة أو النشاط (مثال: لمسة فن بلس للتصميم)" class="w-full bg-lightbg dark:bg-darkbg border border-gray-300 dark:border-gray-700 rounded-lg p-2 text-gray-900 dark:text-white outline-none text-xs font-bold">
-                            <textarea id="sidebarAboutText" placeholder="اكتب نبذة مختصرة تعريفية تظهر في أعلى القائمة الجانبية..." class="w-full bg-lightbg dark:bg-darkbg border border-gray-300 dark:border-gray-700 rounded-lg p-2 text-gray-900 dark:text-white outline-none h-20 resize-none text-xs"></textarea>
-                        </div>
+                        <!-- إعدادات النبذة المختصرة وتعريف الشركة في لوحة التحكم -->
+<div class="space-y-3 p-3 bg-white/5 dark:bg-cardbg/50 border border-goldaccent/20 rounded-2xl">
+    <div class="flex items-center justify-between">
+        <span class="text-xs font-extrabold text-goldaccent flex items-center gap-1.5">
+            <i class="fa-solid fa-circle-info"></i> نبذة مختصرة وتعريف الشركة في القائمة
+        </span>
+        <label class="relative inline-flex items-center cursor-pointer">
+            <input type="checkbox" id="sidebarShowAbout" class="sr-only peer" checked>
+            <div class="w-9 h-5 bg-gray-300 peer-focus:outline-none rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-goldaccent"></div>
+        </label>
+    </div>
+    <p class="text-[10px] text-gray-400">تفعيل وإظهار قسم "نبذة عن الشركة / الخدمة" في القائمة</p>
+    
+<div>
+    <label class="text-[11px] font-bold text-gray-300 block mb-1">اسم الشركة أو النشاط</label>
+    <input type="text" id="sidebarCompanyTitle" placeholder="مثال: لمسة فن بلس" class="w-full bg-lightbg dark:bg-darkbg border border-gray-300 dark:border-gray-700 rounded-xl p-2.5 text-xs text-gray-900 dark:text-white focus:border-goldaccent outline-none">
+</div>
+
+<div>
+    <label class="text-[11px] font-bold text-gray-300 block mb-1">نص النبذة أو الوصف المختصر</label>
+    <textarea id="sidebarAboutText" rows="3" placeholder="اكتب نبذة مختصرة عن نشاطك أو خدماتك..." class="w-full bg-lightbg dark:bg-darkbg border border-gray-300 dark:border-gray-700 rounded-xl p-2.5 text-xs text-gray-900 dark:text-white focus:border-goldaccent outline-none"></textarea>
+</div>
+
+
+
+
+
+
 
                         <!-- إدارة عناصر القائمة الجانبية (روابط وأزرار مع أزرار الترتيب والتعديل والحذف) -->
                         <div class="space-y-2 pt-2 border-t border-gray-300 dark:border-gray-700">
@@ -1130,7 +1149,7 @@
 
 <!-- الجزء الخامس: محرك البرمجيات ومنطق Firebase وقاعدة البيانات (JavaScript Engine) -->
 
-<script type="module">
+    <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/13.2.0/firebase-app.js";
         import { getDatabase, ref, set, onValue } from "https://www.gstatic.com/firebasejs/13.2.0/firebase-database.js";
 
@@ -3416,10 +3435,14 @@
             appData.contacts.showEmail = document.getElementById('showEmail').checked;
             appData.contacts.email = document.getElementById('editEmail').value.trim();
 
+            // تحديث واجهة القائمة الجانبية محلياً فوراً قبل الحفظ للسحاب
+            if (typeof window.renderSidebarMenu === 'function') {
+                window.renderSidebarMenu();
+            }
+
             saveDataToFirebase();
             window.closeAdminModal();
         };
     </script>
-
 </body>
 </html>
