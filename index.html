@@ -1,4 +1,4 @@
-<!-- الجزء الأول: رأس الصفحة والواجهة والتصميم الأساسي -->
+<!-- الجزء الأول: الهيكل الأساسي وإعدادات الصفحة (HTML Head & Styles) -->
 
 <!DOCTYPE html>
 <html lang="ar" dir="rtl" class="dark">
@@ -52,6 +52,10 @@
         html.light .glass-card { background: rgba(255, 255, 255, 0.8) !important; }
     </style>
 </head>
+
+
+<!-- الجزء الثاني: واجهة الصفحة الرئيسية وعناصر العرض (Body & Header) -->
+
 <body id="pageBody" class="min-h-screen flex flex-col items-center justify-between p-4 pb-16 bg-lightbg dark:bg-darkbg text-gray-900 dark:text-gray-100 transition-colors duration-300 relative">
 
     <div id="bgImageLayer" class="absolute inset-0 bg-cover bg-center pointer-events-none z-0 hidden"></div>
@@ -222,7 +226,7 @@
             <div id="promoCodesContainer" class="w-full grid grid-cols-1 gap-3"></div>
         </div>
 
-        <!-- Testimonials & Live Rating Section (Max 3 items on home) -->
+        <!-- Testimonials & Live Rating Section -->
         <div id="testimonialsSectionContainer" class="w-full mb-6 hidden">
             <div class="flex items-center justify-between mb-3 px-1">
                 <span class="text-xs font-extrabold text-gray-900 dark:text-white flex items-center gap-1.5">
@@ -261,10 +265,10 @@
     <footer class="w-full max-w-md text-center py-4 border-t border-gray-300 dark:border-gray-800 text-xs font-medium text-gray-600 dark:text-gray-400 relative z-10 transition-colors duration-300">
         <p>© <span id="year">2026</span> جميع الحقوق محفوظة - شجرة الروابط</p>
     </footer>
-    
-    <!-- الجزء الثاني: النوافذ المنبثقة (Modals) -->
 
-    <!-- All Testimonials Modal (Exhibits all reviews like gallery) -->
+<!-- الجزء الثالث: النوابض والنوافذ المنبثقة التفاعلية (Modals & Popups) -->
+
+    <!-- All Testimonials Modal -->
     <div id="allTestimonialsModal" class="fixed inset-0 bg-black/70 backdrop-blur-md hidden flex items-center justify-center z-[110] p-3">
         <div class="bg-lightcard dark:bg-cardbg border border-gray-300 dark:border-gray-800 w-full max-w-lg rounded-2xl p-4 shadow-2xl max-h-[92vh] flex flex-col transition-colors duration-300">
             <div class="flex justify-between items-center border-b border-gray-200 dark:border-gray-800 pb-3 mb-3">
@@ -277,7 +281,7 @@
         </div>
     </div>
 
-    <!-- Add Live Testimonial Modal (Direct Visitor Rating) -->
+    <!-- Add Live Testimonial Modal -->
     <div id="addTestimonialModal" class="fixed inset-0 bg-black/70 backdrop-blur-md hidden flex items-center justify-center z-[125] p-3">
         <div class="bg-lightcard dark:bg-cardbg border border-gray-300 dark:border-gray-800 w-full max-w-sm rounded-2xl p-5 shadow-2xl flex flex-col transition-colors duration-300 space-y-3">
             <div class="flex justify-between items-center border-b border-gray-200 dark:border-gray-800 pb-3">
@@ -482,6 +486,8 @@
         </div>
     </div>
 
+<!-- الجزء الرابع: لوحة التحكم الرئيسية (Admin Panel Modal & PINs) -->
+
     <!-- PIN Modals -->
     <div id="pinModal" class="fixed inset-0 bg-black/70 backdrop-blur-md hidden flex items-center justify-center z-[100] p-4">
         <div class="bg-lightcard dark:bg-cardbg border border-gray-300 dark:border-gray-800 w-full max-w-xs rounded-2xl p-6 text-center shadow-2xl transition-colors duration-300">
@@ -498,24 +504,6 @@
         </div>
     </div>
 
-    <div id="memberPinModal" class="fixed inset-0 bg-black/70 backdrop-blur-md hidden flex items-center justify-center z-[100] p-4">
-        <div class="bg-lightcard dark:bg-cardbg border border-gray-300 dark:border-gray-800 w-full max-w-xs rounded-2xl p-6 text-center shadow-2xl transition-colors duration-300">
-            <div class="w-12 h-12 bg-cyanaccent/10 border border-cyanaccent/30 rounded-full flex items-center justify-center mx-auto mb-3 text-cyanaccent">
-                <i class="fa-solid fa-user-gear text-xl"></i>
-            </div>
-            <h3 class="text-lg font-bold text-gray-900 dark:text-white mb-1">تسجيل دخول لوحة العضو</h3>
-            <p class="text-xs text-gray-600 dark:text-gray-400 mb-4">أدخل رمز الـ PIN الخاص بصفحتك:</p>
-            <input type="password" id="memberPinInput" maxlength="6" class="w-full bg-lightbg dark:bg-darkbg border border-gray-300 dark:border-gray-700 text-center text-xl tracking-widest text-cyanaccent rounded-xl py-2 mb-4 outline-none focus:border-cyanaccent font-bold">
-            <div class="flex gap-2">
-                <button type="button" onclick="window.verifyMemberPin()" class="flex-1 bg-cyanaccent text-black font-extrabold py-2.5 rounded-xl text-sm shadow-sm">دخول</button>
-                <button type="button" onclick="window.closeMemberPinModal()" class="flex-1 bg-gray-200 dark:bg-gray-800 text-gray-800 dark:text-gray-200 font-bold py-2.5 rounded-xl text-sm">إلغاء</button>
-            </div>
-        </div>
-    </div>
-
-
-<!-- الجزء الثالث: لوحة التحكم وربط Firebase والمحرك البرمجي -->
-
     <!-- Admin Panel Modal -->
     <div id="adminModal" class="fixed inset-0 bg-black/70 backdrop-blur-md hidden flex items-center justify-center z-[100] p-3">
         <div class="bg-lightcard dark:bg-cardbg border border-gray-300 dark:border-gray-800 w-full max-w-lg rounded-2xl p-4 shadow-2xl max-h-[92vh] flex flex-col transition-colors duration-300">
@@ -527,7 +515,7 @@
             </div>
             <div class="overflow-y-auto flex-grow pr-1 space-y-3 text-xs">
 
-                <!-- ⭐ قسم إدارة ومراجعة التقييمات وإخفائها/إظهارها وموافقة مسبقة -->
+                <!-- ⭐ قسم إدارة ومراجعة التقييمات -->
                 <div class="bg-lightbg dark:bg-darkbg rounded-xl border border-gray-300 dark:border-gray-800 p-3 space-y-2">
                     <h4 class="font-bold text-goldaccent flex items-center gap-2"><i class="fa-solid fa-star"></i> إدارة قسم آراء ومراجعات الزوار</h4>
                     <div class="space-y-2 pt-1">
@@ -537,12 +525,12 @@
                         </div>
                         <div class="flex items-center gap-2 bg-white dark:bg-cardbg p-2.5 rounded-xl border border-gray-200 dark:border-gray-700">
                             <input type="checkbox" id="adminRequireTestimonialApproval" class="accent-goldaccent w-4 h-4">
-                            <label for="adminRequireTestimonialApproval" class="font-extrabold text-gray-800 dark:text-gray-200">الموافقة المسبقة مطلوبة لعرض آراء العملاء في الصفحة (يتطلب تفعيل التقييم يدوياً)</label>
+                            <label for="adminRequireTestimonialApproval" class="font-extrabold text-gray-800 dark:text-gray-200">الموافقة المسبقة مطلوبة لعرض آراء العملاء في الصفحة</label>
                         </div>
                     </div>
                 </div>
 
-                <!-- 🎨 قسم إدارة ألوان الثيم المخصصة وإلغاء تفعيلها (Theme Color Settings) -->
+                <!-- 🎨 قسم إدارة ألوان الثيم المخصصة -->
                 <div class="bg-lightbg dark:bg-darkbg rounded-xl border border-gray-300 dark:border-gray-800 p-3 space-y-2">
                     <h4 class="font-bold text-goldaccent flex items-center gap-2"><i class="fa-solid fa-palette"></i> إدارة ألوان الثيم المخصصة للزوار</h4>
                     <div class="flex items-center gap-2 pt-1 bg-white dark:bg-cardbg p-2.5 rounded-xl border border-gray-200 dark:border-gray-700">
@@ -551,7 +539,7 @@
                     </div>
                 </div>
 
-                <!-- 🔔 قسم إعدادات إشعارات المتصفح في القائمة الجانبية -->
+                <!-- 🔔 إشعارات المتصفح -->
                 <div class="bg-lightbg dark:bg-darkbg rounded-xl border border-gray-300 dark:border-gray-800 p-3 space-y-2">
                     <h4 class="font-bold text-cyanaccent flex items-center gap-2"><i class="fa-solid fa-bell"></i> إدارة إشعارات المتصفح في القائمة الجانبية</h4>
                     <div class="flex items-center gap-2 pt-1 bg-white dark:bg-cardbg p-2.5 rounded-xl border border-gray-200 dark:border-gray-700">
@@ -560,10 +548,10 @@
                     </div>
                 </div>
 
-                <!-- 📊 إحصائيات الزوار وتحليل الأداء -->
+                <!-- 📊 إحصائيات الزوار -->
                 <div class="bg-lightbg dark:bg-darkbg rounded-xl border border-gray-300 dark:border-gray-800 overflow-hidden transition-colors">
                     <button type="button" onclick="window.toggleAccordion('accAnalytics')" class="w-full p-3 flex justify-between items-center font-bold text-gray-800 dark:text-gray-200">
-                        <span class="flex items-center gap-2"><i class="fa-solid fa-chart-line text-goldaccent"></i> إحصائيات الزوار وتحليل الأداء (أدمن فقط)</span>
+                        <span class="flex items-center gap-2"><i class="fa-solid fa-chart-line text-goldaccent"></i> إحصائيات الزوار وتحليل الأداء</span>
                         <div class="flex items-center gap-2">
                             <span class="text-[10px] bg-goldaccent/20 text-goldaccent px-2 py-0.5 rounded font-mono">حصري</span>
                             <i id="icon-accAnalytics" class="fa-solid fa-chevron-down transition-transform"></i>
@@ -588,12 +576,10 @@
                                 <span id="statTotalProjects" class="text-lg font-extrabold text-purple-500">0</span>
                             </div>
                         </div>
-
                         <div class="bg-white dark:bg-cardbg p-3 rounded-xl border border-gray-200 dark:border-gray-700 space-y-2">
                             <span class="font-bold text-gray-800 dark:text-gray-200 block">أداء ونقرات الروابط الفردية:</span>
                             <div id="statLinksBreakdown" class="space-y-1.5 max-h-36 overflow-y-auto pr-1"></div>
                         </div>
-
                         <div class="flex justify-between items-center pt-1">
                             <span class="text-[10px] text-gray-500">إعادة تعيين العدادات:</span>
                             <button type="button" onclick="window.resetAnalyticsCounters()" class="bg-red-500/10 text-red-500 border border-red-500/30 px-3 py-1 rounded-lg text-[10px] font-bold">تصفير عداد الزيارات</button>
@@ -617,10 +603,10 @@
                         </div>
                         <div class="space-y-1 pt-1">
                             <label class="block text-[11px] text-gray-500">عنوان العرض:</label>
-                            <input type="text" id="adminFlashDealTitle" placeholder="عرض خاص لفترة محدودة على واجهات الألوكوبوند!" class="w-full bg-white dark:bg-cardbg border border-gray-200 dark:border-gray-700 rounded-lg p-2 text-gray-900 dark:text-white outline-none font-bold">
+                            <input type="text" id="adminFlashDealTitle" placeholder="عرض خاص لفترة محدودة..." class="w-full bg-white dark:bg-cardbg border border-gray-200 dark:border-gray-700 rounded-lg p-2 text-gray-900 dark:text-white outline-none font-bold">
                         </div>
                         <div class="space-y-1">
-                            <label class="block text-[11px] text-gray-500">تاريخ ووقت انتهاء العرض (Deadline):</label>
+                            <label class="block text-[11px] text-gray-500">تاريخ ووقت انتهاء العرض:</label>
                             <input type="datetime-local" id="adminFlashDealEnd" class="w-full bg-white dark:bg-cardbg border border-gray-200 dark:border-gray-700 rounded-lg p-2 text-gray-900 dark:text-white outline-none font-mono">
                         </div>
                     </div>
@@ -629,7 +615,7 @@
                 <!-- File Hub Admin -->
                 <div class="bg-lightbg dark:bg-darkbg rounded-xl border border-gray-300 dark:border-gray-800 overflow-hidden transition-colors">
                     <button type="button" onclick="window.toggleAccordion('accFileHubAdmin')" class="w-full p-3 flex justify-between items-center font-bold text-gray-800 dark:text-gray-200">
-                        <span class="flex items-center gap-2"><i class="fa-solid fa-file-arrow-down text-cyanaccent"></i> إدارة مكتبة الملفات والكتالوجات (File Hub)</span>
+                        <span class="flex items-center gap-2"><i class="fa-solid fa-file-arrow-down text-cyanaccent"></i> إدارة مكتبة الملفات والكتالوجات</span>
                         <div class="flex items-center gap-2">
                             <span class="text-[10px] bg-cyanaccent/20 text-cyanaccent px-2 py-0.5 rounded font-mono">جديد</span>
                             <i id="icon-accFileHubAdmin" class="fa-solid fa-chevron-down transition-transform"></i>
@@ -639,9 +625,9 @@
                         <div class="space-y-2 mt-2">
                             <h4 id="fileHubFormTitle" class="font-bold text-cyanaccent">إضافة ملف أو كتالوج جديد</h4>
                             <input type="hidden" id="editingFileHubId">
-                            <input type="text" id="fileHubTitle" placeholder="عنوان الملف (مثال: كتالوج الألوكوبوند 2026)" class="w-full bg-lightcard dark:bg-cardbg border border-gray-300 dark:border-gray-700 rounded-lg p-2 text-gray-900 dark:text-white outline-none">
-                            <input type="url" id="fileHubUrl" placeholder="رابط التحميل أو الملف (رابط مباشر PDF أو رابط خارجي)" class="w-full bg-lightcard dark:bg-cardbg border border-gray-300 dark:border-gray-700 rounded-lg p-2 text-gray-900 dark:text-white outline-none font-mono text-xs">
-                            <textarea id="fileHubDesc" placeholder="وصف موجز للملف أو محتواه..." class="w-full bg-lightcard dark:bg-cardbg border border-gray-300 dark:border-gray-700 rounded-lg p-2 text-gray-900 dark:text-white outline-none h-16 resize-none"></textarea>
+                            <input type="text" id="fileHubTitle" placeholder="عنوان الملف..." class="w-full bg-lightcard dark:bg-cardbg border border-gray-300 dark:border-gray-700 rounded-lg p-2 text-gray-900 dark:text-white outline-none">
+                            <input type="url" id="fileHubUrl" placeholder="رابط التحميل أو الملف (PDF)" class="w-full bg-lightcard dark:bg-cardbg border border-gray-300 dark:border-gray-700 rounded-lg p-2 text-gray-900 dark:text-white outline-none font-mono text-xs">
+                            <textarea id="fileHubDesc" placeholder="وصف موجز للملف..." class="w-full bg-lightcard dark:bg-cardbg border border-gray-300 dark:border-gray-700 rounded-lg p-2 text-gray-900 dark:text-white outline-none h-16 resize-none"></textarea>
                             <div class="flex items-center gap-2 pt-1 bg-cyanaccent/10 p-2 rounded-lg border border-cyanaccent/30">
                                 <input type="checkbox" id="fileHubEnabled" class="accent-cyanaccent w-4 h-4" checked>
                                 <label for="fileHubEnabled" class="font-bold text-gray-900 dark:text-white text-xs">تفعيل وعرض الملف في المكتبة</label>
@@ -669,22 +655,19 @@
                             <input type="checkbox" id="adminShowPromoSection" class="accent-goldaccent w-4 h-4" checked>
                             <label for="adminShowPromoSection" class="font-extrabold text-gray-800 dark:text-gray-200">إظهار قسم الكوبونات في الصفحة الرئيسية</label>
                         </div>
-
                         <div class="space-y-2 pt-2 border-t border-gray-200 dark:border-gray-700">
                             <h4 id="promoFormTitle" class="font-bold text-goldaccent">إضافة كوبون خصم جديد برصيد مرات محدد</h4>
                             <input type="hidden" id="editingPromoId">
-                            
                             <div class="flex gap-2">
                                 <input type="text" id="promoCodeVal" placeholder="رمز الكوبون (مثال: MAHMOUD10)" class="w-full bg-lightcard dark:bg-cardbg border border-gray-300 dark:border-gray-700 rounded-lg p-2 text-gray-900 dark:text-white outline-none uppercase font-mono font-bold">
-                                <button type="button" onclick="window.generateRandomPromoCode()" class="bg-cyanaccent/20 border border-cyanaccent/40 text-cyanaccent px-3 py-2 rounded-lg text-xs font-extrabold whitespace-nowrap shadow-sm hover:bg-cyanaccent/30 transition flex items-center gap-1.5" title="توليد كود عشوائي تلقائياً">
+                                <button type="button" onclick="window.generateRandomPromoCode()" class="bg-cyanaccent/20 border border-cyanaccent/40 text-cyanaccent px-3 py-2 rounded-lg text-xs font-extrabold whitespace-nowrap shadow-sm hover:bg-cyanaccent/30 transition flex items-center gap-1.5">
                                     <i class="fa-solid fa-wand-magic-sparkles"></i> توليد عشوائي
                                 </button>
                             </div>
-
-                            <input type="text" id="promoDiscountVal" placeholder="قيمة الخصم (مثال: خصم 10% أو 50$)" class="w-full bg-lightcard dark:bg-cardbg border border-gray-300 dark:border-gray-700 rounded-lg p-2 text-gray-900 dark:text-white outline-none">
+                            <input type="text" id="promoDiscountVal" placeholder="قيمة الخصم (خصم 10%)" class="w-full bg-lightcard dark:bg-cardbg border border-gray-300 dark:border-gray-700 rounded-lg p-2 text-gray-900 dark:text-white outline-none">
                             <div class="space-y-1">
-                                <label class="block text-[11px] text-gray-500">عدد مرات الاستخدام المتاحة (مثال: 5 مرات):</label>
-                                <input type="number" id="promoUsesVal" min="1" value="10" placeholder="عدد المرات المتاحة" class="w-full bg-lightcard dark:bg-cardbg border border-gray-300 dark:border-gray-700 rounded-lg p-2 text-gray-900 dark:text-white outline-none font-bold text-goldaccent">
+                                <label class="block text-[11px] text-gray-500">عدد مرات الاستخدام المتاحة:</label>
+                                <input type="number" id="promoUsesVal" min="1" value="10" class="w-full bg-lightcard dark:bg-cardbg border border-gray-300 dark:border-gray-700 rounded-lg p-2 text-gray-900 dark:text-white outline-none font-bold text-goldaccent">
                             </div>
                             <textarea id="promoDescVal" placeholder="وصف العرض والخدمة المشمولة..." class="w-full bg-lightcard dark:bg-cardbg border border-gray-300 dark:border-gray-700 rounded-lg p-2 text-gray-900 dark:text-white outline-none h-16 resize-none"></textarea>
                             <div class="flex items-center gap-2 pt-1 bg-goldaccent/10 p-2 rounded-lg border border-goldaccent/30">
@@ -712,8 +695,8 @@
                             <select id="broadcastTargetUser" class="w-full bg-lightcard dark:bg-cardbg border border-gray-300 dark:border-gray-700 rounded-lg p-2 text-gray-900 dark:text-white outline-none">
                                 <option value="all">جميع الزوار والأعضاء (إشعار شامل لكل الهواتف)</option>
                             </select>
-                            <input type="text" id="broadcastTitle" placeholder="عنوان الإشعار (مثال: كود خصم جديد مضاف الآن! 🔥)" class="w-full bg-lightcard dark:bg-cardbg border border-gray-300 dark:border-gray-700 rounded-lg p-2 text-gray-900 dark:text-white outline-none">
-                            <textarea id="broadcastMessage" placeholder="نص تفاصيل الإشعار الذي سيظهر في لوحة إشعارات الهواتف..." class="w-full bg-lightcard dark:bg-cardbg border border-gray-300 dark:border-gray-700 rounded-lg p-2 text-gray-900 dark:text-white outline-none h-20 resize-none"></textarea>
+                            <input type="text" id="broadcastTitle" placeholder="عنوان الإشعار..." class="w-full bg-lightcard dark:bg-cardbg border border-gray-300 dark:border-gray-700 rounded-lg p-2 text-gray-900 dark:text-white outline-none">
+                            <textarea id="broadcastMessage" placeholder="نص تفاصيل الإشعار..." class="w-full bg-lightcard dark:bg-cardbg border border-gray-300 dark:border-gray-700 rounded-lg p-2 text-gray-900 dark:text-white outline-none h-20 resize-none"></textarea>
                             <button type="button" onclick="window.sendPlatformNotification()" class="w-full bg-goldaccent text-black font-bold py-2 rounded-lg shadow-sm">إرسال الإشعار الفوري الآن 🚀</button>
                         </div>
                     </div>
@@ -740,73 +723,67 @@
                     <div id="accDesignAdmin" class="hidden p-3 pt-0 space-y-3 border-t border-gray-200 dark:border-gray-800 mt-1">
                         <div class="flex justify-between items-center pt-2">
                             <span class="text-[11px] text-gray-500">إدارة مظهر الصفحة بالكامل</span>
-                            <button type="button" onclick="window.resetDesignDefaults()" class="bg-red-500/10 text-red-500 border border-red-500/30 px-2.5 py-1 rounded-lg text-[10px] font-bold">استعادة التصميم الأساسي (شفافية 0)</button>
+                            <button type="button" onclick="window.resetDesignDefaults()" class="bg-red-500/10 text-red-500 border border-red-500/30 px-2.5 py-1 rounded-lg text-[10px] font-bold">استعادة التصميم الأساسي</button>
                         </div>
-                        
                         <div>
                             <label class="block font-bold text-gray-800 dark:text-gray-200 mb-1">شكل الصورة الشخصية:</label>
                             <select id="adminAvatarShape" class="w-full bg-lightcard dark:bg-cardbg border border-gray-300 dark:border-gray-700 rounded-lg p-2 text-gray-900 dark:text-white outline-none">
-                                <option value="rounded-full">دائري بالكامل (Full Circle)</option>
-                                <option value="rounded-2xl">مربع بحواف مبرومة / مفتولة الزوايا (Rounded Corners)</option>
-                                <option value="rounded-xl">مربع بحواف ناعمة متوسطة (Soft Rounded)</option>
-                                <option value="rounded-none">مربع حاد الزوايا (Sharp Square)</option>
+                                <option value="rounded-full">دائري بالكامل</option>
+                                <option value="rounded-2xl">مربع بحواف مبرومة</option>
+                                <option value="rounded-xl">مربع بحواف ناعمة متوسطة</option>
+                                <option value="rounded-none">مربع حاد الزوايا</option>
                             </select>
                         </div>
-
                         <div>
                             <label class="block font-bold text-gray-800 dark:text-gray-200 mb-1">توهج أو ظل الصورة الشخصية:</label>
                             <select id="adminAvatarGlow" class="w-full bg-lightcard dark:bg-cardbg border border-gray-300 dark:border-gray-700 rounded-lg p-2 text-gray-900 dark:text-white outline-none">
-                                <option value="glow-gold">توهج ذهبي فاخر (Gold Glow)</option>
-                                <option value="glow-cyan">توهج سماوي ساطع (Cyan Glow)</option>
-                                <option value="glow-subtle">ظل خفيف وعادي (Subtle Shadow)</option>
-                                <option value="none">بدون توهج أو ظل (None)</option>
-                            </select>
-                        </div>
-
-                        <div>
-                            <label class="block font-bold text-gray-800 dark:text-gray-200 mb-1">شكل وانحناء البطاقات وأزرار الروابط:</label>
-                            <select id="adminCardShape" class="w-full bg-lightcard dark:bg-cardbg border border-gray-300 dark:border-gray-700 rounded-lg p-2 text-gray-900 dark:text-white outline-none">
-                                <option value="rounded-2xl">مفتولة الزوايا بشكل أنيق (Rounded 2XL)</option>
-                                <option value="rounded-full">دائرية الأطراف بالكامل (Pill Shape)</option>
-                                <option value="rounded-lg">زوايا معتدلة (Rounded LG)</option>
-                                <option value="rounded-none">زوايا حادة (Sharp Square)</option>
-                            </select>
-                        </div>
-
-                        <div>
-                            <label class="block font-bold text-gray-800 dark:text-gray-200 mb-1">توهج أو ظل البطاقات:</label>
-                            <select id="adminCardGlow" class="w-full bg-lightcard dark:bg-cardbg border border-gray-300 dark:border-gray-700 rounded-lg p-2 text-gray-900 dark:text-white outline-none">
-                                <option value="glow-gold-hover">توهج ذهبي عند المرور (Gold Glow Hover)</option>
-                                <option value="glow-subtle">ظل ثابت وبارز (Subtle Shadow)</option>
+                                <option value="glow-gold">توهج ذهبي فاخر</option>
+                                <option value="glow-cyan">توهج سماوي ساطع</option>
+                                <option value="glow-subtle">ظل خفيف وعادي</option>
                                 <option value="none">بدون توهج أو ظل</option>
                             </select>
                         </div>
-
                         <div>
-                            <label class="block font-bold text-gray-800 dark:text-gray-200 mb-1">نمط البطاقات البصري (Effects & Glass):</label>
+                            <label class="block font-bold text-gray-800 dark:text-gray-200 mb-1">شكل وانحناء البطاقات وأزرار الروابط:</label>
+                            <select id="adminCardShape" class="w-full bg-lightcard dark:bg-cardbg border border-gray-300 dark:border-gray-700 rounded-lg p-2 text-gray-900 dark:text-white outline-none">
+                                <option value="rounded-2xl">مفتولة الزوايا بشكل أنيق</option>
+                                <option value="rounded-full">دائرية الأطراف بالكامل</option>
+                                <option value="rounded-lg">زوايا معتدلة</option>
+                                <option value="rounded-none">زوايا حادة</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block font-bold text-gray-800 dark:text-gray-200 mb-1">توهج أو ظل البطاقات:</label>
+                            <select id="adminCardGlow" class="w-full bg-lightcard dark:bg-cardbg border border-gray-300 dark:border-gray-700 rounded-lg p-2 text-gray-900 dark:text-white outline-none">
+                                <option value="glow-gold-hover">توهج ذهبي عند المرور</option>
+                                <option value="glow-subtle">ظل ثابت وبارز</option>
+                                <option value="none">بدون توهج أو ظل</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block font-bold text-gray-800 dark:text-gray-200 mb-1">نمط البطاقات البصري:</label>
                             <select id="adminCardStyle" class="w-full bg-lightcard dark:bg-cardbg border border-gray-300 dark:border-gray-700 rounded-lg p-2 text-gray-900 dark:text-white outline-none">
                                 <option value="normal">عادي (Solid)</option>
                                 <option value="glass-card">زجاجي شفاف فاخر (Glassmorphism)</option>
                             </select>
                         </div>
-
                         <div class="bg-white dark:bg-cardbg p-3 rounded-xl border border-gray-300 dark:border-gray-700 space-y-3">
-                            <label class="block font-bold text-gray-800 dark:text-gray-200">تدرج الألوان المخصص (الشفافية 0 افتراضياً):</label>
+                            <label class="block font-bold text-gray-800 dark:text-gray-200">تدرج الألوان المخصص:</label>
                             <div class="grid grid-cols-3 gap-2">
                                 <div class="space-y-1">
                                     <span class="text-[10px] text-gray-500 block">اللون 1</span>
                                     <input type="color" id="adminColor1" value="#0f1117" class="w-full h-8 rounded cursor-pointer bg-transparent">
-                                    <input type="range" id="adminOpacity1" min="0" max="1" step="0.05" value="0" class="w-full accent-goldaccent" title="شفافية اللون 1">
+                                    <input type="range" id="adminOpacity1" min="0" max="1" step="0.05" value="0" class="w-full accent-goldaccent">
                                 </div>
                                 <div class="space-y-1">
                                     <span class="text-[10px] text-gray-500 block">اللون 2</span>
                                     <input type="color" id="adminColor2" value="#1a1d26" class="w-full h-8 rounded cursor-pointer bg-transparent">
-                                    <input type="range" id="adminOpacity2" min="0" max="1" step="0.05" value="0" class="w-full accent-goldaccent" title="شفافية اللون 2">
+                                    <input type="range" id="adminOpacity2" min="0" max="1" step="0.05" value="0" class="w-full accent-goldaccent">
                                 </div>
                                 <div class="space-y-1">
                                     <span class="text-[10px] text-gray-500 block">اللون 3</span>
                                     <input type="color" id="adminColor3" value="#0f1117" class="w-full h-8 rounded cursor-pointer bg-transparent">
-                                    <input type="range" id="adminOpacity3" min="0" max="1" step="0.05" value="0" class="w-full accent-goldaccent" title="شفافية اللون 3">
+                                    <input type="range" id="adminOpacity3" min="0" max="1" step="0.05" value="0" class="w-full accent-goldaccent">
                                 </div>
                             </div>
                             <div class="flex items-center justify-between pt-1">
@@ -819,9 +796,8 @@
                                 </select>
                             </div>
                         </div>
-
                         <div class="bg-white dark:bg-cardbg p-3 rounded-xl border border-gray-300 dark:border-gray-700 space-y-2">
-                            <label class="block font-bold text-gray-800 dark:text-gray-200">صورة خلفية الصفحة المخصصة:</label>
+                            <label class="block font-bold text-gray-800 dark:text-gray-200">صورة خلفية الصفحة:</label>
                             <input type="url" id="adminBgImageUrl" placeholder="https://example.com/bg.jpg" class="w-full bg-lightbg dark:bg-darkbg border border-gray-300 dark:border-gray-700 rounded-lg p-2 text-gray-900 dark:text-white outline-none">
                             <div class="flex items-center justify-between pt-1">
                                 <span class="text-[10px] text-gray-500">درجة شفافية الخلفية:</span>
@@ -834,19 +810,19 @@
 
                 <!-- Live Status Settings -->
                 <div class="bg-lightbg dark:bg-darkbg rounded-xl border border-gray-300 dark:border-gray-800 p-3 space-y-2">
-                    <h4 class="font-bold text-goldaccent flex items-center gap-2"><i class="fa-solid fa-signal"></i> إعدادات شريط الحالة المباشرة (Live Status)</h4>
+                    <h4 class="font-bold text-goldaccent flex items-center gap-2"><i class="fa-solid fa-signal"></i> إعدادات شريط الحالة المباشرة</h4>
                     <div class="flex items-center gap-2 pt-1">
                         <input type="checkbox" id="adminShowLiveStatus" class="accent-goldaccent w-4 h-4" checked>
                         <label for="adminShowLiveStatus" class="font-bold text-gray-800 dark:text-gray-200">إظهار شريط الحالة في الصفحة</label>
                     </div>
                     <div>
-                        <label class="block text-[11px] text-gray-500 mb-1">نص الحالة (مثل: متاح للعمل الحر):</label>
-                        <input type="text" id="adminLiveStatusText" placeholder="متاح للعمل الحر واستقبال الطلبات" class="w-full bg-lightcard dark:bg-cardbg border border-gray-300 dark:border-gray-700 rounded-lg p-2 text-gray-900 dark:text-white outline-none">
+                        <label class="block text-[11px] text-gray-500 mb-1">نص الحالة:</label>
+                        <input type="text" id="adminLiveStatusText" placeholder="متاح للعمل الحر..." class="w-full bg-lightcard dark:bg-cardbg border border-gray-300 dark:border-gray-700 rounded-lg p-2 text-gray-900 dark:text-white outline-none">
                     </div>
                     <div>
                         <label class="block text-[11px] text-gray-500 mb-1">نوع الحالة واللون:</label>
                         <select id="adminLiveStatusType" class="w-full bg-lightcard dark:bg-cardbg border border-gray-300 dark:border-gray-700 rounded-lg p-2 text-gray-900 dark:text-white outline-none">
-                            <option value="emerald">متاح ومستعد (أخضر زمردي 🟢)</option>
+                            <option value="emerald">متاح ومستعد (أخضر 🟢)</option>
                             <option value="amber">مشغول حالياً (برتقالي ⏳)</option>
                             <option value="rose">غير متاح / إجازة (أحمر 🔴)</option>
                             <option value="cyan">قيد التنفيذ / متصل (سماوي 🔵)</option>
@@ -854,28 +830,28 @@
                     </div>
                 </div>
 
-                <!-- Floating Contacts Settings (إعدادات الزر العائم المتعدد) -->
+                <!-- Floating Contacts Settings -->
                 <div class="bg-lightbg dark:bg-darkbg rounded-xl border border-gray-300 dark:border-gray-800 p-3 space-y-2">
-                    <h4 class="font-bold text-goldaccent flex items-center gap-2"><i class="fa-solid fa-comments"></i> إعدادات زر التواصل العائم المتعدد (FAB)</h4>
+                    <h4 class="font-bold text-goldaccent flex items-center gap-2"><i class="fa-solid fa-comments"></i> إعدادات زر التواصل العائم المتعدد</h4>
                     <div class="flex items-center gap-2 pt-1">
                         <input type="checkbox" id="adminShowFloatingBtn" class="accent-goldaccent w-4 h-4" checked>
                         <label for="adminShowFloatingBtn" class="font-bold text-gray-800 dark:text-gray-200">إظهار الزر العائم في الشاشة</label>
                     </div>
                     <div>
                         <label class="block text-[11px] text-gray-500 mb-1">رقم الواتساب:</label>
-                        <input type="text" id="adminFloatingWhatsapp" placeholder="+963900000000" class="w-full bg-lightcard dark:bg-cardbg border border-gray-300 dark:border-gray-700 rounded-lg p-2 text-gray-900 dark:text-white outline-none">
+                        <input type="text" id="adminFloatingWhatsapp" placeholder="+963..." class="w-full bg-lightcard dark:bg-cardbg border border-gray-300 dark:border-gray-700 rounded-lg p-2 text-gray-900 dark:text-white outline-none">
                     </div>
                     <div>
                         <label class="block text-[11px] text-gray-500 mb-1">رقم الاتصال الهاتفي:</label>
-                        <input type="text" id="adminFloatingPhone" placeholder="+963900000000" class="w-full bg-lightcard dark:bg-cardbg border border-gray-300 dark:border-gray-700 rounded-lg p-2 text-gray-900 dark:text-white outline-none">
+                        <input type="text" id="adminFloatingPhone" placeholder="+963..." class="w-full bg-lightcard dark:bg-cardbg border border-gray-300 dark:border-gray-700 rounded-lg p-2 text-gray-900 dark:text-white outline-none">
                     </div>
                     <div>
                         <label class="block text-[11px] text-gray-500 mb-1">رابط ماسنجر فيسبوك:</label>
-                        <input type="url" id="adminFloatingMessenger" placeholder="https://m.me/username" class="w-full bg-lightcard dark:bg-cardbg border border-gray-300 dark:border-gray-700 rounded-lg p-2 text-gray-900 dark:text-white outline-none">
+                        <input type="url" id="adminFloatingMessenger" placeholder="https://m.me/..." class="w-full bg-lightcard dark:bg-cardbg border border-gray-300 dark:border-gray-700 rounded-lg p-2 text-gray-900 dark:text-white outline-none">
                     </div>
                     <div>
                         <label class="block text-[11px] text-gray-500 mb-1">البريد الإلكتروني:</label>
-                        <input type="email" id="adminFloatingEmail" placeholder="info@example.com" class="w-full bg-lightcard dark:bg-cardbg border border-gray-300 dark:border-gray-700 rounded-lg p-2 text-gray-900 dark:text-white outline-none">
+                        <input type="email" id="adminFloatingEmail" placeholder="info@..." class="w-full bg-lightcard dark:bg-cardbg border border-gray-300 dark:border-gray-700 rounded-lg p-2 text-gray-900 dark:text-white outline-none">
                     </div>
                 </div>
 
@@ -886,8 +862,8 @@
                         <input type="checkbox" id="adminShowMap" class="accent-goldaccent w-4 h-4">
                         <label for="adminShowMap" class="font-bold text-gray-800 dark:text-gray-200">إظهار الخريطة في أسفل الصفحة الرئيسية</label>
                     </div>
-                    <input type="url" id="adminMapUrl" placeholder="رابط زر الخريطة (Google Maps Share Link)" class="w-full bg-lightcard dark:bg-cardbg border border-gray-300 dark:border-gray-700 rounded-lg p-2 text-gray-900 dark:text-white outline-none">
-                    <textarea id="adminMapEmbed" placeholder="كود التضمين iframe src لخرائط جوجل" class="w-full bg-lightcard dark:bg-cardbg border border-gray-300 dark:border-gray-700 rounded-lg p-2 text-gray-900 dark:text-white outline-none h-16 text-[11px] font-mono"></textarea>
+                    <input type="url" id="adminMapUrl" placeholder="رابط زر الخريطة (Google Maps)" class="w-full bg-lightcard dark:bg-cardbg border border-gray-300 dark:border-gray-700 rounded-lg p-2 text-gray-900 dark:text-white outline-none">
+                    <textarea id="adminMapEmbed" placeholder="كود التضمين iframe src" class="w-full bg-lightcard dark:bg-cardbg border border-gray-300 dark:border-gray-700 rounded-lg p-2 text-gray-900 dark:text-white outline-none h-16 text-[11px] font-mono"></textarea>
                 </div>
 
                 <!-- Feedback -->
@@ -983,11 +959,11 @@
                         <div class="space-y-2 mt-2">
                             <h4 id="testimonialFormTitle" class="font-bold text-goldaccent">إضافة رأي عميل جديد</h4>
                             <input type="hidden" id="editingTestimonialId">
-                            <input type="text" id="testimonialClientName" placeholder="اسم العميل (مثل: المهندس أحمد)" class="w-full bg-lightcard dark:bg-cardbg border border-gray-300 dark:border-gray-700 rounded-lg p-2 text-gray-900 dark:text-white outline-none">
-                            <input type="text" id="testimonialClientRole" placeholder="صفته أو نشاطه (مثل: مقاول بناء)" class="w-full bg-lightcard dark:bg-cardbg border border-gray-300 dark:border-gray-700 rounded-lg p-2 text-gray-900 dark:text-white outline-none">
-                            <textarea id="testimonialComment" placeholder="نص رأي العميل أو تقييمه للخدمة..." class="w-full bg-lightcard dark:bg-cardbg border border-gray-300 dark:border-gray-700 rounded-lg p-2 text-gray-900 dark:text-white outline-none h-16 resize-none"></textarea>
+                            <input type="text" id="testimonialClientName" placeholder="اسم العميل" class="w-full bg-lightcard dark:bg-cardbg border border-gray-300 dark:border-gray-700 rounded-lg p-2 text-gray-900 dark:text-white outline-none">
+                            <input type="text" id="testimonialClientRole" placeholder="صفته أو نشاطه" class="w-full bg-lightcard dark:bg-cardbg border border-gray-300 dark:border-gray-700 rounded-lg p-2 text-gray-900 dark:text-white outline-none">
+                            <textarea id="testimonialComment" placeholder="نص رأي العميل..." class="w-full bg-lightcard dark:bg-cardbg border border-gray-300 dark:border-gray-700 rounded-lg p-2 text-gray-900 dark:text-white outline-none h-16 resize-none"></textarea>
                             <div class="flex items-center justify-between">
-                                <span class="text-[11px] text-gray-500">التقييم بالنجوم (1 إلى 5):</span>
+                                <span class="text-[11px] text-gray-500">التقييم بالنجوم:</span>
                                 <select id="testimonialRating" class="bg-lightcard dark:bg-cardbg border border-gray-300 dark:border-gray-700 rounded-lg p-2 text-gray-900 dark:text-white outline-none text-xs">
                                     <option value="5">⭐⭐⭐⭐⭐ (5 نجوم)</option>
                                     <option value="4">⭐⭐⭐⭐ (4 نجوم)</option>
@@ -1017,7 +993,7 @@
                     </button>
                     <div id="accGalleryAdmin" class="hidden p-3 pt-0 space-y-3 border-t border-gray-200 dark:border-gray-800 mt-1">
                         <div class="space-y-2 mt-2">
-                            <h4 id="galleryFormTitle" class="font-bold text-goldaccent">إضافة مشروع جديد (يرسل إشعاراً فورياً للزوار)</h4>
+                            <h4 id="galleryFormTitle" class="font-bold text-goldaccent">إضافة مشروع جديد</h4>
                             <input type="hidden" id="editingGalleryId">
                             <input type="text" id="galleryTitle" placeholder="عنوان المشروع" class="w-full bg-lightcard dark:bg-cardbg border border-gray-300 dark:border-gray-700 rounded-lg p-2 text-gray-900 dark:text-white outline-none">
                             <div class="space-y-1">
@@ -1043,7 +1019,7 @@
                 <!-- Gallery Categories Admin -->
                 <div class="bg-lightbg dark:bg-darkbg rounded-xl border border-gray-300 dark:border-gray-800 overflow-hidden transition-colors">
                     <button type="button" onclick="window.toggleAccordion('accGalleryCategories')" class="w-full p-3 flex justify-between items-center font-bold text-gray-800 dark:text-gray-200">
-                        <span class="flex items-center gap-2"><i class="fa-solid fa-folder-tree text-goldaccent"></i> إدارة فئات معرض المشاريع (مستقلة)</span>
+                        <span class="flex items-center gap-2"><i class="fa-solid fa-folder-tree text-goldaccent"></i> إدارة فئات معرض المشاريع</span>
                         <div class="flex items-center gap-2">
                             <span class="text-[10px] bg-goldaccent/20 text-goldaccent px-2 py-0.5 rounded font-mono">جديد</span>
                             <i id="icon-accGalleryCategories" class="fa-solid fa-chevron-down transition-transform"></i>
@@ -1053,7 +1029,7 @@
                         <div class="space-y-2 mt-2">
                             <h4 class="font-bold text-goldaccent">إضافة فئة جديدة لمعرض المشاريع</h4>
                             <div class="flex gap-2">
-                                <input type="text" id="newGalleryCategoryInput" placeholder="اسم فئة المعرض (مثل: تصميم جرافيك، واجهات ألوكوبوند)..." class="flex-1 bg-lightcard dark:bg-cardbg border border-gray-300 dark:border-gray-700 rounded-lg p-2 text-gray-900 dark:text-white outline-none">
+                                <input type="text" id="newGalleryCategoryInput" placeholder="اسم فئة المعرض..." class="flex-1 bg-lightcard dark:bg-cardbg border border-gray-300 dark:border-gray-700 rounded-lg p-2 text-gray-900 dark:text-white outline-none">
                                 <button type="button" onclick="window.addGalleryCategory()" class="bg-goldaccent text-black font-extrabold px-4 py-2 rounded-lg shadow-sm">إضافة</button>
                             </div>
                         </div>
@@ -1088,15 +1064,14 @@
                     <div id="accLinks" class="hidden p-3 pt-0 space-y-3 border-t border-gray-200 dark:border-gray-800 mt-1">
                         <div class="flex items-center gap-2 pt-2 bg-white dark:bg-cardbg p-2.5 rounded-xl border border-gray-200 dark:border-gray-700 mt-2">
                             <input type="checkbox" id="adminShowClickCounts" class="accent-goldaccent w-4 h-4" checked>
-                            <label for="adminShowClickCounts" class="font-extrabold text-gray-800 dark:text-gray-200 text-xs">إظهار عداد النقرات (النقرات: X) تحت عناوين الروابط في الصفحة الرئيسية</label>
+                            <label for="adminShowClickCounts" class="font-extrabold text-gray-800 dark:text-gray-200 text-xs">إظهار عداد النقرات تحت عناوين الروابط</label>
                         </div>
-
                         <div class="space-y-2 mt-2">
                             <h4 id="linkFormTitle" class="font-bold text-goldaccent">إضافة رابط جديد</h4>
                             <input type="hidden" id="editingLinkId">
                             <input type="text" id="linkTitle" placeholder="عنوان الرابط" class="w-full bg-lightcard dark:bg-cardbg border border-gray-300 dark:border-gray-700 rounded-lg p-2 text-gray-900 dark:text-white outline-none">
                             <input type="url" id="linkUrl" placeholder="الرابط https://..." class="w-full bg-lightcard dark:bg-cardbg border border-gray-300 dark:border-gray-700 rounded-lg p-2 text-gray-900 dark:text-white outline-none">
-                            <input type="text" id="linkPassword" placeholder="كلمة المرور للرابط (اتركه فارغاً للرابط العام)" class="w-full bg-lightcard dark:bg-cardbg border border-gray-300 dark:border-gray-700 rounded-lg p-2 text-gray-900 dark:text-white outline-none font-mono text-xs">
+                            <input type="text" id="linkPassword" placeholder="كلمة المرور للرابط (اختياري)" class="w-full bg-lightcard dark:bg-cardbg border border-gray-300 dark:border-gray-700 rounded-lg p-2 text-gray-900 dark:text-white outline-none font-mono text-xs">
                             <div class="flex gap-2">
                                 <select id="linkCategory" class="flex-1 bg-lightcard dark:bg-cardbg border border-gray-300 dark:border-gray-700 rounded-lg p-2 text-gray-900 dark:text-white outline-none"></select>
                                 <input type="text" id="linkIcon" placeholder="أيقونة" class="flex-1 bg-lightcard dark:bg-cardbg border border-gray-300 dark:border-gray-700 rounded-lg p-2 text-gray-900 dark:text-white outline-none">
@@ -1137,7 +1112,9 @@
         </div>
     </div>
 
-    <!-- Script Engine with Firebase & Testimonials Limit & Single Review per User -->
+
+<!-- الجزء الخامس: محرك البرمجيات ومنطق Firebase وقاعدة البيانات (JavaScript Engine) -->
+
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/13.2.0/firebase-app.js";
         import { getDatabase, ref, set, onValue } from "https://www.gstatic.com/firebasejs/13.2.0/firebase-database.js";
@@ -1361,7 +1338,7 @@
             }
             Notification.requestPermission().then(permission => {
                 if (permission === "granted") {
-                    alert("تم تفعيل إشعارات المتصفح الفورية بنجاح! ستتلقى التنبيهات الجديدة.");
+                    alert("تم تفعيل إشعارات المتصفح الفورية بنجاح!");
                     const iconState = document.getElementById('pushIconState');
                     if (iconState) iconState.className = "fa-solid fa-bell";
                 } else {
@@ -1394,12 +1371,8 @@
             lastKnownNotifCount = keys.length;
         }
 
-        window.openThemeSwitcherModal = function() {
-            document.getElementById('themeSwitcherModal').classList.remove('hidden');
-        };
-        window.closeThemeSwitcherModal = function() {
-            document.getElementById('themeSwitcherModal').classList.add('hidden');
-        };
+        window.openThemeSwitcherModal = function() { document.getElementById('themeSwitcherModal').classList.remove('hidden'); };
+        window.closeThemeSwitcherModal = function() { document.getElementById('themeSwitcherModal').classList.add('hidden'); };
 
         window.openAddTestimonialModal = function() {
             const hasReviewed = localStorage.getItem('has_reviewed_' + currentUsername);
@@ -1409,22 +1382,15 @@
             }
             document.getElementById('addTestimonialModal').classList.remove('hidden');
         };
-        window.closeAddTestimonialModal = function() {
-            document.getElementById('addTestimonialModal').classList.add('hidden');
-        };
+        window.closeAddTestimonialModal = function() { document.getElementById('addTestimonialModal').classList.add('hidden'); };
 
-        window.openAllTestimonialsModal = function() {
-            renderAllTestimonialsGrid();
-            document.getElementById('allTestimonialsModal').classList.remove('hidden');
-        };
-        window.closeAllTestimonialsModal = function() {
-            document.getElementById('allTestimonialsModal').classList.add('hidden');
-        };
+        window.openAllTestimonialsModal = function() { renderAllTestimonialsGrid(); document.getElementById('allTestimonialsModal').classList.remove('hidden'); };
+        window.closeAllTestimonialsModal = function() { document.getElementById('allTestimonialsModal').classList.add('hidden'); };
 
         window.submitVisitorTestimonial = function() {
             const hasReviewed = localStorage.getItem('has_reviewed_' + currentUsername);
             if (hasReviewed === 'true') {
-                alert('عذراً، لقد قمت بإرسال تقييم مسبقاً! يحق لك تقييم واحد فقط.');
+                alert('عذراً، لقد قمت بإرسال تقييم مسبقاً!');
                 window.closeAddTestimonialModal();
                 return;
             }
@@ -1434,15 +1400,10 @@
             const rating = parseInt(document.getElementById('visitorRating').value) || 5;
             const comment = document.getElementById('visitorComment').value.trim();
 
-            if (!clientName || !comment) {
-                alert('الرجاء إدخال اسمك الكريم وكتابة تعليقك.');
-                return;
-            }
-
+            if (!clientName || !comment) { alert('الرجاء إدخال اسمك الكريم وكتابة تعليقك.'); return; }
             if (!appData.testimonials) appData.testimonials = [];
 
             const needsApproval = appData.requireTestimonialApproval === true;
-
             appData.testimonials.unshift({
                 id: 't_' + Date.now(),
                 clientName,
@@ -1455,7 +1416,6 @@
             rootData.users[currentUsername] = appData;
             set(dbRef, rootData).then(() => {
                 localStorage.setItem('has_reviewed_' + currentUsername, 'true');
-
                 if (needsApproval) {
                     alert('شكراً لك! تم إرسال تقييمك بنجاح وهو بانتظار مراجعة وموافقة الإدارة لعرضه.');
                 } else {
@@ -1516,21 +1476,15 @@
         function renderThemeSwitcherVisibility() {
             const btn = document.getElementById('themeSwitcherTopBtn');
             if (!btn) return;
-            if (appData.showThemeSwitcher === false) {
-                btn.classList.add('hidden');
-            } else {
-                btn.classList.remove('hidden');
-            }
+            if (appData.showThemeSwitcher === false) btn.classList.add('hidden');
+            else btn.classList.remove('hidden');
         }
 
         function renderPushNotificationBtnVisibility() {
             const container = document.getElementById('sidebarPushNotificationContainer');
             if (!container) return;
-            if (appData.showPushNotificationBtn === false) {
-                container.classList.add('hidden');
-            } else {
-                container.classList.remove('hidden');
-            }
+            if (appData.showPushNotificationBtn === false) container.classList.add('hidden');
+            else container.classList.remove('hidden');
         }
 
         function initTheme() {
@@ -1645,6 +1599,9 @@
             });
         }
 
+        // ==========================================
+        // 📁 إدارة مكتبة الملفات والكتالوجات (File Hub Admin)
+        // ==========================================
         window.saveFileHubItem = function() {
             const id = document.getElementById('editingFileHubId').value;
             const title = document.getElementById('fileHubTitle').value.trim();
@@ -1686,6 +1643,24 @@
             document.getElementById('fileHubFormTitle').textContent = 'تعديل الملف';
         };
 
+        window.toggleFileHubItemStatus = function(id) {
+            const item = (appData.fileHub || []).find(f => f.id === id);
+            if (item) {
+                item.enabled = item.enabled === false ? true : false;
+                renderAdminFileHubList();
+                renderFileHubGrid();
+            }
+        };
+
+        window.moveFileHubItem = function(index, direction) {
+            const list = appData.fileHub || [];
+            const newIndex = index + direction;
+            if (newIndex < 0 || newIndex >= list.length) return;
+            const temp = list[index]; list[index] = list[newIndex]; list[newIndex] = temp;
+            renderAdminFileHubList();
+            renderFileHubGrid();
+        };
+
         window.deleteFileHubItem = function(id) {
             appData.fileHub = (appData.fileHub || []).filter(f => f.id !== id);
             renderAdminFileHubList();
@@ -1696,17 +1671,21 @@
             const container = document.getElementById('adminFileHubList');
             if (!container) return;
             container.innerHTML = '';
-            (appData.fileHub || []).forEach(f => {
-                const statusBadge = f.enabled !== false ? '<span class="text-emerald-500 font-bold">مفعل</span>' : '<span class="text-red-500 font-bold">متوقف</span>';
+            (appData.fileHub || []).forEach((f, index) => {
+                const isEnabled = f.enabled !== false;
+                const statusBadge = isEnabled ? '<span class="text-emerald-500 font-bold">مفعل</span>' : '<span class="text-red-500 font-bold">متوقف</span>';
                 container.innerHTML += `
                     <div class="bg-white dark:bg-cardbg border border-gray-300 dark:border-gray-700 rounded-xl p-2.5 flex items-center justify-between shadow-sm">
                         <div>
-                            <div class="font-extrabold text-gray-900 dark:text-white">${f.title} (${statusBadge})</div>
-                            <div class="text-[10px] text-gray-500 truncate max-w-[160px]">${f.desc || f.url}</div>
+                            <div class="font-extrabold text-gray-900 dark:text-white text-xs">${f.title} (${statusBadge})</div>
+                            <div class="text-[10px] text-gray-500 truncate max-w-[140px]">${f.desc || f.url}</div>
                         </div>
                         <div class="flex items-center gap-1">
-                            <button type="button" onclick="window.editFileHubItem('${f.id}')" class="bg-blue-500/20 text-blue-600 dark:text-blue-400 px-2 py-0.5 rounded text-[10px] font-bold">تعديل</button>
-                            <button type="button" onclick="window.deleteFileHubItem('${f.id}')" class="bg-red-500/20 text-red-600 dark:text-red-400 px-2 py-0.5 rounded text-[10px] font-bold">حذف</button>
+                            <button type="button" onclick="window.moveFileHubItem(${index}, -1)" class="bg-gray-200 dark:bg-gray-700 text-goldaccent px-1.5 py-1 rounded text-[10px]" title="صعود">⬆️</button>
+                            <button type="button" onclick="window.moveFileHubItem(${index}, 1)" class="bg-gray-200 dark:bg-gray-700 text-goldaccent px-1.5 py-1 rounded text-[10px]" title="نزول">⬇️</button>
+                            <button type="button" onclick="window.toggleFileHubItemStatus('${f.id}')" class="bg-amber-500/20 text-amber-600 dark:text-amber-400 px-2 py-1 rounded text-[10px]" title="${isEnabled ? 'إيقاف' : 'تفعيل'}"><i class="fa-solid ${isEnabled ? 'fa-pause' : 'fa-play'}"></i></button>
+                            <button type="button" onclick="window.editFileHubItem('${f.id}')" class="bg-blue-500/20 text-blue-600 dark:text-blue-400 px-2 py-1 rounded text-[10px]" title="تعديل"><i class="fa-solid fa-pen"></i></button>
+                            <button type="button" onclick="window.deleteFileHubItem('${f.id}')" class="bg-red-500/20 text-red-600 dark:text-red-400 px-2 py-1 rounded text-[10px]" title="حذف"><i class="fa-solid fa-trash"></i></button>
                         </div>
                     </div>`;
             });
@@ -1726,19 +1705,16 @@
 
             container.classList.remove('hidden');
             titleEl.textContent = appData.flashDealTitle || 'عرض خاص لفترة محدودة!';
-
             const endTime = new Date(appData.flashDealEnd).getTime();
 
             function updateCountdown() {
                 const now = new Date().getTime();
                 const distance = endTime - now;
-
                 if (distance < 0) {
                     container.classList.add('hidden');
                     if (flashDealInterval) clearInterval(flashDealInterval);
                     return;
                 }
-
                 const days = Math.floor(distance / (1000 * 60 * 60 * 24));
                 const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
                 const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
@@ -1749,7 +1725,6 @@
                 document.getElementById('dealMinutes').textContent = String(minutes).padStart(2, '0');
                 document.getElementById('dealSeconds').textContent = String(seconds).padStart(2, '0');
             }
-
             updateCountdown();
             flashDealInterval = setInterval(updateCountdown, 1000);
         }
@@ -1820,11 +1795,8 @@
         function renderJoinBannerVisibility() {
             const banner = document.getElementById('joinBannerBtn');
             if (!banner) return;
-            if (appData.showJoinBanner !== true) {
-                banner.classList.add('hidden');
-            } else {
-                banner.classList.remove('hidden');
-            }
+            if (appData.showJoinBanner !== true) banner.classList.add('hidden');
+            else banner.classList.remove('hidden');
         }
 
         function renderPromoSection() {
@@ -1894,9 +1866,7 @@
         window.generateRandomPromoCode = function() {
             const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
             let code = 'PROMO';
-            for (let i = 0; i < 4; i++) {
-                code += chars.charAt(Math.floor(Math.random() * chars.length));
-            }
+            for (let i = 0; i < 4; i++) code += chars.charAt(Math.floor(Math.random() * chars.length));
             document.getElementById('promoCodeVal').value = code;
         };
 
@@ -1917,10 +1887,7 @@
                 return;
             }
 
-            if (promo.usesLeft !== undefined) {
-                promo.usesLeft -= 1;
-            }
-
+            if (promo.usesLeft !== undefined) promo.usesLeft -= 1;
             localStorage.setItem('user_copied_coupon_' + currentUsername, code);
 
             rootData.users[currentUsername] = appData;
@@ -1930,11 +1897,12 @@
                     renderPromoSection();
                     renderAdminPromoList();
                 });
-            }).catch(err => {
-                console.error("Promo lock error:", err);
-            });
+            }).catch(err => console.error("Promo lock error:", err));
         };
 
+        // ==========================================
+        // 🏷️ إدارة الكوبونات (Promo Admin)
+        // ==========================================
         window.savePromoItem = function() {
             const id = document.getElementById('editingPromoId').value;
             const code = document.getElementById('promoCodeVal').value.trim().toUpperCase();
@@ -1979,6 +1947,24 @@
             document.getElementById('promoFormTitle').textContent = 'تعديل الكوبون';
         };
 
+        window.togglePromoItemStatus = function(id) {
+            const item = (appData.promoCodes || []).find(p => p.id === id);
+            if (item) {
+                item.enabled = item.enabled === false ? true : false;
+                renderAdminPromoList();
+                renderPromoSection();
+            }
+        };
+
+        window.movePromoItem = function(index, direction) {
+            const list = appData.promoCodes || [];
+            const newIndex = index + direction;
+            if (newIndex < 0 || newIndex >= list.length) return;
+            const temp = list[index]; list[index] = list[newIndex]; list[newIndex] = temp;
+            renderAdminPromoList();
+            renderPromoSection();
+        };
+
         window.deletePromoItem = function(id) {
             appData.promoCodes = (appData.promoCodes || []).filter(p => p.id !== id);
             renderAdminPromoList();
@@ -1989,18 +1975,22 @@
             const container = document.getElementById('adminPromoList');
             if (!container) return;
             container.innerHTML = '';
-            (appData.promoCodes || []).forEach(p => {
-                const statusBadge = p.enabled !== false ? '<span class="text-emerald-500 font-bold">مفعل</span>' : '<span class="text-red-500 font-bold">متوقف</span>';
+            (appData.promoCodes || []).forEach((p, index) => {
+                const isEnabled = p.enabled !== false;
+                const statusBadge = isEnabled ? '<span class="text-emerald-500 font-bold">مفعل</span>' : '<span class="text-red-500 font-bold">متوقف</span>';
                 const uses = p.usesLeft !== undefined ? p.usesLeft : 10;
                 container.innerHTML += `
                     <div class="bg-white dark:bg-cardbg border border-gray-300 dark:border-gray-700 rounded-xl p-2.5 flex items-center justify-between shadow-sm">
                         <div>
-                            <div class="font-extrabold text-gray-900 dark:text-white font-mono">${p.code} (${statusBadge}) - <span class="text-goldaccent">${p.discount}</span> <span class="text-amber-500 text-[10px]">(المتبقي: ${uses})</span></div>
-                            <div class="text-[10px] text-gray-500 truncate max-w-[150px]">${p.desc}</div>
+                            <div class="font-extrabold text-gray-900 dark:text-white font-mono text-xs">${p.code} (${statusBadge}) - <span class="text-goldaccent">${p.discount}</span></div>
+                            <div class="text-[10px] text-amber-500">المتبقي: ${uses} مرات</div>
                         </div>
                         <div class="flex items-center gap-1">
-                            <button type="button" onclick="window.editPromoItem('${p.id}')" class="bg-blue-500/20 text-blue-600 dark:text-blue-400 px-2 py-0.5 rounded text-[10px] font-bold">تعديل</button>
-                            <button type="button" onclick="window.deletePromoItem('${p.id}')" class="bg-red-500/20 text-red-600 dark:text-red-400 px-2 py-0.5 rounded text-[10px] font-bold">حذف</button>
+                            <button type="button" onclick="window.movePromoItem(${index}, -1)" class="bg-gray-200 dark:bg-gray-700 text-goldaccent px-1.5 py-1 rounded text-[10px]" title="صعود">⬆️</button>
+                            <button type="button" onclick="window.movePromoItem(${index}, 1)" class="bg-gray-200 dark:bg-gray-700 text-goldaccent px-1.5 py-1 rounded text-[10px]" title="نزول">⬇️</button>
+                            <button type="button" onclick="window.togglePromoItemStatus('${p.id}')" class="bg-amber-500/20 text-amber-600 dark:text-amber-400 px-2 py-1 rounded text-[10px]" title="${isEnabled ? 'إيقاف' : 'تفعيل'}"><i class="fa-solid ${isEnabled ? 'fa-pause' : 'fa-play'}"></i></button>
+                            <button type="button" onclick="window.editPromoItem('${p.id}')" class="bg-blue-500/20 text-blue-600 dark:text-blue-400 px-2 py-1 rounded text-[10px]" title="تعديل"><i class="fa-solid fa-pen"></i></button>
+                            <button type="button" onclick="window.deletePromoItem('${p.id}')" class="bg-red-500/20 text-red-600 dark:text-red-400 px-2 py-1 rounded text-[10px]" title="حذف"><i class="fa-solid fa-trash"></i></button>
                         </div>
                     </div>`;
             });
@@ -2037,7 +2027,6 @@
             }
             sectionContainer.classList.remove('hidden');
             container.innerHTML = '';
-
             if (countBadge) countBadge.textContent = items.length;
 
             if (items.length > 3) {
@@ -2149,13 +2138,8 @@
             }
         };
 
-        window.openNotificationsModal = function() {
-            renderNotificationsList();
-            document.getElementById('notificationsModal').classList.remove('hidden');
-        };
-        window.closeNotificationsModal = function() {
-            document.getElementById('notificationsModal').classList.add('hidden');
-        };
+        window.openNotificationsModal = function() { renderNotificationsList(); document.getElementById('notificationsModal').classList.remove('hidden'); };
+        window.closeNotificationsModal = function() { document.getElementById('notificationsModal').classList.add('hidden'); };
 
         function updateNotificationBadge() {
             const badge = document.getElementById('notificationBadge');
@@ -2164,9 +2148,7 @@
             let unreadCount = 0;
             Object.keys(notifs).forEach(id => {
                 const n = notifs[id];
-                if ((n.target === 'all' || n.target === currentUsername) && !n.read) {
-                    unreadCount++;
-                }
+                if ((n.target === 'all' || n.target === currentUsername) && !n.read) unreadCount++;
             });
             if (unreadCount > 0) {
                 badge.textContent = unreadCount;
@@ -2216,10 +2198,7 @@
         window.markNotificationRead = function(id) {
             if (rootData.notifications && rootData.notifications[id]) {
                 rootData.notifications[id].read = true;
-                set(dbRef, rootData).then(() => {
-                    renderNotificationsList();
-                    updateNotificationBadge();
-                }).catch(err => console.error("Mark read error:", err));
+                set(dbRef, rootData).then(() => { renderNotificationsList(); updateNotificationBadge(); }).catch(err => console.error("Mark read error:", err));
             }
         };
 
@@ -2227,50 +2206,16 @@
             const notifs = rootData.notifications || {};
             Object.keys(notifs).forEach(id => {
                 const n = notifs[id];
-                if (n.target === 'all' || n.target === currentUsername) {
-                    n.read = true;
-                }
+                if (n.target === 'all' || n.target === currentUsername) n.read = true;
             });
-            set(dbRef, rootData).then(() => {
-                renderNotificationsList();
-                updateNotificationBadge();
-            }).catch(err => console.error("Mark all read error:", err));
+            set(dbRef, rootData).then(() => { renderNotificationsList(); updateNotificationBadge(); }).catch(err => console.error("Mark all read error:", err));
         };
 
         window.deleteNotification = function(id) {
             if (rootData.notifications && rootData.notifications[id]) {
                 delete rootData.notifications[id];
-                set(dbRef, rootData).then(() => {
-                    renderNotificationsList();
-                    updateNotificationBadge();
-                }).catch(err => console.error("Delete notif error:", err));
+                set(dbRef, rootData).then(() => { renderNotificationsList(); updateNotificationBadge(); }).catch(err => console.error("Delete notif error:", err));
             }
-        };
-
-        window.sendPlatformNotification = function() {
-            const target = document.getElementById('broadcastTargetUser').value;
-            const title = document.getElementById('broadcastTitle').value.trim();
-            const message = document.getElementById('broadcastMessage').value.trim();
-            if (!title || !message) {
-                alert('الرجاء إدخال عنوان ونص الإشعار.');
-                return;
-            }
-            if (!rootData.notifications) rootData.notifications = {};
-            const notifId = 'notif_' + Date.now();
-            rootData.notifications[notifId] = {
-                id: notifId,
-                target: target,
-                title: title,
-                message: message,
-                sender: appData.displayName || 'الإدارة',
-                read: false,
-                createdAt: Date.now()
-            };
-            set(dbRef, rootData).then(() => {
-                alert('تم إرسال الإشعار بنجاح داخل النظام!');
-                document.getElementById('broadcastTitle').value = '';
-                document.getElementById('broadcastMessage').value = '';
-            }).catch(err => alert('خطأ في إرسال الإشعار: ' + err.message));
         };
 
         window.resetDesignDefaults = function() {
@@ -2397,7 +2342,7 @@
                     card.className = 'aspect-video rounded-xl overflow-hidden bg-darkbg border border-gray-700 cursor-pointer relative group';
                     card.oncontextmenu = (e) => { e.preventDefault(); window.openImageView(url); };
                     card.onclick = () => window.openImageView(url);
-                    card.innerHTML = `<img src="${url}" class="w-full h-full object-cover group-hover:scale-105 transition" /><span class="absolute bottom-1 right-1 bg-black/60 text-white text-[9px] px-1 py-0.5 rounded">صورة ${idx+1} (اضغط للعرض أو مشاركة)</span>`;
+                    card.innerHTML = `<img src="${url}" class="w-full h-full object-cover group-hover:scale-105 transition" /><span class="absolute bottom-1 right-1 bg-black/60 text-white text-[9px] px-1 py-0.5 rounded">صورة ${idx+1}</span>`;
                 }
                 imagesGrid.appendChild(card);
             });
@@ -2569,7 +2514,7 @@
                     <div class="flex items-center gap-3">
                         <div class="w-9 h-9 rounded-xl bg-gray-100 dark:bg-darkbg border border-gray-200 dark:border-gray-700 flex items-center justify-center text-goldaccent relative">
                             <i class="${link.icon || 'fa-solid fa-link'}"></i>
-                            ${isProtected ? '<span class="absolute -top-1 -right-1 bg-amber-500 text-black text-[8px] font-bold w-3.5 h-3.5 rounded-full flex items-center justify-center" title="محمي برمز سري">🔒</span>' : ''}
+                            ${isProtected ? '<span class="absolute -top-1 -right-1 bg-amber-500 text-black text-[8px] font-bold w-3.5 h-3.5 rounded-full flex items-center justify-center">🔒</span>' : ''}
                         </div>
                         <div>
                             <span class="text-xs font-extrabold text-gray-900 dark:text-gray-100 block">${link.title} ${isProtected ? '<span class="text-[9px] text-amber-500 font-normal">(محمي)</span>' : ''}</span>
@@ -2719,14 +2664,15 @@
             if (confirm('هل أنت متأكد من تصفير عداد الزيارات والنقرات؟')) {
                 if (!appData.analytics) appData.analytics = {};
                 appData.analytics.totalViews = 0;
-                if (appData.links) {
-                    appData.links.forEach(l => l.clicks = 0);
-                }
+                if (appData.links) appData.links.forEach(l => l.clicks = 0);
                 saveDataToFirebase();
                 populateAdminForm();
             }
         };
 
+        // ==========================================
+        // ⭐ إدارة آراء ومراجعات العملاء (Testimonials Admin)
+        // ==========================================
         window.saveTestimonialItem = function() {
             const id = document.getElementById('editingTestimonialId').value;
             const clientName = document.getElementById('testimonialClientName').value.trim();
@@ -2771,6 +2717,24 @@
             document.getElementById('testimonialFormTitle').textContent = 'تعديل التقييم';
         };
 
+        window.toggleTestimonialItemStatus = function(id) {
+            const item = (appData.testimonials || []).find(t => t.id === id);
+            if (item) {
+                item.enabled = item.enabled === false ? true : false;
+                renderAdminTestimonialsList();
+                renderTestimonialsSection();
+            }
+        };
+
+        window.moveTestimonialItem = function(index, direction) {
+            const list = appData.testimonials || [];
+            const newIndex = index + direction;
+            if (newIndex < 0 || newIndex >= list.length) return;
+            const temp = list[index]; list[index] = list[newIndex]; list[newIndex] = temp;
+            renderAdminTestimonialsList();
+            renderTestimonialsSection();
+        };
+
         window.deleteTestimonialItem = function(id) {
             appData.testimonials = (appData.testimonials || []).filter(x => x.id !== id);
             renderAdminTestimonialsList();
@@ -2780,22 +2744,29 @@
         function renderAdminTestimonialsList() {
             const container = document.getElementById('adminTestimonialsList');
             if(!container) return; container.innerHTML = '';
-            (appData.testimonials || []).forEach((t) => {
-                const statusBadge = t.enabled !== false ? '<span class="text-emerald-500 font-bold">مفعل</span>' : '<span class="text-amber-500 font-bold">بانتظار الموافقة</span>';
+            (appData.testimonials || []).forEach((t, index) => {
+                const isEnabled = t.enabled !== false;
+                const statusBadge = isEnabled ? '<span class="text-emerald-500 font-bold">مفعل</span>' : '<span class="text-amber-500 font-bold">متوقف</span>';
                 container.innerHTML += `
                     <div class="bg-white dark:bg-cardbg border border-gray-300 dark:border-gray-700 rounded-xl p-2.5 flex items-center justify-between shadow-sm">
                         <div>
-                            <div class="font-extrabold text-gray-900 dark:text-white">${t.clientName} (${statusBadge}) - ⭐ ${t.rating}</div>
+                            <div class="font-extrabold text-gray-900 dark:text-white text-xs">${t.clientName} (${statusBadge}) - ⭐ ${t.rating}</div>
                             <div class="text-[10px] text-gray-500 truncate max-w-[140px]">${t.comment}</div>
                         </div>
                         <div class="flex items-center gap-1">
-                            <button type="button" onclick="window.editTestimonialItem('${t.id}')" class="bg-blue-500/20 text-blue-600 dark:text-blue-400 px-2 py-0.5 rounded text-[10px] font-bold">تعديل</button>
-                            <button type="button" onclick="window.deleteTestimonialItem('${t.id}')" class="bg-red-500/20 text-red-600 dark:text-red-400 px-2 py-0.5 rounded text-[10px] font-bold">حذف</button>
+                            <button type="button" onclick="window.moveTestimonialItem(${index}, -1)" class="bg-gray-200 dark:bg-gray-700 text-goldaccent px-1.5 py-1 rounded text-[10px]" title="صعود">⬆️</button>
+                            <button type="button" onclick="window.moveTestimonialItem(${index}, 1)" class="bg-gray-200 dark:bg-gray-700 text-goldaccent px-1.5 py-1 rounded text-[10px]" title="نزول">⬇️</button>
+                            <button type="button" onclick="window.toggleTestimonialItemStatus('${t.id}')" class="bg-amber-500/20 text-amber-600 dark:text-amber-400 px-2 py-1 rounded text-[10px]" title="${isEnabled ? 'إيقاف' : 'تفعيل'}"><i class="fa-solid ${isEnabled ? 'fa-pause' : 'fa-play'}"></i></button>
+                            <button type="button" onclick="window.editTestimonialItem('${t.id}')" class="bg-blue-500/20 text-blue-600 dark:text-blue-400 px-2 py-1 rounded text-[10px]" title="تعديل"><i class="fa-solid fa-pen"></i></button>
+                            <button type="button" onclick="window.deleteTestimonialItem('${t.id}')" class="bg-red-500/20 text-red-600 dark:text-red-400 px-2 py-1 rounded text-[10px]" title="حذف"><i class="fa-solid fa-trash"></i></button>
                         </div>
                     </div>`;
             });
         }
 
+        // ==========================================
+        // 🧭 إدارة القائمة الجانبية (Sidebar Admin)
+        // ==========================================
         window.saveSidebarItem = function() {
             const id = document.getElementById('editingSidebarId').value;
             const title = document.getElementById('sidebarTitle').value.trim();
@@ -2837,6 +2808,15 @@
             document.getElementById('sidebarFormTitle').textContent = 'تعديل العنصر';
         };
 
+        window.toggleSidebarItemStatus = function(id) {
+            const item = (appData.sidebarLinks || []).find(s => s.id === id);
+            if (item) {
+                item.enabled = item.enabled === false ? true : false;
+                renderAdminSidebarList();
+                renderSidebarMenu();
+            }
+        };
+
         window.deleteSidebarItem = function(id) {
             appData.sidebarLinks = (appData.sidebarLinks || []).filter(s => s.id !== id);
             renderAdminSidebarList(); renderSidebarMenu();
@@ -2854,15 +2834,17 @@
             const container = document.getElementById('adminSidebarList');
             if(!container) return; container.innerHTML = '';
             (appData.sidebarLinks || []).forEach((s, index) => {
-                const statusBadge = s.enabled !== false ? '<span class="text-emerald-500 font-bold">مفعل</span>' : '<span class="text-red-500 font-bold">متوقف</span>';
+                const isEnabled = s.enabled !== false;
+                const statusBadge = isEnabled ? '<span class="text-emerald-500 font-bold">مفعل</span>' : '<span class="text-red-500 font-bold">متوقف</span>';
                 container.innerHTML += `
                     <div class="bg-white dark:bg-cardbg border border-gray-300 dark:border-gray-700 rounded-xl p-2.5 flex items-center justify-between shadow-sm">
-                        <div class="flex items-center gap-2"><i class="${s.icon} text-goldaccent"></i><div><div class="font-extrabold text-gray-900 dark:text-white">${s.title} (${statusBadge})</div></div></div>
+                        <div class="flex items-center gap-2"><i class="${s.icon} text-goldaccent"></i><div><div class="font-extrabold text-gray-900 dark:text-white text-xs">${s.title} (${statusBadge})</div></div></div>
                         <div class="flex items-center gap-1">
-                            <button type="button" onclick="window.moveSidebarItem(${index}, -1)" class="bg-gray-200 dark:bg-gray-700 text-goldaccent px-1.5 py-0.5 rounded text-[10px] font-bold">⬆️</button>
-                            <button type="button" onclick="window.moveSidebarItem(${index}, 1)" class="bg-gray-200 dark:bg-gray-700 text-goldaccent px-1.5 py-0.5 rounded text-[10px] font-bold">⬇️</button>
-                            <button type="button" onclick="window.editSidebarItem('${s.id}')" class="bg-blue-500/20 text-blue-600 dark:text-blue-400 px-2 py-0.5 rounded text-[10px] font-bold">تعديل</button>
-                            <button type="button" onclick="window.deleteSidebarItem('${s.id}')" class="bg-red-500/20 text-red-600 dark:text-red-400 px-2 py-0.5 rounded text-[10px] font-bold">حذف</button>
+                            <button type="button" onclick="window.moveSidebarItem(${index}, -1)" class="bg-gray-200 dark:bg-gray-700 text-goldaccent px-1.5 py-1 rounded text-[10px]" title="صعود">⬆️</button>
+                            <button type="button" onclick="window.moveSidebarItem(${index}, 1)" class="bg-gray-200 dark:bg-gray-700 text-goldaccent px-1.5 py-1 rounded text-[10px]" title="نزول">⬇️</button>
+                            <button type="button" onclick="window.toggleSidebarItemStatus('${s.id}')" class="bg-amber-500/20 text-amber-600 dark:text-amber-400 px-2 py-1 rounded text-[10px]" title="${isEnabled ? 'إيقاف' : 'تفعيل'}"><i class="fa-solid ${isEnabled ? 'fa-pause' : 'fa-play'}"></i></button>
+                            <button type="button" onclick="window.editSidebarItem('${s.id}')" class="bg-blue-500/20 text-blue-600 dark:text-blue-400 px-2 py-1 rounded text-[10px]" title="تعديل"><i class="fa-solid fa-pen"></i></button>
+                            <button type="button" onclick="window.deleteSidebarItem('${s.id}')" class="bg-red-500/20 text-red-600 dark:text-red-400 px-2 py-1 rounded text-[10px]" title="حذف"><i class="fa-solid fa-trash"></i></button>
                         </div>
                     </div>`;
             });
@@ -2978,6 +2960,9 @@
             });
         }
 
+        // ==========================================
+        // 🎨 إدارة المشاريع والأعمال (Gallery Admin)
+        // ==========================================
         window.saveGalleryItem = function() {
             const id = document.getElementById('editingGalleryId').value;
             const title = document.getElementById('galleryTitle').value.trim();
@@ -2995,7 +2980,7 @@
                 if (item) { item.title = title; item.category = category; item.desc = desc; item.coverUrl = coverUrl; item.extraUrls = extraUrls; item.enabled = enabled; }
             } else {
                 const newId = 'g_' + Date.now();
-                appData.gallery.push({ id: newId, title, category, desc, coverUrl, extraUrls, enabled });
+                appData.gallery.unshift({ id: newId, title, category, desc, coverUrl, extraUrls, enabled });
 
                 if (!rootData.notifications) rootData.notifications = {};
                 const notifId = 'notif_' + Date.now();
@@ -3023,7 +3008,7 @@
             document.getElementById('galleryCoverUrl').value = '';
             document.getElementById('galleryExtraUrls').value = '';
             document.getElementById('galleryEnabled').checked = true;
-            document.getElementById('galleryFormTitle').textContent = 'إضافة مشروع جديد (يرسل إشعاراً فورياً للزوار)';
+            document.getElementById('galleryFormTitle').textContent = 'إضافة مشروع جديد';
         };
 
         window.editGalleryItem = function(id) {
@@ -3037,6 +3022,15 @@
             document.getElementById('galleryExtraUrls').value = Array.isArray(item.extraUrls) ? item.extraUrls.join('\n') : '';
             document.getElementById('galleryEnabled').checked = item.enabled !== false;
             document.getElementById('galleryFormTitle').textContent = 'تعديل المشروع';
+        };
+
+        window.toggleGalleryItemStatus = function(id) {
+            const item = (appData.gallery || []).find(g => g.id === id);
+            if (item) {
+                item.enabled = item.enabled === false ? true : false;
+                renderAdminGalleryList();
+                renderGalleryGrid();
+            }
         };
 
         window.deleteGalleryItem = function(id) {
@@ -3056,15 +3050,23 @@
             const container = document.getElementById('adminGalleryList');
             if(!container) return; container.innerHTML = '';
             (appData.gallery || []).forEach((g, index) => {
-                const statusBadge = g.enabled !== false ? '<span class="text-emerald-500 font-bold">مفعل</span>' : '<span class="text-red-500 font-bold">متوقف</span>';
+                const isEnabled = g.enabled !== false;
+                const statusBadge = isEnabled ? '<span class="text-emerald-500 font-bold">مفعل</span>' : '<span class="text-red-500 font-bold">متوقف</span>';
                 container.innerHTML += `
                     <div class="bg-white dark:bg-cardbg border border-gray-300 dark:border-gray-700 rounded-xl p-2.5 flex items-center justify-between shadow-sm">
-                        <div class="flex items-center gap-2"><img src="${g.coverUrl}" class="w-8 h-8 rounded object-cover" /><div><div class="font-extrabold text-gray-900 dark:text-white">${g.title} (${statusBadge})</div></div></div>
+                        <div class="flex items-center gap-2">
+                            <img src="${g.coverUrl}" class="w-8 h-8 rounded object-cover" />
+                            <div>
+                                <div class="font-extrabold text-gray-900 dark:text-white text-xs truncate max-w-[110px]">${g.title}</div>
+                                <div class="text-[10px]">${statusBadge}</div>
+                            </div>
+                        </div>
                         <div class="flex items-center gap-1">
-                            <button type="button" onclick="window.moveGalleryItem(${index}, -1)" class="bg-gray-200 dark:bg-gray-700 text-goldaccent px-1.5 py-0.5 rounded text-[10px] font-bold">⬆️</button>
-                            <button type="button" onclick="window.moveGalleryItem(${index}, 1)" class="bg-gray-200 dark:bg-gray-700 text-goldaccent px-1.5 py-0.5 rounded text-[10px] font-bold">⬇️</button>
-                            <button type="button" onclick="window.editGalleryItem('${g.id}')" class="bg-blue-500/20 text-blue-600 dark:text-blue-400 px-2 py-0.5 rounded text-[10px] font-bold">تعديل</button>
-                            <button type="button" onclick="window.deleteGalleryItem('${g.id}')" class="bg-red-500/20 text-red-600 dark:text-red-400 px-2 py-0.5 rounded text-[10px] font-bold">حذف</button>
+                            <button type="button" onclick="window.moveGalleryItem(${index}, -1)" class="bg-gray-200 dark:bg-gray-700 text-goldaccent px-1.5 py-1 rounded text-[10px]" title="صعود">⬆️</button>
+                            <button type="button" onclick="window.moveGalleryItem(${index}, 1)" class="bg-gray-200 dark:bg-gray-700 text-goldaccent px-1.5 py-1 rounded text-[10px]" title="نزول">⬇️</button>
+                            <button type="button" onclick="window.toggleGalleryItemStatus('${g.id}')" class="bg-amber-500/20 text-amber-600 dark:text-amber-400 px-2 py-1 rounded text-[10px]" title="${isEnabled ? 'إيقاف' : 'تفعيل'}"><i class="fa-solid ${isEnabled ? 'fa-pause' : 'fa-play'}"></i></button>
+                            <button type="button" onclick="window.editGalleryItem('${g.id}')" class="bg-blue-500/20 text-blue-600 dark:text-blue-400 px-2 py-1 rounded text-[10px]" title="تعديل"><i class="fa-solid fa-pen"></i></button>
+                            <button type="button" onclick="window.deleteGalleryItem('${g.id}')" class="bg-red-500/20 text-red-600 dark:text-red-400 px-2 py-1 rounded text-[10px]" title="حذف"><i class="fa-solid fa-trash"></i></button>
                         </div>
                     </div>`;
             });
@@ -3124,10 +3126,10 @@
                             <span class="text-[10px]">(${statusBadge})</span>
                         </div>
                         <div class="flex items-center gap-1">
-                            <button type="button" onclick="window.moveCategory(${index}, -1)" class="bg-gray-200 dark:bg-gray-700 text-goldaccent px-1.5 py-0.5 rounded text-[10px] font-bold" title="صعود">⬆️</button>
-                            <button type="button" onclick="window.moveCategory(${index}, 1)" class="bg-gray-200 dark:bg-gray-700 text-goldaccent px-1.5 py-0.5 rounded text-[10px] font-bold" title="نزول">⬇️</button>
-                            <button type="button" onclick="window.toggleCategoryStatus(${index})" class="bg-amber-500/20 text-amber-600 dark:text-amber-400 px-2 py-0.5 rounded text-[10px] font-bold">${isEnabled ? 'إيقاف' : 'تفعيل'}</button>
-                            ${catName !== 'الكل' ? `<button type="button" onclick="window.deleteCategory(${index})" class="bg-red-500/20 text-red-600 px-2 py-0.5 rounded text-[10px] font-bold">حذف</button>` : ''}
+                            <button type="button" onclick="window.moveCategory(${index}, -1)" class="bg-gray-200 dark:bg-gray-700 text-goldaccent px-1.5 py-1 rounded text-[10px]" title="صعود">⬆️</button>
+                            <button type="button" onclick="window.moveCategory(${index}, 1)" class="bg-gray-200 dark:bg-gray-700 text-goldaccent px-1.5 py-1 rounded text-[10px]" title="نزول">⬇️</button>
+                            <button type="button" onclick="window.toggleCategoryStatus(${index})" class="bg-amber-500/20 text-amber-600 dark:text-amber-400 px-2 py-1 rounded text-[10px]" title="${isEnabled ? 'إيقاف' : 'تفعيل'}"><i class="fa-solid ${isEnabled ? 'fa-pause' : 'fa-play'}"></i></button>
+                            ${catName !== 'الكل' ? `<button type="button" onclick="window.deleteCategory(${index})" class="bg-red-500/20 text-red-600 px-2 py-1 rounded text-[10px]" title="حذف"><i class="fa-solid fa-trash"></i></button>` : ''}
                         </div>
                     </div>`;
             });
@@ -3186,10 +3188,10 @@
                             <span class="text-[10px]">(${statusBadge})</span>
                         </div>
                         <div class="flex items-center gap-1">
-                            <button type="button" onclick="window.moveGalleryCategory(${index}, -1)" class="bg-gray-200 dark:bg-gray-700 text-goldaccent px-1.5 py-0.5 rounded text-[10px] font-bold" title="صعود">⬆️</button>
-                            <button type="button" onclick="window.moveGalleryCategory(${index}, 1)" class="bg-gray-200 dark:bg-gray-700 text-goldaccent px-1.5 py-0.5 rounded text-[10px] font-bold" title="نزول">⬇️</button>
-                            <button type="button" onclick="window.toggleGalleryCategoryStatus(${index})" class="bg-amber-500/20 text-amber-600 dark:text-amber-400 px-2 py-0.5 rounded text-[10px] font-bold">${isEnabled ? 'إيقاف' : 'تفعيل'}</button>
-                            ${catName !== 'الكل' ? `<button type="button" onclick="window.deleteGalleryCategory(${index})" class="bg-red-500/20 text-red-600 px-2 py-0.5 rounded text-[10px] font-bold">حذف</button>` : ''}
+                            <button type="button" onclick="window.moveGalleryCategory(${index}, -1)" class="bg-gray-200 dark:bg-gray-700 text-goldaccent px-1.5 py-1 rounded text-[10px]" title="صعود">⬆️</button>
+                            <button type="button" onclick="window.moveGalleryCategory(${index}, 1)" class="bg-gray-200 dark:bg-gray-700 text-goldaccent px-1.5 py-1 rounded text-[10px]" title="نزول">⬇️</button>
+                            <button type="button" onclick="window.toggleGalleryCategoryStatus(${index})" class="bg-amber-500/20 text-amber-600 dark:text-amber-400 px-2 py-1 rounded text-[10px]" title="${isEnabled ? 'إيقاف' : 'تفعيل'}"><i class="fa-solid ${isEnabled ? 'fa-pause' : 'fa-play'}"></i></button>
+                            ${catName !== 'الكل' ? `<button type="button" onclick="window.deleteGalleryCategory(${index})" class="bg-red-500/20 text-red-600 px-2 py-1 rounded text-[10px]" title="حذف"><i class="fa-solid fa-trash"></i></button>` : ''}
                         </div>
                     </div>`;
             });
@@ -3203,6 +3205,9 @@
             });
         }
 
+        // ==========================================
+        // 🔗 إدارة الروابط الرئيسية (Links Admin)
+        // ==========================================
         window.saveLink = function() {
             const id = document.getElementById('editingLinkId').value;
             const title = document.getElementById('linkTitle').value.trim();
@@ -3245,6 +3250,15 @@
             document.getElementById('linkFormTitle').textContent = 'تعديل الرابط';
         };
 
+        window.toggleLinkStatus = function(id) {
+            const item = (appData.links || []).find(l => l.id === id);
+            if (item) {
+                item.enabled = item.enabled === false ? true : false;
+                renderAdminLinksList();
+                renderLinks();
+            }
+        };
+
         window.deleteLink = function(id) {
             appData.links = appData.links.filter(x => x.id !== id);
             renderAdminLinksList(); renderLinks();
@@ -3262,19 +3276,21 @@
             const container = document.getElementById('adminLinksList');
             if(!container) return; container.innerHTML = '';
             (appData.links || []).forEach((l, index) => {
-                const statusBadge = l.enabled !== false ? '<span class="text-emerald-500 font-bold">مفعل</span>' : '<span class="text-red-500 font-bold">متوقف</span>';
-                const lockBadge = l.password ? '<span class="text-amber-500 font-bold">🔒 محمي</span>' : '';
+                const isEnabled = l.enabled !== false;
+                const statusBadge = isEnabled ? '<span class="text-emerald-500 font-bold">مفعل</span>' : '<span class="text-red-500 font-bold">متوقف</span>';
+                const lockBadge = l.password ? '<span class="text-amber-500 font-bold">🔒</span>' : '';
                 container.innerHTML += `
                     <div class="bg-white dark:bg-cardbg border border-gray-300 dark:border-gray-700 rounded-xl p-2.5 flex items-center justify-between shadow-sm">
                         <div>
-                            <div class="font-extrabold text-gray-900 dark:text-white"><i class="${l.icon}"></i> ${l.title} (${statusBadge}) ${lockBadge} - <span class="text-goldaccent">النقرات: ${l.clicks || 0}</span></div>
-                            <div class="text-[10px] font-semibold text-gray-500">${l.category}</div>
+                            <div class="font-extrabold text-gray-900 dark:text-white text-xs truncate max-w-[130px]"><i class="${l.icon}"></i> ${l.title} ${lockBadge}</div>
+                            <div class="text-[10px] font-semibold text-gray-500">${statusBadge} • ${l.category}</div>
                         </div>
                         <div class="flex items-center gap-1">
-                            <button type="button" onclick="window.moveLink(${index}, -1)" class="bg-gray-200 dark:bg-gray-700 text-goldaccent px-1.5 py-0.5 rounded text-[10px] font-bold">⬆️</button>
-                            <button type="button" onclick="window.moveLink(${index}, 1)" class="bg-gray-200 dark:bg-gray-700 text-goldaccent px-1.5 py-0.5 rounded text-[10px] font-bold">⬇️</button>
-                            <button type="button" onclick="window.editLink('${l.id}')" class="bg-blue-500/20 text-blue-600 dark:text-blue-400 px-2 py-0.5 rounded text-[10px] font-bold">تعديل</button>
-                            <button type="button" onclick="window.deleteLink('${l.id}')" class="bg-red-500/20 text-red-600 dark:text-red-400 px-2 py-0.5 rounded text-[10px] font-bold">حذف</button>
+                            <button type="button" onclick="window.moveLink(${index}, -1)" class="bg-gray-200 dark:bg-gray-700 text-goldaccent px-1.5 py-1 rounded text-[10px]" title="صعود">⬆️</button>
+                            <button type="button" onclick="window.moveLink(${index}, 1)" class="bg-gray-200 dark:bg-gray-700 text-goldaccent px-1.5 py-1 rounded text-[10px]" title="نزول">⬇️</button>
+                            <button type="button" onclick="window.toggleLinkStatus('${l.id}')" class="bg-amber-500/20 text-amber-600 dark:text-amber-400 px-2 py-1 rounded text-[10px]" title="${isEnabled ? 'إيقاف' : 'تفعيل'}"><i class="fa-solid ${isEnabled ? 'fa-pause' : 'fa-play'}"></i></button>
+                            <button type="button" onclick="window.editLink('${l.id}')" class="bg-blue-500/20 text-blue-600 dark:text-blue-400 px-2 py-1 rounded text-[10px]" title="تعديل"><i class="fa-solid fa-pen"></i></button>
+                            <button type="button" onclick="window.deleteLink('${l.id}')" class="bg-red-500/20 text-red-600 dark:text-red-400 px-2 py-1 rounded text-[10px]" title="حذف"><i class="fa-solid fa-trash"></i></button>
                         </div>
                     </div>`;
             });
@@ -3296,7 +3312,7 @@
             set(dbRef, rootData).then(() => {
                 alert('تم الحفظ والتحديث على السحابة بنجاح!');
             }).catch((err) => {
-                alert('خطأ في الاتصال بقاعدة البيانات أو صلاحيات الحفظ: ' + err.message);
+                alert('خطأ في الاتصال بقاعدة البيانات: ' + err.message);
                 console.error("Firebase save error:", err);
             });
         }
