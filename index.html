@@ -325,24 +325,14 @@
                     <i class="fa-solid fa-wand-magic-sparkles text-goldaccent"></i> مقارنة قبل وبعد التنفيذ
                 </span>
             </div>
-        <div id="baContainer" class="before-after-container my-4" style="position: relative; width: 100%; height: 320px; overflow: hidden; border-radius: 1rem; box-shadow: 0 10px 25px rgba(0,0,0,0.3); touch-action: none;">
-    <!-- صورة "بعد" (الخلفية الثابتة) -->
-    <img id="baAfterImg" src="" alt="After" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; pointer-events: none;">
-    
-    <!-- غلاف صورة "قبل" -->
-    <div id="baBeforeWrapper" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; overflow: hidden; clip-path: inset(0 50% 0 0); pointer-events: none; z-index: 2;">
-        <img id="baBeforeImg" src="" alt="Before" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; pointer-events: none;">
-    </div>
-    
-    <!-- خط الفاصل والزر -->
-        <!-- خط الفاصل والزر -->
-    <div id="baDivider" style="position: absolute; top: 0; bottom: 0; left: 50%; width: 3px; background: #ffffff; transform: translateX(-50%); pointer-events: none; z-index: 5; box-shadow: 0 0 10px rgba(0,0,0,0.5);">
-        <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 38px; height: 38px; background: #ffffff; border-radius: 50%; display: flex; align-items: center; justify-content: center; box-shadow: 0 3px 10px rgba(0,0,0,0.4);">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#1a1a1a" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M8 7L3 12L8 17"/><path d="M16 7L21 12L16 17"/></svg>
-        </div>
-    </div>
-
-
+            <div class="relative w-full aspect-video rounded-2xl overflow-hidden shadow-xl select-none border border-gray-200 dark:border-gray-700 bg-gray-100 dark:bg-darkbg" id="baSliderContainer">
+                <img id="baAfterImg" src="" alt="بعد التنفيذ" class="absolute inset-0 w-full h-full object-cover">
+                <div id="baBeforeWrapper" class="absolute inset-y-0 left-0 overflow-hidden" style="width: 50%;">
+                    <img id="baBeforeImg" src="" alt="قبل التنفيذ" class="absolute inset-0 h-full object-cover max-w-none">
+                </div>
+                <div id="baDivider" class="absolute inset-y-0 pointer-events-none z-10 flex items-center justify-center" style="left: 50%;">
+                    <div class="w-0.5 h-full bg-white shadow-[0_0_10px_rgba(0,0,0,0.8)]"></div>
+                    <div class="absolute w-9 h-9 rounded-full bg-white text-gray-900 shadow-lg flex items-center justify-center font-bold text-xs border-2 border-gray-300">
                         ⇄
                     </div>
                 </div>
