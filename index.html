@@ -50,6 +50,77 @@
         button, select, input, a, label, textarea { touch-action: manipulation; cursor: pointer; }
         .glass-card { background: rgba(26, 29, 38, 0.75) !important; backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); }
         html.light .glass-card { background: rgba(255, 255, 255, 0.8) !important; }
+            html.light .glass-card { background: rgba(255, 255, 255, 0.8) !important; }
+
+    /* أضف تنسيقات أداة مقارنة قبل وبعد هنا */
+.before-after-container {
+    position: relative !important;
+    width: 100% !important;
+    height: 320px !important;
+    overflow: hidden !important;
+    border-radius: 1rem !important;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.3) !important;
+    user-select: none !important;
+    -webkit-user-select: none !important;
+    touch-action: none !important; /* يمنع تحريك الصفحة ويجعل السحب خاصاً بالأداة فقط */
+}
+
+.ba-img {
+    position: absolute !important;
+    top: 0 !important;
+    left: 0 !important;
+    width: 100% !important;
+    height: 100% !important;
+    object-fit: cover !important;
+    pointer-events: none !important;
+}
+
+.ba-before-wrapper {
+    position: absolute !important;
+    top: 0 !important;
+    left: 0 !important;
+    width: 100% !important;
+    height: 100% !important;
+    overflow: hidden !important;
+    clip-path: inset(0 50% 0 0) !important;
+    pointer-events: none !important;
+    z-index: 2 !important;
+}
+
+.ba-divider {
+    position: absolute !important;
+    top: 0 !important;
+    bottom: 0 !important;
+    left: 50% !important;
+    width: 3px !important;
+    background: #ffffff !important;
+    transform: translateX(-50%) !important;
+    pointer-events: none !important;
+    z-index: 5 !important;
+    box-shadow: 0 0 10px rgba(0,0,0,0.5) !important;
+}
+
+.ba-handle-btn {
+    position: absolute !important;
+    top: 50% !important;
+    left: 50% !important;
+    transform: translate(-50%, -50%) !important;
+    width: 36px !important;
+    height: 36px !important;
+    background: #ffffff !important;
+    border-radius: 50% !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    box-shadow: 0 3px 8px rgba(0,0,0,0.4) !important;
+    color: #1a1a1a !important;
+    font-weight: bold !important;
+    font-size: 13px !important;
+}
+
+
+
+
     </style>
 </head>
 
@@ -105,12 +176,10 @@
             </h3>
             <button type="button" onclick="window.toggleSidebar()" class="text-gray-500 hover:text-gray-800 dark:hover:text-white text-lg"><i class="fa-solid fa-xmark"></i></button>
         </div>
-            <!-- قسم النبذة وتعريف الشركة في القائمة الجانبية -->
-    <div id="sidebarAboutSection" class="p-3 mb-3 bg-lightbg dark:bg-darkbg rounded-xl border border-gray-200 dark:border-gray-800 space-y-1">
-        <h3 id="sidebarDisplayCompanyTitle" class="text-xs font-extrabold text-goldaccent"></h3>
-        <p id="sidebarDisplayAboutText" class="text-[11px] text-gray-700 dark:text-gray-300 leading-relaxed"></p>
-    </div>
-
+        <div id="sidebarAboutSection" class="p-3 mb-3 bg-lightbg dark:bg-darkbg rounded-xl border border-gray-200 dark:border-gray-800 space-y-1">
+            <h3 id="sidebarDisplayCompanyTitle" class="text-xs font-extrabold text-goldaccent"></h3>
+            <p id="sidebarDisplayAboutText" class="text-[11px] text-gray-700 dark:text-gray-300 leading-relaxed"></p>
+        </div>
         <div id="sidebarLinksContainer" class="flex-grow space-y-2 text-xs overflow-y-auto"></div>
         <div class="pt-3 border-t border-gray-200 dark:border-gray-800 mt-2 space-y-2">
             <button type="button" id="sidebarPushNotificationContainer" onclick="window.requestPushPermission()" class="w-full bg-cyanaccent/10 border border-cyanaccent/30 text-cyanaccent font-bold py-2.5 rounded-xl flex items-center justify-center gap-2 transition hover:bg-cyanaccent/20">
@@ -249,6 +318,40 @@
             </button>
         </div>
 
+        <!-- 🔹 أداة مقارنة قبل وبعد التنفيذ (الإضافة الجديدة) -->
+        <div id="beforeAfterSection" class="w-full bg-lightcard dark:bg-cardbg border border-gray-300 dark:border-gray-800 rounded-2xl p-3.5 shadow-sm mb-6 hidden">
+            <div class="flex items-center justify-between mb-3 px-1">
+                <span class="text-xs font-extrabold text-gray-900 dark:text-white flex items-center gap-1.5">
+                    <i class="fa-solid fa-wand-magic-sparkles text-goldaccent"></i> مقارنة قبل وبعد التنفيذ
+                </span>
+            </div>
+        <div id="baContainer" class="before-after-container my-4" style="position: relative; width: 100%; height: 320px; overflow: hidden; border-radius: 1rem; box-shadow: 0 10px 25px rgba(0,0,0,0.3); touch-action: none;">
+    <!-- صورة "بعد" (الخلفية الثابتة) -->
+    <img id="baAfterImg" src="" alt="After" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; pointer-events: none;">
+    
+    <!-- غلاف صورة "قبل" -->
+    <div id="baBeforeWrapper" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; overflow: hidden; clip-path: inset(0 50% 0 0); pointer-events: none; z-index: 2;">
+        <img id="baBeforeImg" src="" alt="Before" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; pointer-events: none;">
+    </div>
+    
+    <!-- خط الفاصل والزر -->
+        <!-- خط الفاصل والزر -->
+    <div id="baDivider" style="position: absolute; top: 0; bottom: 0; left: 50%; width: 3px; background: #ffffff; transform: translateX(-50%); pointer-events: none; z-index: 5; box-shadow: 0 0 10px rgba(0,0,0,0.5);">
+        <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 38px; height: 38px; background: #ffffff; border-radius: 50%; display: flex; align-items: center; justify-content: center; box-shadow: 0 3px 10px rgba(0,0,0,0.4);">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#1a1a1a" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M8 7L3 12L8 17"/><path d="M16 7L21 12L16 17"/></svg>
+        </div>
+    </div>
+
+
+                        ⇄
+                    </div>
+                </div>
+                <input type="range" min="0" max="100" value="50" 
+                       class="absolute inset-0 w-full h-full opacity-0 cursor-ew-resize z-20" 
+                       oninput="window.moveBaSlider(this)">
+            </div>
+        </div>
+
         <div id="mapSectionContainer" class="w-full bg-lightcard dark:bg-cardbg border border-gray-300 dark:border-gray-800 rounded-2xl p-3.5 shadow-sm mb-6 hidden">
             <div class="flex items-center justify-between mb-2 px-1">
                 <span class="text-xs font-extrabold text-gray-900 dark:text-white flex items-center gap-1.5">
@@ -272,6 +375,8 @@
     <footer class="w-full max-w-md text-center py-4 border-t border-gray-300 dark:border-gray-800 text-xs font-medium text-gray-600 dark:text-gray-400 relative z-10 transition-colors duration-300">
         <p>© <span id="year">2026</span> جميع الحقوق محفوظة - شجرة الروابط</p>
     </footer>
+</body>
+
 
 <!-- الجزء الثالث: النوابض والنوافذ المنبثقة التفاعلية (Modals & Popups) -->
 
@@ -862,6 +967,18 @@
                     </div>
                 </div>
 
+    <!-- Before & After Settings -->
+    <div class="bg-lightbg dark:bg-darkbg rounded-xl border border-gray-300 dark:border-gray-800 p-3 space-y-2 mt-3">
+        <h4 class="font-bold text-goldaccent flex items-center gap-2"><i class="fa-solid fa-wand-magic-sparkles"></i> إعدادات مقارنة قبل وبعد</h4>
+        <div class="flex items-center gap-2">
+            <input type="checkbox" id="adminShowBeforeAfter" class="accent-goldaccent w-4 h-4">
+            <label for="adminShowBeforeAfter" class="font-bold text-gray-800 dark:text-gray-200">إظهار أداة مقارنة قبل وبعد في الصفحة الرئيسية</label>
+        </div>
+        <input type="url" id="adminBeforeImgUrl" placeholder="رابط صورة (قبل التنفيذ)" class="w-full bg-lightcard dark:bg-cardbg border border-gray-300 dark:border-gray-700 rounded-lg p-2 text-gray-900 dark:text-white outline-none">
+        <input type="url" id="adminAfterImgUrl" placeholder="رابط صورة (بعد التنفيذ)" class="w-full bg-lightcard dark:bg-cardbg border border-gray-300 dark:border-gray-700 rounded-lg p-2 text-gray-900 dark:text-white outline-none">
+    </div>
+
+
                 <!-- Map Settings -->
                 <div class="bg-lightbg dark:bg-darkbg rounded-xl border border-gray-300 dark:border-gray-800 p-3 space-y-2">
                     <h4 class="font-bold text-goldaccent flex items-center gap-2"><i class="fa-solid fa-map-location-dot"></i> إعدادات الخريطة الجغرافية</h4>
@@ -1294,6 +1411,9 @@
                 if (appData.showTestimonialsSection === undefined) appData.showTestimonialsSection = true;
                 if (appData.requireTestimonialApproval === undefined) appData.requireTestimonialApproval = false;
                 if (appData.showClickCounts === undefined) appData.showClickCounts = true;
+                    // 🔹 أضف هذا السطر هنا لتحديث أداة مقارنة قبل وبعد فور وصول البيانات
+    updateBeforeAfterUI(appData);
+
 
                 // التحقق من خصائص النبذة والشركة
                 if (appData.sidebarShowAbout === undefined) appData.sidebarShowAbout = true;
@@ -2670,6 +2790,11 @@
             document.getElementById('adminShowMap').checked = appData.showMap !== false;
             document.getElementById('adminMapUrl').value = appData.mapUrl || '';
             document.getElementById('adminMapEmbed').value = appData.mapEmbed || '';
+            
+                    document.getElementById('adminShowBeforeAfter').checked = !!appData.showBeforeAfter;
+        document.getElementById('adminBeforeImgUrl').value = appData.beforeImgUrl || '';
+        document.getElementById('adminAfterImgUrl').value = appData.afterImgUrl || '';
+
 
             if (appData.contacts) {
                 document.getElementById('showWhatsapp').checked = !!appData.contacts.showWhatsapp;
@@ -3428,6 +3553,15 @@
             appData.showMap = document.getElementById('adminShowMap').checked;
             appData.mapUrl = document.getElementById('adminMapUrl').value.trim();
             appData.mapEmbed = document.getElementById('adminMapEmbed').value.trim();
+                appData.showMap = document.getElementById('adminShowMap').checked;
+    appData.mapUrl = document.getElementById('adminMapUrl').value.trim();
+    appData.mapEmbed = document.getElementById('adminMapEmbed').value.trim();
+    
+    // 🔹 أسطر حفظ أداة مقارنة قبل وبعد
+    appData.showBeforeAfter = document.getElementById('adminShowBeforeAfter').checked;
+    appData.beforeImgUrl = document.getElementById('adminBeforeImgUrl').value.trim();
+    appData.afterImgUrl = document.getElementById('adminAfterImgUrl').value.trim();
+    
             
             const avatarUrlInputVal = document.getElementById('editAvatarUrl').value.trim();
             if (tempImageBase64 !== "") appData.image = tempImageBase64;
@@ -3449,6 +3583,82 @@
             saveDataToFirebase();
             window.closeAdminModal();
         };
+        // دالة عرض وتحديث أداة مقارنة قبل وبعد في الواجهة الرئيسية
+window.updateBeforeAfterUI = function(data) {
+    const section = document.getElementById('beforeAfterSection');
+    if (!section) return;
+    
+    // إذا كان الخيار مفعل والروابط موجودة، قم بإظهار القسم ووضع الصور
+    if (data.showBeforeAfter && data.beforeImgUrl && data.afterImgUrl) {
+        section.classList.remove('hidden');
+        document.getElementById('baBeforeImg').src = data.beforeImgUrl;
+        document.getElementById('baAfterImg').src = data.afterImgUrl;
+    } else {
+        section.classList.add('hidden');
+    }
+};
+
+// دالة تحريك الساحبة التفاعلية
+window.moveBaSlider = function(input) {
+    const val = input.value;
+    const beforeWrapper = document.getElementById('baBeforeWrapper');
+    const divider = document.getElementById('baDivider');
+    
+    if (beforeWrapper && divider) {
+        beforeWrapper.style.clipPath = `inset(0 ${val}% 0 0)`;
+        divider.style.left = (100 - val) + '%';
+    }
+};
+const container = document.getElementById('baContainer');
+const beforeWrapper = document.getElementById('baBeforeWrapper');
+const divider = document.getElementById('baDivider');
+
+function updateSliderPosition(clientX) {
+    const rect = container.getBoundingClientRect();
+    let x = clientX - rect.left;
+    let percentage = (x / rect.width) * 100;
+    
+    if (percentage < 0) percentage = 0;
+    if (percentage > 100) percentage = 100;
+    
+    beforeWrapper.style.clipPath = `inset(0 ${100 - percentage}% 0 0)`;
+    divider.style.left = percentage + '%';
+}
+
+// دعم اللمس على الهواتف
+container.addEventListener('touchmove', (e) => {
+    if (e.touches && e.touches[0]) {
+        updateSliderPosition(e.touches[0].clientX);
+    }
+}, { passive: true });
+
+container.addEventListener('touchstart', (e) => {
+    if (e.touches && e.touches[0]) {
+        updateSliderPosition(e.touches[0].clientX);
+    }
+}, { passive: true });
+
+// دعم الماوس (للكمبيوتر)
+let isDragging = false;
+container.addEventListener('mousedown', (e) => {
+    isDragging = true;
+    updateSliderPosition(e.clientX);
+});
+
+window.addEventListener('mousemove', (e) => {
+    if (!isDragging) return;
+    updateSliderPosition(e.clientX);
+});
+
+window.addEventListener('mouseup', () => {
+    isDragging = false;
+});
+
+
+
+
+
+
     </script>
 </body>
 </html>
