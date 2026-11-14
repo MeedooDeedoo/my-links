@@ -2633,13 +2633,15 @@
                     let embedUrl = url;
                     if (url.includes('watch?v=')) embedUrl = url.replace('watch?v=', 'embed/');
                     else if (url.includes('youtu.be/')) embedUrl = url.replace('youtu.be/', 'youtube.com/embed/');
-                    card.className = 'aspect-video rounded-xl overflow-hidden border border-gray-700 col-span-2 shadow-md bg-black';
+                    card.className = 'h-40 w-full rounded-xl overflow-hidden border border-gray-700 col-span-2 shadow-md bg-black shrink-0';
+
                     card.innerHTML = `<iframe src="${embedUrl}" class="w-full h-full" frameborder="0" allowfullscreen></iframe>`;
-                } else if (isDirectVideo) {
-                    card.className = 'aspect-video rounded-xl overflow-hidden border border-gray-700 col-span-2 shadow-md bg-black';
+                card.className = 'h-40 w-full rounded-xl overflow-hidden border border-gray-700 col-span-2 shadow-md bg-black shrink-0';
+
                     card.innerHTML = `<video src="${url}" controls class="w-full h-full object-cover"></video>`;
                 } else {
-                    card.className = 'aspect-video rounded-xl overflow-hidden bg-darkbg border border-gray-700 cursor-pointer relative group';
+                    card.className = 'h-32 w-full rounded-xl overflow-hidden bg-darkbg border border-gray-700 cursor-pointer relative group shrink-0';
+
                     card.oncontextmenu = (e) => { e.preventDefault(); window.openImageView(url); };
                     card.onclick = () => window.openImageView(url);
                     card.innerHTML = `<img src="${url}" class="w-full h-full object-cover group-hover:scale-105 transition" /><span class="absolute bottom-1 right-1 bg-black/60 text-white text-[9px] px-1 py-0.5 rounded">صورة ${idx+1}</span>`;
