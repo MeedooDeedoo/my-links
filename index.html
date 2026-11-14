@@ -220,7 +220,8 @@
     </div>
 
     <!-- Top Bar -->
-    <div id="topBarEl" class="w-full max-w-md flex justify-between items-center mb-4 bg-lightcard dark:bg-cardbg p-3.5 rounded-2xl border border-gray-300 dark:border-gray-800 shadow-md relative z-40 transition-colors duration-300">
+    <div id="topBarEl" class="w-full max-w-xl md:max-w-3xl lg:max-w-5xl
+ flex justify-between items-center mb-4 bg-lightcard dark:bg-cardbg p-3.5 rounded-2xl border border-gray-300 dark:border-gray-800 shadow-md relative z-40 transition-colors duration-300">
         <div class="flex items-center gap-2">
             <button type="button" onclick="window.toggleSidebar()" class="w-9 h-9 rounded-xl bg-gray-100 dark:bg-darkbg border border-gray-300 dark:border-gray-700 text-goldaccent flex items-center justify-center transition shadow-sm" title="القائمة الجانبية">
                 <i class="fa-solid fa-bars"></i>
@@ -270,7 +271,7 @@
     </div>
 
     <!-- Main Profile Card Container -->
-    <div class="w-full max-w-md flex flex-col items-center flex-grow relative z-10">
+    <div class="w-full max-w-xl md:max-w-3xl lg:max-w-5xl flex flex-col items-center flex-grow relative z-10">
 
         <!-- Flash Deals -->
         <div id="flashDealContainer" class="w-full mb-4 bg-gradient-to-r from-red-500/15 via-amber-500/10 to-red-500/15 border border-red-500/40 rounded-2xl p-3.5 shadow-sm text-center space-y-2 hidden">
@@ -447,7 +448,7 @@
     </div>
 
     <!-- Footer -->
-    <footer class="w-full max-w-md text-center py-4 border-t border-gray-300 dark:border-gray-800 text-xs font-medium text-gray-600 dark:text-gray-400 relative z-10 transition-colors duration-300">
+    <footer class="w-full max-w-xl md:max-w-3xl lg:max-w-5xl text-center py-4 border-t border-gray-300 dark:border-gray-800 text-xs font-medium text-gray-600 dark:text-gray-400 relative z-10 transition-colors duration-300">
         <p>© <span id="year">2026</span> جميع الحقوق محفوظة - شجرة الروابط</p>
     </footer>
 </body>
@@ -551,7 +552,7 @@
 
     <!-- Notifications Modal -->
     <div id="notificationsModal" class="fixed inset-0 bg-black/70 backdrop-blur-md hidden flex items-center justify-center z-[115] p-3">
-        <div class="bg-lightcard dark:bg-cardbg border border-gray-300 dark:border-gray-800 w-full max-w-md rounded-2xl p-5 shadow-2xl max-h-[92vh] flex flex-col transition-colors duration-300">
+        <div class="bg-lightcard dark:bg-cardbg border border-gray-300 dark:border-gray-800 w-full max-w-xl md:max-w-3xl lg:max-w-5xl rounded-2xl p-5 shadow-2xl max-h-[92vh] flex flex-col transition-colors duration-300">
             <div class="flex justify-between items-center border-b border-gray-200 dark:border-gray-800 pb-3 mb-3">
                 <h3 class="text-base font-bold text-goldaccent flex items-center gap-2">
                     <i class="fa-solid fa-bell"></i> مركز الإشعارات والتنبيهات الفورية
@@ -570,7 +571,7 @@
 
     <!-- Feedback Modal -->
     <div id="feedbackModal" class="fixed inset-0 bg-black/70 backdrop-blur-md hidden flex items-center justify-center z-[110] p-3">
-        <div class="bg-lightcard dark:bg-cardbg border border-gray-300 dark:border-gray-800 w-full max-w-md rounded-2xl p-5 shadow-2xl max-h-[92vh] flex flex-col transition-colors duration-300">
+        <div class="bg-lightcard dark:bg-cardbg border border-gray-300 dark:border-gray-800 w-full max-w-xl md:max-w-3xl lg:max-w-5xl rounded-2xl p-5 shadow-2xl max-h-[92vh] flex flex-col transition-colors duration-300">
             <div class="flex justify-between items-center border-b border-gray-200 dark:border-gray-800 pb-3 mb-3">
                 <h3 class="text-base font-bold text-goldaccent flex items-center gap-2">
                     <i class="fa-solid fa-comment-dots"></i> إرسال ملاحظة للإدارة
@@ -588,7 +589,7 @@
 
     <!-- Join Platform Modal -->
     <div id="joinModal" class="fixed inset-0 bg-black/70 backdrop-blur-md hidden flex items-center justify-center z-[110] p-3">
-        <div class="bg-lightcard dark:bg-cardbg border border-gray-300 dark:border-gray-800 w-full max-w-md rounded-2xl p-5 shadow-2xl max-h-[92vh] flex flex-col transition-colors duration-300">
+        <div class="bg-lightcard dark:bg-cardbg border border-gray-300 dark:border-gray-800 w-full max-w-xl md:max-w-3xl lg:max-w-5xl rounded-2xl p-5 shadow-2xl max-h-[92vh] flex flex-col transition-colors duration-300">
             <div class="flex justify-between items-center border-b border-gray-200 dark:border-gray-800 pb-3 mb-3">
                 <h3 class="text-base font-bold text-cyanaccent flex items-center gap-2">
                     <i class="fa-solid fa-user-plus"></i> انضم إلينا
@@ -657,7 +658,7 @@
 
     <!-- Share Options Modal -->
     <div id="shareModal" class="fixed inset-0 bg-black/70 backdrop-blur-md hidden flex items-end sm:items-center justify-center z-[110] p-0 sm:p-4">
-        <div class="bg-lightcard dark:bg-cardbg border-t sm:border border-gray-300 dark:border-gray-800 w-full max-w-md rounded-t-3xl sm:rounded-2xl p-6 shadow-2xl transition-colors duration-300">
+        <div class="bg-lightcard dark:bg-cardbg border-t sm:border border-gray-300 dark:border-gray-800 w-full max-w-xl md:max-w-3xl lg:max-w-5xl rounded-t-3xl sm:rounded-2xl p-6 shadow-2xl transition-colors duration-300">
             <div class="flex justify-between items-center border-b border-gray-200 dark:border-gray-800 pb-3 mb-4">
                 <h3 class="text-base font-bold text-gray-900 dark:text-white flex items-center gap-2">
                     <i class="fa-solid fa-share-nodes text-goldaccent"></i> مشاركة الصفحة عبر
