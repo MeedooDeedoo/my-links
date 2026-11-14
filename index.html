@@ -3995,19 +3995,20 @@ window.updateBeforeAfterUI = function(data) {
     let siteShowReels = JSON.parse(localStorage.getItem('siteShowReels')) ?? true;
     let editingReelIndex = null;
 
-        window.formatVideoEmbedUrl = function(url) {
+        
+            window.formatVideoEmbedUrl = function(url) {
         if (!url) return '';
         if (url.includes('youtube.com/shorts/')) {
             const id = url.split('shorts/')[1].split('?')[0];
-            return `https://www.youtube.com/embed/${id}?playsinline=1`;
+            return `https://www.youtube.com/embed/${id}?autoplay=1&playsinline=1`;
         }
         if (url.includes('watch?v=')) {
             const id = url.split('v=')[1].split('&')[0];
-            return `https://www.youtube.com/embed/${id}?playsinline=1`;
+            return `https://www.youtube.com/embed/${id}?autoplay=1&playsinline=1`;
         }
         if (url.includes('youtu.be/')) {
             const id = url.split('youtu.be/')[1].split('?')[0];
-            return `https://www.youtube.com/embed/${id}?playsinline=1`;
+            return `https://www.youtube.com/embed/${id}?autoplay=1&playsinline=1`;
         }
         if (url.includes('instagram.com/reel/')) {
             let cleanUrl = url.split('?')[0];
