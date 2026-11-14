@@ -12,6 +12,12 @@
       "sizes": "192x192",
       "type": "image/jpeg",
       "purpose": "any maskable"
+    },
+    {
+      "src": "https://i.ibb.co/GQz3hqZ4/1787278506847.jpg",
+      "sizes": "512x512",
+      "type": "image/jpeg",
+      "purpose": "any maskable"
     }
   ]
 }
