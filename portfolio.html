@@ -94,10 +94,10 @@
             <div class="relative z-10">
                 <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full inner-box border border-accent/30 mb-4 shadow-sm">
                     <span class="w-2 h-2 rounded-full bg-accent animate-pulse"></span>
-                    <span class="text-xs text-accent font-bold">مهندس تصميم 3D وأخصائي واجهات أليكوبوند</span>
+                    <span id="portBadge" class="text-xs text-accent font-bold">مهندس تصميم 3D وأخصائي واجهات أليكوبوند</span>
                 </div>
-                <h1 class="text-4xl md:text-5xl font-black text-[var(--text-main)] tracking-tight mb-4">محمود دملخي</h1>
-                <p class="text-[var(--text-muted)] text-base md:text-lg max-w-2xl leading-relaxed">
+                <h1 id="portName" class="text-4xl md:text-5xl font-black text-[var(--text-main)] tracking-tight mb-4">محمود دملخي</h1>
+                <p id="portBio" class="text-[var(--text-muted)] text-base md:text-lg max-w-2xl leading-relaxed">
                     خبرة متقدمة في الهندسة المعمارية ثلاثية الأبعاد، تصميم واجهات الأليكوبوند الخارجية، معالجة الألوان المتقدمة، وفنون الطباعة الرقمية والتجارية.
                 </p>
             </div>
@@ -172,7 +172,7 @@
             </div>
         </div>
 
-        <!-- القسم الثالث: معرض المشاريع والصور -->
+        <!-- القسم الثالث: معرض المشاريع والصور (مرتبط بلوحة التحكم) -->
         <div class="cinematic-card rounded-3xl p-8 md:col-span-3">
             <h2 class="text-xl font-bold mb-6 text-[var(--text-main)] flex items-center gap-2">
                 <i class="fa-solid fa-images text-accent"></i>
@@ -183,33 +183,33 @@
                 <!-- المشروع الأول -->
                 <div class="group relative rounded-2xl overflow-hidden inner-box border border-[var(--border-clr)]">
                     <div class="h-48 overflow-hidden bg-gray-900">
-                        <img src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=600&q=80" alt="واجهة أليكوبوند" class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
+                        <img id="portImg1" src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=600&q=80" alt="واجهة أليكوبوند" class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
                     </div>
                     <div class="p-4">
                         <span class="text-[10px] text-accent font-bold uppercase">واجهات أليكوبوند</span>
-                        <h3 class="font-bold text-sm text-[var(--text-main)] mt-1">مشروع برج النخبة المعماري</h3>
+                        <h3 id="portTitle1" class="font-bold text-sm text-[var(--text-main)] mt-1">مشروع برج النخبة المعماري</h3>
                     </div>
                 </div>
 
                 <!-- المشروع الثاني -->
                 <div class="group relative rounded-2xl overflow-hidden inner-box border border-[var(--border-clr)]">
                     <div class="h-48 overflow-hidden bg-gray-900">
-                        <img src="https://images.unsplash.com/photo-1541888946425-d0fbb18086e6?auto=format&fit=crop&w=600&q=80" alt="تصميم 3D" class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
+                        <img id="portImg2" src="https://images.unsplash.com/photo-1541888946425-d0fbb18086e6?auto=format&fit=crop&w=600&q=80" alt="تصميم 3D" class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
                     </div>
                     <div class="p-4">
                         <span class="text-[10px] text-accent font-bold uppercase">تصميم 3D</span>
-                        <h3 class="font-bold text-sm text-[var(--text-main)] mt-1">إخراج سينمائي لكتلة تجارية</h3>
+                        <h3 id="portTitle2" class="font-bold text-sm text-[var(--text-main)] mt-1">إخراج سينمائي لكتلة تجارية</h3>
                     </div>
                 </div>
 
                 <!-- المشروع الثالث -->
                 <div class="group relative rounded-2xl overflow-hidden inner-box border border-[var(--border-clr)]">
                     <div class="h-48 overflow-hidden bg-gray-900">
-                        <img src="https://images.unsplash.com/photo-1626785774573-4b799315345d?auto=format&fit=crop&w=600&q=80" alt="هوية بصرية" class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
+                        <img id="portImg3" src="https://images.unsplash.com/photo-1626785774573-4b799315345d?auto=format&fit=crop&w=600&q=80" alt="هوية بصرية" class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
                     </div>
                     <div class="p-4">
                         <span class="text-[10px] text-accent font-bold uppercase">هوية بصرية</span>
-                        <h3 class="font-bold text-sm text-[var(--text-main)] mt-1">تغليف وفصل ألوان تجاري</h3>
+                        <h3 id="portTitle3" class="font-bold text-sm text-[var(--text-main)] mt-1">تغليف وفصل ألوان تجاري</h3>
                     </div>
                 </div>
             </div>
@@ -252,7 +252,7 @@
         محمود دملخي — جميع الحقوق محفوظة لعام 2026.
     </footer>
 
-    <!-- سكريبت تبديل الثيم (ليلي / نهاري) -->
+    <!-- سكريبت تبديل الثيم وجلب البيانات المحدثة من لوحة التحكم -->
     <script>
         function toggleTheme() {
             const body = document.body;
@@ -269,50 +269,27 @@
                 text.innerText = 'الوضع الليلي';
             }
         }
-    </script>
-    
-    <script>
-    // جلب وعرض البيانات المعدلة من لوحة التحكم فور تحميل الصفحة
-    window.addEventListener('DOMContentLoaded', () => {
-        const savedData = localStorage.getItem('portfolioCustomData');
-        if (savedData) {
-            const data = JSON.parse(savedData);
-            
-            // تحديث الاسم
-            const titleEl = document.querySelector('header h1');
-            if (titleEl && data.name) titleEl.innerText = data.name;
-            
-            // تحديث النبذة
-            const bioEl = document.querySelector('header p');
-            if (bioEl && data.bio) bioEl.innerText = data.bio;
-            
-            // تحديث صورة المشروع الأول
-            const imgEl = document.querySelector('.grid img');
-            if (imgEl && data.img1) imgEl.src = data.img1;
-        }
-    });
-</script>
-<script>
-    window.addEventListener('DOMContentLoaded', () => {
-        const savedData = localStorage.getItem('portfolioCustomData');
-        if (savedData) {
-            const data = JSON.parse(savedData);
-            if(document.getElementById('portName')) document.getElementById('portName').innerText = data.name;
-            if(document.getElementById('portBadge')) document.getElementById('portBadge').innerText = data.badge;
-            if(document.getElementById('portBio')) document.getElementById('portBio').innerText = data.bio;
-            
-            if(document.getElementById('portTitle1')) document.getElementById('portTitle1').innerText = data.title1;
-            if(document.getElementById('portImg1')) document.getElementById('portImg1').src = data.img1;
-            
-            if(document.getElementById('portTitle2')) document.getElementById('portTitle2').innerText = data.title2;
-            if(document.getElementById('portImg2')) document.getElementById('portImg2').src = data.img2;
-            
-            if(document.getElementById('portTitle3')) document.getElementById('portTitle3').innerText = data.title3;
-            if(document.getElementById('portImg3')) document.getElementById('portImg3').src = data.img3;
-        }
-    });
-</script>
 
+        // جلب التعديلات المحفوظة من لوحة الأدمن تلقائياً
+        window.addEventListener('DOMContentLoaded', () => {
+            const savedData = localStorage.getItem('portfolioCustomData');
+            if (savedData) {
+                const data = JSON.parse(savedData);
+                if(document.getElementById('portName')) document.getElementById('portName').innerText = data.name;
+                if(document.getElementById('portBadge')) document.getElementById('portBadge').innerText = data.badge;
+                if(document.getElementById('portBio')) document.getElementById('portBio').innerText = data.bio;
+                
+                if(document.getElementById('portTitle1')) document.getElementById('portTitle1').innerText = data.title1;
+                if(document.getElementById('portImg1')) document.getElementById('portImg1').src = data.img1;
+                
+                if(document.getElementById('portTitle2')) document.getElementById('portTitle2').innerText = data.title2;
+                if(document.getElementById('portImg2')) document.getElementById('portImg2').src = data.img2;
+                
+                if(document.getElementById('portTitle3')) document.getElementById('portTitle3').innerText = data.title3;
+                if(document.getElementById('portImg3')) document.getElementById('portImg3').src = data.img3;
+            }
+        });
+    </script>
 
 </body>
 </html>
