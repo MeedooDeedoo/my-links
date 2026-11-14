@@ -141,7 +141,7 @@
     /* زيادة ارتفاع بطاقة المشروع لتصبح أكبر وأكثر وضوحاً */
     div[class*="grid"] > div, .project-card, [id*="project"] {
         position: relative !important;
-        height: 200px !important; /* يمكنك تعديل هذا الرقم لزيادة أو تقليل الارتفاع */
+        height: px !important; /* يمكنك تعديل هذا الرقم لزيادة أو تقليل الارتفاع */
         overflow: hidden !important;
         border-radius: 16px !important;
     }
@@ -3676,34 +3676,7 @@ window.updateBeforeAfterUI = function(data) {
 
     </script>
     
-    <!-- صندوق تثبيت التطبيق (يظهر دائماً لضمان عدم اختفائه) -->
-<div style="background: rgba(26, 29, 38, 0.95); border: 1px solid #D4AF37; padding: 16px; border-radius: 16px; margin: 20px auto; max-width: 90%; text-align: center; box-shadow: 0 4px 15px rgba(0,0,0,0.5);">
-    <div style="color: #D4AF37; font-weight: bold; font-size: 16px; margin-bottom: 8px;">📱 تثبيت تطبيق المنصة</div>
-    <p style="color: #9CA3AF; font-size: 13px; margin-bottom: 12px; line-height: 1.5;">
-        ثبت المنصة على شاشتك الرئيسية لتصبح كالتطبيق السريع بضغطة زر واحدة.
-    </p>
-    <button id="installBtn" style="background: #D4AF37; color: #0F1117; font-weight: bold; padding: 10px 20px; border: none; border-radius: 10px; cursor: pointer; font-size: 14px; width: 100%;">
-        تثبيت التطبيق الآن
-    </button>
-</div>
 
-<script>
-  let deferredPrompt;
-  window.addEventListener('beforeinstallprompt', (e) => {
-    e.preventDefault();
-    deferredPrompt = e;
-  });
-
-  document.getElementById('installBtn').addEventListener('click', async () => {
-    if (deferredPrompt) {
-      deferredPrompt.prompt();
-      const { outcome } = await deferredPrompt.userChoice;
-      deferredPrompt = null;
-    } else {
-      alert("طريقة تثبيت التطبيق يدوياً:\n1. اضغط على القائمة (النقاط الثلاث ⠇أعلى المتصفح).\n2. اختر 'تثبيت التطبيق' (Install app) أو 'إضافة إلى الشاشة الرئيسية'.");
-    }
-  });
-</script>
 
 
 <script>
