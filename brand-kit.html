@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>دليل الهوية البصرية | Cinematic Brand Kit</title>
+    <!-- استدعاء Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Tajawal', sans-serif;
+            background-color: #0c0e12;
+            color: #f1f5f9;
+        }
+        .bronze-accent { color: #cda26e; }
+        .bronze-bg { background-color: #cda26e; }
+        .card-cinematic {
+            background-color: #141720;
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            box-shadow: 0 12px 30px -10px rgba(0, 0, 0, 0.6);
+        }
+    </style>
+</head>
+<body class="min-h-screen p-6 md:p-12">
+
+    <!-- رأس الصفحة / الهوية -->
+    <header class="max-w-5xl mx-auto flex flex-col md:flex-row justify-between items-center mb-12 pb-6 border-b border-gray-800">
+        <div>
+            <span class="text-xs uppercase tracking-widest text-[#cda26e] font-semibold">Digital Brand Kit</span>
+            <h1 class="text-3xl md:text-4xl font-black mt-1">NOIR Architecture</h1>
+        </div>
+        <div class="mt-4 md:mt-0">
+            <span class="px-4 py-2 rounded-full text-xs bg-[#1f2430] border border-[#cda26e]/30 text-[#cda26e]">حزمة الهوية السينمائية الفاخرة</span>
+        </div>
+    </header>
+
+    <!-- المحتوى الرئيسي -->
+    <main class="max-w-5xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-8">
+
+        <!-- القسم الأول: لوحة الألوان (Color Palette) -->
+        <div class="card-cinematic rounded-2xl p-6 md:col-span-2">
+            <h2 class="text-xl font-bold mb-4 flex items-center gap-2">
+                <span class="w-2 h-2 rounded-full bronze-bg"></span> لوحة الألوان الرسمية (Color Spectrum)
+            </h2>
+            <p class="text-gray-400 text-sm mb-6">انقر على أي بطاقة لون لنسخ كود (HEX) مباشرة إلى الحافظة.</p>
+            
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                <!-- اللون الأول -->
+                <div onclick="copyColor('#0F1117', this)" class="p-4 rounded-xl bg-[#0c0e12] border border-gray-800 cursor-pointer hover:border-[#cda26e] transition group relative">
+                    <div class="h-16 rounded-lg bg-[#0f1117] mb-3 border border-gray-700"></div>
+                    <h3 class="font-bold text-sm">Dark Charcoal</h3>
+                    <p class="text-xs text-gray-400 mt-1 hex-code">HEX: #0F1117</p>
+                    <p class="text-xs text-[#cda26e] mt-0.5">CMYK: 75, 68, 60, 82</p>
+                    <span class="absolute top-3 left-3 text-[10px] bg-[#1f2430] text-[#cda26e] px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition">انقر للنسخ</span>
+                </div>
+                <!-- اللون الثاني -->
+                <div onclick="copyColor('#2B303C', this)" class="p-4 rounded-xl bg-[#0c0e12] border border-gray-800 cursor-pointer hover:border-[#cda26e] transition group relative">
+                    <div class="h-16 rounded-lg bg-[#2b303c] mb-3 border border-gray-700"></div>
+                    <h3 class="font-bold text-sm">Titanium Gray</h3>
+                    <p class="text-xs text-gray-400 mt-1 hex-code">HEX: #2B303C</p>
+                    <p class="text-xs text-[#cda26e] mt-0.5">CMYK: 60, 50, 40, 20</p>
+                    <span class="absolute top-3 left-3 text-[10px] bg-[#1f2430] text-[#cda26e] px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition">انقر للنسخ</span>
+                </div>
+                <!-- اللون الثالث -->
+                <div onclick="copyColor('#CDA26E', this)" class="p-4 rounded-xl bg-[#0c0e12] border border-gray-800 cursor-pointer hover:border-[#cda26e] transition group relative">
+                    <div class="h-16 rounded-lg bg-[#cda26e] mb-3"></div>
+                    <h3 class="font-bold text-sm">Brushed Bronze</h3>
+                    <p class="text-xs text-gray-400 mt-1 hex-code">HEX: #CDA26E</p>
+                    <p class="text-xs text-[#cda26e] mt-0.5">CMYK: 25, 40, 70, 10</p>
+                    <span class="absolute top-3 left-3 text-[10px] bg-[#1f2430] text-[#cda26e] px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition">انقر للنسخ</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- القسم الثاني: الروابط والملفات السريعة -->
+        <div class="card-cinematic rounded-2xl p-6 flex flex-col justify-between">
+            <div>
+                <h2 class="text-xl font-bold mb-4">ملفات الأصول (Assets)</h2>
+                <p class="text-gray-400 text-sm mb-6">تحميل الشعار الرسمي بالصيغ المختلفة للتصميم والطباعة.</p>
+            </div>
+            
+            <div class="space-y-3">
+                <button onclick="alert('جاري تحميل الشعار بصيغة Vector SVG...')" class="w-full py-3 px-4 rounded-xl bg-[#0c0e12] hover:bg-[#1f2430] border border-gray-800 text-sm font-semibold flex justify-between items-center transition">
+                    <span>تحميل الشعار (Vector SVG)</span>
+                    <span class="text-[#cda26e]">↓</span>
+                </button>
+                <button onclick="alert('جاري تحميل دليل الهوية PDF...')" class="w-full py-3 px-4 rounded-xl bg-[#0c0e12] hover:bg-[#1f2430] border border-gray-800 text-sm font-semibold flex justify-between items-center transition">
+                    <span>دليل الاستخدام (PDF)</span>
+                    <span class="text-[#cda26e]">↓</span>
+                </button>
+            </div>
+        </div>
+
+        <!-- القسم الثالث: معاينة الخطوط والهوية -->
+        <div class="card-cinematic rounded-2xl p-6 md:col-span-3">
+            <h2 class="text-xl font-bold mb-4">الخطوط الهندسية (Typography Guidelines)</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div class="p-4 bg-[#0c0e12] rounded-xl border border-gray-800">
+                    <span class="text-xs text-[#cda26e] block mb-1">العناوين الرئيسية (Headings)</span>
+                    <p class="text-2xl font-black tracking-wide">Tajawal Bold / Geometric</p>
+                    <p class="text-xs text-gray-400 mt-2">يستخدم بمسافات عريضة بين الحروف لإعطاء طابع معماري فاخر.</p>
+                </div>
+                <div class="p-4 bg-[#0c0e12] rounded-xl border border-gray-800">
+                    <span class="text-xs text-[#cda26e] block mb-1">النصوص الثانوية (Body & UI)</span>
+                    <p class="text-lg font-light">Tajawal Light / Clean Sans</p>
+                    <p class="text-xs text-gray-400 mt-2">يستخدم للوصف والتفاصيل التقنية لسهولة القراءة والوضوح.</p>
+                </div>
+            </div>
+        </div>
+
+    </main>
+
+    <!-- تذييل الصفحة -->
+    <footer class="max-w-5xl mx-auto text-center mt-12 text-xs text-gray-500 border-t border-gray-800 pt-6">
+        تم تصميمه وتطويره خصيصاً لهوية النخبة المعمارية. جميع الحقوق محفوظة.
+    </footer>
+
+    <!-- سكريبت نسخ الألوان -->
+    <script>
+        function copyColor(hex, element) {
+            navigator.clipboard.writeText(hex);
+            const span = element.querySelector('.hex-code');
+            const originalText = span.innerText;
+            span.innerText = '✓ تم النسخ بنجاح!';
+            span.style.color = '#cda26e';
+            setTimeout(() => {
+                span.innerText = originalText;
+                span.style.color = '';
+            }, 1500);
+        }
+    </script>
+
+</body>
+</html>
