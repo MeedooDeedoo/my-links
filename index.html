@@ -378,6 +378,19 @@
             <div id="promoCodesContainer" class="w-full grid grid-cols-1 gap-3"></div>
         </div>
 
+<!-- قسم معرض الريلز والفيديوهات -->
+<div class="w-full mb-6">
+    <div class="flex items-center justify-between mb-3 px-1">
+        <span class="text-xs font-extrabold text-gray-900 dark:text-white flex items-center gap-1.5">
+            <i class="fa-solid fa-clapperboard text-goldaccent"></i>
+            أحدث الأعمال المصورة (Reels & Videos)
+        </span>
+    </div>
+    <!-- شبكة عرض الريلز الطولية -->
+    <div id="reelsGridContainer" class="grid grid-cols-2 sm:grid-cols-3 gap-3"></div>
+</div>
+
+
         <!-- Testimonials & Live Rating Section -->
         <div id="testimonialsSectionContainer" class="w-full mb-6 hidden">
             <div class="flex items-center justify-between mb-3 px-1">
@@ -471,7 +484,7 @@
 
     <!-- Add Live Testimonial Modal -->
     <div id="addTestimonialModal" class="fixed inset-0 bg-black/70 backdrop-blur-md hidden flex items-center justify-center z-[125] p-3">
-        <div class="bg-lightcard dark:bg-cardbg border border-gray-300 dark:border-gray-800 w-full max-w-sm rounded-2xl p-5 shadow-2xl flex flex-col transition-colors duration-300 space-y-3">
+        <div class="bg-lightcard dark:bg-cardbg border border-gray-300                             dark:border-gray-800 w-full max-w-sm rounded-2xl p-5 shadow-2xl flex flex-col transition-colors duration-300 space-y-3">
             <div class="flex justify-between items-center border-b border-gray-200 dark:border-gray-800 pb-3">
                 <h3 class="text-base font-bold text-goldaccent flex items-center gap-2">
                     <i class="fa-solid fa-star"></i> أضف تقييمك ورأيك الكريم
@@ -799,6 +812,23 @@
     }
 </script>
 
+<!-- إدارة قسم الريلز والفيديوهات في لوحة التحكم -->
+<div class="bg-[#07090e] rounded-xl border border-gray-800 p-3 space-y-3 mt-3">
+    <div class="font-bold text-goldaccent text-xs flex items-center gap-2">
+        <i class="fa-solid fa-video"></i>
+        <span>إدارة مقاطع الريلز والفيديو</span>
+    </div>
+    <div class="space-y-2 text-xs">
+        <input type="text" id="newReelTitle" placeholder="عنوان الفيديو (مثلاً: جولة واجهة أليكوبوند)" class="w-full bg-[#141720] border border-gray-800 rounded-xl px-3 py-2 text-white outline-none">
+        <input type="text" id="newReelThumb" placeholder="رابط صورة الغلاف (Thumbnail Image URL)" class="w-full bg-[#141720] border border-gray-800 rounded-xl px-3 py-2 text-white outline-none">
+        <input type="text" id="newReelUrl" placeholder="رابط يوتيوب (Shorts) أو إنستغرام (Reel)" class="w-full bg-[#141720] border border-gray-800 rounded-xl px-3 py-2 text-white outline-none">
+        <button type="button" onclick="addNewReel()" class="w-full py-2.5 rounded-xl bg-[#cda26e] text-[#07090e] font-bold hover:opacity-90 transition">
+            + إضافة الفيديو للمعرض
+        </button>
+    </div>
+    <!-- قائمة الفيديوهات للتحكم بحذفها -->
+    <div id="adminReelsList" class="space-y-1.5 pt-2 border-t border-gray-800 text-xs"></div>
+</div>
 
 
                 <!-- ⭐ قسم إدارة ومراجعة التقييمات -->
@@ -3905,6 +3935,129 @@ window.updateBeforeAfterUI = function(data) {
   });
 </script>
 
+
+<script>
+    let siteReels = JSON.parse(localStorage.getItem('siteReelsData')) || [
+        {
+            title: "نمذجة واجهة تجارية 3D",
+            thumb: "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=500&q=80",
+            url: "https://www.youtube.com/shorts/dQw4w9WgXcQ"
+        }
+    ];
+
+    function formatVideoEmbedUrl(url) {
+        if (!url) return '';
+        if (url.includes('youtube.com/shorts/')) {
+            const id = url.split('shorts/')[1].split('?')[0];
+            return `https://www.youtube.com/embed/${id}?autoplay=1`;
+        }
+        if (url.includes('watch?v=')) {
+            const id = url.split('v=')[1].split('&')[0];
+            return `https://www.youtube.com/embed/${id}?autoplay=1`;
+        }
+        if (url.includes('youtu.be/')) {
+            const id = url.split('youtu.be/')[1].split('?')[0];
+            return `https://www.youtube.com/embed/${id}?autoplay=1`;
+        }
+        if (url.includes('instagram.com/reel/')) {
+            let cleanUrl = url.split('?')[0];
+            if (!cleanUrl.endsWith('/')) cleanUrl += '/';
+            return cleanUrl + 'embed/';
+        }
+        return url;
+    }
+
+    function renderReelsSection() {
+        const grid = document.getElementById('reelsGridContainer');
+        const adminList = document.getElementById('adminReelsList');
+        
+        if (grid) {
+            grid.innerHTML = siteReels.map((reel, index) => `
+                <div onclick="openVideoModal(${index})" class="group relative aspect-[9/16] rounded-2xl overflow-hidden bg-gray-900 border border-gray-800 cursor-pointer shadow-lg">
+                    <img src="${reel.thumb}" alt="${reel.title}" class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
+                    <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent"></div>
+                    <div class="absolute inset-0 flex items-center justify-center">
+                        <div class="w-10 h-10 rounded-full bg-[#cda26e] text-[#07090e] flex items-center justify-center shadow-xl group-hover:scale-110 transition">
+                            <i class="fa-solid fa-play text-xs ml-0.5"></i>
+                        </div>
+                    </div>
+                    <div class="absolute bottom-2 right-2 left-2">
+                        <p class="text-white font-bold text-[11px] line-clamp-2">${reel.title}</p>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        if (adminList) {
+            adminList.innerHTML = siteReels.map((reel, index) => `
+                <div class="flex justify-between items-center bg-[#07090e] p-2 rounded-lg border border-gray-800">
+                    <span class="text-gray-300 truncate max-w-[75%]">${reel.title}</span>
+                    <button type="button" onclick="deleteReel(${index})" class="text-red-400 hover:text-red-300 px-2">
+                        <i class="fa-solid fa-trash"></i>
+                    </button>
+                </div>
+            `).join('');
+        }
+    }
+
+    function addNewReel() {
+        const title = document.getElementById('newReelTitle').value.trim();
+        const thumb = document.getElementById('newReelThumb').value.trim();
+        const url = document.getElementById('newReelUrl').value.trim();
+        
+        if (!title || !url) return alert('يرجى إدخال عنوان الفيديو ورابطه الأساسي');
+        
+        siteReels.unshift({
+            title,
+            thumb: thumb || 'https://images.unsplash.com/photo-1541888946425-d0fbb18086e6?auto=format&fit=crop&w=500&q=80',
+            url
+        });
+        
+        localStorage.setItem('siteReelsData', JSON.stringify(siteReels));
+        document.getElementById('newReelTitle').value = '';
+        document.getElementById('newReelThumb').value = '';
+        document.getElementById('newReelUrl').value = '';
+        renderReelsSection();
+    }
+
+    function deleteReel(index) {
+        siteReels.splice(index, 1);
+        localStorage.setItem('siteReelsData', JSON.stringify(siteReels));
+        renderReelsSection();
+    }
+
+    function openVideoModal(index) {
+        const reel = siteReels[index];
+        if (!reel) return;
+        document.getElementById('videoModalTitle').innerText = reel.title;
+        document.getElementById('videoPlayerFrame').src = formatVideoEmbedUrl(reel.url);
+        document.getElementById('videoPlayerModal').classList.remove('hidden');
+    }
+
+    function closeVideoModal() {
+        document.getElementById('videoPlayerModal').classList.add('hidden');
+        document.getElementById('videoPlayerFrame').src = '';
+    }
+
+    document.addEventListener('DOMContentLoaded', renderReelsSection);
+</script>
+
+
+<!-- نافذة تشغيل الفيديو المنبثقة (Video Modal) -->
+<div id="videoPlayerModal" class="fixed inset-0 bg-black/90 backdrop-blur-md hidden flex items-center justify-center p-4 z-[170]">
+    <div class="relative w-full max-w-sm bg-cardbg border border-[var(--border-clr)] rounded-3xl overflow-hidden shadow-2xl">
+        <div class="flex justify-between items-center p-3 border-b border-[var(--border-clr)]">
+            <h3 id="videoModalTitle" class="text-xs font-bold text-accent truncate">عرض الفيديو</h3>
+            <button type="button" onclick="closeVideoModal()" class="text-[var(--text-muted)] hover:text-white px-2 text-lg">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+        </div>
+        <!-- إطار عرض الفيديو بنسبة 9:16 -->
+        <div class="aspect-[9/16] w-full bg-black">
+            <iframe id="videoPlayerFrame" src="" class="w-full h-full border-0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+        </div>
+    </div>
+</div>
 
     
 </body>
