@@ -616,18 +616,21 @@
         </div>
     </div>
 
-    <!-- Image View Modal -->
-    <div id="imageViewModal" class="fixed inset-0 bg-black/95 backdrop-blur-lg hidden flex flex-col items-center justify-center z-[130] p-4">
-        <img id="enlargedImage" src="" class="max-w-full max-h-[75vh] rounded-2xl border border-gray-800 shadow-2xl object-contain mb-3" />
-        <div class="flex items-center gap-3 mt-2">
-            <button type="button" onclick="window.shareCurrentProjectImage()" class="bg-goldaccent text-black px-4 py-2 rounded-xl text-xs font-extrabold shadow-md flex items-center gap-2 transition hover:scale-105">
-                <i class="fa-solid fa-share-nodes"></i> مشاركة هذا المشروع والصورة
-            </button>
-            <button type="button" onclick="window.closeImageView()" class="bg-gray-800 text-gray-200 px-4 py-2 rounded-xl text-xs font-bold">
-                <i class="fa-solid fa-xmark"></i> إغلاق
-            </button>
-        </div>
+<!-- Image View Modal -->
+<div id="imageViewModal" onclick="window.closeImageView()" class="fixed inset-0 bg-black/95 backdrop-blur-lg hidden flex flex-col items-center justify-center z-[130] p-4">
+    <img id="enlargedImage" onclick="event.stopPropagation()" src="" class="max-w-full max-h-[75vh] rounded-2xl border border-gray-800 shadow-2xl object-contain mb-3 transition-all duration-300 ease-out" />
+    <div class="flex items-center gap-3 mt-2" onclick="event.stopPropagation()">
+        <button type="button" onclick="window.shareCurrentProjectImage()" class="bg-goldaccent text-black px-4 py-2 rounded-xl text-xs font-extrabold shadow-md flex items-center gap-2 transition hover:scale-105">
+            <i class="fa-solid fa-share-nodes"></i> مشاركة هذا المشروع والصورة
+        </button>
+        <button type="button" onclick="window.closeImageView()" class="bg-gray-800 text-gray-200 px-4 py-2 rounded-xl text-xs font-bold">
+            <i class="fa-solid fa-xmark"></i> إغلاق
+        </button>
     </div>
+</div>
+
+
+
 
     <!-- Share Options Modal -->
     <div id="shareModal" class="fixed inset-0 bg-black/70 backdrop-blur-md hidden flex items-end sm:items-center justify-center z-[110] p-0 sm:p-4">
@@ -2642,8 +2645,9 @@
                 } else {
                     card.className = 'h-32 w-full rounded-xl overflow-hidden bg-darkbg border border-gray-700 cursor-pointer relative group shrink-0';
 
-                    card.oncontextmenu = (e) => { e.preventDefault(); window.openImageView(url); };
-                    card.onclick = () => window.openImageView(url);
+                    card.oncontextmenu = (e) => { e.preventDefault(); window.openImageView(allMedia, idx); };
+card.onclick = () => window.openImageView(allMedia, idx);
+
                     card.innerHTML = `<img src="${url}" class="w-full h-full object-cover group-hover:scale-105 transition" /><span class="absolute bottom-1 right-1 bg-black/60 text-white text-[9px] px-1 py-0.5 rounded">صورة ${idx+1}</span>`;
                 }
                 imagesGrid.appendChild(card);
@@ -2652,8 +2656,82 @@
         };
 
         window.closeProjectDetail = function() { document.getElementById('projectDetailModal').classList.add('hidden'); };
-        window.openImageView = function(url) { document.getElementById('enlargedImage').src = url; document.getElementById('imageViewModal').classList.remove('hidden'); };
-        window.closeImageView = function() { document.getElementById('imageViewModal').classList.add('hidden'); };
+        let currentProjectMediaList = [];
+let currentMediaIndex = 0;
+let touchStartX = 0;
+let touchEndX = 0;
+
+window.openImageView = function(mediaArray, index) {
+    if (Array.isArray(mediaArray)) {
+        currentProjectMediaList = [...mediaArray]; // نسخة مستقلة لمنع تداخل المشاريع
+        currentMediaIndex = index !== undefined ? index : 0;
+    } else {
+        currentProjectMediaList = [mediaArray];
+        currentMediaIndex = 0;
+    }
+    updateModalImageDisplay(); // الاسم الصحيح بدون أخطاء إملائية
+    document.getElementById('imageViewModal').classList.remove('hidden');
+};
+
+
+function updateModalImageDisplay() {
+    if (!currentProjectMediaList || currentProjectMediaList.length === 0) return;
+    const imgElement = document.getElementById('enlargedImage');
+    if (imgElement) {
+        // تأثير انتقال ناعم وسريع وخفيف جداً بدون أي تأخير
+        imgElement.style.opacity = '0';
+        imgElement.style.transform = 'scale(0.95)';
+        setTimeout(() => {
+            imgElement.src = currentProjectMediaList[currentMediaIndex];
+            imgElement.style.opacity = '1';
+            imgElement.style.transform = 'scale(1)';
+        }, 150);
+    }
+}
+
+window.nextImageView = function() {
+    if (!currentProjectMediaList || currentProjectMediaList.length <= 1) return;
+    currentMediaIndex = (currentMediaIndex + 1) % currentProjectMediaList.length;
+    updateModalImageDisplay();
+};
+
+window.prevImageView = function() {
+    if (!currentProjectMediaList || currentProjectMediaList.length <= 1) return;
+    currentMediaIndex = (currentMediaIndex - 1 + currentProjectMediaList.length) % currentProjectMediaList.length;
+    updateModalImageDisplay();
+};
+
+window.closeImageView = function() {
+    const modal = document.getElementById('imageViewModal');
+    if (modal) modal.classList.add('hidden');
+};
+
+// تفعيل ميزة السحب بسلاسة
+document.addEventListener('DOMContentLoaded', () => {
+    const modalModal = document.getElementById('imageViewModal');
+    if (modalModal) {
+        modalModal.addEventListener('touchstart', e => {
+            touchStartX = e.changedTouches[0].screenX;
+        }, {passive: true});
+
+        modalModal.addEventListener('touchend', e => {
+            touchEndX = e.changedTouches[0].screenX;
+            handleSwipe();
+        }, {passive: true});
+    }
+});
+
+function handleSwipe() {
+    const threshold = 30; // حساسية سريعة وخفيفة للسحب
+    if (touchEndX < touchStartX - threshold) {
+        window.nextImageView(); // التالي
+    } else if (touchEndX > touchStartX + threshold) {
+        window.prevImageView(); // السابق
+    }
+}
+
+
+
 
         window.shareCurrentProjectImage = function() {
             const cleanBaseUrl = window.location.origin + window.location.pathname;
