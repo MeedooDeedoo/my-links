@@ -7,5 +7,5 @@ self.addEventListener('activate', (event) => {
 });
 
 self.addEventListener('fetch', (event) => {
-  // تمرير الطلبات بشكل طبيعي
+  event.respondWith(fetch(event.request));
 });
