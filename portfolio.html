@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>الملف المهني والخبرات | محمود دملخي</title>
+    <!-- استدعاء Tailwind CSS والخطوط -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Tajawal', sans-serif;
+            background-color: #07090e;
+            color: #f8fafc;
+            overflow-x: hidden;
+        }
+        :root {
+            --primary-clr: #0f1117;
+            --secondary-clr: #2b303c;
+            --accent-clr: #cda26e;
+        }
+        .text-accent { color: var(--accent-clr); }
+        .bg-accent { background-color: var(--accent-clr); }
+        .border-accent { border-color: var(--accent-clr); }
+        
+        .cinematic-card {
+            background: linear-gradient(135deg, rgba(20, 23, 32, 0.8) 0%, rgba(12, 14, 18, 0.9) 100%);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(12px);
+            box-shadow: 0 20px 40px -15px rgba(0, 0, 0, 0.7);
+            transition: all 0.3s ease;
+        }
+        .cinematic-card:hover {
+            border-color: rgba(205, 162, 110, 0.3);
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.8), 0 0 25px rgba(205, 162, 110, 0.08);
+            transform: translateY(-3px);
+        }
+        .tech-badge {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            transition: all 0.2s ease;
+        }
+        .tech-badge:hover {
+            border-color: var(--accent-clr);
+            color: var(--accent-clr);
+        }
+    </style>
+</head>
+<body class="min-h-screen pb-20">
+
+    <!-- زر العودة للرئيسية -->
+    <div class="max-w-5xl mx-auto px-6 pt-8 flex justify-between items-center">
+        <a href="index.html" class="px-4 py-2 rounded-xl bg-[#141720] border border-gray-800 text-sm text-gray-300 hover:text-white hover:border-accent transition flex items-center gap-2">
+            <span>← العودة إلى الرئيسية</span>
+        </a>
+        <span class="text-xs uppercase tracking-widest text-accent font-bold">Professional Portfolio</span>
+    </div>
+
+    <!-- رأس الصفحة / الهوية الشخصية -->
+    <header class="max-w-5xl mx-auto px-6 pt-12 pb-10 border-b border-gray-800/60 mb-12">
+        <div class="cinematic-card rounded-3xl p-8 md:p-12 relative overflow-hidden">
+            <div class="absolute -left-20 -top-20 w-64 h-64 bg-accent/5 rounded-full blur-3xl pointer-events-none"></div>
+            <div class="relative z-10">
+                <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#07090e] border border-accent/30 mb-4">
+                    <span class="w-2 h-2 rounded-full bg-accent animate-pulse"></span>
+                    <span class="text-xs text-accent font-bold">مهندس تصميم 3D وأخصائي واجهات أليكوبوند</span>
+                </div>
+                <h1 class="text-4xl md:text-5xl font-black text-white tracking-tight mb-4">محمود دملخي</h1>
+                <p class="text-gray-400 text-base md:text-lg max-w-2xl leading-relaxed">
+                    خبرة متقدمة في الهندسة المعمارية ثلاثية الأبعاد، تصميم واجهات الأليكوبوند الخارجية، معالجة الألوان المتقدمة، وفنون الطباعة الرقمية والتجارية.
+                </p>
+            </div>
+        </div>
+    </header>
+
+    <!-- المحتوى الرئيسي (Bento Grid) -->
+    <main class="max-w-5xl mx-auto px-6 grid grid-cols-1 md:grid-cols-3 gap-8">
+
+        <!-- القسم الأول: الاختصاصات الهندسية والتصميمية -->
+        <div class="cinematic-card rounded-3xl p-8 md:col-span-2 flex flex-col justify-between">
+            <div>
+                <h2 class="text-2xl font-bold mb-6 flex items-center gap-3">
+                    <span class="w-3 h-3 rounded-full bg-accent"></span>
+                    <span>الخبرات والخدمات الهندسية</span>
+                </h2>
+            </div>
+            
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 my-4">
+                <div class="p-5 rounded-2xl bg-[#07090e] border border-gray-800/80">
+                    <h3 class="font-bold text-accent text-base mb-2">واجهات الأليكوبوند (Alucobond)</h3>
+                    <p class="text-xs text-gray-400 leading-relaxed">تصميم وهندسة الكسوة الخارجية للمباني، المعارض، والواجهات التجارية بأعلى معايير الدقة والجمال البصري.</p>
+                </div>
+                <div class="p-5 rounded-2xl bg-[#07090e] border border-gray-800/80">
+                    <h3 class="font-bold text-accent text-base mb-2">التصميم المعماري 3D</h3>
+                    <p class="text-xs text-gray-400 leading-relaxed">إخراج لقطات سينمائية واقعية ومجسدات ثلاثية الأبعاد تبرز تفاصيل الكتل والإضاءات المخفية.</p>
+                </div>
+                <div class="p-5 rounded-2xl bg-[#07090e] border border-gray-800/80">
+                    <h3 class="font-bold text-accent text-base mb-2">فصل الألوان والطباعة (Pre-press)</h3>
+                    <p class="text-xs text-gray-400 leading-relaxed">تخصص دقيق في فصل الألوان للطباعة التجارية، معالجة الملفات، وضمان تطابق الألوان بدقة تامة.</p>
+                </div>
+                <div class="p-5 rounded-2xl bg-[#07090e] border border-gray-800/80">
+                    <h3 class="font-bold text-accent text-base mb-2">الهوية البصرية والسينمائية</h3>
+                    <p class="text-xs text-gray-400 leading-relaxed">تصميم الهويات التجارية الفاخرة واللوحات الإعلانية (القارمات) بنمط Moody الداكن الجذاب.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- القسم الثاني: المؤسسات والأعمال التجارية -->
+        <div class="cinematic-card rounded-3xl p-8 flex flex-col justify-between">
+            <div>
+                <h2 class="text-xl font-bold mb-4">الكيانات التجارية</h2>
+                <p class="text-gray-400 text-xs mb-6">المشاريع والمؤسسات التي تتم إدارتها وتشغيلها بكفاءة عالية:</p>
+            </div>
+            
+            <div class="space-y-4">
+                <div class="p-4 rounded-2xl bg-[#07090e] border border-gray-800">
+                    <span class="text-[10px] text-accent font-bold uppercase tracking-wider">النشاط الأول</span>
+                    <h3 class="font-extrabold text-sm text-white mt-1">لمسة فن بلس</h3>
+                    <p class="text-xs text-gray-400 mt-1">التصميم الجرافيكي، الفنون البصرية، ومعالجة الألوان المتقدمة.</p>
+                </div>
+                <div class="p-4 rounded-2xl bg-[#07090e] border border-gray-800">
+                    <span class="text-[10px] text-accent font-bold uppercase tracking-wider">النشاط الثاني</span>
+                    <h3 class="font-extrabold text-sm text-white mt-1">طيبانو للتجارة والبناء</h3>
+                    <p class="text-xs text-gray-400 mt-1">أعمال المقاولات، توريد وتركيب واجهات الأليكوبوند والكسوة المعمارية.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- القسم الثالث: حزمة البرمجيات والتقنيات (Software Stack) -->
+        <div class="cinematic-card rounded-3xl p-8 md:col-span-3">
+            <h2 class="text-xl font-bold mb-6">المنظومة البرمجية والتقنية (Software Stack)</h2>
+            <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-4">
+                <div class="tech-badge p-4 rounded-2xl text-center">
+                    <span class="font-black text-lg block text-white">3ds Max</span>
+                    <span class="text-[11px] text-gray-400">التصميم المعماري والنمذجة</span>
+                </div>
+                <div class="tech-badge p-4 rounded-2xl text-center">
+                    <span class="font-black text-lg block text-white">AutoCAD</span>
+                    <span class="text-[11px] text-gray-400">المخططات الهندسية الدقيقة</span>
+                </div>
+                <div class="tech-badge p-4 rounded-2xl text-center">
+                    <span class="font-black text-lg block text-white">Photoshop</span>
+                    <span class="text-[11px] text-gray-400">المعالجة البصرية وفصل الألوان</span>
+                </div>
+                <div class="tech-badge p-4 rounded-2xl text-center">
+                    <span class="font-black text-lg block text-white">Illustrator</span>
+                    <span class="text-[11px] text-gray-400">تصميم الفيكتور والهويات</span>
+                </div>
+                <div class="tech-badge p-4 rounded-2xl text-center">
+                    <span class="font-black text-lg block text-white">CorelDraw</span>
+                    <span class="text-[11px] text-gray-400">الإنتاج والتحضير للطباعة</span>
+                </div>
+            </div>
+        </div>
+
+    </main>
+
+    <!-- تذييل الصفحة -->
+    <footer class="max-w-5xl mx-auto text-center mt-16 text-xs text-gray-500 border-t border-gray-800/60 pt-8 px-6">
+        محمود دملخي — جميع الحقوق محفوظة لعام 2026.
+    </footer>
+
+</body>
+</html>
