@@ -625,9 +625,10 @@
         <input type="text" id="projectSearchInput" oninput="renderGalleryGrid()" placeholder="ابحث عن مشروع بالاسم..." class="w-full bg-cardbg border border-gray-800 rounded-xl pr-9 pl-3 py-2 text-xs text-gray-200 placeholder-gray-500 focus:outline-none focus:border-goldaccent transition-all">
     </div>
 </div>
-renderGalleryGrid
+
             <div id="galleryCategoryFilter" class="flex gap-2 overflow-x-auto pb-2 mb-3 text-xs"></div>
-         <div id="galleryGrid" class="overflow-y-auto grid grid-cols-2 gap-3 pr-1 max-h-[65vh] w-full"></div>
+        <div id="galleryGrid" class="overflow-y-auto grid grid-cols-2 grid-auto-rows-[175px] gap-3 pr-1 max-h-[65vh] w-full"></div>
+
 
         </div>
     </div>
@@ -2812,12 +2813,18 @@ function handleSwipe() {
     }
 
 
-            filtered.forEach(item => {
-                const card = document.createElement('div');
-                const cardShape = appData.cardShape || 'rounded-2xl';
-                const cardStyle = appData.cardStyle || 'normal';
-                const cardGlow = appData.cardGlow || 'glow-gold-hover';
-                card.className = `group relative ${cardShape} ${cardStyle === 'glass-card' ? 'glass-card' : 'bg-white dark:bg-cardbg'} border border-gray-300 dark:border-gray-800 cursor-pointer shadow-sm flex flex-col overflow-hidden transition ${cardGlow !== 'none' ? cardGlow : ''}`;
+                filtered.forEach(item => {
+        const card = document.createElement('div');
+        card.style.cssText = "height: 175px !important; min-height: 175px !important; max-height: 175px !important; flex-shrink: 0 !important;";
+        
+        const cardShape = appData.cardShape || 'rounded-2xl';
+        const cardStyle = appData.cardStyle || 'normal';
+        const cardGlow = appData.cardGlow || 'glow-gold-hover';
+        
+        card.className = `group relative ${cardShape} ${cardStyle === 'glass-card' ? 'glass-card' : 'bg-white dark:bg-cardbg'} border border-gray-300 dark:border-gray-800 cursor-pointer shadow-sm flex flex-col overflow-hidden transition ${cardGlow !== 'none' ? cardGlow : ''}`;
+        
+        card.onclick = () => window.openProjectDetail(item.id);
+
                 card.onclick = () => window.openProjectDetail(item.id);
                 card.innerHTML = `
            <div class="relative h-32 w-full overflow-hidden bg-gray-100 dark:bg-darkbg shrink-0">
