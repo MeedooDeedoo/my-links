@@ -4,69 +4,101 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>الملف المهني والخبرات | محمود دملخي</title>
-    <!-- استدعاء Tailwind CSS والخطوط -->
+    <!-- استدعاء Tailwind CSS و Font Awesome -->
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        body {
-            font-family: 'Tajawal', sans-serif;
-            background-color: #07090e;
-            color: #f8fafc;
-            overflow-x: hidden;
-        }
         :root {
-            --primary-clr: #0f1117;
-            --secondary-clr: #2b303c;
+            --bg-main: #07090e;
+            --bg-card: linear-gradient(135deg, rgba(20, 23, 32, 0.85) 0%, rgba(12, 14, 18, 0.95) 100%);
+            --bg-inner: #07090e;
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+            --border-clr: rgba(255, 255, 255, 0.06);
             --accent-clr: #cda26e;
         }
+
+        /* إعدادات الوضع النهاري */
+        body.light-mode {
+            --bg-main: #f1f5f9;
+            --bg-card: linear-gradient(135deg, rgba(255, 255, 255, 0.95) 0%, rgba(241, 245, 249, 0.95) 100%);
+            --bg-inner: #ffffff;
+            --text-main: #0f1117;
+            --text-muted: #475569;
+            --border-clr: rgba(0, 0, 0, 0.08);
+        }
+
+        body {
+            font-family: 'Tajawal', sans-serif;
+            background-color: var(--bg-main);
+            color: var(--text-main);
+            overflow-x: hidden;
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+
         .text-accent { color: var(--accent-clr); }
         .bg-accent { background-color: var(--accent-clr); }
         .border-accent { border-color: var(--accent-clr); }
         
         .cinematic-card {
-            background: linear-gradient(135deg, rgba(20, 23, 32, 0.8) 0%, rgba(12, 14, 18, 0.9) 100%);
-            border: 1px solid rgba(255, 255, 255, 0.05);
+            background: var(--bg-card);
+            border: 1px solid var(--border-clr);
             backdrop-filter: blur(12px);
-            box-shadow: 0 20px 40px -15px rgba(0, 0, 0, 0.7);
+            box-shadow: 0 20px 40px -15px rgba(0, 0, 0, 0.2);
             transition: all 0.3s ease;
         }
         .cinematic-card:hover {
-            border-color: rgba(205, 162, 110, 0.3);
-            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.8), 0 0 25px rgba(205, 162, 110, 0.08);
+            border-color: rgba(205, 162, 110, 0.35);
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.3), 0 0 25px rgba(205, 162, 110, 0.08);
             transform: translateY(-3px);
         }
         .tech-badge {
-            background: rgba(255, 255, 255, 0.03);
-            border: 1px solid rgba(255, 255, 255, 0.08);
+            background: var(--bg-inner);
+            border: 1px solid var(--border-clr);
             transition: all 0.2s ease;
         }
         .tech-badge:hover {
             border-color: var(--accent-clr);
             color: var(--accent-clr);
         }
+        .inner-box {
+            background-color: var(--bg-inner);
+            border: 1px solid var(--border-clr);
+            transition: background-color 0.3s ease, border-color 0.3s ease;
+        }
     </style>
 </head>
 <body class="min-h-screen pb-20">
 
-    <!-- زر العودة للرئيسية -->
+    <!-- شريط التنقل العلوي مع زر تبديل الوضع (ليلي / نهاري) -->
     <div class="max-w-5xl mx-auto px-6 pt-8 flex justify-between items-center">
-        <a href="index.html" class="px-4 py-2 rounded-xl bg-[#141720] border border-gray-800 text-sm text-gray-300 hover:text-white hover:border-accent transition flex items-center gap-2">
-            <span>← العودة إلى الرئيسية</span>
+        <a href="index.html" class="px-4 py-2.5 rounded-xl inner-box text-sm text-[var(--text-muted)] hover:text-[var(--text-main)] hover:border-accent transition flex items-center gap-2 shadow-sm">
+            <i class="fa-solid fa-arrow-right"></i>
+            <span>العودة للرئيسية</span>
         </a>
-        <span class="text-xs uppercase tracking-widest text-accent font-bold">Professional Portfolio</span>
+        
+        <div class="flex items-center gap-3">
+            <!-- زر تبديل الثيم -->
+            <button onclick="toggleTheme()" class="px-4 py-2.5 rounded-xl inner-box text-sm text-[var(--text-main)] hover:border-accent transition flex items-center gap-2 shadow-sm font-medium">
+                <i id="themeIcon" class="fa-solid fa-moon text-accent"></i>
+                <span id="themeText">الوضع الليلي</span>
+            </button>
+            <span class="text-xs uppercase tracking-widest text-accent font-bold hidden sm:inline">Portfolio</span>
+        </div>
     </div>
 
     <!-- رأس الصفحة / الهوية الشخصية -->
-    <header class="max-w-5xl mx-auto px-6 pt-12 pb-10 border-b border-gray-800/60 mb-12">
+    <header class="max-w-5xl mx-auto px-6 pt-10 pb-6">
         <div class="cinematic-card rounded-3xl p-8 md:p-12 relative overflow-hidden">
             <div class="absolute -left-20 -top-20 w-64 h-64 bg-accent/5 rounded-full blur-3xl pointer-events-none"></div>
             <div class="relative z-10">
-                <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#07090e] border border-accent/30 mb-4">
+                <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full inner-box border border-accent/30 mb-4 shadow-sm">
                     <span class="w-2 h-2 rounded-full bg-accent animate-pulse"></span>
                     <span class="text-xs text-accent font-bold">مهندس تصميم 3D وأخصائي واجهات أليكوبوند</span>
                 </div>
-                <h1 class="text-4xl md:text-5xl font-black text-white tracking-tight mb-4">محمود دملخي</h1>
-                <p class="text-gray-400 text-base md:text-lg max-w-2xl leading-relaxed">
+                <h1 class="text-4xl md:text-5xl font-black text-[var(--text-main)] tracking-tight mb-4">محمود دملخي</h1>
+                <p class="text-[var(--text-muted)] text-base md:text-lg max-w-2xl leading-relaxed">
                     خبرة متقدمة في الهندسة المعمارية ثلاثية الأبعاد، تصميم واجهات الأليكوبوند الخارجية، معالجة الألوان المتقدمة، وفنون الطباعة الرقمية والتجارية.
                 </p>
             </div>
@@ -74,33 +106,45 @@
     </header>
 
     <!-- المحتوى الرئيسي (Bento Grid) -->
-    <main class="max-w-5xl mx-auto px-6 grid grid-cols-1 md:grid-cols-3 gap-8">
+    <main class="max-w-5xl mx-auto px-6 grid grid-cols-1 md:grid-cols-3 gap-8 mt-6">
 
         <!-- القسم الأول: الاختصاصات الهندسية والتصميمية -->
         <div class="cinematic-card rounded-3xl p-8 md:col-span-2 flex flex-col justify-between">
             <div>
-                <h2 class="text-2xl font-bold mb-6 flex items-center gap-3">
-                    <span class="w-3 h-3 rounded-full bg-accent"></span>
+                <h2 class="text-2xl font-bold mb-6 flex items-center gap-3 text-[var(--text-main)]">
+                    <i class="fa-solid fa-briefcase text-accent"></i>
                     <span>الخبرات والخدمات الهندسية</span>
                 </h2>
             </div>
             
-            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 my-4">
-                <div class="p-5 rounded-2xl bg-[#07090e] border border-gray-800/80">
-                    <h3 class="font-bold text-accent text-base mb-2">واجهات الأليكوبوند (Alucobond)</h3>
-                    <p class="text-xs text-gray-400 leading-relaxed">تصميم وهندسة الكسوة الخارجية للمباني، المعارض، والواجهات التجارية بأعلى معايير الدقة والجمال البصري.</p>
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 my-2">
+                <div class="p-5 rounded-2xl inner-box">
+                    <h3 class="font-bold text-accent text-base mb-2 flex items-center gap-2">
+                        <i class="fa-solid fa-building"></i>
+                        <span>واجهات الأليكوبوند</span>
+                    </h3>
+                    <p class="text-xs text-[var(--text-muted)] leading-relaxed">تصميم وهندسة الكسوة الخارجية للمباني، المعارض، والواجهات التجارية بأعلى معايير الدقة والجمال البصري.</p>
                 </div>
-                <div class="p-5 rounded-2xl bg-[#07090e] border border-gray-800/80">
-                    <h3 class="font-bold text-accent text-base mb-2">التصميم المعماري 3D</h3>
-                    <p class="text-xs text-gray-400 leading-relaxed">إخراج لقطات سينمائية واقعية ومجسدات ثلاثية الأبعاد تبرز تفاصيل الكتل والإضاءات المخفية.</p>
+                <div class="p-5 rounded-2xl inner-box">
+                    <h3 class="font-bold text-accent text-base mb-2 flex items-center gap-2">
+                        <i class="fa-solid fa-cube"></i>
+                        <span>التصميم المعماري 3D</span>
+                    </h3>
+                    <p class="text-xs text-[var(--text-muted)] leading-relaxed">إخراج لقطات سينمائية واقعية ومجسدات ثلاثية الأبعاد تبرز تفاصيل الكتل والإضاءات المخفية.</p>
                 </div>
-                <div class="p-5 rounded-2xl bg-[#07090e] border border-gray-800/80">
-                    <h3 class="font-bold text-accent text-base mb-2">فصل الألوان والطباعة (Pre-press)</h3>
-                    <p class="text-xs text-gray-400 leading-relaxed">تخصص دقيق في فصل الألوان للطباعة التجارية، معالجة الملفات، وضمان تطابق الألوان بدقة تامة.</p>
+                <div class="p-5 rounded-2xl inner-box">
+                    <h3 class="font-bold text-accent text-base mb-2 flex items-center gap-2">
+                        <i class="fa-solid fa-print"></i>
+                        <span>فصل الألوان والطباعة</span>
+                    </h3>
+                    <p class="text-xs text-[var(--text-muted)] leading-relaxed">تخصص دقيق في فصل الألوان للطباعة التجارية، معالجة الملفات، وضمان تطابق الألوان بدقة تامة.</p>
                 </div>
-                <div class="p-5 rounded-2xl bg-[#07090e] border border-gray-800/80">
-                    <h3 class="font-bold text-accent text-base mb-2">الهوية البصرية والسينمائية</h3>
-                    <p class="text-xs text-gray-400 leading-relaxed">تصميم الهويات التجارية الفاخرة واللوحات الإعلانية (القارمات) بنمط Moody الداكن الجذاب.</p>
+                <div class="p-5 rounded-2xl inner-box">
+                    <h3 class="font-bold text-accent text-base mb-2 flex items-center gap-2">
+                        <i class="fa-solid fa-palette"></i>
+                        <span>الهوية البصرية والسينمائية</span>
+                    </h3>
+                    <p class="text-xs text-[var(--text-muted)] leading-relaxed">تصميم الهويات التجارية الفاخرة واللوحات الإعلانية (القارمات) بنمط Moody الداكن الجذاب.</p>
                 </div>
             </div>
         </div>
@@ -108,47 +152,53 @@
         <!-- القسم الثاني: المؤسسات والأعمال التجارية -->
         <div class="cinematic-card rounded-3xl p-8 flex flex-col justify-between">
             <div>
-                <h2 class="text-xl font-bold mb-4">الكيانات التجارية</h2>
-                <p class="text-gray-400 text-xs mb-6">المشاريع والمؤسسات التي تتم إدارتها وتشغيلها بكفاءة عالية:</p>
+                <h2 class="text-xl font-bold mb-4 text-[var(--text-main)] flex items-center gap-2">
+                    <i class="fa-solid fa-layer-group text-accent"></i>
+                    <span>الكيانات التجارية</span>
+                </h2>
+                <p class="text-[var(--text-muted)] text-xs mb-6">المشاريع والمؤسسات التي تتم إدارتها وتشغيلها بكفاءة عالية:</p>
             </div>
             
             <div class="space-y-4">
-                <div class="p-4 rounded-2xl bg-[#07090e] border border-gray-800">
+                <div class="p-4 rounded-2xl inner-box">
                     <span class="text-[10px] text-accent font-bold uppercase tracking-wider">النشاط الأول</span>
-                    <h3 class="font-extrabold text-sm text-white mt-1">لمسة فن بلس</h3>
-                    <p class="text-xs text-gray-400 mt-1">التصميم الجرافيكي، الفنون البصرية، ومعالجة الألوان المتقدمة.</p>
+                    <h3 class="font-extrabold text-sm text-[var(--text-main)] mt-1">لمسة فن بلس</h3>
+                    <p class="text-xs text-[var(--text-muted)] mt-1">التصميم الجرافيكي، الفنون البصرية، ومعالجة الألوان المتقدمة.</p>
                 </div>
-                <div class="p-4 rounded-2xl bg-[#07090e] border border-gray-800">
+                <div class="p-4 rounded-2xl inner-box">
                     <span class="text-[10px] text-accent font-bold uppercase tracking-wider">النشاط الثاني</span>
-                    <h3 class="font-extrabold text-sm text-white mt-1">طيبانو للتجارة والبناء</h3>
-                    <p class="text-xs text-gray-400 mt-1">أعمال المقاولات، توريد وتركيب واجهات الأليكوبوند والكسوة المعمارية.</p>
+                    <h3 class="font-extrabold text-sm text-[var(--text-main)] mt-1">طيبانو للتجارة والبناء</h3>
+                    <p class="text-xs text-[var(--text-muted)] mt-1">أعمال المقاولات، توريد وتركيب واجهات الأليكوبوند والكسوة المعمارية.</p>
                 </div>
             </div>
         </div>
 
         <!-- القسم الثالث: حزمة البرمجيات والتقنيات (Software Stack) -->
         <div class="cinematic-card rounded-3xl p-8 md:col-span-3">
-            <h2 class="text-xl font-bold mb-6">المنظومة البرمجية والتقنية (Software Stack)</h2>
+            <h2 class="text-xl font-bold mb-6 text-[var(--text-main)] flex items-center gap-2">
+                <i class="fa-solid fa-microchip text-accent"></i>
+                <span>المنظومة البرمجية والتقنية (Software Stack)</span>
+            </h2>
             <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-4">
-                <div class="tech-badge p-4 rounded-2xl text-center">
-                    <span class="font-black text-lg block text-white">3ds Max</span>
-                    <span class="text-[11px] text-gray-400">التصميم المعماري والنمذجة</span>
+                <div class="tech-badge p-4 rounded-2xl text-center shadow-sm">
+                    <span class="font-black text-lg block text-[var(--text-main)]">3ds Max</span>
+                    <span class="text-[11px] text-[var(--text-muted)]">التصميم المعماري والنمذجة</span>
                 </div>
-                <div class="tech-badge p-4 rounded-2xl text-center">
-                    <span class="font-black text-lg block text-white">AutoCAD</span>
-                    <span class="text-[11px] text-gray-400">المخططات الهندسية الدقيقة</span>
+                <div class="tech-badge p-4 rounded-2xl text-center shadow-sm">
+                    <span class="font-black text-lg block text-[var(--text-main)]">AutoCAD</span>
+                    <span class="text-[11px] text-[var(--text-muted)]">المخططات الهندسية الدقيقة</span>
                 </div>
-                <div class="tech-badge p-4 rounded-2xl text-center">
-                    <span class="font-black text-lg block text-white">Photoshop</span>
-                    <span class="text-[11px] text-gray-400">المعالجة البصرية وفصل الألوان</span>
+                <div class="tech-badge p-4 rounded-2xl text-center shadow-sm">
+                    <span class="font-black text-lg block text-[var(--text-main)]">Photoshop</span>
+                    <span class="text-[11px] text-[var(--text-muted)]">المعالجة البصرية وفصل الألوان</span>
                 </div>
-                <div class="tech-badge p-4 rounded-2xl text-center">
-                    <span class="font-black text-lg block text-white">Illustrator</span>
-                    <span class="text-[11px] text-gray-400">تصميم الفيكتور والهويات</span>
+                <div class="tech-badge p-4 rounded-2xl text-center shadow-sm">
+                    <span class="font-black text-lg block text-[var(--text-main)]">Illustrator</span>
+                    <span class="text-[11px] text-[var(--text-muted)]">تصميم الفيكتور والهويات</span>
                 </div>
-                <div class="tech-badge p-4 rounded-2xl text-center">
-                    <span class="font-black text-lg block text-white">CorelDraw</span>
-                    <span class="text-[11px] text-gray-400">الإنتاج والتحضير للطباعة</span>
+                <div class="tech-badge p-4 rounded-2xl text-center shadow-sm">
+                    <span class="font-black text-lg block text-[var(--text-main)]">CorelDraw</span>
+                    <span class="text-[11px] text-[var(--text-muted)]">الإنتاج والتحضير للطباعة</span>
                 </div>
             </div>
         </div>
@@ -156,9 +206,28 @@
     </main>
 
     <!-- تذييل الصفحة -->
-    <footer class="max-w-5xl mx-auto text-center mt-16 text-xs text-gray-500 border-t border-gray-800/60 pt-8 px-6">
+    <footer class="max-w-5xl mx-auto text-center mt-16 text-xs text-[var(--text-muted)] border-t border-[var(--border-clr)] pt-8 px-6">
         محمود دملخي — جميع الحقوق محفوظة لعام 2026.
     </footer>
+
+    <!-- سكريبت تبديل الثيم (ليلي / نهاري) -->
+    <script>
+        function toggleTheme() {
+            const body = document.body;
+            body.classList.toggle('light-mode');
+            
+            const icon = document.getElementById('themeIcon');
+            const text = document.getElementById('themeText');
+            
+            if (body.classList.contains('light-mode')) {
+                icon.className = 'fa-solid fa-sun text-accent';
+                text.innerText = 'الوضع النهاري';
+            } else {
+                icon.className = 'fa-solid fa-moon text-accent';
+                text.innerText = 'الوضع الليلي';
+            }
+        }
+    </script>
 
 </body>
 </html>
