@@ -79,7 +79,6 @@
         </a>
         
         <div class="flex items-center gap-3">
-            <!-- زر تبديل الثيم -->
             <button onclick="toggleTheme()" class="px-4 py-2.5 rounded-xl inner-box text-sm text-[var(--text-main)] hover:border-accent transition flex items-center gap-2 shadow-sm font-medium">
                 <i id="themeIcon" class="fa-solid fa-moon text-accent"></i>
                 <span id="themeText">الوضع الليلي</span>
@@ -149,7 +148,7 @@
             </div>
         </div>
 
-        <!-- القسم الثاني: المؤسسات والأعمال التجارية -->
+        <!-- القسم الثاني: الكيانات التجارية -->
         <div class="cinematic-card rounded-3xl p-8 flex flex-col justify-between">
             <div>
                 <h2 class="text-xl font-bold mb-4 text-[var(--text-main)] flex items-center gap-2">
@@ -167,13 +166,56 @@
                 </div>
                 <div class="p-4 rounded-2xl inner-box">
                     <span class="text-[10px] text-accent font-bold uppercase tracking-wider">النشاط الثاني</span>
-                    <h3 class="font-extrabold text-sm text-[var(--text-main)] mt-1">مصمم 3D</h3>
-                    <p class="text-xs text-[var(--text-muted)] mt-1">أعمال التصميم و تركيب و اجهات الأليكوبوند.</p>
+                    <h3 class="font-extrabold text-sm text-[var(--text-main)] mt-1">طيبانو للتجارة والبناء</h3>
+                    <p class="text-xs text-[var(--text-muted)] mt-1">أعمال المقاولات، توريد وتركيب واجهات الأليكوبوند والكسوة المعمارية.</p>
                 </div>
             </div>
         </div>
 
-        <!-- القسم الثالث: حزمة البرمجيات والتقنيات (Software Stack) -->
+        <!-- القسم الثالث: معرض المشاريع والصور -->
+        <div class="cinematic-card rounded-3xl p-8 md:col-span-3">
+            <h2 class="text-xl font-bold mb-6 text-[var(--text-main)] flex items-center gap-2">
+                <i class="fa-solid fa-images text-accent"></i>
+                <span>معرض المشاريع البصرية والهندسية (Projects Gallery)</span>
+            </h2>
+            
+            <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+                <!-- المشروع الأول -->
+                <div class="group relative rounded-2xl overflow-hidden inner-box border border-[var(--border-clr)]">
+                    <div class="h-48 overflow-hidden bg-gray-900">
+                        <img src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=600&q=80" alt="واجهة أليكوبوند" class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
+                    </div>
+                    <div class="p-4">
+                        <span class="text-[10px] text-accent font-bold uppercase">واجهات أليكوبوند</span>
+                        <h3 class="font-bold text-sm text-[var(--text-main)] mt-1">مشروع برج النخبة المعماري</h3>
+                    </div>
+                </div>
+
+                <!-- المشروع الثاني -->
+                <div class="group relative rounded-2xl overflow-hidden inner-box border border-[var(--border-clr)]">
+                    <div class="h-48 overflow-hidden bg-gray-900">
+                        <img src="https://images.unsplash.com/photo-1541888946425-d0fbb18086e6?auto=format&fit=crop&w=600&q=80" alt="تصميم 3D" class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
+                    </div>
+                    <div class="p-4">
+                        <span class="text-[10px] text-accent font-bold uppercase">تصميم 3D</span>
+                        <h3 class="font-bold text-sm text-[var(--text-main)] mt-1">إخراج سينمائي لكتلة تجارية</h3>
+                    </div>
+                </div>
+
+                <!-- المشروع الثالث -->
+                <div class="group relative rounded-2xl overflow-hidden inner-box border border-[var(--border-clr)]">
+                    <div class="h-48 overflow-hidden bg-gray-900">
+                        <img src="https://images.unsplash.com/photo-1626785774573-4b799315345d?auto=format&fit=crop&w=600&q=80" alt="هوية بصرية" class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
+                    </div>
+                    <div class="p-4">
+                        <span class="text-[10px] text-accent font-bold uppercase">هوية بصرية</span>
+                        <h3 class="font-bold text-sm text-[var(--text-main)] mt-1">تغليف وفصل ألوان تجاري</h3>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- القسم الرابع: المنظومة البرمجية والتقنية (Software Stack) -->
         <div class="cinematic-card rounded-3xl p-8 md:col-span-3">
             <h2 class="text-xl font-bold mb-6 text-[var(--text-main)] flex items-center gap-2">
                 <i class="fa-solid fa-microchip text-accent"></i>
@@ -228,6 +270,49 @@
             }
         }
     </script>
+    
+    <script>
+    // جلب وعرض البيانات المعدلة من لوحة التحكم فور تحميل الصفحة
+    window.addEventListener('DOMContentLoaded', () => {
+        const savedData = localStorage.getItem('portfolioCustomData');
+        if (savedData) {
+            const data = JSON.parse(savedData);
+            
+            // تحديث الاسم
+            const titleEl = document.querySelector('header h1');
+            if (titleEl && data.name) titleEl.innerText = data.name;
+            
+            // تحديث النبذة
+            const bioEl = document.querySelector('header p');
+            if (bioEl && data.bio) bioEl.innerText = data.bio;
+            
+            // تحديث صورة المشروع الأول
+            const imgEl = document.querySelector('.grid img');
+            if (imgEl && data.img1) imgEl.src = data.img1;
+        }
+    });
+</script>
+<script>
+    window.addEventListener('DOMContentLoaded', () => {
+        const savedData = localStorage.getItem('portfolioCustomData');
+        if (savedData) {
+            const data = JSON.parse(savedData);
+            if(document.getElementById('portName')) document.getElementById('portName').innerText = data.name;
+            if(document.getElementById('portBadge')) document.getElementById('portBadge').innerText = data.badge;
+            if(document.getElementById('portBio')) document.getElementById('portBio').innerText = data.bio;
+            
+            if(document.getElementById('portTitle1')) document.getElementById('portTitle1').innerText = data.title1;
+            if(document.getElementById('portImg1')) document.getElementById('portImg1').src = data.img1;
+            
+            if(document.getElementById('portTitle2')) document.getElementById('portTitle2').innerText = data.title2;
+            if(document.getElementById('portImg2')) document.getElementById('portImg2').src = data.img2;
+            
+            if(document.getElementById('portTitle3')) document.getElementById('portTitle3').innerText = data.title3;
+            if(document.getElementById('portImg3')) document.getElementById('portImg3').src = data.img3;
+        }
+    });
+</script>
+
 
 </body>
 </html>
