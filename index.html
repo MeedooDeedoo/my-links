@@ -137,6 +137,39 @@
 }
 
 
+<style>
+    /* زيادة ارتفاع بطاقة المشروع لتصبح أكبر وأكثر وضوحاً */
+    div[class*="grid"] > div, .project-card, [id*="project"] {
+        position: relative !important;
+        height: 200px !important; /* يمكنك تعديل هذا الرقم لزيادة أو تقليل الارتفاع */
+        overflow: hidden !important;
+        border-radius: 16px !important;
+    }
+
+    div[class*="grid"] > div img, .project-card img {
+        position: absolute !important;
+        inset: 0 !important;
+        width: 100% !important;
+        height: 100% !important;
+        object-fit: cover !important;
+        z-index: 1 !important;
+    }
+
+    div[class*="grid"] > div > div:last-child, .project-card-content {
+        position: absolute !important;
+        bottom: 0 !important;
+        left: 0 !important;
+        right: 0 !important;
+        z-index: 2 !important;
+        background: linear-gradient(to top, rgba(15, 17, 23, 0.85) 0%, rgba(15, 17, 23, 0.35) 70%, transparent 100%) !important;
+        backdrop-filter: blur(2px) !important;
+        -webkit-backdrop-filter: blur(2px) !important;
+        padding: 30px 12px 12px 12px !important;
+    }
+</style>
+
+
+
 
 
     </style>
