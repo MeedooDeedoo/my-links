@@ -678,6 +678,89 @@
                 <button type="button" onclick="window.closeAdminModal()" class="text-gray-500 hover:text-gray-800 dark:hover:text-white text-xl px-2"><i class="fa-solid fa-xmark"></i></button>
             </div>
             <div class="overflow-y-auto flex-grow pr-1 space-y-3 text-xs">
+            
+<!-- قسم إدارة صفحة الملف المهني (Portfolio) القابل للطي -->
+<div class="bg-lightbg dark:bg-darkbg rounded-xl border border-gray-300 dark:border-gray-800 p-3 space-y-2">
+    <!-- زر رأس القسم للطي والفتح -->
+    <button onclick="togglePortfolioAdmin()" class="w-full flex justify-between items-center font-bold text-goldaccent text-xs">
+        <span class="flex items-center gap-2">
+            <i class="fa-solid fa-briefcase"></i>
+            <span>إدارة وتعديل صفحة الملف المهني (Portfolio)</span>
+        </span>
+        <i id="portAdminArrow" class="fa-solid fa-chevron-down transition-transform duration-300"></i>
+    </button>
+    
+    <!-- محتوى القسم المخفي افتراضياً -->
+    <div id="portAdminContent" class="hidden space-y-3 pt-3 border-t border-gray-300 dark:border-gray-800 text-xs">
+        <!-- معلومات الهوية الشخصية -->
+        <div>
+            <label class="block text-gray-400 mb-1">الاسم الرئيسي</label>
+            <input type="text" id="adminPortName" value="محمود دملخي" class="w-full bg-[#07090e] border border-gray-800 rounded-xl px-3 py-2 text-white focus:border-accent outline-none">
+        </div>
+        <div>
+            <label class="block text-gray-400 mb-1">اللقب / الشعار العلوي</label>
+            <input type="text" id="adminPortBadge" value="مهندس تصميم 3D وأخصائي واجهات أليكوبوند" class="w-full bg-[#07090e] border border-gray-800 rounded-xl px-3 py-2 text-white focus:border-accent outline-none">
+        </div>
+        <div>
+            <label class="block text-gray-400 mb-1">النبذة التعريفية</label>
+            <textarea id="adminPortBio" rows="2" class="w-full bg-[#07090e] border border-gray-800 rounded-xl px-3 py-2 text-white focus:border-accent outline-none">خبرة متقدمة في الهندسة المعمارية ثلاثية الأبعاد، تصميم واجهات الأليكوبوند الخارجية، معالجة الألوان المتقدمة، وفنون الطباعة الرقمية والتجارية.</textarea>
+        </div>
+
+        <!-- مشروع 1 -->
+        <div class="p-3 bg-[#07090e] rounded-xl border border-gray-800 space-y-2">
+            <span class="text-accent font-bold">المشروع الأول</span>
+            <input type="text" id="adminTitle1" value="مشروع برج النخبة المعماري" placeholder="عنوان المشروع" class="w-full bg-[#141720] border border-gray-800 rounded-lg px-2 py-1.5 text-white outline-none">
+            <input type="text" id="adminImg1" value="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=600&q=80" placeholder="رابط الصورة" class="w-full bg-[#141720] border border-gray-800 rounded-lg px-2 py-1.5 text-white outline-none">
+        </div>
+
+        <!-- مشروع 2 -->
+        <div class="p-3 bg-[#07090e] rounded-xl border border-gray-800 space-y-2">
+            <span class="text-accent font-bold">المشروع الثاني</span>
+            <input type="text" id="adminTitle2" value="إخراج سينمائي لكتلة تجارية" placeholder="عنوان المشروع" class="w-full bg-[#141720] border border-gray-800 rounded-lg px-2 py-1.5 text-white outline-none">
+            <input type="text" id="adminImg2" value="https://images.unsplash.com/photo-1541888946425-d0fbb18086e6?auto=format&fit=crop&w=600&q=80" placeholder="رابط الصورة" class="w-full bg-[#141720] border border-gray-800 rounded-lg px-2 py-1.5 text-white outline-none">
+        </div>
+
+        <!-- مشروع 3 -->
+        <div class="p-3 bg-[#07090e] rounded-xl border border-gray-800 space-y-2">
+            <span class="text-accent font-bold">المشروع الثالث</span>
+            <input type="text" id="adminTitle3" value="تغليف وفصل ألوان تجاري" placeholder="عنوان المشروع" class="w-full bg-[#141720] border border-gray-800 rounded-lg px-2 py-1.5 text-white outline-none">
+            <input type="text" id="adminImg3" value="https://images.unsplash.com/photo-1626785774573-4b799315345d?auto=format&fit=crop&w=600&q=80" placeholder="رابط الصورة" class="w-full bg-[#141720] border border-gray-800 rounded-lg px-2 py-1.5 text-white outline-none">
+        </div>
+
+        <button onclick="savePortfolioSettings()" class="w-full py-3 rounded-xl bg-[#cda26e] text-[#07090e] font-bold text-sm hover:opacity-90 transition shadow-lg mt-2">
+            حفظ وتحديث صفحة Portfolio بالكامل
+        </button>
+    </div>
+</div>
+
+<script>
+    // دالة فتح وطوي القسم
+    function togglePortfolioAdmin() {
+        const content = document.getElementById('portAdminContent');
+        const arrow = document.getElementById('portAdminArrow');
+        content.classList.toggle('hidden');
+        arrow.classList.toggle('rotate-180');
+    }
+
+    // دالة حفظ الإعدادات
+    function savePortfolioSettings() {
+        const portfolioData = {
+            name: document.getElementById('adminPortName').value,
+            badge: document.getElementById('adminPortBadge').value,
+            bio: document.getElementById('adminPortBio').value,
+            title1: document.getElementById('adminTitle1').value,
+            img1: document.getElementById('adminImg1').value,
+            title2: document.getElementById('adminTitle2').value,
+            img2: document.getElementById('adminImg2').value,
+            title3: document.getElementById('adminTitle3').value,
+            img3: document.getElementById('adminImg3').value
+        };
+        localStorage.setItem('portfolioCustomData', JSON.stringify(portfolioData));
+        alert('تم حفظ كافة التعديلات بنجاح! افتح صفحة Portfolio الآن لمشاهدتها.');
+    }
+</script>
+
+
 
                 <!-- ⭐ قسم إدارة ومراجعة التقييمات -->
                 <div class="bg-lightbg dark:bg-darkbg rounded-xl border border-gray-300 dark:border-gray-800 p-3 space-y-2">
