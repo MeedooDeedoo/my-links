@@ -3643,44 +3643,27 @@ window.updateBeforeAfterUI = function(data) {
 
     </script>
     
-    <script>
-  if ('serviceWorker' in navigator) {
-    window.addEventListener('load', () => {
-      navigator.serviceWorker.register('./sw.js')
-        .then((reg) => {
-          console.log('Service Worker registered successfully!', reg.scope);
-        })
-        .catch((err) => {
-          console.log('Service Worker registration failed:', err);
-        });
-    });
-  }
-</script>
-<!-- زر التثبيت المخصص -->
-<div id="installBox" style="display: none; text-align: center; margin: 20px 0;">
+    <!-- زر تثبيت التطبيق الدائم -->
+<div id="installBox" style="text-align: center; margin: 20px 0;">
     <button id="installBtn" style="background: #D4AF37; color: #0F1117; font-weight: bold; padding: 12px 24px; border: none; border-radius: 12px; cursor: pointer; font-size: 16px; box-shadow: 0 4px 12px rgba(212,175,55,0.3);">
         📥 تثبيت التطبيق على هاتفك
     </button>
 </div>
 
 <script>
-
-
   let deferredPrompt;
   window.addEventListener('beforeinstallprompt', (e) => {
     e.preventDefault();
     deferredPrompt = e;
-    document.getElementById('installBox').style.display = 'block';
   });
 
   document.getElementById('installBtn').addEventListener('click', async () => {
     if (deferredPrompt) {
       deferredPrompt.prompt();
       const { outcome } = await deferredPrompt.userChoice;
-      if (outcome === 'accepted') {
-        document.getElementById('installBox').style.display = 'none';
-      }
       deferredPrompt = null;
+    } else {
+      alert("لتثبيت التطبيق على هاتفك:\n1. اضغط على القائمة (النقاط الثلاث أعلى المتصفح).\n2. اختر 'إضافة إلى الشاشة الرئيسية' (Add to Home screen) أو 'تثبيت التطبيق'.");
     }
   });
 </script>
