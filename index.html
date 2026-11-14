@@ -3672,6 +3672,16 @@ window.updateBeforeAfterUI = function(data) {
   });
 </script>
 
+
+<script>
+  // تفعيل التحميل التدريجي تلقائياً لكل الصور في الصفحة
+  document.addEventListener("DOMContentLoaded", () => {
+    const images = document.querySelectorAll("img");
+    images.forEach(img => img.setAttribute("loading", "lazy"));
+  });
+</script>
+
+
     
 </body>
 </html>
