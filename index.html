@@ -3966,8 +3966,7 @@ window.updateBeforeAfterUI = function(data) {
   });
 </script>
 
-
-<!-- نافذة عرض الفيديو المنبثقة (<!-- نافذة عرض الفيديو المنبثقة (Video Player Modal) -->
+<!-- نافذة عرض الفيديو المنبثقة (Video Player Modal) -->
 <div id="videoPlayerModal" class="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-md hidden p-4">
     <div class="relative w-full max-w-sm bg-[#07090e] border border-gray-800 rounded-2xl overflow-hidden shadow-2xl">
         <div class="flex items-center justify-between p-3 border-b border-gray-800 bg-[#141720]">
@@ -3983,7 +3982,7 @@ window.updateBeforeAfterUI = function(data) {
 </div>
 
 <script>
-    let siteReels = JSON.parse(localStorage.getItem('siteReelsData')) || [
+    let siteReels = [
         {
             title: "نمذجة واجهة تجارية 3D",
             thumb: "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=500&q=80",
@@ -3992,11 +3991,48 @@ window.updateBeforeAfterUI = function(data) {
         }
     ];
 
-    let siteShowReels = JSON.parse(localStorage.getItem('siteShowReels')) ?? true;
+    let siteShowReels = true;
     let editingReelIndex = null;
 
-        
-            window.formatVideoEmbedUrl = function(url) {
+    // دالة جلب البيانات من Firebase أو التخزين المحلي
+    function initReelsDataFromCloud() {
+        if (typeof firebase !== 'undefined' && firebase.database) {
+            // جلب قائمة الريلز
+            firebase.database().ref('siteReelsData').on('value', (snapshot) => {
+                const data = snapshot.val();
+                if (data) {
+                    siteReels = data;
+                }
+                window.renderReelsSection();
+            });
+
+            // جلب حالة تفعيل/إلغاء القسم
+            firebase.database().ref('siteShowReels').on('value', (snapshot) => {
+                const val = snapshot.val();
+                if (val !== null) {
+                    siteShowReels = val;
+                }
+                window.renderReelsSection();
+            });
+        } else {
+            // كود احتياطي في حال عدم توفر الاتصال السحابي مباشرة
+            siteReels = JSON.parse(localStorage.getItem('siteReelsData')) || siteReels;
+            siteShowReels = JSON.parse(localStorage.getItem('siteShowReels')) ?? true;
+            window.renderReelsSection();
+        }
+    }
+
+    // دالة حفظ البيانات إلى Firebase والتخزين المحلي
+    function saveReelsToCloud() {
+        if (typeof firebase !== 'undefined' && firebase.database) {
+            firebase.database().ref('siteReelsData').set(siteReels);
+            firebase.database().ref('siteShowReels').set(siteShowReels);
+        }
+        localStorage.setItem('siteReelsData', JSON.stringify(siteReels));
+        localStorage.setItem('siteShowReels', JSON.stringify(siteShowReels));
+    }
+
+    window.formatVideoEmbedUrl = function(url) {
         if (!url) return '';
         if (url.includes('youtube.com/shorts/')) {
             const id = url.split('shorts/')[1].split('?')[0];
@@ -4017,7 +4053,6 @@ window.updateBeforeAfterUI = function(data) {
         }
         return url;
     }
-
 
     window.renderReelsSection = function() {
         const grid = document.getElementById('reelsGridContainer');
@@ -4091,8 +4126,7 @@ window.updateBeforeAfterUI = function(data) {
         const checkbox = document.getElementById('adminShowReels');
         if (checkbox) {
             siteShowReels = checkbox.checked;
-            localStorage.setItem('siteShowReels', JSON.stringify(siteShowReels));
-            window.renderReelsSection();
+            saveReelsToCloud();
         }
     }
 
@@ -4131,11 +4165,10 @@ window.updateBeforeAfterUI = function(data) {
             });
         }
         
-        localStorage.setItem('siteReelsData', JSON.stringify(siteReels));
+        saveReelsToCloud();
         document.getElementById('newReelTitle').value = '';
         document.getElementById('newReelThumb').value = '';
         document.getElementById('newReelUrl').value = '';
-        window.renderReelsSection();
     }
 
     window.startEditReel = function(index) {
@@ -4161,8 +4194,7 @@ window.updateBeforeAfterUI = function(data) {
     window.toggleReelActive = function(index) {
         if (siteReels[index]) {
             siteReels[index].active = siteReels[index].active === false ? true : false;
-            localStorage.setItem('siteReelsData', JSON.stringify(siteReels));
-            window.renderReelsSection();
+            saveReelsToCloud();
         }
     }
 
@@ -4176,8 +4208,7 @@ window.updateBeforeAfterUI = function(data) {
             siteReels[index] = siteReels[index + 1];
             siteReels[index + 1] = temp;
         }
-        localStorage.setItem('siteReelsData', JSON.stringify(siteReels));
-        window.renderReelsSection();
+        saveReelsToCloud();
     }
 
     window.deleteReel = function(index) {
@@ -4190,8 +4221,7 @@ window.updateBeforeAfterUI = function(data) {
                 document.getElementById('newReelUrl').value = '';
                 document.getElementById('reelSubmitBtn').innerText = '+ إضافة الفيديو للمعرض';
             }
-            localStorage.setItem('siteReelsData', JSON.stringify(siteReels));
-            window.renderReelsSection();
+            saveReelsToCloud();
         }
     }
 
@@ -4232,9 +4262,10 @@ window.updateBeforeAfterUI = function(data) {
     }
 
     document.addEventListener('DOMContentLoaded', () => {
-        window.renderReelsSection();
+        initReelsDataFromCloud();
     });
 </script>
+
 
     
 </body>
