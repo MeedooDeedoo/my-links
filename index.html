@@ -1725,7 +1725,7 @@
             }
 
             initApp();
-            // تأكد من وجود هيكل الريلز في بيانات المستخدم، وإذا لم يكن موجوداً قم بإنشائه افتراضياً وحفظه سحابياً
+         // تهيئة الريلز وحفظها سحابياً
 if (!appData.reels) {
     appData.reels = [
         {
@@ -1735,15 +1735,24 @@ if (!appData.reels) {
             active: true
         }
     ];
+    appData.showReels = true;
+    
+    rootData.users[currentUsername] = appData;
+    if (typeof saveDataToFirebase === 'function') {
+        saveDataToFirebase();
+    } else {
+        set(dbRef, rootData).catch(err => console.error("Cloud save error:", err));
+    }
 }
+
 if (appData.showReels === undefined) {
     appData.showReels = true;
 }
 
-// تحديث الواجهة وعرض الريلز
 if (typeof renderReelsSection === 'function') {
     renderReelsSection();
 }
+
 
             
             if (targetProjectId) {
