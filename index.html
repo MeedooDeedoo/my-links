@@ -2739,11 +2739,25 @@ window.handleNotificationClick = function(notifId, projectId, projectTitle) {
         };
 
         window.deleteNotification = function(id) {
-            if (rootData.notifications && rootData.notifications[id]) {
-                delete rootData.notifications[id];
-                set(dbRef, rootData).then(() => { renderNotificationsList(); updateNotificationBadge(); }).catch(err => console.error("Delete notif error:", err));
-            }
-        };
+    // حفظ المعرف في ذاكرة المتصفح ليظل محذوفاً حتى بعد تحديث الصفحة (لديك وحدك)
+    let hiddenIds = JSON.parse(localStorage.getItem('hidden_notifications_ids') || '[]');
+    if (!hiddenIds.includes(id)) {
+        hiddenIds.push(id);
+        localStorage.setItem('hidden_notifications_ids', JSON.stringify(hiddenIds));
+    }
+
+    // إخفاء العنصر من القائمة الواجهة فوراً وتحديث العداد
+    const el = document.getElementById('notif-item-' + id);
+    if (el) el.remove();
+    
+    if (typeof window.updateNotificationBadge === 'function') {
+        window.updateNotificationBadge();
+    }
+    if (typeof window.renderNotificationsList === 'function') {
+        window.renderNotificationsList();
+    }
+};
+
 
         window.resetDesignDefaults = function() {
             document.getElementById('adminAvatarShape').value = 'rounded-full';
