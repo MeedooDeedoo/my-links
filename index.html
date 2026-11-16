@@ -2739,34 +2739,24 @@ window.handleNotificationClick = function(notifId, projectId, projectTitle) {
         };
 
         window.deleteNotification = function(id) {
-    // 1. تخزين المعرف في الذاكرة المحلية ليظل محذوفاً من جهازك فقط
+    // حفظ المعرف في ذاكرة المتصفح ليظل محذوفاً حتى بعد تحديث الصفحة (لديك وحدك)
     let hiddenIds = JSON.parse(localStorage.getItem('hidden_notifications_ids') || '[]');
     if (!hiddenIds.includes(id)) {
         hiddenIds.push(id);
         localStorage.setItem('hidden_notifications_ids', JSON.stringify(hiddenIds));
     }
 
-    // 2. إزالة عنصر الإشعار من الصفحة مباشرة وبشكل فوري
-    const itemEl = document.getElementById('notif-item-' + id) || document.getElementById('notification-' + id) || event.target.closest('div');
-    if (itemEl) {
-        itemEl.style.transition = 'all 0.3s ease';
-        itemEl.style.opacity = '0';
-        setTimeout(() => itemEl.remove(), 300);
-    } else {
-        // بديل: إعادة تحميل نافذة الإشعارات إن لم يتم العثور على العنصر بدقة
-        if (typeof window.renderNotificationsList === 'function') {
-            window.renderNotificationsList();
-        }
-    }
-
-    // 3. تحديث العداد
+    // إخفاء العنصر من القائمة الواجهة فوراً وتحديث العداد
+    const el = document.getElementById('notif-item-' + id);
+    if (el) el.remove();
+    
     if (typeof window.updateNotificationBadge === 'function') {
         window.updateNotificationBadge();
     }
+    if (typeof window.renderNotificationsList === 'function') {
+        window.renderNotificationsList();
+    }
 };
-
-
-
 
 
         window.resetDesignDefaults = function() {
@@ -4249,49 +4239,25 @@ window.closeVideoModal = function() {
 
 
 window.clearAllNotifications = function() {
-    const notifs = (typeof rootData !== 'undefined' && rootData.notifications) || {};
-    let hiddenIds = JSON.parse(localStorage.getItem('hidden_notifications_ids') || '[]');
-    
-    // حفظ كل معرفات الإشعارات الحالية لتصبح مخفية على جهازك فقط
-    Object.keys(notifs).forEach(id => {
-        if (!hiddenIds.includes(id)) hiddenIds.push(id);
-    });
-    localStorage.setItem('hidden_notifications_ids', JSON.stringify(hiddenIds));
+    if (confirm('هل أنت متأكد من رغبتك في حذف جميع الإشعارات من عندك؟')) {
+        const notifications = (typeof rootData !== 'undefined' && rootData.notifications) || (typeof appData !== 'undefined' && appData.notifications) || {};
+        
+        // جلب قائمة الإشعارات المحذوفة سابقاً من ذاكرة المتصفح وإضافة الإشعارات الحالية إليها
+        let hiddenIds = JSON.parse(localStorage.getItem('hidden_notifications_ids') || '[]');
+        Object.keys(notifications).forEach(id => {
+            if (!hiddenIds.includes(id)) hiddenIds.push(id);
+        });
+        localStorage.setItem('hidden_notifications_ids', JSON.stringify(hiddenIds));
 
-    // تفريغ الحاوية فوراً
-    const listEl = document.getElementById('notificationsListContainer');
-    if (listEl) {
-        listEl.innerHTML = '<div class="text-center text-gray-500 py-8 text-xs">لا توجد إشعارات</div>';
-    }
-
-    // تصفير العداد
-    if (typeof window.updateNotificationBadge === 'function') {
-        window.updateNotificationBadge();
+        // تحديث الواجهة فوراً لإخفائها
+        if (typeof window.renderNotifications === 'function') {
+            window.renderNotifications();
+        } else {
+            const listEl = document.getElementById('notificationsListContainer');
+            if (listEl) listEl.innerHTML = '<div class="text-center text-gray-500 py-8 text-xs">لا توجد إشعارات</div>';
+        }
     }
 };
-
-// حماية إضافية تمنع ظهور الإشعارات المحذوفة حتى لو تم تحديث القائمة من السيرفر
-if (typeof window.renderNotificationsList === 'function' && !window._originalRenderNotifList) {
-    window._originalRenderNotifList = window.renderNotificationsList;
-    window.renderNotificationsList = function() {
-        window._originalRenderNotifList();
-        // إزالة أي إشعار تم حذفته محلياً من العرض فوراً بعد رسمه
-        const hiddenIds = JSON.parse(localStorage.getItem('hidden_notifications_ids') || '[]');
-        hiddenIds.forEach(id => {
-            const el = document.getElementById('notif-item-' + id) || document.getElementById('notification-' + id);
-            if (el) el.remove();
-        });
-        
-        // إذا لم يتبق شيء، إظهار رسالة "لا توجد إشعارات"
-        const listEl = document.getElementById('notificationsListContainer');
-        if (listEl && listEl.children.length === 0) {
-            listEl.innerHTML = '<div class="text-center text-gray-500 py-8 text-xs">لا توجد إشعارات</div>';
-        }
-    };
-}
-
-
-
 
 
 
