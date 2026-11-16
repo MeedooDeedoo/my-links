@@ -1345,6 +1345,11 @@
                                 <input type="checkbox" id="galleryEnabled" class="accent-goldaccent w-4 h-4" checked>
                                 <label for="galleryEnabled" class="font-bold text-gray-900 dark:text-white text-xs">تفعيل وعرض المشروع في المعرض</label>
                             </div>
+                            <div class="flex items-center gap-2 pt-1 bg-gray-100 dark:bg-gray-800 p-2 rounded-lg border border-gray-300 dark:border-gray-700 mt-2">
+    <input type="checkbox" id="silentUpload" class="accent-goldaccent w-4 h-4">
+    <label for="silentUpload" class="font-bold text-gray-900 dark:text-white text-xs">نشر صامت (بدون إرسال إشعار للزوار)</label>
+</div>
+
                             <div class="flex gap-2 pt-1">
                                 <button type="button" onclick="window.saveGalleryItem()" class="flex-1 bg-goldaccent text-black font-bold py-2 rounded-lg">حفظ ونشر المشروع</button>
                                 <button type="button" onclick="window.resetGalleryForm()" class="bg-gray-200 dark:bg-gray-800 text-gray-800 dark:text-gray-200 px-3 py-2 rounded-lg font-bold">إلغاء</button>
@@ -3465,6 +3470,17 @@ function handleSwipe() {
             } else {
                 const newId = 'g_' + Date.now();
                 appData.gallery.unshift({ id: newId, title, category, desc, coverUrl, extraUrls, enabled });
+const isSilent = document.getElementById('silentUpload')?.checked;
+
+if (!isSilent) {
+    if (!appData.notifications) appData.notifications = [];
+    appData.notifications.unshift({
+        id: 'notif_' + Date.now(),
+        title: 'مشروع جديد',
+        text: `تم إضافة مشروع جديد: ${title}`,
+        time: 'الآن'
+    });
+}
 
                 if (!rootData.notifications) rootData.notifications = {};
                 const notifId = 'notif_' + Date.now();
