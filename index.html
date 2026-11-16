@@ -2739,11 +2739,35 @@ window.handleNotificationClick = function(notifId, projectId, projectTitle) {
         };
 
         window.deleteNotification = function(id) {
-            if (rootData.notifications && rootData.notifications[id]) {
-                delete rootData.notifications[id];
-                set(dbRef, rootData).then(() => { renderNotificationsList(); updateNotificationBadge(); }).catch(err => console.error("Delete notif error:", err));
-            }
-        };
+    // 1. تخزين المعرف في الذاكرة المحلية ليظل محذوفاً من جهازك فقط
+    let hiddenIds = JSON.parse(localStorage.getItem('hidden_notifications_ids') || '[]');
+    if (!hiddenIds.includes(id)) {
+        hiddenIds.push(id);
+        localStorage.setItem('hidden_notifications_ids', JSON.stringify(hiddenIds));
+    }
+
+    // 2. إزالة عنصر الإشعار من الصفحة مباشرة وبشكل فوري
+    const itemEl = document.getElementById('notif-item-' + id) || document.getElementById('notification-' + id) || event.target.closest('div');
+    if (itemEl) {
+        itemEl.style.transition = 'all 0.3s ease';
+        itemEl.style.opacity = '0';
+        setTimeout(() => itemEl.remove(), 300);
+    } else {
+        // بديل: إعادة تحميل نافذة الإشعارات إن لم يتم العثور على العنصر بدقة
+        if (typeof window.renderNotificationsList === 'function') {
+            window.renderNotificationsList();
+        }
+    }
+
+    // 3. تحديث العداد
+    if (typeof window.updateNotificationBadge === 'function') {
+        window.updateNotificationBadge();
+    }
+};
+
+
+
+
 
         window.resetDesignDefaults = function() {
             document.getElementById('adminAvatarShape').value = 'rounded-full';
@@ -4225,24 +4249,28 @@ window.closeVideoModal = function() {
 
 
 window.clearAllNotifications = function() {
-    if (confirm('هل أنت متأكد من رغبتك في حذف جميع الإشعارات؟')) {
-        if (typeof rootData !== 'undefined') rootData.notifications = {};
-        if (typeof appData !== 'undefined') appData.notifications = {};
-        
-        if (typeof window.saveData === 'function') {
-            window.saveData();
-        } else if (typeof window.syncData === 'function') {
-            window.syncData();
-        }
+    const notifs = (typeof rootData !== 'undefined' && rootData.notifications) || {};
+    let hiddenIds = JSON.parse(localStorage.getItem('hidden_notifications_ids') || '[]');
+    
+    Object.keys(notifs).forEach(id => {
+        if (!hiddenIds.includes(id)) hiddenIds.push(id);
+    });
+    localStorage.setItem('hidden_notifications_ids', JSON.stringify(hiddenIds));
 
-        if (typeof window.renderNotifications === 'function') {
-            window.renderNotifications();
-        } else {
-            const listEl = document.getElementById('notificationsListContainer');
-            if (listEl) listEl.innerHTML = '<div class="text-center text-gray-500 py-8 text-xs">لا توجد إشعارات</div>';
-        }
+    const listEl = document.getElementById('notificationsListContainer');
+    if (listEl) {
+        listEl.innerHTML = '<div class="text-center text-gray-500 py-8 text-xs">لا توجد إشعارات</div>';
+    } else if (typeof window.renderNotificationsList === 'function') {
+        window.renderNotificationsList();
+    }
+
+    if (typeof window.updateNotificationBadge === 'function') {
+        window.updateNotificationBadge();
     }
 };
+
+
+
 
 
 </script>
