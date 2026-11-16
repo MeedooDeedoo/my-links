@@ -4224,14 +4224,18 @@ window.closeVideoModal = function() {
 };
 
 
-
 window.clearAllNotifications = function() {
     if (confirm('هل أنت متأكد من رغبتك في حذف جميع الإشعارات من عندك؟')) {
-        // تفريغ الإشعارات محلياً فقط دون استدعاء saveData أو syncData حتى لا تحذف عند الآخرين
-        if (typeof rootData !== 'undefined') rootData.notifications = {};
-        if (typeof appData !== 'undefined') appData.notifications = {};
+        const notifications = (typeof rootData !== 'undefined' && rootData.notifications) || (typeof appData !== 'undefined' && appData.notifications) || {};
+        
+        // جلب قائمة الإشعارات المحذوفة سابقاً من ذاكرة المتصفح وإضافة الإشعارات الحالية إليها
+        let hiddenIds = JSON.parse(localStorage.getItem('hidden_notifications_ids') || '[]');
+        Object.keys(notifications).forEach(id => {
+            if (!hiddenIds.includes(id)) hiddenIds.push(id);
+        });
+        localStorage.setItem('hidden_notifications_ids', JSON.stringify(hiddenIds));
 
-        // تحديث عرض قائمة الإشعارات في الواجهة لدك فوراً
+        // تحديث الواجهة فوراً لإخفائها
         if (typeof window.renderNotifications === 'function') {
             window.renderNotifications();
         } else {
@@ -4240,7 +4244,6 @@ window.clearAllNotifications = function() {
         }
     }
 };
-
 
 
 
