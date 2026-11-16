@@ -568,7 +568,11 @@
                 <button type="button" onclick="window.requestPushPermission()" class="text-[10px] bg-cyanaccent/20 text-cyanaccent border border-cyanaccent/40 px-2.5 py-1.5 rounded-lg font-bold flex items-center gap-1">
                     <i class="fa-solid fa-bell"></i> تفعيل إشعارات المتصفح 🔔
                 </button>
-                <button type="button" onclick="window.markAllNotificationsRead()" class="text-[10px] bg-goldaccent/10 text-goldaccent border border-goldaccent/30 px-2 py-1.5 rounded-lg font-bold">تحديد الكل مقروء</button>
+    <button onclick="window.clearAllNotifications()" class="px-3 py-1.5 bg-red-600/20 text-red-400 hover:bg-red-600/30 text-xs rounded-lg transition font-medium flex items-center gap-1">
+    <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg>
+    حذف الكل
+</button>
+            <button type="button" onclick="window.markAllNotificationsRead()" class="text-[10px] bg-goldaccent/10 text-goldaccent border border-goldaccent/30 px-2 py-1.5 rounded-lg font-bold">تحديد الكل مقروء</button>
             </div>
             <div id="notificationsListContainer" class="overflow-y-auto flex-grow space-y-2.5 pr-1"></div>
         </div>
@@ -4220,8 +4224,28 @@ window.closeVideoModal = function() {
 };
 
 
-  
+
+window.clearAllNotifications = function() {
+    if (confirm('هل أنت متأكد من رغبتك في حذف جميع الإشعارات من عندك؟')) {
+        // تفريغ الإشعارات محلياً فقط دون استدعاء saveData أو syncData حتى لا تحذف عند الآخرين
+        if (typeof rootData !== 'undefined') rootData.notifications = {};
+        if (typeof appData !== 'undefined') appData.notifications = {};
+
+        // تحديث عرض قائمة الإشعارات في الواجهة لدك فوراً
+        if (typeof window.renderNotifications === 'function') {
+            window.renderNotifications();
+        } else {
+            const listEl = document.getElementById('notificationsListContainer');
+            if (listEl) listEl.innerHTML = '<div class="text-center text-gray-500 py-8 text-xs">لا توجد إشعارات</div>';
+        }
+    }
+};
+
+
+
+
 </script>
+
 
 
 <!-- نافذة مشغل الفيديو بملء الشاشة -->
