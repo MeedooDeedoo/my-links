@@ -2698,31 +2698,83 @@ window.filterFileHub = function(query) {
                 else allMedia = allMedia.concat(project.extraUrls.split(/[\n,]+/).map(s => s.trim()).filter(Boolean));
             }
 
-            allMedia.forEach((url, idx) => {
-                const card = document.createElement('div');
-                const isYoutube = url.includes('youtube.com') || url.includes('youtu.be');
-                const isDirectVideo = url.match(/\.(mp4|webm|ogg)$/i);
+                    allMedia.forEach((url, idx) => {
+            const card = document.createElement('div');
+            const isVideo = url.includes('youtube.com') || url.includes('youtu.be') || url.includes('instagram.com') || url.match(/\.(mp4|webm|ogg)$/i);
 
-                if (isYoutube) {
-                    let embedUrl = url;
-                    if (url.includes('watch?v=')) embedUrl = url.replace('watch?v=', 'embed/');
-                    else if (url.includes('youtu.be/')) embedUrl = url.replace('youtu.be/', 'youtube.com/embed/');
-                    card.className = 'h-40 w-full rounded-xl overflow-hidden border border-gray-700 col-span-2 shadow-md bg-black shrink-0';
 
-                    card.innerHTML = `<iframe src="${embedUrl}" class="w-full h-full" frameborder="0" allowfullscreen></iframe>`;
-                card.className = 'h-40 w-full rounded-xl overflow-hidden border border-gray-700 col-span-2 shadow-md bg-black shrink-0';
+                           
 
-                    card.innerHTML = `<video src="${url}" controls class="w-full h-full object-cover"></video>`;
-                } else {
-                    card.className = 'h-32 w-full rounded-xl overflow-hidden bg-darkbg border border-gray-700 cursor-pointer relative group shrink-0';
 
-                    card.oncontextmenu = (e) => { e.preventDefault(); window.openImageView(allMedia, idx); };
-card.onclick = () => window.openImageView(allMedia, idx);
 
-                    card.innerHTML = `<img src="${url}" class="w-full h-full object-cover group-hover:scale-105 transition" /><span class="absolute bottom-1 right-1 bg-black/60 text-white text-[9px] px-1 py-0.5 rounded">صورة ${idx+1}</span>`;
+                        if (isVideo) {
+                card.className = 'h-32 w-full rounded-xl overflow-hidden border border-gray-700 cursor-pointer relative group shrink-0 bg-zinc-900 flex items-center justify-center';
+                
+                // استخراج صورة الغلاف تلقائياً إذا كان الرابط يوتيوب أو شورتس
+                let thumbUrl = '';
+                if (url.includes('youtube.com') || url.includes('youtu.be')) {
+                    let videoId = '';
+                    if (url.includes('shorts/')) {
+                        videoId = url.split('shorts/')[1].split('?')[0];
+                    } else if (url.includes('youtu.be/')) {
+                        videoId = url.split('youtu.be/')[1].split('?')[0];
+                    } else if (url.includes('watch?v=')) {
+                        videoId = url.split('watch?v=')[1].split('&')[0];
+                    }
+                    if (videoId) {
+                        thumbUrl = `https://img.youtube.com/vi/${videoId}/hqdefault.jpg`;
+                    }
                 }
-                imagesGrid.appendChild(card);
-            });
+
+                card.innerHTML = `
+                    ${thumbUrl ? `<img src="${thumbUrl}" class="absolute inset-0 w-full h-full object-cover opacity-75 group-hover:scale-105 transition duration-300">` : ''}
+                    <div class="absolute inset-0 bg-black/40 group-hover:bg-black/20 transition flex items-center justify-center pointer-events-none z-10">
+                        <div class="w-10 h-10 rounded-full bg-goldaccent text-black flex items-center justify-center shadow-lg">
+                            <svg class="w-5 h-5 translate-x-0.5" fill="currentColor" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+                        </div>
+                        <span class="absolute bottom-1 right-1 bg-black/60 text-white text-[9px] px-1 py-0.5 rounded">فيديو</span>
+                    </div>
+                `;
+
+                card.onclick = (e) => {
+                    e.stopPropagation();
+                    
+                    let modal = document.getElementById('globalVideoModal');
+                    if (!modal) {
+                        modal = document.createElement('div');
+                        modal.id = 'globalVideoModal';
+                        modal.className = 'fixed inset-0 z-[9999] bg-black/95 flex items-center justify-center p-2 sm:p-4 hidden';
+                        modal.innerHTML = `
+                            <div class="relative w-full max-w-5xl h-[88vh] bg-black rounded-2xl overflow-hidden shadow-2xl border border-gray-800 flex flex-col items-center justify-center">
+                                <button onclick="document.getElementById('globalVideoModal').classList.add('hidden'); document.getElementById('globalVideoContainer').innerHTML='';" class="absolute top-4 right-4 z-50 bg-gray-800 text-white w-10 h-10 rounded-full flex items-center justify-center text-xl font-bold hover:bg-red-600 transition">✕</button>
+                                <div id="globalVideoContainer" class="w-full h-full flex items-center justify-center p-2"></div>
+                            </div>
+                        `;
+                        document.body.appendChild(modal);
+                    }
+                    
+                    const container = document.getElementById('globalVideoContainer');
+                    if (container) {
+                        container.innerHTML = window.renderMediaElement(url, 'w-full h-full rounded-lg object-contain');
+                    }
+                    modal.classList.remove('hidden');
+                };
+            }
+            
+
+
+
+
+
+             else {
+                card.className = 'h-32 w-full rounded-xl overflow-hidden bg-darkbg border border-gray-700 cursor-pointer relative group shrink-0';
+                card.oncontextmenu = (e) => { e.preventDefault(); window.openImageView(allMedia, idx); };
+                card.onclick = () => window.openImageView(allMedia, idx);
+                card.innerHTML = `${window.renderMediaElement(url, 'w-full h-full object-cover group-hover:scale-105 transition')}<span class="absolute bottom-1 right-1 bg-black/60 text-white text-[9px] px-1 py-0.5 rounded">صورة ${idx+1}</span>`;
+            }
+            imagesGrid.appendChild(card);
+        });
+
             document.getElementById('projectDetailModal').classList.remove('hidden');
         };
 
@@ -3946,11 +3998,11 @@ window.updateBeforeAfterUI = function(data) {
   });
   
   window.renderMediaElement = function(url, className = "w-full h-full object-cover rounded-xl") {
-    if (!url) return '';
-    
+    if (!url) return "";
+
     // فحص روابط يوتيوب العادية وشورتس
     if (url.includes('youtube.com') || url.includes('youtu.be')) {
-        let videoId = '';
+        let videoId = "";
         if (url.includes('shorts/')) {
             videoId = url.split('shorts/')[1].split('?')[0];
         } else if (url.includes('youtu.be/')) {
@@ -3961,21 +4013,49 @@ window.updateBeforeAfterUI = function(data) {
         if (videoId) {
             return `<iframe src="https://www.youtube.com/embed/${videoId}" class="${className}" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>`;
         }
+    } 
+    else if (url.includes('instagram.com')) {
+        let cleanUrl = url.split('?')[0];
+        if (!cleanUrl.endsWith('/')) cleanUrl += '/';
+        cleanUrl += 'embed';
+        return `<iframe src="${cleanUrl}" class="${className}" frameborder="0" scrolling="no" allowtransparency="true"></iframe>`;
+    } 
+    else if (url.endsWith('.mp4') || url.includes('.mp4')) {
+        return `<video src="${url}" class="${className}" controls></video>`;
+    } 
+    else {
+        return `<img src="${url}" class="${className}" />`;
     }
-    
-    // فحص ملفات الفيديو المباشرة مثل mp4
-    if (url.endsWith('.mp4') || url.includes('.mp4')) {
-        return `<video src="${url}" controls class="${className}"></video>`;
-    }
-    
-    // العرض الافتراضي (صور)
-    return `<img src="${url}" class="${className}" />`;
 };
+
+
+
+window.openVideoModal = function(url) {
+    const modal = document.getElementById('videoModal');
+    const content = document.getElementById('videoModalContent');
+    if (!modal || !content) return;
+    content.innerHTML = window.renderMediaElement(url, 'w-full h-full rounded-2xl shadow-2xl');
+    modal.classList.remove('hidden');
+};
+
+window.closeVideoModal = function() {
+    const modal = document.getElementById('videoModal');
+    const content = document.getElementById('videoModalContent');
+    if (!modal || !content) return;
+    content.innerHTML = '';
+    modal.classList.add('hidden');
+};
+
 
   
 </script>
 
 
+<!-- نافذة مشغل الفيديو بملء الشاشة -->
+<div id="videoModal" class="fixed inset-0 bg-black/90 z-50 hidden flex items-center justify-center p-4">
+    <button onclick="closeVideoModal()" class="absolute top-4 right-4 text-white text-3xl bg-black/60 w-12 h-12 rounded-full flex items-center justify-center z-10 hover:bg-black">×</button>
+    <div id="videoModalContent" class="w-full max-w-5xl h-[85vh] flex items-center justify-center"></div>
+</div>
 
     
 </body>
