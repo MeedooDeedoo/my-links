@@ -2739,25 +2739,11 @@ window.handleNotificationClick = function(notifId, projectId, projectTitle) {
         };
 
         window.deleteNotification = function(id) {
-    // حفظ المعرف في ذاكرة المتصفح ليظل محذوفاً حتى بعد تحديث الصفحة (لديك وحدك)
-    let hiddenIds = JSON.parse(localStorage.getItem('hidden_notifications_ids') || '[]');
-    if (!hiddenIds.includes(id)) {
-        hiddenIds.push(id);
-        localStorage.setItem('hidden_notifications_ids', JSON.stringify(hiddenIds));
-    }
-
-    // إخفاء العنصر من القائمة الواجهة فوراً وتحديث العداد
-    const el = document.getElementById('notif-item-' + id);
-    if (el) el.remove();
-    
-    if (typeof window.updateNotificationBadge === 'function') {
-        window.updateNotificationBadge();
-    }
-    if (typeof window.renderNotificationsList === 'function') {
-        window.renderNotificationsList();
-    }
-};
-
+            if (rootData.notifications && rootData.notifications[id]) {
+                delete rootData.notifications[id];
+                set(dbRef, rootData).then(() => { renderNotificationsList(); updateNotificationBadge(); }).catch(err => console.error("Delete notif error:", err));
+            }
+        };
 
         window.resetDesignDefaults = function() {
             document.getElementById('adminAvatarShape').value = 'rounded-full';
@@ -4239,17 +4225,16 @@ window.closeVideoModal = function() {
 
 
 window.clearAllNotifications = function() {
-    if (confirm('هل أنت متأكد من رغبتك في حذف جميع الإشعارات من عندك؟')) {
-        const notifications = (typeof rootData !== 'undefined' && rootData.notifications) || (typeof appData !== 'undefined' && appData.notifications) || {};
+    if (confirm('هل أنت متأكد من رغبتك في حذف جميع الإشعارات؟')) {
+        if (typeof rootData !== 'undefined') rootData.notifications = {};
+        if (typeof appData !== 'undefined') appData.notifications = {};
         
-        // جلب قائمة الإشعارات المحذوفة سابقاً من ذاكرة المتصفح وإضافة الإشعارات الحالية إليها
-        let hiddenIds = JSON.parse(localStorage.getItem('hidden_notifications_ids') || '[]');
-        Object.keys(notifications).forEach(id => {
-            if (!hiddenIds.includes(id)) hiddenIds.push(id);
-        });
-        localStorage.setItem('hidden_notifications_ids', JSON.stringify(hiddenIds));
+        if (typeof window.saveData === 'function') {
+            window.saveData();
+        } else if (typeof window.syncData === 'function') {
+            window.syncData();
+        }
 
-        // تحديث الواجهة فوراً لإخفائها
         if (typeof window.renderNotifications === 'function') {
             window.renderNotifications();
         } else {
@@ -4258,7 +4243,6 @@ window.clearAllNotifications = function() {
         }
     }
 };
-
 
 
 </script>
