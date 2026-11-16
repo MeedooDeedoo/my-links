@@ -2775,9 +2775,9 @@ function handleSwipe() {
             const cleanBaseUrl = window.location.origin + window.location.pathname;
             const projectLink = `${cleanBaseUrl}?user=${currentUsername}&project=${currentViewingProjectId}`;
             if (navigator.share) {
-                navigator.share({ title: 'شاهد هذا المشروع المميز', text: 'شاهد هذا المشروع المميز:', url: projectLink }).catch(() => {});
+                navigator.share({ title: 'افتح الرابط لمشاهدة مشروعنا المميز 😊 المميز', text: 'افتح الرابط لمشاهدة مشروعنا المميز 😊 المميز:', url: projectLink }).catch(() => {});
             } else {
-                navigator.clipboard.writeText(`شاهد هذا المشروع المميز:\n${projectLink}`).then(() => alert('تم نسخ رابط المشروع المباشر بنجاح!'));
+                navigator.clipboard.writeText(`افتح الرابط لمشاهدة مشروعنا المميز 😊 المميز:\n${projectLink}`).then(() => alert('تم نسخ رابط المشروع المباشر بنجاح!'));
             }
         };
 
