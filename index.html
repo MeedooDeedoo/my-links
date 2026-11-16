@@ -3969,59 +3969,77 @@ window.updateBeforeAfterUI = function(data) {
 
 
 <script>
-    let siteReels = JSON.parse(localStorage.getItem('siteReelsData')) || [];
+    let defaultReels = [
+        {
+            title: "نمذجة واجهة تجارية 3D",
+            thumb: "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=500&q=80",
+            url: "https://www.youtube.com/shorts/dQw4w9WgXcQ",
+            active: true
+        }
+    ];
+
+    let siteReels = JSON.parse(localStorage.getItem('siteReelsData')) || defaultReels;
     let siteShowReels = JSON.parse(localStorage.getItem('siteShowReels')) ?? true;
     let editingReelIndex = null;
+    let dbInstance = null;
 
+    // دالة ذكية للبحث عن فايربيس مع إعادة المحاولة حتى تجهز المكتبة
     function initReelsDataFromCloud() {
-        const localReels = localStorage.getItem('siteReelsData');
-        if (localReels) {
-            try { siteReels = JSON.parse(localReels); } catch(e) {}
-        }
-        const localShow = localStorage.getItem('siteShowReels');
-        if (localShow !== null) {
-            try { siteShowReels = JSON.parse(localShow); } catch(e) {}
-        }
         renderReelsSection();
 
-        const tryConnectFirebase = () => {
+        const tryConnect = () => {
             if (typeof firebase !== 'undefined' && firebase.database) {
                 try {
-                    firebase.database().ref('siteReelsData').on('value', (snapshot) => {
+                    dbInstance = firebase.database();
+                    console.log("🔥 Firebase DB Connected Successfully for Reels!");
+
+                    // جلب وتزامن الريلز
+                    dbInstance.ref('siteReelsData').on('value', (snapshot) => {
                         const data = snapshot.val();
                         if (data) {
                             siteReels = Array.isArray(data) ? data : Object.values(data);
                             localStorage.setItem('siteReelsData', JSON.stringify(siteReels));
                             renderReelsSection();
+                        } else {
+                            dbInstance.ref('siteReelsData').set(siteReels);
                         }
                     });
 
-                    firebase.database().ref('siteShowReels').on('value', (snapshot) => {
+                    // جلب وتزامن حالة ظهور القسم
+                    dbInstance.ref('siteShowReels').on('value', (snapshot) => {
                         const val = snapshot.val();
                         if (val !== null) {
                             siteShowReels = val;
                             localStorage.setItem('siteShowReels', JSON.stringify(siteShowReels));
                             renderReelsSection();
+                        } else {
+                            dbInstance.ref('siteShowReels').set(siteShowReels);
                         }
                     });
-                } catch (err) {
-                    console.error("Firebase sync error:", err);
+                    return; // تم الاتصال بنجاح، إيقاف التكرار
+                } catch (e) {
+                    console.error("Firebase init error:", e);
                 }
-            } else {
-                setTimeout(tryConnectFirebase, 1000);
             }
+            
+            // إذا لم تجهز المكتبة بعد، أعد المحاولة بعد ثانية واحدة
+            setTimeout(tryConnect, 1000);
         };
 
-        tryConnectFirebase();
+        tryConnect();
     }
 
     function saveReelsToCloud() {
         localStorage.setItem('siteReelsData', JSON.stringify(siteReels));
         localStorage.setItem('siteShowReels', JSON.stringify(siteShowReels));
         
-        if (typeof firebase !== 'undefined' && firebase.database) {
-            firebase.database().ref('siteReelsData').set(siteReels).catch(err => console.error(err));
-            firebase.database().ref('siteShowReels').set(siteShowReels).catch(err => console.error(err));
+        if (dbInstance) {
+            dbInstance.ref('siteReelsData').set(siteReels).catch(err => console.error("Error saving reels:", err));
+            dbInstance.ref('siteShowReels').set(siteShowReels).catch(err => console.error("Error saving show state:", err));
+        } else if (typeof firebase !== 'undefined' && firebase.database) {
+            dbInstance = firebase.database();
+            dbInstance.ref('siteReelsData').set(siteReels);
+            dbInstance.ref('siteShowReels').set(siteShowReels);
         }
         renderReelsSection();
     }
@@ -4278,20 +4296,17 @@ window.updateBeforeAfterUI = function(data) {
     });
 </script>
 
-
-
-<!-- نافذة عرض الفيديو المنبثقة المستقلة في نهاية الصفحة تماماً -->
-<div id="videoPlayerModal" onclick="if(event.target === this) window.closeVideoModal()" style="display: none;" class="fixed inset-0 z-[99999] items-center justify-center bg-black/80 backdrop-blur-md p-4">
-    <div class="relative w-full max-w-sm bg-[#07090e] border border-gray-800 rounded-2xl overflow-hidden shadow-2xl">
-        <div class="flex items-center justify-between p-3 border-b border-gray-800 bg-[#141720]">
+<!-- نافذة عرض الفيديو المنبثقة المحسنة -->
+<div id="videoPlayerModal" onclick="if(event.target === this) closeVideoModal()" style="display: none;" class="fixed inset-0 z-[99999] flex items-center justify-center bg-black/85 backdrop-blur-md p-4">
+    <div class="relative w-full max-w-sm bg-[#07090e] border border-gray-800 rounded-2xl overflow-hidden shadow-2xl flex flex-col">
+        <div class="flex items-center justify-between px-4 py-3 bg-[#141720] border-b border-gray-800 z-20">
             <h3 id="videoModalTitle" class="text-xs font-bold text-white truncate max-w-[80%]">عنوان الفيديو</h3>
-            <button type="button" onclick="window.closeVideoModal()" class="w-8 h-8 rounded-full bg-gray-800 hover:bg-red-500 text-gray-300 hover:text-white flex items-center justify-center transition cursor-pointer">
-                <i class="fa-solid fa-xmark text-sm"></i>
+            <button type="button" onclick="closeVideoModal()" class="relative z-50 w-9 h-9 rounded-full bg-red-600 hover:bg-red-700 text-white flex items-center justify-center transition shadow-lg cursor-pointer">
+                <i class="fa-solid fa-xmark text-base pointer-events-none"></i>
             </button>
         </div>
-        <div class="relative aspect-[9/16] w-full bg-black">
+        <div class="relative aspect-[9/16] w-full bg-black z-10">
             <iframe id="videoPlayerFrame" src="" class="w-full h-full border-0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-
         </div>
     </div>
 </div>
