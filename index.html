@@ -4252,22 +4252,44 @@ window.clearAllNotifications = function() {
     const notifs = (typeof rootData !== 'undefined' && rootData.notifications) || {};
     let hiddenIds = JSON.parse(localStorage.getItem('hidden_notifications_ids') || '[]');
     
+    // حفظ كل معرفات الإشعارات الحالية لتصبح مخفية على جهازك فقط
     Object.keys(notifs).forEach(id => {
         if (!hiddenIds.includes(id)) hiddenIds.push(id);
     });
     localStorage.setItem('hidden_notifications_ids', JSON.stringify(hiddenIds));
 
+    // تفريغ الحاوية فوراً
     const listEl = document.getElementById('notificationsListContainer');
     if (listEl) {
         listEl.innerHTML = '<div class="text-center text-gray-500 py-8 text-xs">لا توجد إشعارات</div>';
-    } else if (typeof window.renderNotificationsList === 'function') {
-        window.renderNotificationsList();
     }
 
+    // تصفير العداد
     if (typeof window.updateNotificationBadge === 'function') {
         window.updateNotificationBadge();
     }
 };
+
+// حماية إضافية تمنع ظهور الإشعارات المحذوفة حتى لو تم تحديث القائمة من السيرفر
+if (typeof window.renderNotificationsList === 'function' && !window._originalRenderNotifList) {
+    window._originalRenderNotifList = window.renderNotificationsList;
+    window.renderNotificationsList = function() {
+        window._originalRenderNotifList();
+        // إزالة أي إشعار تم حذفته محلياً من العرض فوراً بعد رسمه
+        const hiddenIds = JSON.parse(localStorage.getItem('hidden_notifications_ids') || '[]');
+        hiddenIds.forEach(id => {
+            const el = document.getElementById('notif-item-' + id) || document.getElementById('notification-' + id);
+            if (el) el.remove();
+        });
+        
+        // إذا لم يتبق شيء، إظهار رسالة "لا توجد إشعارات"
+        const listEl = document.getElementById('notificationsListContainer');
+        if (listEl && listEl.children.length === 0) {
+            listEl.innerHTML = '<div class="text-center text-gray-500 py-8 text-xs">لا توجد إشعارات</div>';
+        }
+    };
+}
+
 
 
 
