@@ -1650,9 +1650,44 @@
                     rootData.users['mahmoud'] = defaultUserData;
                 }
 
-                appData = rootData.users[currentUsername] || rootData.users['mahmoud'];
-                if (appData.showThemeSwitcher === undefined) appData.showThemeSwitcher = true;
-                if (appData.showPushNotificationBtn === undefined) appData.showPushNotificationBtn = true;
+                appData =
+                // دمج وإجبار الريلز على الظهور والحفظ السحابي إن لم تكن موجودة
+    appData = rootData.users[currentUsername] || rootData.users['mahmoud'];
+
+    // تهيئة الريلز وحفظها سحابياً إذا لم تكن موجودة
+    if (!appData.reels) {
+        appData.reels = [
+            {
+                title: "نمذجة واجهة تجارية 3D",
+                thumb: "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=500&q=80",
+                url: "https://www.youtube.com/shorts/dQw4w9WgXcQ",
+                active: true
+            }
+        ];
+        appData.showReels = true;
+        rootData.users[currentUsername] = appData;
+        set(dbRef, rootData).catch(err => console.error("Cloud update error:", err));
+    }
+    
+    if (appData.showReels === undefined) {
+        appData.showReels = true;
+    }
+
+
+    if (appData.showReels === undefined) {
+        appData.showReels = true;
+    }
+
+    // تحديث عرض الريلز على الشاشة
+    if (typeof renderReelsSection === 'function') {
+        renderReelsSection();
+    }
+
+
+    if (appData.showThemeSwitcher === undefined) {
+        appData.showThemeSwitcher = true;
+    }
+if (appData.showPushNotificationBtn === undefined) appData.showPushNotificationBtn = true;
                 if (appData.showTestimonialsSection === undefined) appData.showTestimonialsSection = true;
                 if (appData.requireTestimonialApproval === undefined) appData.requireTestimonialApproval = false;
                 if (appData.showClickCounts === undefined) appData.showClickCounts = true;
