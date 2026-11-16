@@ -1725,6 +1725,26 @@
             }
 
             initApp();
+            // تأكد من وجود هيكل الريلز في بيانات المستخدم، وإذا لم يكن موجوداً قم بإنشائه افتراضياً وحفظه سحابياً
+if (!appData.reels) {
+    appData.reels = [
+        {
+            title: "نمذجة واجهة تجارية 3D",
+            thumb: "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=500&q=80",
+            url: "https://www.youtube.com/shorts/dQw4w9WgXcQ",
+            active: true
+        }
+    ];
+}
+if (appData.showReels === undefined) {
+    appData.showReels = true;
+}
+
+// تحديث الواجهة وعرض الريلز
+if (typeof renderReelsSection === 'function') {
+    renderReelsSection();
+}
+
             
             if (targetProjectId) {
                 setTimeout(() => {
