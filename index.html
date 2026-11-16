@@ -2533,41 +2533,175 @@ window.filterFileHub = function(query) {
         }
 
         function renderNotificationsList() {
-            const container = document.getElementById('notificationsListContainer');
-            if (!container) return;
-            container.innerHTML = '';
-            const notifs = rootData.notifications || {};
-            const keys = Object.keys(notifs).filter(id => {
-                const n = notifs[id];
-                return n.target === 'all' || n.target === currentUsername;
-            });
+    const container = document.getElementById('notificationsListContainer');
+    if (!container) return;
+    container.innerHTML = "";
+    const notifs = rootData.notifications || {};
+    const keys = Object.keys(notifs).filter(id => {
+        const n = notifs[id];
+        return n.target === 'all' || n.target === currentUsername;
+    });
 
-            if (keys.length === 0) {
-                container.innerHTML = '<div class="text-center py-8 text-xs text-gray-500">لا توجد إشعارات أو مشاريع جديدة حالياً.</div>';
-                return;
+    if (keys.length === 0) {
+        container.innerHTML = '<div class="text-center py-8 text-xs text-gray-500">لا توجد إشعارات أو مشاريع جديدة حالياً.</div>';
+        return;
+    }
+
+    keys.reverse().forEach(id => {
+        const n = notifs[id];
+        const readClass = n.read ? 'opacity-70 bg-gray-50 dark:bg-darkbg' : 'bg-goldaccent/5 border-goldaccent/30';
+        
+        container.innerHTML += `
+            <div onclick="window.handleNotificationClick('${id}', '${n.projectId || ''}', '${(n.projectTitle || '').replace(/'/g, "\\'")}')" class="border border-gray-300 dark:border-gray-800 rounded-xl p-3.5 mb-2.5 ${readClass} transition cursor-pointer hover:border-goldaccent/50">
+                <div class="flex justify-between items-center text-[11px]">
+                    <span class="font-extrabold text-goldaccent flex items-center gap-1.5"><i class="fa-solid fa-circle-info"></i> ${n.title}</span>
+                    <span class="text-gray-400 text-[10px]">${new Date(n.createdAt).toLocaleDateString('ar')}</span>
+                </div>
+                <p class="text-xs text-gray-800 dark:text-gray-200 leading-relaxed mt-1">${n.message}</p>
+                <div class="flex justify-between items-center pt-2 border-t border-gray-200 dark:border-gray-800 mt-1">
+                    <span class="text-[10px] text-gray-400">بواسطة: ${n.sender || 'الإدارة'}</span>
+                    <div class="flex gap-2">
+                        ${!n.read ? `<button type="button" onclick="event.stopPropagation(); window.markNotificationRead('${id}')" class="text-[10px] bg-emerald-500/20 text-emerald-600 px-2 py-0.5 rounded font-bold">تحديد مقروء</button>` : ''}
+                        <button type="button" onclick="event.stopPropagation(); window.deleteNotification('${id}')" class="text-[10px] bg-red-500/20 text-red-600 px-2 py-0.5 rounded font-bold">حذف</button>
+                    </div>
+                </div>
+            </div>
+        `;
+    });
+}
+
+window.handleNotificationClick = function(notifId, projectId, projectTitle) {
+    if (typeof window.markNotificationRead === 'function') {
+        window.markNotificationRead(notifId);
+    }
+    if (typeof window.closeNotificationsModal === 'function') {
+        window.closeNotificationsModal();
+    }
+
+    const galleryObj = rootData.gallery || appData.gallery || {};
+    let targetKey = projectId;
+
+    if (targetKey === undefined || targetKey === null || targetKey === '' || galleryObj[targetKey] === undefined) {
+        const notif = rootData.notifications ? rootData.notifications[notifId] : null;
+        let searchTitle = projectTitle;
+
+        if (!searchTitle && notif && notif.message) {
+            const match = notif.message.match(/['"ھ«»“”‘’]([^'"ھ«»“”‘’]+)['"ھ«»“”‘’]/);
+            if (match) searchTitle = match[1];
+        }
+
+        if (searchTitle) {
+            searchTitle = searchTitle.trim();
+            const keys = Object.keys(galleryObj);
+            const foundKey = keys.find(key => {
+                const item = galleryObj[key];
+                return item && item.title && item.title.trim().includes(searchTitle);
+            });
+            if (foundKey !== undefined) targetKey = foundKey;
+        }
+
+        if (targetKey === undefined || targetKey === null || targetKey === '' || galleryObj[targetKey] === undefined) {
+            const keys = Object.keys(galleryObj);
+            if (keys.length > 0) {
+                targetKey = keys[0];
+            }
+        }
+    }
+
+    // فتح نافذة تفاصيل المشروع مباشرة وتعبئتها دون الاعتماد على دوال خارجية قد ترفض الرقم 0
+    setTimeout(() => {
+        const modal = document.getElementById('projectDetailModal');
+        const titleEl = document.getElementById('modalProjectTitle');
+        const catEl = document.getElementById('modalProjectCategory');
+        const descEl = document.getElementById('modalProjectDesc');
+        const imagesGrid = document.getElementById('modalProjectImagesGrid');
+
+        const item = galleryObj[targetKey];
+        if (item) {
+            if (titleEl) titleEl.textContent = item.title || '';
+            if (catEl) catEl.textContent = item.category || '';
+            if (descEl) descEl.textContent = item.desc || item.description || '';
+            
+            if (imagesGrid && typeof window.renderMediaElement === 'function') {
+                imagesGrid.innerHTML = '';
+                let allMedia = [];
+                if (item.coverUrl) allMedia.push(item.coverUrl);
+                if (item.extraUrls) {
+                    if (Array.isArray(item.extraUrls)) {
+                        allMedia = allMedia.concat(item.extraUrls);
+                    } else {
+                        allMedia = allMedia.concat(item.extraUrls.split(/[,\n]+/).map(s => s.trim()).filter(Boolean));
+                    }
+                }
+
+                allMedia.forEach((url, idx) => {
+                    const card = document.createElement('div');
+                    const isVideo = url.includes('youtube.com') || url.includes('youtu.be') || url.includes('instagram.com') || url.match(/\.(mp4|webm|ogg)$/i);
+                    
+                    if (isVideo) {
+                        card.className = 'h-32 w-full rounded-xl overflow-hidden border border-gray-700 cursor-pointer relative group shrink-0 bg-zinc-900 flex items-center justify-center';
+                        
+                        let thumbUrl = '';
+                        if (url.includes('youtube.com') || url.includes('youtu.be')) {
+                            let videoId = '';
+                            if (url.includes('shorts/')) videoId = url.split('shorts/')[1].split('?')[0];
+                            else if (url.includes('youtu.be/')) videoId = url.split('youtu.be/')[1].split('?')[0];
+                            else if (url.includes('watch?v=')) videoId = url.split('watch?v=')[1].split('&')[0];
+                            if (videoId) thumbUrl = `https://img.youtube.com/vi/${videoId}/hqdefault.jpg`;
+                        }
+
+                        card.innerHTML = `
+                            ${thumbUrl ? `<img src="${thumbUrl}" class="absolute inset-0 w-full h-full object-cover opacity-75 group-hover:scale-105 transition duration-300">` : ''}
+                            <div class="absolute inset-0 bg-black/50 group-hover:bg-black/30 transition flex items-center justify-center pointer-events-none z-10">
+                                <div class="w-10 h-10 rounded-full bg-goldaccent text-black flex items-center justify-center shadow-lg">
+                                    <svg class="w-5 h-5 translate-x-0.5" fill="currentColor" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+                                </div>
+                                <span class="absolute bottom-1 right-1 bg-black/60 text-white text-[9px] px-1 py-0.5 rounded">فيديو</span>
+                            </div>
+                        `;
+
+                        card.onclick = (e) => {
+                            e.stopPropagation();
+                            let vModal = document.getElementById('globalVideoModal');
+                            if (!vModal) {
+                                vModal = document.createElement('div');
+                                vModal.id = 'globalVideoModal';
+                                vModal.className = 'fixed inset-0 z-[9999] bg-black/95 flex items-center justify-center p-2 sm:p-4 hidden';
+                                vModal.innerHTML = `
+                                    <div class="relative w-full max-w-5xl h-[88vh] bg-black rounded-2xl overflow-hidden shadow-2xl border border-gray-800 flex flex-col items-center justify-center">
+                                        <button onclick="document.getElementById('globalVideoModal').classList.add('hidden'); document.getElementById('globalVideoContainer').innerHTML='';" class="absolute top-4 right-4 z-50 bg-gray-800 text-white w-10 h-10 rounded-full flex items-center justify-center text-xl font-bold hover:bg-red-600 transition">✕</button>
+                                        <div id="globalVideoContainer" class="w-full h-full flex items-center justify-center p-2"></div>
+                                    </div>
+                                `;
+                                document.body.appendChild(vModal);
+                            }
+                            const container = document.getElementById('globalVideoContainer');
+                            if (container) {
+                                container.innerHTML = window.renderMediaElement(url, 'w-full h-full rounded-lg object-contain');
+                            }
+                            vModal.classList.remove('hidden');
+                        };
+                    } else {
+                        card.className = 'h-32 w-full rounded-xl overflow-hidden bg-darkbg border border-gray-700 cursor-pointer relative group shrink-0';
+                        card.onclick = () => {
+                            if (typeof window.openImageView === 'function') {
+                                window.openImageView(allMedia, idx);
+                            }
+                        };
+                        card.innerHTML = `${window.renderMediaElement(url, 'w-full h-full object-cover group-hover:scale-105 transition')}<span class="absolute bottom-1 right-1 bg-black/60 text-white text-[9px] px-1 py-0.5 rounded">صورة ${idx + 1}</span>`;
+                    }
+                    imagesGrid.appendChild(card);
+                });
             }
 
-            keys.reverse().forEach(id => {
-                const n = notifs[id];
-                const readClass = n.read ? 'opacity-70 bg-gray-50 dark:bg-darkbg' : 'bg-goldaccent/5 border-goldaccent/30';
-                container.innerHTML += `
-                    <div class="border border-gray-300 dark:border-gray-700 p-3 rounded-xl space-y-1 ${readClass} transition">
-                        <div class="flex justify-between items-center text-[11px]">
-                            <span class="font-extrabold text-goldaccent flex items-center gap-1.5"><i class="fa-solid fa-circle-info"></i> ${n.title}</span>
-                            <span class="text-gray-400 text-[10px]">${new Date(n.createdAt).toLocaleDateString('ar')}</span>
-                        </div>
-                        <p class="text-xs text-gray-800 dark:text-gray-200 leading-relaxed">${n.message}</p>
-                        <div class="flex justify-between items-center pt-2 border-t border-gray-200 dark:border-gray-800 mt-1">
-                            <span class="text-[10px] text-gray-400">بواسطة: ${n.sender || 'الإدارة'}</span>
-                            <div class="flex gap-2">
-                                ${!n.read ? `<button type="button" onclick="window.markNotificationRead('${id}')" class="text-[10px] bg-emerald-500/20 text-emerald-600 px-2 py-0.5 rounded font-bold">تحديد مقروء</button>` : ''}
-                                <button type="button" onclick="window.deleteNotification('${id}')" class="text-[10px] bg-red-500/20 text-red-600 px-2 py-0.5 rounded font-bold">حذف</button>
-                            </div>
-                        </div>
-                    </div>
-                `;
-            });
+            if (modal) modal.classList.remove('hidden');
+        } else {
+            alert('عذراً، لم يتم العثور على بيانات هذا المشروع.');
         }
+    }, 150);
+};
+
+
 
         window.markNotificationRead = function(id) {
             if (rootData.notifications && rootData.notifications[id]) {
