@@ -3982,8 +3982,8 @@ window.updateBeforeAfterUI = function(data) {
     let siteShowReels = JSON.parse(localStorage.getItem('siteShowReels')) ?? true;
     let editingReelIndex = null;
     let dbInstance = null;
+    let isSavingToCloud = false;
 
-    // دالة ذكية للبحث عن فايربيس مع إعادة المحاولة حتى تجهز المكتبة
     function initReelsDataFromCloud() {
         renderReelsSection();
 
@@ -3991,10 +3991,10 @@ window.updateBeforeAfterUI = function(data) {
             if (typeof firebase !== 'undefined' && firebase.database) {
                 try {
                     dbInstance = firebase.database();
-                    console.log("🔥 Firebase DB Connected Successfully for Reels!");
-
-                    // جلب وتزامن الريلز
+                    
+                    // جلب وتزامن الريلز من السحابة
                     dbInstance.ref('siteReelsData').on('value', (snapshot) => {
+                        if (isSavingToCloud) return; // منع التداخل أثناء الحفظ المحلي
                         const data = snapshot.val();
                         if (data) {
                             siteReels = Array.isArray(data) ? data : Object.values(data);
@@ -4016,13 +4016,11 @@ window.updateBeforeAfterUI = function(data) {
                             dbInstance.ref('siteShowReels').set(siteShowReels);
                         }
                     });
-                    return; // تم الاتصال بنجاح، إيقاف التكرار
+                    return;
                 } catch (e) {
                     console.error("Firebase init error:", e);
                 }
             }
-            
-            // إذا لم تجهز المكتبة بعد، أعد المحاولة بعد ثانية واحدة
             setTimeout(tryConnect, 1000);
         };
 
@@ -4030,16 +4028,27 @@ window.updateBeforeAfterUI = function(data) {
     }
 
     function saveReelsToCloud() {
+        isSavingToCloud = true;
         localStorage.setItem('siteReelsData', JSON.stringify(siteReels));
         localStorage.setItem('siteShowReels', JSON.stringify(siteShowReels));
         
         if (dbInstance) {
-            dbInstance.ref('siteReelsData').set(siteReels).catch(err => console.error("Error saving reels:", err));
-            dbInstance.ref('siteShowReels').set(siteShowReels).catch(err => console.error("Error saving show state:", err));
+            Promise.all([
+                dbInstance.ref('siteReelsData').set(siteReels),
+                dbInstance.ref('siteShowReels').set(siteShowReels)
+            ]).then(() => {
+                setTimeout(() => { isSavingToCloud = false; }, 500);
+            }).catch(err => {
+                console.error("Error saving to cloud:", err);
+                isSavingToCloud = false;
+            });
         } else if (typeof firebase !== 'undefined' && firebase.database) {
             dbInstance = firebase.database();
             dbInstance.ref('siteReelsData').set(siteReels);
             dbInstance.ref('siteShowReels').set(siteShowReels);
+            setTimeout(() => { isSavingToCloud = false; }, 500);
+        } else {
+            isSavingToCloud = false;
         }
         renderReelsSection();
     }
@@ -4114,19 +4123,19 @@ window.updateBeforeAfterUI = function(data) {
                         </div>
                     </div>
                     <div class="flex items-center gap-1 flex-shrink-0">
-                        <button type="button" onclick="deleteReel(event, ${index})" class="w-7 h-7 rounded-lg bg-gray-800 hover:bg-red-500/20 text-red-400 flex items-center justify-center transition" title="حذف">
+                        <button type="button" onclick="deleteReel(event, ${index})" class="w-7 h-7 rounded-lg bg-gray-800 hover:bg-red-500/20 text-red-400 flex items-center justify-center transition cursor-pointer" title="حذف">
                             <i class="fa-solid fa-trash text-[10px]"></i>
                         </button>
-                        <button type="button" onclick="startEditReel(event, ${index})" class="w-7 h-7 rounded-lg bg-gray-800 hover:bg-blue-500/20 text-blue-400 flex items-center justify-center transition" title="تعديل">
+                        <button type="button" onclick="startEditReel(event, ${index})" class="w-7 h-7 rounded-lg bg-gray-800 hover:bg-blue-500/20 text-blue-400 flex items-center justify-center transition cursor-pointer" title="تعديل">
                             <i class="fa-solid fa-pen text-[10px]"></i>
                         </button>
-                        <button type="button" onclick="toggleReelActive(event, ${index})" class="w-7 h-7 rounded-lg bg-gray-800 hover:bg-yellow-500/20 text-yellow-400 flex items-center justify-center transition" title="${reel.active !== false ? 'إيقاف' : 'تفعيل'}">
+                        <button type="button" onclick="toggleReelActive(event, ${index})" class="w-7 h-7 rounded-lg bg-gray-800 hover:bg-yellow-500/20 text-yellow-400 flex items-center justify-center transition cursor-pointer" title="${reel.active !== false ? 'إيقاف' : 'تفعيل'}">
                             <i class="fa-solid ${reel.active !== false ? 'fa-pause' : 'fa-play'} text-[10px]"></i>
                         </button>
-                        <button type="button" onclick="moveReelOrder(event, ${index}, 'up')" class="w-7 h-7 rounded-lg bg-gray-800 hover:bg-gray-700 text-gray-300 flex items-center justify-center transition" title="تحريك لأعلى">
+                        <button type="button" onclick="moveReelOrder(event, ${index}, 'up')" class="w-7 h-7 rounded-lg bg-gray-800 hover:bg-gray-700 text-gray-300 flex items-center justify-center transition cursor-pointer" title="تحريك لأعلى">
                             <i class="fa-solid fa-chevron-up text-[10px]"></i>
                         </button>
-                        <button type="button" onclick="moveReelOrder(event, ${index}, 'down')" class="w-7 h-7 rounded-lg bg-gray-800 hover:bg-gray-700 text-gray-300 flex items-center justify-center transition" title="تحريك لأسفل">
+                        <button type="button" onclick="moveReelOrder(event, ${index}, 'down')" class="w-7 h-7 rounded-lg bg-gray-800 hover:bg-gray-700 text-gray-300 flex items-center justify-center transition cursor-pointer" title="تحريك لأسفل">
                             <i class="fa-solid fa-chevron-down text-[10px]"></i>
                         </button>
                     </div>
@@ -4238,7 +4247,7 @@ window.updateBeforeAfterUI = function(data) {
                 document.getElementById('newReelUrl').value = '';
                 document.getElementById('reelSubmitBtn').innerText = '+ إضافة الفيديو للمعرض';
             }
-            saveOrUpdateReel();
+            saveReelsToCloud(); // تم التصحيح لاستدعاء الحفظ السحابي والمحلي مباشرة
         }
     }
 
@@ -4295,21 +4304,6 @@ window.updateBeforeAfterUI = function(data) {
         initReelsDataFromCloud();
     });
 </script>
-
-<!-- نافذة عرض الفيديو المنبثقة المحسنة -->
-<div id="videoPlayerModal" onclick="if(event.target === this) closeVideoModal()" style="display: none;" class="fixed inset-0 z-[99999] flex items-center justify-center bg-black/85 backdrop-blur-md p-4">
-    <div class="relative w-full max-w-sm bg-[#07090e] border border-gray-800 rounded-2xl overflow-hidden shadow-2xl flex flex-col">
-        <div class="flex items-center justify-between px-4 py-3 bg-[#141720] border-b border-gray-800 z-20">
-            <h3 id="videoModalTitle" class="text-xs font-bold text-white truncate max-w-[80%]">عنوان الفيديو</h3>
-            <button type="button" onclick="closeVideoModal()" class="relative z-50 w-9 h-9 rounded-full bg-red-600 hover:bg-red-700 text-white flex items-center justify-center transition shadow-lg cursor-pointer">
-                <i class="fa-solid fa-xmark text-base pointer-events-none"></i>
-            </button>
-        </div>
-        <div class="relative aspect-[9/16] w-full bg-black z-10">
-            <iframe id="videoPlayerFrame" src="" class="w-full h-full border-0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-        </div>
-    </div>
-</div>
 
 
 
