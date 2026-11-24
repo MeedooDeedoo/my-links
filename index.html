@@ -4253,6 +4253,92 @@ window.addEventListener('offline', () => {
     alert('انقطع الاتصال بالإنترنت. بعض البيانات أو الوسائط قد تتطلب اتصالاً للتحميل.');
 });
 
+// 1. تأمين الروابط والمدخلات قبل العرض والحفظ
+window.sanitizeUrl = function(url) {
+    if (!url || typeof url !== 'string') return '';
+    const clean = url.trim();
+    if (/^(https?:\/\/|\/|\.\/|\.\.\/|blob:|data:image\/)/i.test(clean)) {
+        return clean;
+    }
+    return '';
+};
+
+// 2. تصدير نسخة احتياطية كاملة بصيغة JSON
+window.exportSiteBackup = function() {
+    const dataToSave = {
+        exportedAt: new Date().toISOString(),
+        data: (typeof rootData !== 'undefined' ? rootData : (typeof appData !== 'undefined' ? appData : {}))
+    };
+    const blob = new Blob([JSON.stringify(dataToSave, null, 2)], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `site-backup-${new Date().toISOString().slice(0, 10)}.json`;
+    a.click();
+    URL.revokeObjectURL(url);
+};
+
+// 3. استيراد واستعادة نسخة احتياطية JSON
+window.importSiteBackup = function(fileInput) {
+    const file = fileInput && fileInput.files && fileInput.files[0];
+    if (!file) return;
+
+    const reader = new FileReader();
+    reader.onload = function(e) {
+        try {
+            const parsed = JSON.parse(e.target.result);
+            const restoredData = parsed && parsed.data ? parsed.data : parsed;
+            if (!restoredData || typeof restoredData !== 'object') {
+                alert('ملف النسخة الاحتياطية غير صالح.');
+                return;
+            }
+            if (!confirm('سيتم استبدال البيانات الحالية بالنسخة الاحتياطية، هل تريد المتابعة؟')) return;
+
+            if (typeof rootData !== 'undefined') {
+                Object.keys(rootData).forEach(k => delete rootData[k]);
+                Object.assign(rootData, restoredData);
+            }
+            if (typeof window.saveData === 'function') window.saveData();
+            else if (typeof window.syncData === 'function') window.syncData();
+
+            alert('تمت استعادة النسخة الاحتياطية بنجاح.');
+            location.reload();
+        } catch (err) {
+            alert('تعذر قراءة ملف JSON: تأكد من سلامة الملف.');
+        }
+    };
+    reader.readAsText(file);
+    fileInput.value = '';
+};
+
+// 4. مشاركة رابط مباشر للمشروع
+window.shareCurrentProject = function(projectKey, title = '') {
+    const baseUrl = window.location.href.split('#')[0].split('?')[0];
+    const shareUrl = `${baseUrl}?project=${encodeURIComponent(projectKey)}`;
+    const shareText = title ? `شاهد مشروع: ${title}` : 'شاهد هذا المشروع';
+
+    if (navigator.share) {
+        navigator.share({ title: shareText, url: shareUrl }).catch(() => {});
+    } else if (navigator.clipboard) {
+        navigator.clipboard.writeText(shareUrl).then(() => {
+            alert('تم نسخ رابط المشروع بنجاح.');
+        });
+    }
+};
+
+// 5. فتح المشروع تلقائياً عند الدخول عبر رابط مشاركة وتنبيه انقطاع الإنترنت
+window.addEventListener('DOMContentLoaded', () => {
+    const params = new URLSearchParams(window.location.search);
+    const projectKey = params.get('project');
+    if (projectKey && typeof window.openProjectDetail === 'function') {
+        setTimeout(() => window.openProjectDetail(projectKey), 400);
+    }
+});
+
+window.addEventListener('offline', () => {
+    alert('انقطع الاتصال بالإنترنت. بعض البيانات أو الوسائط قد تتطلب اتصالاً للتحميل.');
+});
+
 
 </script>
 
