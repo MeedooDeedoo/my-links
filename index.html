@@ -4340,6 +4340,35 @@ window.addEventListener('offline', () => {
 });
 
 
+
+(function() {
+    const bar = document.createElement('div');
+    bar.id = 'connectionStatusBar';
+    bar.style.cssText = 'position:fixed;top:0;left:0;right:0;z-index:99998;display:none;text-align:center;padding:8px 12px;font-size:12px;font-weight:bold;';
+    document.addEventListener('DOMContentLoaded', () => document.body.appendChild(bar));
+
+    function updateStatus() {
+        if (!navigator.onLine) {
+            bar.style.display = 'block';
+            bar.style.background = '#dc2626';
+            bar.style.color = '#fff';
+            bar.textContent = 'أنت حالياً دون اتصال بالإنترنت — يتم عرض البيانات المتاحة محلياً';
+        } else if (bar.style.display === 'block') {
+            bar.style.background = '#16a34a';
+            bar.style.color = '#fff';
+            bar.textContent = 'عاد الاتصال بالإنترنت';
+            setTimeout(() => { bar.style.display = 'none'; }, 2500);
+        }
+    }
+
+    window.addEventListener('offline', updateStatus);
+    window.addEventListener('online', updateStatus);
+})();
+
+
+
+
+
 </script>
 
 
