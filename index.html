@@ -1453,7 +1453,12 @@
             </div>
 
             <div class="border-t border-gray-300 dark:border-gray-800 pt-3 mt-3 flex justify-between items-center transition-colors">
-                <button type="button" onclick="window.exportDataJson()" class="bg-gray-200 dark:bg-gray-800 text-gray-800 dark:text-gray-200 px-3 py-2 rounded-xl text-xs font-bold">تصدير النسخة</button>
+  <label class="bg-amber-600/20 text-amber-400 hover:bg-amber-600/30 px-3 py-2 rounded-xl text-xs font-bold cursor-pointer transition">
+    استيراد نسخة
+    <input type="file" accept=".json,application/json" onchange="window.importSiteBackup(this)" class="hidden">
+</label>
+
+              <button type="button" onclick="window.exportDataJson()" class="bg-gray-200 dark:bg-gray-800 text-gray-800 dark:text-gray-200 px-3 py-2 rounded-xl text-xs font-bold">تصدير النسخة</button>
                 <button type="button" onclick="window.saveAllChanges()" class="bg-goldaccent text-black font-extrabold px-5 py-2 rounded-xl text-xs shadow-sm">حفظ ونشر للسحاب</button>
             </div>
         </div>
@@ -4243,6 +4248,10 @@ window.clearAllNotifications = function() {
         }
     }
 };
+
+window.addEventListener('offline', () => {
+    alert('انقطع الاتصال بالإنترنت. بعض البيانات أو الوسائط قد تتطلب اتصالاً للتحميل.');
+});
 
 
 </script>
